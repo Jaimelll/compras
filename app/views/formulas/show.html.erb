@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @formula.nombre %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @formula.descripcion %>
+</p>
+
+<p>
+  <strong>Orden:</strong>
+  <%= @formula.orden %>
+</p>
+
+<p>
+  <strong>Obs:</strong>
+  <%= @formula.obs %>
+</p>
+
+<p>
+  <strong>Cantidad:</strong>
+  <%= @formula.cantidad %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @formula.admin_user %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @formula.product %>
+</p>
+
+<%= link_to 'Edit', edit_formula_path(@formula) %> |
+<%= link_to 'Back', formulas_path %>

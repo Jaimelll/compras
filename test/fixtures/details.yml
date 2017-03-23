@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  actividad: 1
+  tipo: MyString
+  numero: MyString
+  pfecha: 2017-03-19
+  importe: 1.5
+  obs: MyString
+  admin_user: one
+  item: one
+
+two:
+  actividad: 1
+  tipo: MyString
+  numero: MyString
+  pfecha: 2017-03-19
+  importe: 1.5
+  obs: MyString
+  admin_user: two
+  item: two

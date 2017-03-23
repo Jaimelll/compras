@@ -1,0 +1,107 @@
+<%= form_for(item) do |f| %>
+  <% if item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+      <% item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :pac %>
+    <%= f.text_field :pac %>
+  </div>
+
+  <div class="field">
+    <%= f.label :periodo %>
+    <%= f.text_field :periodo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :obac %>
+    <%= f.number_field :obac %>
+  </div>
+
+  <div class="field">
+    <%= f.label :lista %>
+    <%= f.number_field :lista %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ejecucion %>
+    <%= f.number_field :ejecucion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :modalidad %>
+    <%= f.number_field :modalidad %>
+  </div>
+
+  <div class="field">
+    <%= f.label :dependencia %>
+    <%= f.number_field :dependencia %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo %>
+    <%= f.number_field :tipo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :descripcion %>
+    <%= f.text_field :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cantidad %>
+    <%= f.number_field :cantidad %>
+  </div>
+
+  <div class="field">
+    <%= f.label :certificado %>
+    <%= f.text_field :certificado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :constancia %>
+    <%= f.text_field :constancia %>
+  </div>
+
+  <div class="field">
+    <%= f.label :moneda %>
+    <%= f.number_field :moneda %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fuente %>
+    <%= f.number_field :fuente %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ccp %>
+    <%= f.text_field :ccp %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cpr %>
+    <%= f.text_field :cpr %>
+  </div>
+
+  <div class="field">
+    <%= f.label :rubro %>
+    <%= f.text_field :rubro %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin_user_id %>
+    <%= f.text_field :admin_user_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

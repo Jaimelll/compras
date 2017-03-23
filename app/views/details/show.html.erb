@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Actividad:</strong>
+  <%= @detail.actividad %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @detail.tipo %>
+</p>
+
+<p>
+  <strong>Numero:</strong>
+  <%= @detail.numero %>
+</p>
+
+<p>
+  <strong>Pfecha:</strong>
+  <%= @detail.pfecha %>
+</p>
+
+<p>
+  <strong>Importe:</strong>
+  <%= @detail.importe %>
+</p>
+
+<p>
+  <strong>Obs:</strong>
+  <%= @detail.obs %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @detail.admin_user %>
+</p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @detail.item %>
+</p>
+
+<%= link_to 'Edit', edit_detail_path(@detail) %> |
+<%= link_to 'Back', details_path %>

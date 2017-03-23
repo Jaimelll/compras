@@ -1,0 +1,57 @@
+<%= form_for(detail) do |f| %>
+  <% if detail.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(detail.errors.count, "error") %> prohibited this detail from being saved:</h2>
+
+      <ul>
+      <% detail.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :actividad %>
+    <%= f.number_field :actividad %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo %>
+    <%= f.text_field :tipo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :numero %>
+    <%= f.text_field :numero %>
+  </div>
+
+  <div class="field">
+    <%= f.label :pfecha %>
+    <%= f.date_select :pfecha %>
+  </div>
+
+  <div class="field">
+    <%= f.label :importe %>
+    <%= f.text_field :importe %>
+  </div>
+
+  <div class="field">
+    <%= f.label :obs %>
+    <%= f.text_field :obs %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin_user_id %>
+    <%= f.text_field :admin_user_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :item_id %>
+    <%= f.text_field :item_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

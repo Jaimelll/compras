@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pac</th>
+      <th>Periodo</th>
+      <th>Obac</th>
+      <th>Lista</th>
+      <th>Ejecucion</th>
+      <th>Modalidad</th>
+      <th>Dependencia</th>
+      <th>Tipo</th>
+      <th>Descripcion</th>
+      <th>Cantidad</th>
+      <th>Certificado</th>
+      <th>Constancia</th>
+      <th>Moneda</th>
+      <th>Fuente</th>
+      <th>Ccp</th>
+      <th>Cpr</th>
+      <th>Rubro</th>
+      <th>Admin user</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @items.each do |item| %>
+      <tr>
+        <td><%= item.pac %></td>
+        <td><%= item.periodo %></td>
+        <td><%= item.obac %></td>
+        <td><%= item.lista %></td>
+        <td><%= item.ejecucion %></td>
+        <td><%= item.modalidad %></td>
+        <td><%= item.dependencia %></td>
+        <td><%= item.tipo %></td>
+        <td><%= item.descripcion %></td>
+        <td><%= item.cantidad %></td>
+        <td><%= item.certificado %></td>
+        <td><%= item.constancia %></td>
+        <td><%= item.moneda %></td>
+        <td><%= item.fuente %></td>
+        <td><%= item.ccp %></td>
+        <td><%= item.cpr %></td>
+        <td><%= item.rubro %></td>
+        <td><%= item.admin_user %></td>
+        <td><%= link_to 'Show', item %></td>
+        <td><%= link_to 'Edit', edit_item_path(item) %></td>
+        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Item', new_item_path %>

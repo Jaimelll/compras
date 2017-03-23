@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  pac: MyString
+  periodo: MyString
+  obac: 1
+  lista: 1
+  ejecucion: 1
+  modalidad: 1
+  dependencia: 1
+  tipo: 1
+  descripcion: MyString
+  cantidad: 1
+  certificado: 1.5
+  constancia: 1.5
+  moneda: 1
+  fuente: 1
+  ccp: MyString
+  cpr: MyString
+  rubro: MyString
+  admin_user: one
+
+two:
+  pac: MyString
+  periodo: MyString
+  obac: 1
+  lista: 1
+  ejecucion: 1
+  modalidad: 1
+  dependencia: 1
+  tipo: 1
+  descripcion: MyString
+  cantidad: 1
+  certificado: 1.5
+  constancia: 1.5
+  moneda: 1
+  fuente: 1
+  ccp: MyString
+  cpr: MyString
+  rubro: MyString
+  admin_user: two

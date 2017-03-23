@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  descripcion: MyString
+  orden: 1
+  obs: MyString
+  AdminUser: one
+
+two:
+  nombre: MyString
+  descripcion: MyString
+  orden: 1
+  obs: MyString
+  AdminUser: two

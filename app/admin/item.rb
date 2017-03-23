@@ -1,0 +1,246 @@
+ActiveAdmin.register Item do
+# See permitted parameters documentation:
+# https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
+#
+# permit_params :list, :of, :attributes, :on, :model
+#
+# or
+#
+# permit_params do
+#   permitted = [:permitted, :attributes]
+#   permitted << :other if params[:action] == 'create' && current_user.admin?
+#   permitted
+# end
+
+
+permit_params :pac, :periodo,:obac, :lista,:ejecucion,
+              :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
+              :certificado, :constancia, :moneda, :fuente, :ccp,
+              :cpr, :rubro, :admin_user_id
+# or
+#
+# permit_params do
+#   permitted = [:permitted, :attributes]
+#   permitted << :other if params[:action] == 'create' && current_user.admin?
+#   permitted
+# end
+menu priority: 4, label: "PACs"
+
+
+action_item :view, only: :show do
+          link_to 'Ir a PACs', admin_items_path()
+    end
+
+scope :todos, :default => true do |items|
+  items.order('pac')
+end
+scope :Ejercito, :default => true do |items|
+  items.where(obac:1).order('pac')
+end
+scope :Marina, :default => true do |items|
+  items.where(obac:2).order('pac')
+end
+scope :FAP, :default => true do |items|
+  items.where(obac:3).order('pac')
+end
+
+scope :Otros, :default => true do |items|
+  items.where("obac > 3").order('pac')
+end
+
+
+#filter :pac, label:'PAC'
+#filter :periodo , :as => :select, :collection =>
+# Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}
+#filter :obac, :label => 'OBACs', :as => :select, :collection =>
+#Formula.where(product_id:1).order('orden ASC').map{|u| ["#{u.descripcion}", u.id]}
+#filter :lista , :as => :select, :collection =>
+ #Formula.where(product_id:3).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}
+
+
+
+index do
+
+  column("NoPac", :sortable => :pac) {|item|
+    link_to "#{item.pac} ", admin_item_path(item) }
+  column("periodo")do |item|
+      if item.periodo and item.periodo>0 then
+
+         Formula.where(product_id:11, orden:item.periodo).
+          select('nombre as dd').first.dd
+
+        else
+            "s/d"
+        end
+    end
+
+
+  column("OBACs", :obac) do |item|
+          if item.obac and item.obac>0 then
+         Formula.where(product_id:1, orden:item.obac).
+          select('nombre as dd').first.dd
+        else
+          "s/d"
+        end
+    end
+
+
+  column("lista") do |item|
+      if item.lista and item.lista>0 then
+
+         Formula.where(product_id:3, orden:item.lista).
+          select('nombre as dd').first.dd
+
+        else
+            "s/d"
+        end
+    end
+  column("modalidad") do |item|
+      if item.modalidad and item.lista>0 then
+         Formula.where(product_id:4, orden:item.modalidad).
+          select('nombre as dd').first.dd
+        else
+            "s/d"
+        end
+    end
+  column("dependencia") do |item|
+      if item.dependencia and item.lista>0 then
+         Formula.where(product_id:5, orden:item.dependencia).
+          select('nombre as dd').first.dd
+        else
+              "s/d"
+        end
+    end
+
+    column("cuadrante") do |item|
+        if item.cuadrante and item.lista>0 then
+           Formula.where(product_id:13, orden:item.cuadrante).
+            select('nombre as dd').first.dd
+          else
+              "s/d"
+          end
+      end
+
+  column("rubro") do |item|
+    if item.rubro and item.rubro>0 then
+         Formula.where(product_id:9, orden:item.rubro).
+          select('nombre as dd').first.dd
+        else
+              "s/d"
+        end
+    end
+
+    actions
+
+
+end
+
+
+
+form do |f|
+
+    f.inputs "Items" do
+
+
+       f.input :pac , :input_html => { :style =>  'width:30%'}
+       f.input :periodo, :as => :select, :collection =>
+               Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
+       f.input :obac, :as => :select, :collection =>
+           Formula.where(product_id:1,cantidad:1).map{|u| [u.nombre, u.orden]}
+        f.input :lista, :as => :select, :collection =>
+           Formula.where(product_id:3).map{|u| [u.descripcion, u.orden]}
+        f.input :ejecucion, :as => :select, :collection =>
+            Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
+        f.input :modalidad, :as => :select, :collection =>
+           Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
+        f.input :dependencia, :as => :select, :collection =>
+            Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
+        f.input :tipo, :as => :select, :collection =>
+            Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
+         f.input :descripcion
+         f.input :cantidad, :input_html => { :style =>  'width:30%'}
+         f.input :cuadrante, :as => :select, :collection =>
+            Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
+         f.input :mesconvoca, :label => 'Convocatoria PAC' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+         f.input :seleccion, :as => :select, :collection =>
+             Formula.where(product_id:14).map{|u| [u.nombre, u.orden]}
+
+        #f.input :moneda, :as => :select, :collection =>
+        #    Formula.where(product_id:7).map{|u| [u.nombre, u.orden]}
+        f.input :fuente, :as => :select, :collection =>
+             Formula.where(product_id:8).map{|u| [u.descripcion, u.orden]}
+        #f.input :ccp , :label => 'No certificado presupuestal', :input_html => { :style =>  'width:30%'}
+        #f.input :cpr , :label => 'No constacia de prevision de recurso', :input_html => { :style =>  'width:30%'}
+        f.input :rubro, :as => :select, :collection =>
+            Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
+         f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+        f.actions
+    end
+  end
+
+
+  show do
+    nn=Item.where(id:params[:id]).
+               select('pac as dd').first.dd.capitalize
+
+         panel "pac-#{nn}" do
+
+      table_for(item.details.order('pfecha')) do |t|
+
+        t.column("Actividad", :sortable => :item_id) {|detail|
+          if detail.actividad then
+             n1=Formula.where(product_id:12,orden:detail.actividad).
+                     select('descripcion as dd').first.dd.capitalize
+         else
+                  n1="s/d"
+         end
+                 link_to "#{n1} ",  admin_item_detail_path(item,detail) }
+
+
+        t.column("tipo")
+        t.column("numero")
+        t.column("pfecha")
+        t.column("importe")
+        t.column("moneda") do |detail|
+          if detail.moneda then
+            Formula.where(product_id:7,orden:detail.moneda).select('nombre as dd').first.dd.to_s
+
+          end
+        end
+        t.column("obs")
+
+
+      end
+
+    end
+
+    strong { link_to 'Agregar actividad', new_admin_item_detail_path(item) }
+
+
+end
+
+sidebar "MONTOS" do
+  ul do
+      li Formula.where(product_id:1).where(orden:1).
+                    select('nombre as dd').first.dd + " = " +
+
+(number_with_delimiter(( Item.where(obac:1).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+
+      li Formula.where(product_id:1).where(orden:2).
+                      select('nombre as dd').first.dd + " = " +
+(number_with_delimiter(( Item.where(obac:2).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+      li Formula.where(product_id:1).where(orden:3).
+                        select('nombre as dd').first.dd + "  = " +
+(number_with_delimiter(( Item.where(obac:3).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+    li  "TOTAL = " +
+(number_with_delimiter(( Item.sum('certificado')) , delimiter: ",", separator: ".")).to_s
+
+
+
+    end
+  end
+
+
+
+
+end

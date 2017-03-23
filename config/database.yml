@@ -1,0 +1,41 @@
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+
+development:
+
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  password: password
+  host: 127.0.0.1
+  port: 5432
+  database: comprasd
+  pool: 5
+  timeout: 5000
+
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  username: postgres
+  password: password
+  host: 127.0.0.1
+  port: 5432
+  database: comprast
+  pool: 5
+  timeout: 5000
+
+production:
+    adapter: postgresql
+    encoding: unicode
+    username: postgres
+    password: password
+    host: 127.0.0.1
+    port: 5432
+    database: comprasprod
+    pool: 5
+    timeout: 5000
