@@ -97,9 +97,9 @@ index do
         end
     end
 
-  column("seleccion") do |item|
-      if item.seleccion and item.seleccion>0 then
-         Formula.where(product_id:14, orden:item.seleccion).
+  column("ejecucion") do |item|
+      if item.ejecucion and item.ejecucion>0 then
+         Formula.where(product_id:1, orden:item.ejecucion).
           select('nombre as dd').first.dd
         else
               "s/d"
