@@ -49,9 +49,10 @@ scope :Otros, :default => true do |items|
 end
 
 
-#filter :pac, label:'PAC'
-#filter :periodo , :as => :select, :collection =>
-# Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}
+filter :pac, label:'PAC'
+filter :certificado
+
+
 #filter :obac, :label => 'OBACs', :as => :select, :collection =>
 #Formula.where(product_id:1).order('orden ASC').map{|u| ["#{u.descripcion}", u.id]}
 #filter :lista , :as => :select, :collection =>
@@ -95,17 +96,10 @@ index do
             "s/d"
         end
     end
-  column("modalidad") do |item|
-      if item.modalidad and item.lista>0 then
-         Formula.where(product_id:4, orden:item.modalidad).
-          select('nombre as dd').first.dd
-        else
-            "s/d"
-        end
-    end
-  column("dependencia") do |item|
-      if item.dependencia and item.lista>0 then
-         Formula.where(product_id:5, orden:item.dependencia).
+
+  column("seleccion") do |item|
+      if item.seleccion and item.seleccion>0 then
+         Formula.where(product_id:14, orden:item.seleccion).
           select('nombre as dd').first.dd
         else
               "s/d"
@@ -113,22 +107,23 @@ index do
     end
 
     column("cuadrante") do |item|
-        if item.cuadrante and item.lista>0 then
+        if item.cuadrante and item.cuadrante>0 then
            Formula.where(product_id:13, orden:item.cuadrante).
             select('nombre as dd').first.dd
           else
               "s/d"
           end
       end
-
-  column("rubro") do |item|
-    if item.rubro and item.rubro>0 then
-         Formula.where(product_id:9, orden:item.rubro).
-          select('nombre as dd').first.dd
-        else
-              "s/d"
+      column("fuente") do |item|
+          if item.fuente and item.fuente>0 then
+             Formula.where(product_id:8, orden:item.fuente).
+              select('nombre as dd').first.dd
+            else
+                "s/d"
+            end
         end
-    end
+
+    column("certificado")
 
     actions
 
