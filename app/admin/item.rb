@@ -48,16 +48,24 @@ scope :Otros, :default => true do |items|
   items.where("obac > 3").order('pac')
 end
 
+scope :ACFFAA, :default => true do |items|
+  items.where("ejecucion=4").order('pac')
+end
+
 
 filter :pac, label:'PAC'
 filter :certificado
 
-
-#filter :obac, :label => 'OBACs', :as => :select, :collection =>
+filter :periodo,
+ #:label => 'OBACs',
+  :as => :select,
+   collection: proc {Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}}
 #Formula.where(product_id:1).order('orden ASC').map{|u| ["#{u.descripcion}", u.id]}
 #filter :lista , :as => :select, :collection =>
  #Formula.where(product_id:3).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}
-
+ #filter :by_category,
+#     as: :select,
+#     collection: proc { Category.by_company(current_user.company) }
 
 
 index do
@@ -150,8 +158,8 @@ form do |f|
            Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
         f.input :dependencia, :as => :select, :collection =>
             Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
-        f.input :tipo, :as => :select, :collection =>
-            Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
+    #    f.input :tipo, :as => :select, :collection =>
+    #        Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
          f.input :descripcion
          f.input :cantidad, :input_html => { :style =>  'width:30%'}
          f.input :cuadrante, :as => :select, :collection =>
@@ -159,7 +167,7 @@ form do |f|
          f.input :mesconvoca, :label => 'Convocatoria PAC' ,:as =>:string, :input_html => { :style =>  'width:30%'}
          f.input :seleccion, :as => :select, :collection =>
              Formula.where(product_id:14).map{|u| [u.nombre, u.orden]}
-
+         f.input :certificado, :as => :string, :input_html => { :style =>  'width:30%'}
         #f.input :moneda, :as => :select, :collection =>
         #    Formula.where(product_id:7).map{|u| [u.nombre, u.orden]}
         f.input :fuente, :as => :select, :collection =>
@@ -229,6 +237,10 @@ sidebar "MONTOS" do
 (number_with_delimiter(( Item.where(obac:3).sum('certificado')) , delimiter: ",", separator: ".")).to_s
     li  "TOTAL = " +
 (number_with_delimiter(( Item.sum('certificado')) , delimiter: ",", separator: ".")).to_s
+
+li "Responsabilidad de"+Formula.where(product_id:1).where(orden:4).
+                  select('nombre as dd').first.dd + "  = " +
+(number_with_delimiter(( Item.where(ejecucion:4).sum('certificado')) , delimiter: ",", separator: ".")).to_s
 
 
 
