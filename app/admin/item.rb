@@ -158,8 +158,8 @@ form do |f|
            Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
         f.input :dependencia, :as => :select, :collection =>
             Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
-    #    f.input :tipo, :as => :select, :collection =>
-    #        Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
+        f.input :tipo, :label => 'Mercado', :as => :select, :collection =>
+           Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
          f.input :descripcion
          f.input :cantidad, :input_html => { :style =>  'width:30%'}
          f.input :cuadrante, :as => :select, :collection =>
