@@ -56,13 +56,13 @@ end
 filter :pac, label:'PAC'
 filter :certificado
 
-filter :periodo,
+#filter :periodo,
  #:label => 'OBACs',
-  :as => :select,
-   collection: proc {Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}}
+#  :as => :select,
+#   collection: proc {Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}}
 #Formula.where(product_id:1).order('orden ASC').map{|u| ["#{u.descripcion}", u.id]}
-#filter :lista , :as => :select, :collection =>
- #Formula.where(product_id:3).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}
+filter :periodo , :as => :select, :collection =>
+  Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
  #filter :by_category,
 #     as: :select,
 #     collection: proc { Category.by_company(current_user.company) }
