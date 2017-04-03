@@ -50,10 +50,12 @@ Item.where(ejecucion:4).order('obac ASC').each do |item|
 if item.obac and item.obac>0 then
     @n1=Formula.where(product_id:1, orden:item.obac).
        select('nombre as dd').first.dd
+
 else
     @n1="s/d"
 end
-@alabels.push(item.pac+"--"+@n1)
+
+@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 Detail.where(item_id:item.id).order('pfecha ASC').each do |detail|
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
@@ -76,6 +78,7 @@ if @vproc==2 then
 
        @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
 
+       @vpec=1
     else
        @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
     end
@@ -86,9 +89,9 @@ if @vproc==3 then
   @uproc=3
     if @vdac==0  then
         if @vpec==0 then
-          @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400-1
+          @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
         else
-           @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400-1
+           @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
 
         end
            @vdac=1
