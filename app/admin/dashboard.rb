@@ -34,16 +34,22 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 @aobac=[]
 @apec=[]
 @adac=[]
+@adem=[]
+@adpc=[]
 
 @vfec1=@vinicio
 @vfec2=@vinicio
 @vfec3=@vinicio
+@vfec4=@vinicio
+@vfec5=@vinicio
 
 Item.where(ejecucion:4).order('obac ASC').each do |item|
 
 @vobac=0
 @vpec=0
 @vdac=0
+@vdem=0
+@vdpc=0
 
 
 @uproc=1
@@ -61,6 +67,8 @@ Detail.where(item_id:item.id).order('pfecha ASC').each do |detail|
                      select('cantidad as dd').first.dd
 @vprord=Formula.where(product_id:12,orden:detail.actividad).
             select('orden as dd').first.dd
+
+
 if @vproc==1 then
     if @vobac==0 then
 
@@ -85,8 +93,10 @@ if @vproc==2 then
     @vfec2= detail.pfecha
 end
 
+
+
 if @vproc==3 then
-  @uproc=3
+    @uproc=3
     if @vdac==0  then
         if @vpec==0 then
           @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
@@ -94,12 +104,63 @@ if @vproc==3 then
            @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
 
         end
-           @vdac=1
+       @vdac=1
     else
        @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
     end
     @vfec3= detail.pfecha
 end
+
+
+if @vproc==4 then
+  @uproc=4
+    if @vdem==0  then
+         if @vdac==0  then
+             if @vpec==0  then
+                  @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
+             else
+                  @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+             end
+         else
+               @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
+
+         end
+         @vdem=1
+    else
+                 @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
+    end
+    @vfec4= detail.pfecha
+end
+
+
+if @vproc==5 then
+  @uproc=5
+  if @vdpc==0  then
+      if @vdem==0  then
+           if @vdac==0  then
+               if @vpec==0  then
+                    @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
+               else
+                    @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+               end
+           else
+                   @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
+           end
+      else
+                 @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
+      end
+      @vdpc=1
+    else
+               @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
+    end
+
+    @vfec5= detail.pfecha
+end
+
+
+
+
+
 
 end
 
@@ -110,12 +171,15 @@ end
 unless @vprord==200
   case @uproc
      when 1
-         @vobac=@dfin
+       @vobac=@dfin
      when 2
-        @vpec=@dfin-@vobac
+       @vpec=@dfin-@vobac
     when 3
-
        @vdac=@dfin-@vobac-@vpec
+    when 4
+       @vdem=@dfin-@vobac-@vpec-@vdac
+     when 5
+        @vdpc=@dfin-@vobac-@vpec-@vdac- @vdem
   end
 end
 
@@ -123,18 +187,23 @@ end
 @aobac.push(@vobac)
 @apec.push(@vpec)
 @adac.push(@vdac)
+@adem.push(@vdem)
+@adpc.push(@vdpc)
+
 end
 @blabels.push(@alabels.reverse.join("|"))
 
 @adata.push(@aobac)
 @adata.push(@apec)
 @adata.push(@adac)
+@adata.push(@adem)
+@adata.push(@adpc)
 
 @bar =Gchart.bar(
               :size   => '600x500',
-              :bar_colors => ['FFD700', 'FF8C00','228B22'],
+              :bar_colors => ['FFD700', 'FF8C00','228B22','2F4F4F','00BFFF'],
               :title  => "Estado de expedientes",
-              :legend => ['OBAC', 'PEC','DAC'],
+              :legend => ['OBAC', 'PEC','DAC','DEM','DPC'],
               :orientation => 'horizontal',
               :stacked => true,
 
