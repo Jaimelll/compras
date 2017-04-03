@@ -15,8 +15,8 @@ ActiveAdmin.register Item do
 
 permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
-              :certificado, :constancia, :moneda, :fuente, :ccp,
-              :cpr, :rubro, :admin_user_id
+              :certificado, :constancia, :moneda, :fuente, :seleccion,
+              :mesconvoca, :rubro, :admin_user_id, :cuadrante
 # or
 #
 # permit_params do

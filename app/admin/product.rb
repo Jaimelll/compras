@@ -11,7 +11,8 @@ ActiveAdmin.register Product do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-menu priority: 3, label: "Productos"
+
+menu if: proc{ current_admin_user.id==2 }, priority: 3, label: "Productos"
 
 permit_params :nombre, :descripcion, :orden,
      :obs

@@ -1,9 +1,9 @@
 ActiveAdmin.register_page "Dashboard" do
-menu if: proc{ current_admin_user.id==2 }, priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
+menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
-    
+
 
     # Here is an example of a simple dashboard with columns and panels.
     #
@@ -57,6 +57,8 @@ end
 Detail.where(item_id:item.id).order('pfecha ASC').each do |detail|
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
+@vprord=Formula.where(product_id:12,orden:detail.actividad).
+            select('orden as dd').first.dd
 if @vproc==1 then
     if @vobac==0 then
 
@@ -72,8 +74,8 @@ if @vproc==2 then
   @uproc=2
     if @vpec==0  then
 
-       @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400-1
-       @vpec=1
+       @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
+
     else
        @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
     end
@@ -83,34 +85,36 @@ end
 if @vproc==3 then
   @uproc=3
     if @vdac==0  then
-        if @vfec2==@vinicio then
-          @vobac=@vobac+( detail.pfecha.to_time-detail.pfecha.to_time).to_i/86400
+        if @vpec==0 then
+          @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400-1
         else
            @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400-1
-            @vdac=1
-        end
 
+        end
+           @vdac=1
     else
        @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
     end
     @vfec3= detail.pfecha
 end
 
-
-
-
-
 end
-case @uproc
+
+
+
+
+
+unless @vprord==200
+  case @uproc
      when 1
          @vobac=@dfin
      when 2
         @vpec=@dfin-@vobac
     when 3
+
        @vdac=@dfin-@vobac-@vpec
+  end
 end
-
-
 
 
 @aobac.push(@vobac)
