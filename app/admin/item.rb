@@ -192,14 +192,21 @@ form do |f|
 
         t.column("Actividad", :sortable => :item_id) {|detail|
           if detail.actividad then
+            n2=Formula.where(product_id:12,orden:detail.actividad).
+                    select('cantidad as dd').first.dd
+
              n1=Formula.where(product_id:12,orden:detail.actividad).
-                     select('descripcion as dd').first.dd.capitalize
+                     select('descripcion as dd').first.dd.capitalize+
+                      "-----"+
+                       "#{Formula.where(product_id:10,orden:n2).
+                                select('nombre as dd').first.dd}"
+
+
+
          else
                   n1="s/d"
          end
                  link_to "#{n1} ",  admin_item_detail_path(item,detail) }
-
-
         t.column("tipo")
         t.column("numero")
         t.column("pfecha")
