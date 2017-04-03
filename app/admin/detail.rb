@@ -61,7 +61,7 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
              f.input :actividad, :as => :select, :collection =>
 
-                      Formula.where(product_id:12).order("orden").map{|u| [u.descripcion.capitalize++"-----"+
+                      Formula.where(product_id:12).order("orden").map{|u| [u.descripcion.capitalize+"-----"+
                                      "#{Formula.where(product_id:10,orden:u.cantidad).select('nombre as dd').first.dd}" , u.orden]}
              f.input :tipo, :input_html => { :style =>  'width:30%'}
              f.input :numero, :input_html => { :style =>  'width:30%'}

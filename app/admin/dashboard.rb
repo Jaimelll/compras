@@ -3,12 +3,7 @@ menu if: proc{ current_admin_user.id==2 }, priority: 1,label: proc{ I18n.t("acti
 
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
-    div class: "blank_slate_container", id: "dashboard_default_message" do
-      span class: "blank_slate" do
-        span I18n.t("active_admin.dashboard_welcome.welcome")
-        small I18n.t("active_admin.dashboard_welcome.call_to_action")
-      end
-    end
+    
 
     # Here is an example of a simple dashboard with columns and panels.
     #
@@ -30,7 +25,7 @@ menu if: proc{ current_admin_user.id==2 }, priority: 1,label: proc{ I18n.t("acti
     #   end
     # end
     br
-    @adata=[]
+@adata=[]
 @alabels=[]
 @blabels=[]
 @vinicio = '01/01/2017'
