@@ -36,6 +36,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 @adac=[]
 @adem=[]
 @adpc=[]
+@adec=[]
 
 @vfec1=@vinicio
 @vfec2=@vinicio
@@ -50,6 +51,7 @@ Item.where(ejecucion:4).order('obac ASC').each do |item|
 @vdac=0
 @vdem=0
 @vdpc=0
+@vdec=0
 
 
 @uproc=1
@@ -157,6 +159,36 @@ if @vproc==5 then
     @vfec5= detail.pfecha
 end
 
+if @vproc==6 then
+  @uproc=6
+if @vdec==0  then
+    if @vdpc==0  then
+        if @vdem==0  then
+             if @vdac==0  then
+                 if @vpec==0  then
+                      @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
+                 else
+                      @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+                 end
+             else
+                      @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
+             end
+        else
+                    @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
+        end
+
+    else
+               @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
+    end
+@vdec=1
+  else
+    @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
+  end
+    @vfec6= detail.pfecha
+end
+
+
+
 
 
 
@@ -179,7 +211,9 @@ unless @vprord==200
     when 4
        @vdem=@dfin-@vobac-@vpec-@vdac
      when 5
-        @vdpc=@dfin-@vobac-@vpec-@vdac- @vdem
+        @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
+      when 6
+         @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
   end
 end
 
@@ -189,6 +223,7 @@ end
 @adac.push(@vdac)
 @adem.push(@vdem)
 @adpc.push(@vdpc)
+@adec.push(@vdec)
 
 end
 @blabels.push(@alabels.reverse.join("|"))
@@ -198,12 +233,13 @@ end
 @adata.push(@adac)
 @adata.push(@adem)
 @adata.push(@adpc)
+@adata.push(@adec)
 
 @bar =Gchart.bar(
               :size   => '600x500',
-              :bar_colors => ['FFD700', 'FF8C00','228B22','2F4F4F','00BFFF'],
+              :bar_colors => ['FFD700', 'FF8C00','228B22','2F4F4F','00BFFF','483D8B'],
               :title  => "Estado de expedientes",
-              :legend => ['OBAC', 'PEC','DAC','DEM','DPC'],
+              :legend => ['OBAC', 'PEC','DAC','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
 
