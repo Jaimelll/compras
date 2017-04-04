@@ -13,7 +13,8 @@ ActiveAdmin.register Detail do
 # end
 menu false
 permit_params :actividad, :tipo,:numero, :pfecha,:importe,
-              :obs, :admin_user_id, :item_id
+              :obs, :admin_user_id, :item_id,:moneda,
+              :created_at,:updated_at
 
   action_item :view, only: :show do
             link_to 'Ir a PACs', admin_items_path()
