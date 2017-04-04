@@ -34,7 +34,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
     # end
     br
    @titulo="Estado de Expedientes"
-  @vitem=Item.where(ejecucion:4).order('obac ASC')
+  @vitem=Item.where(ejecucion:4,obac:2).order('obac ASC')
   #    @var=params[:@var]
   #   @var=2
 case @var
@@ -227,14 +227,14 @@ unless @vprord==200
        @vobac=@dfin
      when 2
        @vpec=@dfin-@vobac
-    when 3
+     when 3
        @vdac=@dfin-@vobac-@vpec
-    when 4
+     when 4
        @vdem=@dfin-@vobac-@vpec-@vdac
      when 5
-        @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
-      when 6
-         @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
+       @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
+     when 6
+       @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
   end
 end
 
