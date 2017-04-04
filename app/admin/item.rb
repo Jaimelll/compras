@@ -84,7 +84,7 @@ index do
     end
 
 
-  column("OBACs", :obac) do |item|
+  column("obac") do |item|
           if item.obac and item.obac>0 then
          Formula.where(product_id:1, orden:item.obac).
           select('nombre as dd').first.dd

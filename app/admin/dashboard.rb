@@ -2,6 +2,14 @@ ActiveAdmin.register_page "Dashboard" do
 menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
 
+#  action_item :view do
+
+#     link_to 'Ver todos',admin_dashboard_path(:@var => '2')
+
+#  end
+
+
+
   content title: proc{ I18n.t("active_admin.dashboard") } do
 
 
@@ -25,10 +33,18 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
     #   end
     # end
     br
-    
-@vitem=Item.where(ejecucion:4).order('obac ASC')
-
-
+   @titulo="Estado de Expedientes"
+  @vitem=Item.where(ejecucion:4).order('obac ASC')
+  #    @var=params[:@var]
+  #   @var=2
+case @var
+   when 1
+     @titulo="Estado de Expedientes"
+     @vitem=Item.where(ejecucion:4).order('obac ASC')
+   when 2
+     @titulo="Expedientes MGP"
+     @vitem=Item.where(ejecucion:4,obac:2).order('obac ASC')
+end
 
 @adata=[]
 @alabels=[]
@@ -243,7 +259,7 @@ end
 @bar =Gchart.bar(
               :size   => '600x500',
               :bar_colors => ['FFD700', 'FF8C00','228B22','2F4F4F','00BFFF','483D8B'],
-              :title  => "Estado de expedientes",
+              :title  => @titulo,
               :legend => ['OBAC', 'PEC','DAC','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
