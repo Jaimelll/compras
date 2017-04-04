@@ -25,6 +25,11 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
     #   end
     # end
     br
+    
+@vitem=Item.where(ejecucion:4).order('obac ASC')
+
+
+
 @adata=[]
 @alabels=[]
 @blabels=[]
@@ -44,7 +49,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 @vfec4=@vinicio
 @vfec5=@vinicio
 
-Item.where(ejecucion:4).order('obac ASC').each do |item|
+@vitem.each do |item|
 
 @vobac=0
 @vpec=0

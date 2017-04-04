@@ -131,8 +131,9 @@ index do
             end
         end
 
-    column("certificado")
-
+    column("certificado") do |item|
+     number_with_delimiter(item.certificado, delimiter: ",")
+   end
     actions
 
 
