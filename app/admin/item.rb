@@ -211,7 +211,9 @@ form do |f|
         t.column("tipo")
         t.column("numero")
         t.column("pfecha")
-        t.column("importe")
+        t.column("importe") do |detail|
+         number_with_delimiter(detail.importe, delimiter: ",")
+       end
         t.column("moneda") do |detail|
           if detail.moneda then
             Formula.where(product_id:7,orden:detail.moneda).select('nombre as dd').first.dd.to_s
