@@ -79,7 +79,13 @@ end
 @vfec4=@vinicio
 @vfec5=@vinicio
 
+
+
+
 @vitem.each do |item|
+
+
+
 
 @vobac=0
 @vpec=0
@@ -89,6 +95,7 @@ end
 @vdec=0
 
 
+@conta=0
 @uproc=1
 if item.obac and item.obac>0 then
     @n1=Formula.where(product_id:1, orden:item.obac).
@@ -99,7 +106,12 @@ else
 end
 
 @alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+
+
+
 Detail.where(item_id:item.id).order('pfecha ASC').each do |detail|
+
+
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
 @vprord=Formula.where(product_id:12,orden:detail.actividad).
@@ -124,10 +136,8 @@ if @vproc==2 then
        @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
 
        @vpec=1
+       @conta=@conta+1
     else
-        if @vpec=1 then
-            @vpec=0
-        end
          @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
 
     end
@@ -146,10 +156,8 @@ if @vproc==3 then
 
         end
        @vdac=1
+       @conta=@conta+1
     else
-      if @vdac=1 then
-          @vdac=0
-      end
        @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
     end
     @vfec3= detail.pfecha
@@ -170,10 +178,8 @@ if @vproc==4 then
 
          end
          @vdem=1
+         @conta=@conta+1
     else
-              if @vdem=1 then
-                  @vdem=0
-              end
                  @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
     end
     @vfec4= detail.pfecha
@@ -197,10 +203,8 @@ if @vproc==5 then
                  @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
       end
       @vdpc=1
+      @conta=@conta+1
     else
-      if @vdpc=1 then
-          @vdpc=0
-      end
                @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
     end
 
@@ -228,11 +232,9 @@ if @vdec==0  then
     else
                @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
     end
-@vdec=1
+    @vdec=1
+    @conta=@conta+1
   else
-    if @vdec=1 then
-        @vdec=0
-    end
     @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
   end
     @vfec6= detail.pfecha
@@ -256,15 +258,15 @@ unless @vprord==200
      when 1
        @vobac=@dfin
      when 2
-       @vpec=@dfin-@vobac
+       @vpec=@dfin-@vobac+@conta
      when 3
-       @vdac=@dfin-@vobac-@vpec
+       @vdac=@dfin-@vobac-@vpec+@conta
      when 4
-       @vdem=@dfin-@vobac-@vpec-@vdac
+       @vdem=@dfin-@vobac-@vpec-@vdac+@conta
      when 5
-       @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
+       @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem+@conta
      when 6
-       @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
+       @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc+@conta
   end
 end
 
