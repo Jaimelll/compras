@@ -1,16 +1,25 @@
 ActiveAdmin.register_page "Dashboard" do
+
 menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
 
-#  action_item :view do
 
-#     link_to 'Ver todos',admin_dashboard_path(:@var => '2')
+  action_item  do
 
+  link_to 'todos'
+  end
+
+#  action_item :MGP do
+#    Formula.where( product_id:15 ).update_all( cantidad:0 )
+#    Formula.where( product_id:15 ,orden:2).update_all( cantidad:1 )
+#  link_to 'MGP',admin_dashboard_path
 #  end
 
 
 
+
   content title: proc{ I18n.t("active_admin.dashboard") } do
+
 
 
     # Here is an example of a simple dashboard with columns and panels.
@@ -32,18 +41,23 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
     #     end
     #   end
     # end
-    br
-   @titulo="Estado de Expedientes"
-  @vitem=Item.where(ejecucion:4,obac:2).order('obac ASC')
-  #    @var=params[:@var]
-  #   @var=2
+
+
+
+     @var=Formula.where(product_id:15,cantidad:1).
+                          select('orden as dd').first.dd
+     @titulo=Formula.where(product_id:15,cantidad:1).
+                          select('nombre as dd').first.dd
 case @var
    when 1
-     @titulo="Estado de Expedientes"
+
      @vitem=Item.where(ejecucion:4).order('obac ASC')
+     @ancho='5'
    when 2
-     @titulo="Expedientes MGP"
-     @vitem=Item.where(ejecucion:4,obac:2).order('obac ASC')
+
+    @vitem=Item.where(ejecucion:4,obac:2).order('obac ASC')
+    @ancho='10'
+
 end
 
 @adata=[]
@@ -111,7 +125,11 @@ if @vproc==2 then
 
        @vpec=1
     else
-       @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+        if @vpec=1 then
+            @vpec=0
+        end
+         @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+
     end
     @vfec2= detail.pfecha
 end
@@ -129,6 +147,9 @@ if @vproc==3 then
         end
        @vdac=1
     else
+      if @vdac=1 then
+          @vdac=0
+      end
        @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
     end
     @vfec3= detail.pfecha
@@ -150,6 +171,9 @@ if @vproc==4 then
          end
          @vdem=1
     else
+              if @vdem=1 then
+                  @vdem=0
+              end
                  @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
     end
     @vfec4= detail.pfecha
@@ -174,6 +198,9 @@ if @vproc==5 then
       end
       @vdpc=1
     else
+      if @vdpc=1 then
+          @vdpc=0
+      end
                @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
     end
 
@@ -203,6 +230,9 @@ if @vdec==0  then
     end
 @vdec=1
   else
+    if @vdec=1 then
+        @vdec=0
+    end
     @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
   end
     @vfec6= detail.pfecha
@@ -249,6 +279,7 @@ end
 end
 @blabels.push(@alabels.reverse.join("|"))
 
+
 @adata.push(@aobac)
 @adata.push(@apec)
 @adata.push(@adac)
@@ -268,7 +299,7 @@ end
               :legend_position => 'bottom',
 
 
-              :bar_width_and_spacing => '5',
+              :bar_width_and_spacing => @ancho,
 
               :axis_with_labels => 'y,x',
 

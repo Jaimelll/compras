@@ -20,6 +20,10 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
             link_to 'Ir a PACs', admin_items_path()
       end
 
+
+
+
+
     form do |f|
         if params[:id] then
 #edit
