@@ -63,6 +63,8 @@ end
 @adata=[]
 @alabels=[]
 @blabels=[]
+#@alabels2=[]
+#@blabels2=[]
 @vinicio = '01/01/2017'
 @dfin=(Time.now-@vinicio.to_time).to_i/86400
 
@@ -106,6 +108,7 @@ else
 end
 
 @alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+#@alabels2.push(item.descripcion.first(10))
 
 
 
@@ -280,6 +283,7 @@ end
 
 end
 @blabels.push(@alabels.reverse.join("|"))
+#@blabels2.push(@alabels2.reverse.join("|"))
 
 
 @adata.push(@aobac)
@@ -291,7 +295,7 @@ end
 
 @bar =Gchart.bar(
               :size   => '600x500',
-              :bar_colors => ['FFD700', 'FF8C00','228B22','2F4F4F','00BFFF','483D8B'],
+              :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
               :title  => @titulo,
               :legend => ['OBAC', 'PEC','DAC','DEM','DPC','DEC'],
               :orientation => 'horizontal',
@@ -305,7 +309,7 @@ end
 
               :axis_with_labels => 'y,x',
 
-             :axis_labels => @blabels,
+             :axis_labels => [@blabels],
 
 
               :axis_range => [nil, [0,@dfin,30]],
@@ -317,4 +321,30 @@ end
 
 
   end # content
+
+  sidebar "MONTOS" do
+    ul do
+        li Formula.where(product_id:1).where(orden:1).
+                      select('nombre as dd').first.dd + " = " +
+
+  (number_with_delimiter(( Item.where(obac:1).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+
+        li Formula.where(product_id:1).where(orden:2).
+                        select('nombre as dd').first.dd + " = " +
+  (number_with_delimiter(( Item.where(obac:2).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+        li Formula.where(product_id:1).where(orden:3).
+                          select('nombre as dd').first.dd + "  = " +
+  (number_with_delimiter(( Item.where(obac:3).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+      li  "TOTAL = " +
+  (number_with_delimiter(( Item.sum('certificado')) , delimiter: ",", separator: ".")).to_s
+
+  li "Responsabilidad de"+Formula.where(product_id:1).where(orden:4).
+                    select('nombre as dd').first.dd + "  = " +
+  (number_with_delimiter(( Item.where(ejecucion:4).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+
+
+
+      end
+    end
+
 end
