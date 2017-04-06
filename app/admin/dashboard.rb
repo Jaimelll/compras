@@ -306,7 +306,7 @@ end
 
               :bar_width_and_spacing => @ancho,
 
-              :axis_with_labels => 'y,x',
+              :axis_with_labels => 'y,x,r',
 
              :axis_labels => [@blabels],
 
@@ -324,35 +324,53 @@ end
                     end
                   end
                      column do
-                       panel "LISTAS GENERALES" do
+                       panel "LISTAS GENERALES A CARGO DE LA ACFFAA" do
                          table_for Formula.where(product_id:3)  do
-                              column("Listas/Procesos") do |formula|
+                              column("Listas   / Procesos _(Monto)") do |formula|
                                 formula.nombre
                               end
                               column("Encargo") do |formula|
-                                  Item.where(modalidad:formula.orden,lista:1).count
+                                  Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "_("+
+                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+
                               end
                               column("Corporativa") do |formula|
-                                  Item.where(modalidad:formula.orden,lista:2).count
+
+                                  Item.where(ejecucion:4,modalidad:2,lista:formula.orden).count.to_s+ "_("+
+                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:2,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+
                               end
                               column("Autorizada") do |formula|
-                                  Item.where(modalidad:formula.orden,lista:3).count
+                                Item.where(ejecucion:4,modalidad:3,lista:formula.orden).count.to_s+ "_("+
+                                   number_with_delimiter(Item.where(ejecucion:4,modalidad:3,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                              end
+                              column("TOTAL") do |formula|
+                                Item.where(ejecucion:4,lista:formula.orden).count.to_s+ "_("+
+                                   number_with_delimiter(Item.where(lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
                               end
                           end
-                          table_for Formula.where(product_id:3)  do
-                               column("Listas/Monto soles") do |formula|
+                          table_for Formula.where(product_id:6)  do
+                               column("Mercado   / Procesos _(Monto)") do |formula|
                                  formula.nombre
                                end
                                column("Encargo") do |formula|
+                                 Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).count.to_s+ "_("+
+                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
 
-                                   number_with_delimiter(Item.where(modalidad:formula.orden,lista:1).sum(:certificado), delimiter: ",")
                                end
                                column("Corporativa") do |formula|
-                                   number_with_delimiter(Item.where(modalidad:formula.orden,lista:2).sum(:certificado), delimiter: ",")
+                                 Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).count.to_s+ "_("+
+                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+
                                end
                                column("Autorizada") do |formula|
-                                   number_with_delimiter(Item.where(modalidad:formula.orden,lista:3).sum(:certificado), delimiter: ",")
-                               end
+                                 Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "_("+
+                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                end
+                                column("TOTAL") do |formula|
+                                  Item.where(ejecucion:4,tipo:formula.orden).count.to_s+ "_("+
+                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                end
                            end
 
 
