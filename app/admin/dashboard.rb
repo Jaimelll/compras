@@ -4,10 +4,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
 
 
-  action_item  do
 
-  link_to 'todos'
-  end
 
 #  action_item :MGP do
 #    Formula.where( product_id:15 ).update_all( cantidad:0 )
@@ -42,7 +39,9 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
     #   end
     # end
 
-
+    # columns do
+    #   column do
+    #     panel "Recent Posts" do
 
      @var=Formula.where(product_id:15,cantidad:1).
                           select('orden as dd').first.dd
@@ -294,9 +293,9 @@ end
 @adata.push(@adec)
 
 @bar =Gchart.bar(
-              :size   => '600x500',
+              :size   => '570x500',
               :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-              :title  => @titulo,
+              #:title  => @titulo,
               :legend => ['OBAC', 'PEC','DAC','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
@@ -316,35 +315,57 @@ end
             #:min_value => 0,
             #:max_value => 365,
               :data   =>@adata)
+              columns do
+                column do
+                panel "Grafico de Estado de Expeditentes" do
+                   li do
+                     strong { image_tag @bar}
+                      end
+                    end
+                  end
+                     column do
+                       panel "LISTAS GENERALES" do
+                         table_for Formula.where(product_id:3)  do
+                              column("Listas/Procesos") do |formula|
+                                formula.nombre
+                              end
+                              column("Encargo") do |formula|
+                                  Item.where(modalidad:formula.orden,lista:1).count
+                              end
+                              column("Corporativa") do |formula|
+                                  Item.where(modalidad:formula.orden,lista:2).count
+                              end
+                              column("Autorizada") do |formula|
+                                  Item.where(modalidad:formula.orden,lista:3).count
+                              end
+                          end
+                          table_for Formula.where(product_id:3)  do
+                               column("Listas/Monto soles") do |formula|
+                                 formula.nombre
+                               end
+                               column("Encargo") do |formula|
 
-   strong { image_tag @bar}
+                                   number_with_delimiter(Item.where(modalidad:formula.orden,lista:1).sum(:certificado), delimiter: ",")
+                               end
+                               column("Corporativa") do |formula|
+                                   number_with_delimiter(Item.where(modalidad:formula.orden,lista:2).sum(:certificado), delimiter: ",")
+                               end
+                               column("Autorizada") do |formula|
+                                   number_with_delimiter(Item.where(modalidad:formula.orden,lista:3).sum(:certificado), delimiter: ",")
+                               end
+                           end
+
+
+
+                      end
+                    end
+                end
+
+
 
 
   end # content
 
-  sidebar "MONTOS" do
-    ul do
-        li Formula.where(product_id:1).where(orden:1).
-                      select('nombre as dd').first.dd + " = " +
 
-  (number_with_delimiter(( Item.where(obac:1).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-
-        li Formula.where(product_id:1).where(orden:2).
-                        select('nombre as dd').first.dd + " = " +
-  (number_with_delimiter(( Item.where(obac:2).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-        li Formula.where(product_id:1).where(orden:3).
-                          select('nombre as dd').first.dd + "  = " +
-  (number_with_delimiter(( Item.where(obac:3).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-      li  "TOTAL = " +
-  (number_with_delimiter(( Item.sum('certificado')) , delimiter: ",", separator: ".")).to_s
-
-  li "Responsabilidad de"+Formula.where(product_id:1).where(orden:4).
-                    select('nombre as dd').first.dd + "  = " +
-  (number_with_delimiter(( Item.where(ejecucion:4).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-
-
-
-      end
-    end
 
 end

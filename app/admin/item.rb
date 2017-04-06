@@ -248,7 +248,7 @@ sidebar "MONTOS" do
     li  "TOTAL = " +
 (number_with_delimiter(( Item.sum('certificado')) , delimiter: ",", separator: ".")).to_s
 
-li "Responsabilidad de"+Formula.where(product_id:1).where(orden:4).
+li Formula.where(product_id:1).where(orden:4).
                   select('nombre as dd').first.dd + "  = " +
 (number_with_delimiter(( Item.where(ejecucion:4).sum('certificado')) , delimiter: ",", separator: ".")).to_s
 
