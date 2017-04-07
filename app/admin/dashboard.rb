@@ -296,7 +296,7 @@ end
               :size   => '570x500',
               :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
               #:title  => @titulo,
-              :legend => ['OBAC', 'PEC','DAC','DEM','DPC','DEC'],
+              :legend => ['OBAC', 'PEC','DCA','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
 
@@ -372,6 +372,34 @@ end
                                      number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
                                 end
                            end
+                           table_for Formula.where(product_id:11,orden:3)  do
+                                column("Periodo   / Procesos _(Monto)") do |formula|
+                                  formula.nombre
+                                end
+                                column("ACFFAA") do |formula|
+                                  Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "_("+
+                                     number_with_delimiter(Item.where(ejecucion:41,periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+
+                                end
+
+                                column("Excluidos") do |formula|
+                                  Item.where(ejecucion:4,modalidad:3,periodo:formula.orden).count.to_s+ "_("+
+                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:3,periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                 end
+                                 column("Culminados") do |formula|
+                                   Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "_("+
+                                      number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                 end
+                                 column("Instituciones") do |formula|
+                                   Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "_("+
+                                      number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                 end
+                                 column("TOTAL") do |formula|
+                                   Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "_("+
+                                      number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                 end
+                            end
+
 
 
 
