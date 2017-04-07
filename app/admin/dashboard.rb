@@ -306,7 +306,7 @@ end
 
               :bar_width_and_spacing => @ancho,
 
-              :axis_with_labels => 'y,x,r',
+              :axis_with_labels => 'y,x',
 
              :axis_labels => [@blabels],
 
