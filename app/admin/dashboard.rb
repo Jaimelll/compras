@@ -55,7 +55,19 @@ case @var
    when 2
 
     @vitem=Item.where(ejecucion:4,obac:2).order('obac ASC')
-    @ancho='10'
+    @ancho='8'
+  when 3
+
+   @vitem=Item.where(ejecucion:4,obac:1).order('obac ASC')
+   @ancho='8'
+ when 4
+
+  @vitem=Item.where(ejecucion:4,obac:3).order('obac ASC')
+  @ancho='8'
+when 5
+
+ @vitem=Item.where(ejecucion:4,obac:3).order('obac ASC')
+ @ancho='8'
 
 end
 
