@@ -56,16 +56,14 @@ end
 filter :pac, label:'PAC'
 filter :certificado
 
-#filter :periodo,
- #:label => 'OBACs',
-#  :as => :select,
-#   collection: proc {Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.id]}}
-#Formula.where(product_id:1).order('orden ASC').map{|u| ["#{u.descripcion}", u.id]}
+
 filter :periodo , :as => :select, :collection =>
-  Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
- #filter :by_category,
-#     as: :select,
-#     collection: proc { Category.by_company(current_user.company) }
+     Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :modalidad , :as => :select, :collection =>
+    Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :tipo, label:'Mercado', :as => :select, :collection =>
+     Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+
 
 
 index do
@@ -146,32 +144,32 @@ form do |f|
     f.inputs "Items" do
 
 
-       f.input :pac , :input_html => { :style =>  'width:30%'}
+       f.input :pac ,:label => 'PAC SEACE', :input_html => { :style =>  'width:30%'}
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
        f.input :obac, :as => :select, :collection =>
            Formula.where(product_id:1,cantidad:1).map{|u| [u.nombre, u.orden]}
         f.input :lista, :as => :select, :collection =>
            Formula.where(product_id:3).map{|u| [u.descripcion, u.orden]}
-        f.input :ejecucion, :as => :select, :collection =>
+        f.input :ejecucion,:label => 'Ejecucion Responsable', :as => :select, :collection =>
             Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
         f.input :modalidad, :as => :select, :collection =>
            Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
-        f.input :dependencia, :as => :select, :collection =>
+        f.input :dependencia,:label => 'Dependencia ejecutante', :as => :select, :collection =>
             Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
         f.input :tipo, :label => 'Mercado', :as => :select, :collection =>
            Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
-         f.input :descripcion
+         f.input :descripcion ,:label => 'Descripcion del bien o servicio'
          f.input :cantidad, :input_html => { :style =>  'width:30%'}
          f.input :cuadrante, :as => :select, :collection =>
             Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
-         f.input :mesconvoca, :label => 'Convocatoria PAC' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-         f.input :seleccion, :as => :select, :collection =>
+         f.input :mesconvoca, :label => 'Fecha de Convocatoria SEACE' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+         f.input :seleccion,:label => 'Tipo de seleccion', :as => :select, :collection =>
              Formula.where(product_id:14).map{|u| [u.nombre, u.orden]}
-         f.input :certificado, :as => :string, :input_html => { :style =>  'width:30%'}
+         f.input :certificado,:label => 'Valor estimado PAC', :as => :string, :input_html => { :style =>  'width:30%'}
         #f.input :moneda, :as => :select, :collection =>
         #    Formula.where(product_id:7).map{|u| [u.nombre, u.orden]}
-        f.input :fuente, :as => :select, :collection =>
+        f.input :fuente,:label => 'Fuente de financiamiento', :as => :select, :collection =>
              Formula.where(product_id:8).map{|u| [u.descripcion, u.orden]}
         #f.input :ccp , :label => 'No certificado presupuestal', :input_html => { :style =>  'width:30%'}
         #f.input :cpr , :label => 'No constacia de prevision de recurso', :input_html => { :style =>  'width:30%'}
