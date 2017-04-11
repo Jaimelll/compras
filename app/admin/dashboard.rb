@@ -408,7 +408,7 @@ end
                               end
                               column("TOTAL") do |formula|
                                 Item.where(ejecucion:4,lista:formula.orden).count.to_s+ "_("+
-                                   number_with_delimiter(Item.where(lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
                               end
                           end
                           table_for Formula.where(product_id:6)  do
