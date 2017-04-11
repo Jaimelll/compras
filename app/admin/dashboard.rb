@@ -469,72 +469,82 @@ end
                                         formula.nombre
                                       end
                                       column("OBAC") do |formula|
-                                        Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                        order("id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad").
-                                        where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                        select("item_id,max(pfecha)")).
-                                        where('actividad IN(?)',Formula
-                                        .where(product_id:12,cantidad:1).select("orden")).length
+                                        Item.where(periodo: formula.orden,ejecucion:4).count- Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                         order("items.id,details.pfecha DESC").
+                                          select("items.id,details.pfecha,details.actividad,details.id").
+                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                           select("item_id,max(pfecha)")).
+                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                             select("item_id,max(id)")).length+ Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                               order("items.id,details.pfecha DESC").
+                                                select("items.id,details.pfecha,details.actividad,details.id").
+                                                 where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                                 select("item_id,max(pfecha)")).
+                                                  where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                                   select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                                   where(product_id:12,cantidad:1).select("orden")).length
+
+
                                       end
                                            column("PEC") do |formula|
                                              Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                             order("id,details.pfecha DESC").
-                                             select("items.id,details.pfecha,details.actividad").
-                                             where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                             select("item_id,max(pfecha)")).
-                                             where('actividad IN(?)',Formula
-                                             .where(product_id:12,cantidad:2).select("orden")).length
+                                              order("items.id,details.pfecha DESC").
+                                               select("items.id,details.pfecha,details.actividad,details.id").
+                                                where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                                select("item_id,max(pfecha)")).
+                                                 where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                                  select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                                  where(product_id:12,cantidad:2).select("orden")).length
 
                                       end
 
                                       column("DC") do |formula|
                                         Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                        order("id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad").
-                                        where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                        select("item_id,max(pfecha)")).
-                                        where('actividad IN(?)',Formula
-                                        .where(product_id:12,cantidad:3).select("orden")).length
+                                         order("items.id,details.pfecha DESC").
+                                          select("items.id,details.pfecha,details.actividad,details.id").
+                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                           select("item_id,max(pfecha)")).
+                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                             select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                             where(product_id:12,cantidad:3).select("orden")).length
 
 
                                       end
 
                                       column("DEM") do |formula|
                                         Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                        order("id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad").
-                                        where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                        select("item_id,max(pfecha)")).
-                                        where('actividad IN(?)',Formula
-                                        .where(product_id:12,cantidad:4).select("orden")).length
+                                         order("items.id,details.pfecha DESC").
+                                          select("items.id,details.pfecha,details.actividad,details.id").
+                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                           select("item_id,max(pfecha)")).
+                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                             select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                             where(product_id:12,cantidad:4).select("orden")).length
 
                                        end
                                        column("DPC") do |formula|
                                          Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                         order("id,details.pfecha DESC").
-                                         select("items.id,details.pfecha,details.actividad").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                         where('actividad IN(?)',Formula
-                                         .where(product_id:12,cantidad:5).select("orden")).length
+                                          order("items.id,details.pfecha DESC").
+                                           select("items.id,details.pfecha,details.actividad,details.id").
+                                            where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                            select("item_id,max(pfecha)")).
+                                             where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                              select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                              where(product_id:12,cantidad:5).select("orden")).length
 
                                      end
                                      column("DEC") do |formula|
                                        Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                       order("id,details.pfecha DESC").
-                                       select("items.id,details.pfecha,details.actividad").
-                                       where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                       select("item_id,max(pfecha)")).
-                                       where('actividad IN(?)',Formula
-                                       .where(product_id:12,cantidad:6).select("orden")).length
+                                        order("items.id,details.pfecha DESC").
+                                         select("items.id,details.pfecha,details.actividad,details.id").
+                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                          select("item_id,max(pfecha)")).
+                                           where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                            select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                            where(product_id:12,cantidad:6).select("orden")).length
                                    end
                                    column("TOTAL") do |formula|
-                                     Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                     order("id,details.pfecha DESC").
-                                     select("items.id,details.pfecha,details.actividad").
-                                     where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                     select("item_id,max(pfecha)")).length
+                                     Item.where(periodo: formula.orden,ejecucion:4).count
                                  end
                                    end
                                    end
