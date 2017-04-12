@@ -17,6 +17,7 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
               :certificado, :constancia, :moneda, :fuente, :seleccion,
               :mesconvoca, :rubro, :admin_user_id, :cuadrante
+
 # or
 #
 # permit_params do
@@ -26,10 +27,22 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
 # end
 menu priority: 4, label: "PACs"
 
+ #action_item :encargo, only: :index do
+#  link_to 'Encargo',encargo_admin_post_path
+#  end
+
+
 
 action_item :view, only: :show do
           link_to 'Ir a PACs', admin_items_path()
     end
+
+#member_action :encargo do
+#  Formula.where( product_id:15 ).update_all( cantidad:0 )
+#  Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
+#end
+
+
 
 scope :todos, :default => true do |items|
   items.order('pac')

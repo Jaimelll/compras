@@ -340,7 +340,7 @@ end
 
 end
 @conta=@alabels.count
-@vancho=(@conta/1.6).to_i
+@vancho=(280/@conta).to_i
 @ancho=@vancho.to_s
 
 @blabels.push(@alabels.reverse.join("|"))
