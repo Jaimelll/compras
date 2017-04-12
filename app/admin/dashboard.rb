@@ -359,7 +359,7 @@ end
               :size   => '570x500',
               :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
               :title  => @titulo,
-              :legend => ['OBAC', 'PEC','DCA','DEM','DPC','DEC'],
+              :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
 
@@ -379,162 +379,98 @@ end
             #:max_value => 365,
               :data   =>@adata)
               columns do
-                column do
-                panel "Grafico de Estado de Expeditentes" do
-                   li do
-                     strong { image_tag @bar}
-                      end
-                    end
-                  end
+
                      column do
-                       panel "PROCESOS Y MONTOS POR LISTAS, MERCADO Y PERIODO" do
-                         table_for Formula.where(product_id:3)  do
-                              column("Listas ") do |formula|
+                       panel "PROCESOS Y MONTOS POR PERIODO, LISTAS Y MERCADO" do
+                         table_for Formula.where(product_id:11)  do
+                              column("Periodo ") do |formula|
                                 formula.nombre
                               end
-                              column("Encargo") do |formula|
-                                  Item.where(ejecucion:4,modalidad:2,lista:formula.orden).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:2,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                              column("ACFFAA") do |formula|
+                                Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                               end
-                              column("Corporativa") do |formula|
-
-                                  Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
-
-                              end
-                              column("Autorizada") do |formula|
-                                Item.where(ejecucion:4,modalidad:3,lista:formula.orden).count.to_s+ "_("+
-                                   number_with_delimiter(Item.where(ejecucion:4,modalidad:3,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                              column("Instituciones") do |formula|
+                                Item.where.not(ejecucion:4).where(periodo:formula.orden).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where.not(ejecucion:4).where(periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
                               column("TOTAL") do |formula|
-                                Item.where(ejecucion:4,lista:formula.orden).count.to_s+ "_("+
-                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                                Item.where(periodo:formula.orden).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
-                          end
-                          table_for Formula.where(product_id:6)  do
-                               column("Mercado ") do |formula|
-                                 formula.nombre
-                               end
-                               column("Encargo") do |formula|
-                                 Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).count.to_s+ "_("+
-                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+
+                              column("Excluidos") do |formula|
+                                Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
 
                                end
-                               column("Corporativa") do |formula|
-                                 Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).count.to_s+ "_("+
-                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
+                               column("Culminados") do |formula|
+                                 Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
+                                    number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                                end
-                               column("Autorizada") do |formula|
-                                 Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "_("+
-                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
-                                end
-                                column("TOTAL") do |formula|
-                                  Item.where(ejecucion:4,tipo:formula.orden).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
-                                end
-                           end
-                           table_for Formula.where(product_id:11)  do
-                                column("Periodo ") do |formula|
-                                  formula.nombre
-                                end
-                                column("ACFFAA") do |formula|
-                                  Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
 
-                                end
-                                column("Instituciones") do |formula|
-                                  Item.where.not(ejecucion:4).where(periodo:formula.orden).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where.not(ejecucion:4).where(periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
-                                end
-                                column("TOTAL") do |formula|
-                                  Item.where(periodo:formula.orden).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where(periodo:formula.orden).sum(:certificado), delimiter: ",").to_s+ ")"
-                                end
-
-                                column("Excluidos") do |formula|
-                                  Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "_("+
-                                     number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado), delimiter: ",").to_s+ ")"
+                 table_for Formula.where(product_id:11)  do
+                                    column("Periodo ") do |formula|
+                                      formula.nombre
+                                    end
+                                    column("OBAC") do |formula|
+                                      Item.where(periodo: formula.orden,ejecucion:4).count- Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                       order("items.id,details.pfecha DESC").
+                                        select("items.id,details.pfecha,details.actividad,details.id").
+                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                         select("item_id,max(pfecha)")).
+                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                           select("item_id,max(id)")).length+ Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                             order("items.id,details.pfecha DESC").
+                                              select("items.id,details.pfecha,details.actividad,details.id").
+                                               where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                               select("item_id,max(pfecha)")).
+                                                where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                                 select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                                 where(product_id:12,cantidad:1).select("orden")).length
 
 
-                                 end
-                                 column("Culminados") do |formula|
-                                   Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "_("+
-                                      number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado), delimiter: ",").to_s+ ")"
+                                    end
+                                         column("GEX") do |formula|
+                                           Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                            order("items.id,details.pfecha DESC").
+                                             select("items.id,details.pfecha,details.actividad,details.id").
+                                              where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                              select("item_id,max(pfecha)")).
+                                               where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                                select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                                where(product_id:12,cantidad:2).select("orden")).length
 
-                                 end
+                                    end
 
-                   table_for Formula.where(product_id:11)  do
-                                      column("Periodo ") do |formula|
-                                        formula.nombre
-                                      end
-                                      column("OBAC") do |formula|
-                                        Item.where(periodo: formula.orden,ejecucion:4).count- Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                         order("items.id,details.pfecha DESC").
-                                          select("items.id,details.pfecha,details.actividad,details.id").
-                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(pfecha)")).
-                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                             select("item_id,max(id)")).length+ Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                               order("items.id,details.pfecha DESC").
-                                                select("items.id,details.pfecha,details.actividad,details.id").
-                                                 where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                                 select("item_id,max(pfecha)")).
-                                                  where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                                   select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                                   where(product_id:12,cantidad:1).select("orden")).length
+                                    column("DC") do |formula|
+                                      Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                       order("items.id,details.pfecha DESC").
+                                        select("items.id,details.pfecha,details.actividad,details.id").
+                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                         select("item_id,max(pfecha)")).
+                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                           where(product_id:12,cantidad:3).select("orden")).length
 
 
-                                      end
-                                           column("PEC") do |formula|
-                                             Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                              order("items.id,details.pfecha DESC").
-                                               select("items.id,details.pfecha,details.actividad,details.id").
-                                                where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                                select("item_id,max(pfecha)")).
-                                                 where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                                  select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                                  where(product_id:12,cantidad:2).select("orden")).length
+                                    end
 
-                                      end
-
-                                      column("DC") do |formula|
-                                        Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                         order("items.id,details.pfecha DESC").
-                                          select("items.id,details.pfecha,details.actividad,details.id").
-                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(pfecha)")).
-                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                             select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                             where(product_id:12,cantidad:3).select("orden")).length
-
-
-                                      end
-
-                                      column("DEM") do |formula|
-                                        Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                         order("items.id,details.pfecha DESC").
-                                          select("items.id,details.pfecha,details.actividad,details.id").
-                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(pfecha)")).
-                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                             select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                             where(product_id:12,cantidad:4).select("orden")).length
-
-                                       end
-                                       column("DPC") do |formula|
-                                         Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
-                                          order("items.id,details.pfecha DESC").
-                                           select("items.id,details.pfecha,details.actividad,details.id").
-                                            where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                            select("item_id,max(pfecha)")).
-                                             where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                              select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                              where(product_id:12,cantidad:5).select("orden")).length
+                                    column("DEM") do |formula|
+                                      Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                       order("items.id,details.pfecha DESC").
+                                        select("items.id,details.pfecha,details.actividad,details.id").
+                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                         select("item_id,max(pfecha)")).
+                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                           where(product_id:12,cantidad:4).select("orden")).length
 
                                      end
-                                     column("DEC") do |formula|
+                                     column("DPC") do |formula|
                                        Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
                                         order("items.id,details.pfecha DESC").
                                          select("items.id,details.pfecha,details.actividad,details.id").
@@ -542,12 +478,71 @@ end
                                           select("item_id,max(pfecha)")).
                                            where('(items.id,details.id) IN(?)',Detail.group("item_id").
                                             select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                            where(product_id:12,cantidad:6).select("orden")).length
+                                            where(product_id:12,cantidad:5).select("orden")).length
+
                                    end
-                                   column("TOTAL") do |formula|
-                                     Item.where(periodo: formula.orden,ejecucion:4).count
+                                   column("DEC") do |formula|
+                                     Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                      order("items.id,details.pfecha DESC").
+                                       select("items.id,details.pfecha,details.actividad,details.id").
+                                        where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
+                                        select("item_id,max(pfecha)")).
+                                         where('(items.id,details.id) IN(?)',Detail.group("item_id").
+                                          select("item_id,max(id)")). where('actividad IN(?)',Formula .
+                                          where(product_id:12,cantidad:6).select("orden")).length
                                  end
-                                   end
+                                 column("TOTAL") do |formula|
+                                   Item.where(periodo: formula.orden,ejecucion:4).count
+                               end
+                                 end
+                         table_for Formula.where(product_id:3)  do
+                              column("Listas ") do |formula|
+                                formula.nombre
+                              end
+                              column("Encargo") do |formula|
+                                  Item.where(ejecucion:4,modalidad:2,lista:formula.orden).count.to_s+ "/("+
+                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:2,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                              end
+                              column("Corporativa") do |formula|
+
+                                  Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "/("+
+                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                              end
+                              column("Autorizada") do |formula|
+                                Item.where(ejecucion:4,modalidad:3,lista:formula.orden).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,modalidad:3,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              end
+                              column("TOTAL") do |formula|
+                                Item.where(ejecucion:4,lista:formula.orden).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              end
+                          end
+                          table_for Formula.where(product_id:6)  do
+                               column("Mercado ") do |formula|
+                                 formula.nombre
+                               end
+                               column("Encargo") do |formula|
+                                 Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).count.to_s+ "/("+
+                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                               end
+                               column("Corporativa") do |formula|
+                                 Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).count.to_s+ "/("+
+                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                               end
+                               column("Autorizada") do |formula|
+                                 Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "/("+
+                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                end
+                                column("TOTAL") do |formula|
+                                  Item.where(ejecucion:4,tipo:formula.orden).count.to_s+ "/("+
+                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                end
+                           end
+
                                    end
 
 
@@ -558,6 +553,13 @@ end
 
                       end
                     end
+                    column do
+                    panel "Grafico de Situacion de Expedientes" do
+                       li do
+                         strong { image_tag @bar}
+                          end
+                        end
+                      end
                 end
 
 
