@@ -119,8 +119,9 @@ else
     @n1="s/d"
 end
 
-@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 #@alabels2.push(item.descripcion.first(10))
+@alabels.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
 
 
 
