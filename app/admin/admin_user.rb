@@ -4,7 +4,7 @@ ActiveAdmin.register AdminUser do
 
 
 
-menu if: proc{ current_admin_user.id==2 }, priority: 3,label: "Usuarios"
+menu  priority: 3,label: "Usuarios"
 
 
 

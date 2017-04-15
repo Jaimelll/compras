@@ -12,7 +12,9 @@ ActiveAdmin.register Product do
 #   permitted
 # end
 
-menu if: proc{ current_admin_user.id==2 }, priority: 3, label: "Productos"
+#menu if: proc{ current_admin_user.id==2 }, priority: 3, label: "Productos"
+
+menu  priority: 3, label: "Productos"
 
 permit_params :nombre, :descripcion, :orden,
      :obs

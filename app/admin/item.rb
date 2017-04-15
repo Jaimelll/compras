@@ -70,12 +70,12 @@ filter :pac, label:'PAC'
 filter :certificado
 
 
-filter :periodo , :as => :select, :collection =>
-     Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
-filter :modalidad , :as => :select, :collection =>
-    Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
-filter :tipo, label:'Mercado', :as => :select, :collection =>
-     Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+#filter :periodo , :as => :select, :collection =>
+#     Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+#filter :modalidad , :as => :select, :collection =>
+#    Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+#filter :tipo, label:'Mercado', :as => :select, :collection =>
+#     Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 
 
 

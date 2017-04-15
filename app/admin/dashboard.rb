@@ -355,6 +355,8 @@ end
 @adata.push(@adpc)
 @adata.push(@adec)
 
+@dif=30*86400
+
 @bar =Gchart.bar(
               :size   => '570x500',
               :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
@@ -373,8 +375,8 @@ end
 
              :axis_labels => [@blabels],
 
-
-              :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
+            # :axis_range => [nil, [@vinicio.to_time,Time.now,@dif.to_time], [1,@conta,1]],
+            :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
             #:min_value => 0,
             #:max_value => 365,
               :data   =>@adata)
