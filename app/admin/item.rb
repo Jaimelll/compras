@@ -16,7 +16,7 @@ ActiveAdmin.register Item do
 permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
               :certificado, :constancia, :moneda, :fuente, :seleccion,
-              :mesconvoca, :rubro, :admin_user_id, :cuadrante
+              :mesconvoca, :rubro, :admin_user_id, :cuadrante, :expediente
 
 # or
 #
@@ -70,12 +70,12 @@ filter :pac, label:'PAC'
 filter :certificado
 
 
-#filter :periodo , :as => :select, :collection =>
-#     Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
-#filter :modalidad , :as => :select, :collection =>
-#    Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
-#filter :tipo, label:'Mercado', :as => :select, :collection =>
-#     Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :periodo , :as => :select, :collection =>
+     Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :modalidad , :as => :select, :collection =>
+    Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :tipo, label:'Mercado', :as => :select, :collection =>
+     Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 
 
 
@@ -158,6 +158,8 @@ form do |f|
 
 
        f.input :pac ,:label => 'PAC SEACE', :input_html => { :style =>  'width:30%'}
+       f.input :expediente, :as => :select, :collection =>
+         Formula.where(product_id:16).map{|u| [u.descripcion, u.orden]}
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
        f.input :obac, :as => :select, :collection =>

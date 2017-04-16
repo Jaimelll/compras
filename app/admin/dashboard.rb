@@ -121,7 +121,14 @@ end
 
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 #@alabels2.push(item.descripcion.first(10))
+if @var==2 and item.expediente then
+@alabels.push(Formula.where(product_id:16,orden:item.expediente).
+            select('descripcion as dd').first.dd+"----"+item.pac+"-"+@n1)
+else
+#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 @alabels.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+
+end
 
 
 
@@ -341,6 +348,8 @@ end
 
 end
 @conta=@alabels.count
+
+#@vancho=(280/@conta).to_i
 @vancho=(280/@conta).to_i
 @ancho=@vancho.to_s
 
@@ -359,6 +368,7 @@ end
 
 @bar =Gchart.bar(
               :size   => '570x500',
+
               :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
               :title  => @titulo,
               :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
