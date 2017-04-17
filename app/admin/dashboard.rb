@@ -50,7 +50,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 case @var
    when 1
 
-     @vitem=Item.where(ejecucion:4,modalidad:2).order('obac ASC')
+     @vitem=Item.where(ejecucion:4,modalidad:2).where.not(obac:2).order('obac ASC')
 
    when 2
 
@@ -59,6 +59,11 @@ case @var
   when 3
 
    @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC')
+ when 4
+
+   @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
+
+ when 2
 
 end
 
