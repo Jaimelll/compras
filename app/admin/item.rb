@@ -76,6 +76,8 @@ filter :modalidad , :as => :select, :collection =>
     Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :tipo, label:'Mercado', :as => :select, :collection =>
      Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :lista,  :as => :select, :collection =>
+          Formula.where(product_id:3).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 
 
 
