@@ -5,12 +5,17 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
      user ||= AdminUser.new # guest user (not logged in)
-      if user.id==2
-        can :manage, :all
-      else
+
+  case user.id # a_variable is the variable we want to compare
+      when 2
+          can :manage, :all
+      when 5 #Ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
-        can [:create,:read,:update, :destroy], [Item, Detail]
-     end
+        can [:read], [Item, Detail]
+      else
+          can :read, ActiveAdmin::Page, :name =>"Dashboard"
+          can [:create,:read,:update, :destroy], [Item, Detail]
+  end
     #
     # The first argument to `can` is the action you are giving the user
     # permission to do.
