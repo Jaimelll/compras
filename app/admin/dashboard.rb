@@ -49,21 +49,21 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
                           select('nombre as dd').first.dd
 case @var
    when 1
-
+     #encargo sin la MGP
      @vitem=Item.where(ejecucion:4,modalidad:2).where.not(obac:2).order('obac ASC')
 
    when 2
-
-    @vitem=Item.where(ejecucion:4,modalidad:1).order('obac ASC')
+   #corporativa
+    @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente,obac ASC')
 
   when 3
-
+  # autorizados
    @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC')
  when 4
-
+  #encago la marina
    @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
 
- when 2
+
 
 end
 
