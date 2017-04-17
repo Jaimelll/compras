@@ -78,6 +78,8 @@ filter :tipo, label:'Mercado', :as => :select, :collection =>
      Formula.where(product_id:6).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :lista,  :as => :select, :collection =>
           Formula.where(product_id:3).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :obac,  :as => :select, :collection =>
+      Formula.where(product_id:1,cantidad:1).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 
 
 
@@ -165,15 +167,40 @@ form do |f|
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
        f.input :obac, :as => :select, :collection =>
+       case current_admin_user.id # a_variable is the variable we want to compare
+         when 6   #mgp
+        Formula.where(product_id:1,orden:2).map{|u| [u.nombre, u.orden]}
+         else
+         Formula.where(product_id:1,cantidad:1).map{|u| [u.nombre, u.orden]}
+         end
+
+
            Formula.where(product_id:1,cantidad:1).map{|u| [u.nombre, u.orden]}
+
         f.input :lista, :as => :select, :collection =>
            Formula.where(product_id:3).map{|u| [u.descripcion, u.orden]}
         f.input :ejecucion,:label => 'Ejecucion Responsable', :as => :select, :collection =>
+        case current_admin_user.id # a_variable is the variable we want to compare
+          when 6   #mgp
+          Formula.where(product_id:1).where("orden= 2 OR orden = 4").map{|u| [u.nombre, u.orden]}
+          else
+          Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
+          end
+
+
             Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
         f.input :modalidad, :as => :select, :collection =>
            Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
         f.input :dependencia,:label => 'Dependencia ejecutante', :as => :select, :collection =>
-            Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
+
+               case current_admin_user.id # a_variable is the variable we want to compare
+                 when 6   #mgp
+                  Formula.where(product_id:5,cantidad:2).map{|u| [u.nombre, u.orden]}
+                 else
+                  Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
+                 end
+
+
         f.input :tipo, :label => 'Mercado', :as => :select, :collection =>
            Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
          f.input :descripcion ,:label => 'Descripcion del bien o servicio'
