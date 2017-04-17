@@ -54,7 +54,7 @@ case @var
 
    when 2
    #corporativa
-    @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente,obac ASC')
+    @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente')
 
   when 3
   # autorizados
