@@ -16,8 +16,8 @@ ActiveAdmin.register Item do
 permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
               :certificado, :constancia, :moneda, :fuente, :seleccion,
-              :mesconvoca, :rubro, :admin_user_id, :cuadrante, :expediente
-
+              :mesconvoca, :rubro, :admin_user_id, :cuadrante, :expediente,
+              :observacion
 # or
 #
 # permit_params do
@@ -240,6 +240,7 @@ form do |f|
         f.input :rubro, :as => :select, :collection =>
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+          f.input :observacion
         f.actions
     end
   end
@@ -282,7 +283,7 @@ form do |f|
 
           end
         end
-        t.column("obs")
+      #  t.column("obs")
 
 
       end

@@ -9,16 +9,16 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 #end
 
 action_item :only=> :index do
-    link_to 'Grafico por Encargo', encargo_admin_formula_path( :@num), method: :put
+    link_to 'Por Encargo', encargo_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
-    link_to 'Grafico Corporativos', corporativa_admin_formula_path( :@num), method: :put
+    link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
-    link_to 'Grafico Autorizados', autorizado_admin_formula_path( :@num), method: :put
+    link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
-    link_to 'Grafico Encargo MGP', mgp_admin_formula_path( :@num), method: :put
+    link_to 'Por Encargo MGP', mgp_admin_formula_path( :@num), method: :put
 end
 
 
@@ -404,7 +404,11 @@ end
 
              :axis_labels => [@blabels],
 
-           :axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
+         :axis_range => [nil, [@vinicio.to_time.
+           strftime("%b %y"), Time.now.strftime("%b %y"),
+           DateTime.new(0,1,1)], [1,@conta,1]],
+           
+          #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
           #  :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
             #:min_value => 0,
             #:max_value => 365,
