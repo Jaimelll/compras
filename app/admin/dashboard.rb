@@ -12,14 +12,18 @@ action_item :only=> :index do
     link_to 'Por Encargo', encargo_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
+    link_to 'Por Encargo 2', mgp_admin_formula_path( :@num), method: :put
+end
+action_item :only=> :index do
     link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
     link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
 end
-action_item :only=> :index do
-    link_to 'Por Encargo MGP', mgp_admin_formula_path( :@num), method: :put
-end
+
+#action_item :only=> :index do
+#    link_to 'Corporativos 2', corporativo_admin_formula_path( :@num), method: :put
+#end
 
 
 
@@ -73,6 +77,9 @@ case @var
  when 4
   #encago la marina
    @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
+ when 5
+  #corporativa2
+    @vitem=Item.where(ejecucion:4,modalidad:1).where("expediente >= ' '").order('expediente')
 
 
 
@@ -407,7 +414,7 @@ end
          :axis_range => [nil, [@vinicio.to_time.
            strftime("%b %y"), Time.now.strftime("%b %y"),
            DateTime.new(0,1,1)], [1,@conta,1]],
-           
+
           #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
           #  :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
             #:min_value => 0,
