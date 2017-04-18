@@ -46,7 +46,9 @@ action_item :view, only: :show do
 
 
 
-
+    scope :ACFFAA, :default => true do |items|
+         items.where("ejecucion=4").order('pac')
+   end
 
      scope :todos, :default => true do |items|
            items.order('pac')
@@ -65,9 +67,7 @@ action_item :view, only: :show do
           items.where("obac > 3").order('pac')
      end
 
-     scope :ACFFAA, :default => true do |items|
-          items.where("ejecucion=4").order('pac')
-    end
+
 
 
 
