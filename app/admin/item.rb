@@ -37,33 +37,38 @@ action_item :view, only: :show do
           link_to 'Ir a PACs', admin_items_path()
     end
 
-#member_action :encargo do
-#  Formula.where( product_id:15 ).update_all( cantidad:0 )
-#  Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
-#end
 
 
 
-scope :todos, :default => true do |items|
-  items.order('pac')
-end
-scope :Ejercito, :default => true do |items|
-  items.where(obac:1).order('pac')
-end
-scope :Marina, :default => true do |items|
-  items.where(obac:2).order('pac')
-end
-scope :FAP, :default => true do |items|
-  items.where(obac:3).order('pac')
-end
 
-scope :Otros, :default => true do |items|
-  items.where("obac > 3").order('pac')
-end
 
-scope :ACFFAA, :default => true do |items|
-  items.where("ejecucion=4").order('pac')
-end
+
+
+
+
+
+
+     scope :todos, :default => true do |items|
+           items.order('pac')
+      end
+     scope :Ejercito, :default => true do |items|
+          items.where(obac:1).order('pac')
+     end
+     scope :Marina, :default => true do |items|
+          items.where(obac:2).order('pac')
+     end
+     scope :FAP, :default => true do |items|
+          items.where(obac:3).order('pac')
+     end
+
+     scope :Otros, :default => true do |items|
+          items.where("obac > 3").order('pac')
+     end
+
+     scope :ACFFAA, :default => true do |items|
+          items.where("ejecucion=4").order('pac')
+    end
+
 
 
 filter :pac, label:'PAC'

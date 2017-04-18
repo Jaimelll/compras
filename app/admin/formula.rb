@@ -11,6 +11,49 @@ permit_params  :nombre, :descripcion,
         link_to 'Ir a Productos', admin_products_path()
       end
 
+
+
+
+      member_action :encargo, method: :put do
+         @num=Formula.where(product_id: 15, orden:1).
+                select('id as dd').first.dd
+        Formula.where( product_id:15 ).update_all( cantidad:0 )
+        Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
+        redirect_to admin_dashboard_path
+      end
+
+      member_action :corporativa, method: :put do
+         @num=Formula.where(product_id: 15, orden:1).
+                select('id as dd').first.dd
+        Formula.where( product_id:15 ).update_all( cantidad:0 )
+        Formula.where( product_id:15 ,orden:2).update_all( cantidad:1 )
+        redirect_to admin_dashboard_path
+      end
+
+      member_action :autorizado, method: :put do
+         @num=Formula.where(product_id: 15, orden:1).
+                select('id as dd').first.dd
+        Formula.where( product_id:15 ).update_all( cantidad:0 )
+        Formula.where( product_id:15 ,orden:3).update_all( cantidad:1 )
+        redirect_to admin_dashboard_path
+      end
+
+      member_action :mgp, method: :put do
+         @num=Formula.where(product_id: 15, orden:1).
+                select('id as dd').first.dd
+        Formula.where( product_id:15 ).update_all( cantidad:0 )
+        Formula.where( product_id:15 ,orden:4).update_all( cantidad:1 )
+        redirect_to admin_dashboard_path
+      end
+
+
+
+
+
+
+
+
+
           form do |f|
           if params[:id] then
               n1=Formula.where(id:params[:id]).

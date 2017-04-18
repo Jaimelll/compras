@@ -2,15 +2,26 @@ ActiveAdmin.register_page "Dashboard" do
 
 menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
+#action_item :Encargo,  if: proc{ current_admin_user.id==2 } do
+#Formula.where( product_id:15 ).update_all( cantidad:0 )
+#Formula.where( product_id:15 ,orden:2).update_all( cantidad:1 )
+#link_to 'Encargo',admin_dashboard_path
+#end
+
+action_item :only=> :index do
+    link_to 'Grafico por Encargo', encargo_admin_formula_path( :@num), method: :put
+end
+action_item :only=> :index do
+    link_to 'Grafico Corporativos', corporativa_admin_formula_path( :@num), method: :put
+end
+action_item :only=> :index do
+    link_to 'Grafico Autorizados', autorizado_admin_formula_path( :@num), method: :put
+end
+action_item :only=> :index do
+    link_to 'Grafico Encargo MGP', mgp_admin_formula_path( :@num), method: :put
+end
 
 
-
-
-#  action_item :MGP do
-#    Formula.where( product_id:15 ).update_all( cantidad:0 )
-#    Formula.where( product_id:15 ,orden:2).update_all( cantidad:1 )
-#  link_to 'MGP',admin_dashboard_path
-#  end
 
 
 
