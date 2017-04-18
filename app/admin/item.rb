@@ -92,6 +92,12 @@ index do
 
   column("NoPac", :sortable => :pac) {|item|
     link_to "#{item.pac} ", admin_item_path(item) }
+
+  column("expediente")
+
+
+
+
   column("periodo")do |item|
       if item.periodo and item.periodo>0 then
 
@@ -112,6 +118,14 @@ index do
           "s/d"
         end
     end
+  column("dependencia") do |item|
+            if item.dependencia and item.dependencia>0 then
+           Formula.where(product_id:5, orden:item.dependencia).
+            select('nombre as dd').first.dd
+          else
+            "s/d"
+          end
+  end
 
 
   column("lista") do |item|
@@ -134,14 +148,14 @@ index do
         end
     end
 
-    column("cuadrante") do |item|
-        if item.cuadrante and item.cuadrante>0 then
-           Formula.where(product_id:13, orden:item.cuadrante).
-            select('nombre as dd').first.dd
-          else
-              "s/d"
-          end
-      end
+  #  column("cuadrante") do |item|
+  #      if item.cuadrante and item.cuadrante>0 then
+  #         Formula.where(product_id:13, orden:item.cuadrante).
+  #          select('nombre as dd').first.dd
+  #        else
+  #            "s/d"
+  #        end
+  #    end
       column("fuente") do |item|
           if item.fuente and item.fuente>0 then
              Formula.where(product_id:8, orden:item.fuente).
@@ -168,7 +182,8 @@ form do |f|
 
        f.input :pac ,:label => 'PAC SEACE', :input_html => { :style =>  'width:30%'}
        f.input :expediente, :as => :select, :collection =>
-         Formula.where(product_id:16).map{|u| [u.descripcion, u.orden]}
+         Formula.where(product_id:16).map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
+
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
        f.input :obac, :as => :select, :collection =>
