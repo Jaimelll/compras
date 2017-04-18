@@ -404,8 +404,8 @@ end
 
              :axis_labels => [@blabels],
 
-            # :axis_range => [nil, [@vinicio.to_time,Time.now,@dif.to_time], [1,@conta,1]],
-            :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
+           :axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
+          #  :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
             #:min_value => 0,
             #:max_value => 365,
               :data   =>@adata)
@@ -426,7 +426,7 @@ end
                                 Item.where.not(ejecucion:4).where(periodo:formula.orden).count.to_s+ "/("+
                                    number_with_delimiter(Item.where.not(ejecucion:4).where(periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
-                              column("TOTAL") do |formula|
+                              column("TOTAL PAC") do |formula|
                                 Item.where(periodo:formula.orden).count.to_s+ "/("+
                                    number_with_delimiter(Item.where(periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
@@ -522,7 +522,7 @@ end
                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
                                           where(product_id:12,cantidad:6).select("orden")).length
                                  end
-                                 column("TOTAL") do |formula|
+                                 column("TOTAL PAC") do |formula|
                                    Item.where(periodo: formula.orden,ejecucion:4).count
                                end
                                  end
