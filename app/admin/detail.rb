@@ -16,15 +16,31 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :obs, :admin_user_id, :item_id,:moneda,
               :created_at,:updated_at
 
+
+
   action_item :view, only: :show do
             link_to 'Ir a PACs', admin_items_path()
       end
 
 
+  scope :PAC, :default => true do |details|
+           details.where(item_id:params[:item_id])
+
+  end
 
 
 
-    form do |f|
+filter :item_id
+
+
+
+index do
+column("item_id")
+column("pfecha")
+actions
+end
+
+    form  do |f|
         if params[:id] then
 #edit
               n1=Detail.where(id:params[:id]).
@@ -65,6 +81,7 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
                 f.actions
           else
 #nuevo
+  
                nn=Item.where(id:params[:item_id]).
                         select('pac as dd').first.dd.capitalize
            f.inputs "#{nn}" do

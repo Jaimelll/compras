@@ -91,8 +91,7 @@ filter :obac,  :as => :select, :collection =>
 index do
 
   column("NoPac", :sortable => :pac) {|item|
-    link_to "#{item.pac} ", admin_item_path(item) }
-
+   link_to "#{item.pac} ", admin_item_path(item) }
   column("expediente")
 
 
