@@ -241,7 +241,12 @@ form do |f|
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
-        f.actions
+          case current_admin_user.id # a_variable is the variable we want to compare
+          when 1,2,4,6
+              f.actions
+
+            end
+
     end
   end
 
@@ -255,6 +260,7 @@ form do |f|
       table_for(item.details.order('pfecha')) do |t|
 
         t.column("Actividad", :sortable => :item_id) {|detail|
+
           if detail.actividad then
             n2=Formula.where(product_id:12,orden:detail.actividad).
                     select('cantidad as dd').first.dd
@@ -270,7 +276,27 @@ form do |f|
          else
                   n1="s/d"
          end
-                 link_to "#{n1} ",  admin_item_detail_path(item,detail) }
+
+          # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
+          case current_admin_user.id # a_variable is the variable we want to compare
+             when 1,2,4,6
+                   n3=1
+             when 7
+                  if n2==4
+                    n3=1
+                  else
+                    n3=2
+                  end
+              else
+                   n3=2
+            end
+     link_to_if n3==1,"#{n1} ",  admin_item_detail_path(item,detail) }
+
+
+
+
+
+
         t.column("tipo")
         t.column("numero")
         t.column("pfecha")
@@ -295,32 +321,23 @@ form do |f|
 
 end
 
-sidebar "MONTOS" do
-  ul do
-      li Formula.where(product_id:1).where(orden:1).
-                    select('nombre as dd').first.dd + " = " +
+sidebar "RESPONSABLE DE EJECUCION", only: :index do
+  # prueba ini
+    table_for Formula.where(product_id:1)  do
+         column("Institucion ") do |formula|
+           formula.nombre
+         end
+         column("pac") do |formula|
+           Item.where(ejecucion:formula.orden).count
+         end
+         column("monto") do |formula|
 
-(number_with_delimiter(( Item.where(obac:1).sum('certificado')) , delimiter: ",", separator: ".")).to_s
+              number_with_delimiter(Item.where(ejecucion:formula.orden).
+              sum(:certificado).to_i, delimiter: ",")
+         end
+      end
 
-      li Formula.where(product_id:1).where(orden:2).
-                      select('nombre as dd').first.dd + " = " +
-(number_with_delimiter(( Item.where(obac:2).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-      li Formula.where(product_id:1).where(orden:3).
-                        select('nombre as dd').first.dd + "  = " +
-(number_with_delimiter(( Item.where(obac:3).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-    li  "TOTAL = " +
-(number_with_delimiter(( Item.sum('certificado')) , delimiter: ",", separator: ".")).to_s
-
-li Formula.where(product_id:1).where(orden:4).
-                  select('nombre as dd').first.dd + "  = " +
-(number_with_delimiter(( Item.where(ejecucion:4).sum('certificado')) , delimiter: ",", separator: ".")).to_s
-
-
-
-    end
+  # prueba ini
   end
-
-
-
 
 end

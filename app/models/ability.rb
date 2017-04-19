@@ -17,7 +17,7 @@ class Ability
         can [:read], [Item, Detail]
       when 7 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
-        can :read, Item
+        can [:read,:update], Item
         can [:create,:read,:update],  Detail
       else
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
