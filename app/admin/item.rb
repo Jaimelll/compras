@@ -241,7 +241,12 @@ form do |f|
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
-        f.actions
+
+        case current_admin_user.id # a_variable is the variable we want to compare
+        when 1,2,4,6    #mgp
+           f.actions
+        end
+
     end
   end
 
@@ -262,15 +267,24 @@ form do |f|
              n1=Formula.where(product_id:12,orden:detail.actividad).
                      select('descripcion as dd').first.dd.capitalize+
                       "-----"+
-                       "#{Formula.where(product_id:10,orden:n2).
-                                select('nombre as dd').first.dd}"
+                      "#{Formula.where(product_id:10,orden:n2).
+                               select('nombre as dd').first.dd}"
+                 case current_admin_user.id # a_variable is the variable we want to compare
+                   when 1,2,4,6   #mgp
 
+                        link_to "#{n1} ",  admin_item_detail_path(item,detail)
+                   when 7     #castaneda
+                       if Formula.where(product_id:12,orden:detail.actividad).
+                         select('cantidad as dd').first.dd=4 then
 
+                           link_to "#{n1} ",  admin_item_detail_path(item,detail)
+                        end #de if
 
-         else
-                  n1="s/d"
-         end
-                 link_to "#{n1} ",  admin_item_detail_path(item,detail) }
+                   end #de case
+                else
+                         n1="s/d"
+            end #de  if actividad
+
         t.column("tipo")
         t.column("numero")
         t.column("pfecha")
@@ -281,14 +295,14 @@ form do |f|
           if detail.moneda then
             Formula.where(product_id:7,orden:detail.moneda).select('nombre as dd').first.dd.to_s
 
-          end
-        end
+          end #de if moneda
+        end#de do moneda
       #  t.column("obs")
 
+    end #de panel
+    end #de table
 
-      end
-
-    end
+  end # de show
 
     strong { link_to 'Agregar actividad', new_admin_item_detail_path(item) }
 

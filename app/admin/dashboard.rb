@@ -17,13 +17,16 @@ end
 action_item :only=> :index do
     link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
 end
+#action_item :only=> :index do
+#   link_to 'Corporativos 2', corporativo_admin_formula_path( :@num), method: :put
+#end
+
+
 action_item :only=> :index do
     link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
 end
 
-#action_item :only=> :index do
-#    link_to 'Corporativos 2', corporativo_admin_formula_path( :@num), method: :put
-#end
+
 
 
 
@@ -79,7 +82,7 @@ case @var
    @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
  when 5
   #corporativa2
-    @vitem=Item.where(ejecucion:4,modalidad:1).where("expediente >= ' '").order('expediente')
+    @vitem=Item.where(ejecucion:4,modalidad:1).where("expediente >= '1'").order('expediente')
 
 
 

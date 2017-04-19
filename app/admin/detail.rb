@@ -36,9 +36,19 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
                       Item.all.order('pac ASC').map{|u| [u.pac, u.id]}
 
                  f.input :actividad, :as => :select, :collection =>
-                          Formula.where(product_id:12).order("orden").
-                          map{|u| [u.descripcion.capitalize,
-                             u.orden]}
+
+                 case current_admin_user.id # a_variable is the variable we want to compare
+                  when 1,2,4,6   #mgp
+                     Formula.where(product_id:12).order("orden").
+                       map{|u| [u.descripcion.capitalize,
+                        u.orden]}
+                 when 7     #castaneda
+                     Formula.where(product_id:12,cantidad:4).order("orden").
+                       map{|u| [u.descripcion.capitalize,
+                        u.orden]}
+                  end
+
+
 
                  f.input :tipo,:label => 'Documemto de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
@@ -62,9 +72,17 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
                       :input_html => { :value => params[:item_id]}, :as => :hidden
 
              f.input :actividad, :as => :select, :collection =>
-                      Formula.where(product_id:12).order("orden").
-                      map{|u| [u.descripcion.capitalize,
-                         u.orden]}
+             case current_admin_user.id # a_variable is the variable we want to compare
+              when 1,2,4,6   #mgp
+                 Formula.where(product_id:12).order("orden").
+                   map{|u| [u.descripcion.capitalize,
+                    u.orden]}
+             when 7     #castaneda
+                 Formula.where(product_id:12,cantidad:4).order("orden").
+                   map{|u| [u.descripcion.capitalize,
+                    u.orden]}
+              end
+
 
              f.input :tipo, :input_html => { :style =>  'width:30%'}
              f.input :numero, :input_html => { :style =>  'width:30%'}
