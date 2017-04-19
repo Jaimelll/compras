@@ -272,12 +272,14 @@ form do |f|
                  case current_admin_user.id # a_variable is the variable we want to compare
                    when 1,2,4,6   #mgp
 
-                        link_to "#{n1} ",  admin_item_detail_path(item,detail)
+                        link_to "#{n1} ",  admin_item_detail_path(item,detail)}
                    when 7     #castaneda
                        if Formula.where(product_id:12,orden:detail.actividad).
                          select('cantidad as dd').first.dd=4 then
 
-                           link_to "#{n1} ",  admin_item_detail_path(item,detail)
+                           link_to "#{n1} ",  admin_item_detail_path(item,detail)}
+                        else
+                        }
                         end #de if
 
                    end #de case
@@ -302,7 +304,7 @@ form do |f|
     end #de panel
     end #de table
 
-  end # de show
+
 
     strong { link_to 'Agregar actividad', new_admin_item_detail_path(item) }
 
