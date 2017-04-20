@@ -12,6 +12,7 @@ ActiveAdmin.register Detail do
 #   permitted
 # end
 menu false
+
 permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :obs, :admin_user_id, :item_id,:moneda,
               :created_at,:updated_at
@@ -24,23 +25,73 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
 
   scope :PAC, :default => true do |details|
-           details.where(item_id:params[:item_id])
+
+     details.where(item_id:params[:item_id])
 
   end
 
 
 
-filter :item_id
+
+filter :actividad,  :as => :select, :collection =>
+      Formula.where(product_id:12).order('orden ASC').map{|u| ["#{u.cantidad}", u.orden]}
 
 
 
 index do
-column("item_id")
+
+  column("Actividad", :sortable => :item_id) {|detail|
+
+    if detail.actividad then
+      n2=Formula.where(product_id:12,orden:detail.actividad).
+              select('cantidad as dd').first.dd
+
+       n1=Formula.where(product_id:12,orden:detail.actividad).
+               select('descripcion as dd').first.dd.capitalize+
+                "-----"+
+                 "#{Formula.where(product_id:10,orden:n2).
+                          select('nombre as dd').first.dd}"
+
+
+
+   else
+            n1="s/d"
+   end
+
+    # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
+    case current_admin_user.id # a_variable is the variable we want to compare
+       when 1,2,4,6
+             n3=1
+       when 7
+            if n2==4
+              n3=1
+            else
+              n3=2
+            end
+        else
+             n3=2
+      end
+  link_to_if n3==1,"#{n1} ",  admin_item_detail_path(:item_id,detail) }
+
 column("pfecha")
+column("tipo")
+column("numero")
+column("pfecha")
+column("importe") do |detail|
+ number_with_delimiter(detail.importe, delimiter: ",")
+end
+column("moneda") do |detail|
+  if detail.moneda then
+    Formula.where(product_id:7,orden:detail.moneda).select('nombre as dd').first.dd.to_s
+
+  end
+end
+
 actions
 end
 
     form  do |f|
+
         if params[:id] then
 #edit
               n1=Detail.where(id:params[:id]).
@@ -80,13 +131,14 @@ end
                        end
                 f.actions
           else
+
 #nuevo
-  
-               nn=Item.where(id:params[:item_id]).
+            if params[:item_id] then
+               nn=Item.where(id:  params[:item_id]).
                         select('pac as dd').first.dd.capitalize
            f.inputs "#{nn}" do
              f.input :item_id, :label => 'PAC' ,
-                      :input_html => { :value => params[:item_id]}, :as => :hidden
+                      :input_html => { :value =>   params[:item_id]}, :as => :hidden
 
              f.input :actividad, :as => :select, :collection =>
              case current_admin_user.id # a_variable is the variable we want to compare
@@ -113,6 +165,8 @@ end
                    end
                 f.actions
                 end
+            #    no tiene parametros y la ruta no pasa por item
+              end
           end
 
           show do
