@@ -188,9 +188,13 @@ form do |f|
        f.input :obac, :as => :select, :collection =>
        case current_admin_user.id # a_variable is the variable we want to compare
          when 6   #mgp
-        Formula.where(product_id:1,orden:2).map{|u| [u.nombre, u.orden]}
+            Formula.where(product_id:1,orden:2).map{|u| [u.nombre, u.orden]}
+        when 8   #fap
+           Formula.where(product_id:1,orden:3).map{|u| [u.nombre, u.orden]}
+        when 9   #ep
+            Formula.where(product_id:1).where("orden= 1 OR orden = 6 ").map{|u| [u.nombre, u.orden]}
          else
-         Formula.where(product_id:1,cantidad:1).map{|u| [u.nombre, u.orden]}
+            Formula.where(product_id:1,cantidad:1).map{|u| [u.nombre, u.orden]}
          end
 
 
@@ -202,6 +206,12 @@ form do |f|
         case current_admin_user.id # a_variable is the variable we want to compare
           when 6   #mgp
           Formula.where(product_id:1).where("orden= 2 OR orden = 4").map{|u| [u.nombre, u.orden]}
+        when 8   #fap
+          Formula.where(product_id:1).where("orden= 3 OR orden = 4").map{|u| [u.nombre, u.orden]}
+        when 9   #ep
+           Formula.where(product_id:1).where("orden= 1 OR orden = 6 OR orden = 4").map{|u| [u.nombre, u.orden]}
+
+
           else
           Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
           end
@@ -215,6 +225,10 @@ form do |f|
                case current_admin_user.id # a_variable is the variable we want to compare
                  when 6   #mgp
                   Formula.where(product_id:5,cantidad:2).map{|u| [u.nombre, u.orden]}
+                when 8   #fap
+                 Formula.where(product_id:5,cantidad:3).map{|u| [u.nombre, u.orden]}
+               when 9   #ep
+                Formula.where(product_id:5).where("cantidad=1 or cantidad=6").map{|u| [u.nombre, u.orden]}
                  else
                   Formula.where(product_id:5).map{|u| [u.nombre, u.orden]}
                  end
@@ -241,7 +255,7 @@ form do |f|
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
           case current_admin_user.id # a_variable is the variable we want to compare
-          when 1,2,4,6
+          when 1,2,4,6,8,9
               f.actions
 
             end
@@ -278,7 +292,7 @@ form do |f|
 
           # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
           case current_admin_user.id # a_variable is the variable we want to compare
-             when 1,2,4,6
+          when 1,2,4,6,8,9
                    n3=1
              when 7
                   if n2==4

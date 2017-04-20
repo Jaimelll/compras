@@ -105,7 +105,7 @@ end
                  f.input :actividad, :as => :select, :collection =>
 
                  case current_admin_user.id # a_variable is the variable we want to compare
-                  when 1,2,4,6   #mgp
+                 when 1,2,4,6,8,9   #mgp
                      Formula.where(product_id:12).order("orden").
                        map{|u| [u.descripcion.capitalize,
                         u.orden]}
@@ -142,7 +142,7 @@ end
 
              f.input :actividad, :as => :select, :collection =>
              case current_admin_user.id # a_variable is the variable we want to compare
-              when 1,2,4,6   #mgp
+             when 1,2,4,6,8,9  #mgp
                  Formula.where(product_id:12).order("orden").
                    map{|u| [u.descripcion.capitalize,
                     u.orden]}
