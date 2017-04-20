@@ -147,7 +147,7 @@ end
 
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 #@alabels2.push(item.descripcion.first(10))
-if @var==2 and item.expediente then
+if @var==2 and item.expediente and item.expediente>="1" then
 @alabels.push(Formula.where(product_id:16,orden:item.expediente).
          select('nombre as dd').first.dd+"-"+
          Formula.where(product_id:16,orden:item.expediente).
