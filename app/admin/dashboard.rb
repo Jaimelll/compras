@@ -161,7 +161,7 @@ end
 
 
 
-Detail.where(item_id:item.id).order('pfecha ASC').each do |detail|
+Detail.where(item_id:item.id).order('pfecha ASC,id').each do |detail|
 
 
 @vproc=Formula.where(product_id:12,orden:detail.actividad).

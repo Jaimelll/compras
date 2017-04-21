@@ -270,7 +270,7 @@ form do |f|
 
          panel "pac-#{nn}" do
 
-      table_for(item.details.order('pfecha')) do |t|
+      table_for(item.details.order('pfecha,id')) do |t|
 
         t.column("Actividad", :sortable => :item_id) {|detail|
 
