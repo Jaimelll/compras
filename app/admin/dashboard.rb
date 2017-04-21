@@ -9,10 +9,10 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 #end
 
 action_item :only=> :index do
-    link_to 'Por Encargo', encargo_admin_formula_path( :@num), method: :put
+    link_to 'Encargo 1de 2', encargo_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
-    link_to 'Por Encargo 2', mgp_admin_formula_path( :@num), method: :put
+    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
 end
 action_item :only=> :index do
     link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
@@ -414,21 +414,21 @@ end
 
              :axis_labels => [@blabels],
 
-         :axis_range => [nil, [@vinicio.to_time.
-           strftime("%b %y"), Time.now.strftime("%b %y"),
-           DateTime.new(0,1,1)], [1,@conta,1]],
+      #   :axis_range => [nil, [@vinicio.to_time.
+      #     strftime("%b %y"), Time.now.strftime("%b %y"),
+      #     DateTime.new(0,1,1)], [0,@conta,1]],
 
           #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-          #  :axis_range => [nil, [0,@dfin,30], [1,@conta,1]],
+            :axis_range => [nil, [0,@dfin,10], [1,@conta,1]],
             #:min_value => 0,
             #:max_value => 365,
               :data   =>@adata)
               columns do
 
                      column do
-                       panel "PROCESOS Y MONTOS POR PERIODO, LISTAS Y MERCADO" do
+                       panel "PROCESOS Y MONTOS POR PERIODO, LISTAS Y MERCADO AF-2017" do
                          table_for Formula.where(product_id:11)  do
-                              column("Periodo ") do |formula|
+                              column("Periodo PAC") do |formula|
                                 formula.nombre
                               end
                               column("ACFFAA") do |formula|
@@ -458,7 +458,7 @@ end
                                end
 
                  table_for Formula.where(product_id:11)  do
-                                    column("Periodo ") do |formula|
+                                    column("Avance ACFFAA ") do |formula|
                                       formula.nombre
                                     end
                                     column("OBAC") do |formula|
