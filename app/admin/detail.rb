@@ -13,14 +13,31 @@ ActiveAdmin.register Detail do
 # end
 menu false
 
+
+
 permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :obs, :admin_user_id, :item_id,:moneda,
               :created_at,:updated_at
 
 
+  action_item :view, only:[:show,:new]do
+    if params[:item_id] then
+  nn=Item.where(id:params[:item_id]).
+           select('pac as dd').first.dd.capitalize
+        link_to "Ir a PAC-#{nn}", admin_item_path(params[:item_id])
+    end
+   end
 
-  action_item :view, only: :show do
+
+
+  action_item :view, only:[:show, :new]do
             link_to 'Ir a PACs', admin_items_path()
+  end
+
+
+
+  action_item :view, only: [:show, :index] do
+            link_to 'Agregar actividad', new_admin_item_detail_path(params[:item_id])
       end
 
 
@@ -130,7 +147,7 @@ end
 
                        end
                 f.actions
-          else
+          end
 
 #nuevo
             if params[:item_id] then
@@ -164,7 +181,16 @@ end
 
                    end
                 f.actions
+
+
+            strong { link_to  new_admin_item_detail_path(params[:item_id]) }
+
+                f.inputs "#{nn}" do
+                    f.input :tipo
+
                 end
+
+
             #    no tiene parametros y la ruta no pasa por item
               end
           end

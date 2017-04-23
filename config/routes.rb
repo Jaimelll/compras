@@ -3,9 +3,20 @@ Rails.application.routes.draw do
 
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
+
+    ActiveAdmin.routes(self)
+#  ActiveAdmin.routes(self)
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'admin/dashboard#index'
+#admin_dashboard_path
+
+
+concern :detalles do
+    resources :details
+end
+
+
+
 
   namespace :admin do
     resources :products do
@@ -13,13 +24,15 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :admin do
-      resources :items do
-        resources :details
-      end
-    end
+
+ namespace :admin do
+
+      resources :items, concerns: :detalles
+
+  end
 
 
+root 'admin/dashboard#index'
 
 
 end
