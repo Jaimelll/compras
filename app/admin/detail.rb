@@ -78,17 +78,17 @@ index do
     # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
     case current_admin_user.id # a_variable is the variable we want to compare
        when 1,2,4,6
-             n3=1
+             @n3=1
        when 7
             if n2==4
-              n3=1
+              @n3=1
             else
-              n3=2
+              @n3=2
             end
         else
-             n3=2
+             @n3=2
       end
-  link_to_if n3==1,"#{n1} ",  admin_item_detail_path(:item_id,detail) }
+  link_to_if @n3==1,"#{n1} ",  admin_item_detail_path(params[:item_id],detail) }
 
 column("pfecha")
 column("tipo")
@@ -104,7 +104,10 @@ column("moneda") do |detail|
   end
 end
 
-actions
+#if @n3==1 then
+#actions
+#end
+
 end
 
     form  do |f|
