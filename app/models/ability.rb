@@ -15,7 +15,7 @@ class Ability
        when 5 #DEM ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], [Item, Detail]
-      when 7 #DEM castaneda
+      when 7,11,12,13,14 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read,:update], Item
         can [:create,:read,:update],  Detail

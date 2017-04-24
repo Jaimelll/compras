@@ -79,7 +79,7 @@ index do
     case current_admin_user.id # a_variable is the variable we want to compare
        when 1,2,4,6
              @n3=1
-       when 7
+       when 7,11
             if n2==4
               @n3=1
             else
@@ -129,10 +129,23 @@ end
                      Formula.where(product_id:12).order("orden").
                        map{|u| [u.descripcion.capitalize,
                         u.orden]}
-                 when 7     #castaneda
+                 when 7,11     #castaneda
                      Formula.where(product_id:12,cantidad:4).order("orden").
                        map{|u| [u.descripcion.capitalize,
                         u.orden]}
+                 when 12     #dc
+                          Formula.where(product_id:12,cantidad:3).order("orden").
+                            map{|u| [u.descripcion.capitalize,
+                             u.orden]}
+                 when 13     #dpc
+                               Formula.where(product_id:12,cantidad:5).order("orden").
+                                 map{|u| [u.descripcion.capitalize,
+                                  u.orden]}
+
+                 when 14    #dec
+                                    Formula.where(product_id:12,cantidad:6).order("orden").
+                                      map{|u| [u.descripcion.capitalize,
+                                       u.orden]}
                   end
 
 
@@ -166,10 +179,23 @@ end
                  Formula.where(product_id:12).order("orden").
                    map{|u| [u.descripcion.capitalize,
                     u.orden]}
-             when 7     #castaneda
+             when 7,11     #castaneda
                  Formula.where(product_id:12,cantidad:4).order("orden").
                    map{|u| [u.descripcion.capitalize,
                     u.orden]}
+                  when 12     #dc
+                           Formula.where(product_id:12,cantidad:3).order("orden").
+                             map{|u| [u.descripcion.capitalize,
+                              u.orden]}
+                  when 13     #dpc
+                                Formula.where(product_id:12,cantidad:5).order("orden").
+                                  map{|u| [u.descripcion.capitalize,
+                                   u.orden]}
+
+                  when 14    #dec
+                                     Formula.where(product_id:12,cantidad:6).order("orden").
+                                       map{|u| [u.descripcion.capitalize,
+                                        u.orden]}             
               end
 
 

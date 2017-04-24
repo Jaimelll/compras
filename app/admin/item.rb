@@ -294,12 +294,31 @@ form do |f|
           case current_admin_user.id # a_variable is the variable we want to compare
           when 1,2,4,6,8,9
                    n3=1
-             when 7
+             when 7,11
                   if n2==4
                     n3=1
                   else
                     n3=2
                   end
+              when 12
+                     if n2==3
+                       n3=1
+                     else
+                       n3=2
+                     end
+              when 13
+                        if n2==5
+                          n3=1
+                        else
+                          n3=2
+                        end
+              when 14
+                           if n2==6
+                             n3=1
+                           else
+                             n3=2
+                           end
+
               else
                    n3=2
             end
