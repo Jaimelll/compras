@@ -26,6 +26,10 @@ action_item :only=> :index do
     link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
 end
 
+action_item :only=> :index do
+    link_to 'Excluidos', excluido_admin_formula_path( :@num), method: :put
+end
+
 
 
 
@@ -81,8 +85,8 @@ case @var
   #encago la marina
    @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
  when 5
-  #corporativa2
-    @vitem=Item.where(ejecucion:4,modalidad:1).where("expediente >= '1'").order('expediente')
+  #excluidos
+    @vitem=Item.where(ejecucion:4,modalidad:4).order('expediente')
 
 
 
@@ -162,8 +166,8 @@ end
 
 
 Detail.where(item_id:item.id).order('pfecha ASC,id').each do |detail|
-
-
+#empieza detail
+if detail.pfecha then
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
 @vprord=Formula.where(product_id:12,orden:detail.actividad).
@@ -364,7 +368,8 @@ unless @vprord==200
        @cdec= @cdec+1
 
   end
-
+# termina detail??
+end
 end
 
 
@@ -379,7 +384,9 @@ end
 @conta=@alabels.count
 
 #@vancho=(280/@conta).to_i
+if @conta>0 then
 @vancho=(280/@conta).to_i
+end
 @ancho=@vancho.to_s
 
 @blabels.push(@alabels.reverse.join("|"))
@@ -394,7 +401,7 @@ end
 @adata.push(@adec)
 
 @dif=30*86400
-
+if @conta>0 then
 @bar =Gchart.bar(
               :size   => '570x500',
 
@@ -423,6 +430,7 @@ end
             #:min_value => 0,
             #:max_value => 365,
               :data   =>@adata)
+    end
               columns do
 
                      column do
@@ -434,7 +442,7 @@ end
                               column("ACFFAA") do |formula|
                                 Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
+                                  
                               end
                               column("Instituciones") do |formula|
                                 Item.where.not(ejecucion:4).where(periodo:formula.orden).count.to_s+ "/("+
@@ -601,7 +609,9 @@ end
                     column do
                     panel "Grafico de Situacion de Expedientes" do
                        li do
+                         if @conta>0 then
                          strong { image_tag @bar}
+                        end
                           end
                         end
                       end

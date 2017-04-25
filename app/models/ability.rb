@@ -18,7 +18,7 @@ class Ability
       when 7,11,12,13,14 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read,:update], Item
-        can [:create,:read,:update],  Detail
+        can [:create,:read,:update,:destroy],  Detail
       else
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:create,:read,:update, :destroy], [Item, Detail]
