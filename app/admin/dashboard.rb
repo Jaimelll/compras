@@ -22,9 +22,9 @@ end
 #end
 
 
-action_item :only=> :index do
-    link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
-end
+#action_item :only=> :index do
+#    link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
+#end
 
 action_item :only=> :index do
     link_to 'Excluidos', excluido_admin_formula_path( :@num), method: :put
