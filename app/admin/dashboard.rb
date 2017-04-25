@@ -601,7 +601,7 @@ if @conta>0 then
                                      number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                                 end
-                                column("Autorizada") do |formula|
+                                column("Excluidos ACFFAA") do |formula|
                                   Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                  end
