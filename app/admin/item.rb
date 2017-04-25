@@ -220,7 +220,7 @@ form do |f|
             Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
         f.input :modalidad, :as => :select, :collection =>
            Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
-        f.input :dependencia,:label => 'Dependencia ejecutante', :as => :select, :collection =>
+        f.input :dependencia,:label => 'Dependencia ejecutante OBAC', :as => :select, :collection =>
 
                case current_admin_user.id # a_variable is the variable we want to compare
                  when 6   #mgp

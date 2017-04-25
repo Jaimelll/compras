@@ -37,9 +37,10 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
 
   action_item :view, only: [:show, :index] do
-            link_to 'Agregar actividad', new_admin_item_detail_path(params[:item_id])
-      end
-
+    if params[:item_id] then
+          link_to 'Agregar actividad', new_admin_item_detail_path(params[:item_id])
+    end
+  end
 
   scope :PAC, :default => true do |details|
 
@@ -57,7 +58,9 @@ filter :actividad,  :as => :select, :collection =>
 
 index do
 
-  column("Actividad", :sortable => :item_id) {|detail|
+  column("Actividad", :sortable => :item_id) do   |detail|
+if params[:item_id] then
+
 
     if detail.actividad then
       n2=Formula.where(product_id:12,orden:detail.actividad).
@@ -88,8 +91,10 @@ index do
         else
              @n3=2
       end
-  link_to_if @n3==1,"#{n1} ",  admin_item_detail_path(params[:item_id],detail) }
 
+  link_to_if @n3==1 ,"#{n1} ",  admin_item_detail_path(params[:item_id],detail)
+end
+end
 column("pfecha")
 column("tipo")
 column("numero")
@@ -195,7 +200,7 @@ end
                   when 14    #dec
                                      Formula.where(product_id:12,cantidad:6).order("orden").
                                        map{|u| [u.descripcion.capitalize,
-                                        u.orden]}             
+                                        u.orden]}
               end
 
 
