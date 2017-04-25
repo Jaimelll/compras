@@ -303,7 +303,8 @@ if @vdec==0  then
     @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
   end
     @vfec6= detail.pfecha
-
+    #termina detail??
+    end
 end
 
 
@@ -368,8 +369,7 @@ unless @vprord==200
        @cdec= @cdec+1
 
   end
-# termina detail??
-end
+
 end
 
 
@@ -440,24 +440,22 @@ if @conta>0 then
                                 formula.nombre
                               end
                               column("ACFFAA") do |formula|
-                                Item.where(ejecucion:4,periodo:formula.orden).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                  
+                                Item.where(ejecucion:4,periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
                               end
                               column("Instituciones") do |formula|
-                                Item.where.not(ejecucion:4).where(periodo:formula.orden).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where.not(ejecucion:4).where(periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
                               column("TOTAL PAC") do |formula|
-                                Item.where(periodo:formula.orden).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(periodo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                Item.where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-                              column("Excluidos") do |formula|
-                                Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-
+                              column("Excluidos ACFFAA") do |formula|
+                                Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:4).count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                end
                                column("Culminados") do |formula|
                                  Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
@@ -470,7 +468,8 @@ if @conta>0 then
                                       formula.nombre
                                     end
                                     column("OBAC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).count- Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
+                                      Item.where(periodo: formula.orden,ejecucion:4).
+                                      count- Item.where(periodo: formula.orden,ejecucion:4).joins(:details).
                                        order("items.id,details.pfecha DESC").
                                         select("items.id,details.pfecha,details.actividad,details.id").
                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
