@@ -22,9 +22,9 @@ end
 #end
 
 
-#action_item :only=> :index do
-#    link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
-#end
+action_item :only=> :index do
+    link_to 'Autorizados', autorizado_admin_formula_path( :@num), method: :put
+end
 
 action_item :only=> :index do
     link_to 'Excluidos', excluido_admin_formula_path( :@num), method: :put
@@ -106,14 +106,18 @@ end
 @adem=[]
 @adpc=[]
 @adec=[]
-
-
+@conta=0
 
 
 
 
 @vitem.each do |item|
 
+  #prueba conta
+
+  #empieza el item
+if @conta <29 then
+    @conta=@alabels.count
   @vfec1=@vinicio
   @vfec2=@vinicio
   @vfec3=@vinicio
@@ -305,6 +309,8 @@ if @vdec==0  then
     @vfec6= detail.pfecha
     #termina detail??
     end
+
+
 end
 
 
@@ -370,6 +376,7 @@ unless @vprord==200
 
   end
 
+
 end
 
 
@@ -380,8 +387,12 @@ end
 @adpc.push(@vdpc)
 @adec.push(@vdec)
 
+#termina if
 end
-@conta=@alabels.count
+#termina item
+end
+#primer sitio de conta
+#@conta=@alabels.count
 
 #@vancho=(280/@conta).to_i
 if @conta>0 then
@@ -440,13 +451,21 @@ if @conta>0 then
                                 formula.nombre
                               end
                               column("ACFFAA") do |formula|
-                                Item.where(ejecucion:4,periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
+                                Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
+
+
                               column("Instituciones") do |formula|
-                                Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                (Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count+
+    Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
+#(number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)+
+number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado)+
+                       Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)).to_i, delimiter: ",").to_s+ ")"
+
+
+
+
                               end
                               column("TOTAL PAC") do |formula|
                                 Item.where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
@@ -468,16 +487,16 @@ if @conta>0 then
                                       formula.nombre
                                     end
                                     column("OBAC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).
+                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").
                                       count-
-                                      Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                        order("items.id,details.pfecha DESC").
                                         select("items.id,details.pfecha,details.actividad,details.id").
                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
                                          select("item_id,max(pfecha)")).
                                           where('(items.id,details.id) IN(?)',Detail.group("item_id").
                                            select("item_id,max(id)")).length+
-                                           Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                           Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                              order("items.id,details.pfecha DESC").
                                               select("items.id,details.pfecha,details.actividad,details.id").
                                                where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
@@ -489,7 +508,7 @@ if @conta>0 then
 
                                     end
                                          column("GEX") do |formula|
-                                           Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                           Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                             order("items.id,details.pfecha DESC").
                                              select("items.id,details.pfecha,details.actividad,details.id").
                                               where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
@@ -501,7 +520,7 @@ if @conta>0 then
                                     end
 
                                     column("DC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                        order("items.id,details.pfecha DESC").
                                         select("items.id,details.pfecha,details.actividad,details.id").
                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
@@ -514,7 +533,7 @@ if @conta>0 then
                                     end
 
                                     column("DEM") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                        order("items.id,details.pfecha DESC").
                                         select("items.id,details.pfecha,details.actividad,details.id").
                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
@@ -525,7 +544,7 @@ if @conta>0 then
 
                                      end
                                      column("DPC") do |formula|
-                                       Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                       Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                         order("items.id,details.pfecha DESC").
                                          select("items.id,details.pfecha,details.actividad,details.id").
                                           where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
@@ -536,7 +555,7 @@ if @conta>0 then
 
                                    end
                                    column("DEC") do |formula|
-                                     Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).joins(:details).
+                                     Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
                                       order("items.id,details.pfecha DESC").
                                        select("items.id,details.pfecha,details.actividad,details.id").
                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
@@ -546,7 +565,7 @@ if @conta>0 then
                                           where(product_id:12,cantidad:6).select("orden")).length
                                  end
                                  column("TOTAL PAC") do |formula|
-                                   Item.where(periodo: formula.orden,ejecucion:4).where.not(modalidad:4).count
+                                   Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").count
                                end
                                  end
                          table_for Formula.where(product_id:3)  do
@@ -558,19 +577,20 @@ if @conta>0 then
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:2,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                               end
-                              column("Corporativa") do |formula|
+                              column("Corporativo") do |formula|
 
                                   Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                               end
-                              column("Autorizada") do |formula|
+
+                              column("TOTAL") do |formula|
+                                Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").count.to_s+ "/("+
+                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              end
+                              column("Autorizado") do |formula|
                                 Item.where(ejecucion:4,modalidad:3,lista:formula.orden).count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:3,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
-                              column("TOTAL") do |formula|
-                                Item.where(ejecucion:4,lista:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
                               column("Excluidos ACFFAA") do |formula|
                                 Item.where(ejecucion:4,modalidad:4,lista:formula.orden).count.to_s+ "/("+
@@ -587,20 +607,22 @@ if @conta>0 then
                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                                end
-                               column("Corporativa") do |formula|
+                               column("Corporativo") do |formula|
                                  Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).count.to_s+ "/("+
                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                                end
-                               column("Autorizada") do |formula|
-                                 Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "/("+
-                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                end
-                                column("TOTAL") do |formula|
-                                  Item.where(ejecucion:4,tipo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
-                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                                end
+                                column("TOTAL") do |formula|
+                                  Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3").count.to_s+ "/("+
+                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                  end
+                                column("Autorizado") do |formula|
+                                       Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "/("+
+                                          number_with_delimiter(Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                      end
+
+
                                 column("Excluidos ACFFAA") do |formula|
                                   Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
