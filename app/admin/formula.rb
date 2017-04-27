@@ -38,13 +38,13 @@ permit_params  :nombre, :descripcion,
         redirect_to admin_dashboard_path
       end
 
-      member_action :mgp, method: :put do
-         @num=Formula.where(product_id: 15, orden:1).
-                select('id as dd').first.dd
-        Formula.where( product_id:15 ).update_all( cantidad:0 )
-        Formula.where( product_id:15 ,orden:4).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
-      end
+  #    member_action :mgp, method: :put do
+  #       @num=Formula.where(product_id: 15, orden:1).
+  #              select('id as dd').first.dd
+  #      Formula.where( product_id:15 ).update_all( cantidad:0 )
+  #      Formula.where( product_id:15 ,orden:4).update_all( cantidad:1 )
+  #      redirect_to admin_dashboard_path
+  #    end
 
       member_action :excluido, method: :put do
          @num=Formula.where(product_id: 15, orden:1).

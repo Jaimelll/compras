@@ -9,11 +9,11 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 #end
 
 action_item :only=> :index do
-    link_to 'Encargo 1de 2', encargo_admin_formula_path( :@num), method: :put
+    link_to 'Encargo', encargo_admin_formula_path( :@num), method: :put
 end
-action_item :only=> :index do
-    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
-end
+#action_item :only=> :index do
+#    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
+#end
 action_item :only=> :index do
     link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
 end
@@ -72,7 +72,7 @@ end
 case @var
    when 1
      #encargo sin la MGP
-     @vitem=Item.where(ejecucion:4,modalidad:2).where.not(obac:2).order('obac ASC')
+     @vitem=Item.where(ejecucion:4,modalidad:2).order('obac ASC')
 
    when 2
    #corporativa
@@ -81,9 +81,9 @@ case @var
   when 3
   # autorizados
    @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC')
- when 4
+ #when 4
   #encago la marina
-   @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
+  # @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
  when 5
   #excluidos
     @vitem=Item.where(ejecucion:4,modalidad:4).order('expediente')
@@ -95,8 +95,10 @@ end
 @adata=[]
 @alabels=[]
 @blabels=[]
-#@alabels2=[]
-#@blabels2=[]
+@adata2=[]
+@alabels2=[]
+@blabels2=[]
+
 @vinicio = '01/01/2017'
 @dfin=(Time.now-@vinicio.to_time).to_i/86400
 
@@ -107,6 +109,13 @@ end
 @adpc=[]
 @adec=[]
 @conta=0
+@aobac2=[]
+@apec2=[]
+@adac2=[]
+@adem2=[]
+@adpc2=[]
+@adec2=[]
+@conta2=0
 
 
 
@@ -117,7 +126,17 @@ end
 
   #empieza el item
 if @conta <29 then
+
     @conta=@alabels.count+1
+
+    @titu1=" "
+else
+    @conta=@alabels.count
+  @titu2=" 2 de 2"
+  @titu1=" 1 de 2"
+
+    @conta2=@alabels2.count+1
+end
   @vfec1=@vinicio
   @vfec2=@vinicio
   @vfec3=@vinicio
@@ -155,6 +174,7 @@ end
 
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 #@alabels2.push(item.descripcion.first(10))
+if @conta <29 then
 if @var==2 and item.expediente and item.expediente>="1" then
 @alabels.push(Formula.where(product_id:16,orden:item.expediente).
          select('nombre as dd').first.dd+"-"+
@@ -165,6 +185,19 @@ else
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 @alabels.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
 
+end
+else
+  if @var==2 and item.expediente and item.expediente>="1" then
+  @alabels2.push(Formula.where(product_id:16,orden:item.expediente).
+           select('nombre as dd').first.dd+"-"+
+           Formula.where(product_id:16,orden:item.expediente).
+                    select('descripcion as dd').first.dd+
+                    "----"+item.pac+"-"+@n1)
+  else
+  #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+  @alabels2.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+
+  end
 end
 
 
@@ -379,16 +412,25 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
 end
 
-
+if @conta <29 then
 @aobac.push(@vobac)
 @apec.push(@vpec)
 @adac.push(@vdac)
 @adem.push(@vdem)
 @adpc.push(@vdpc)
 @adec.push(@vdec)
+else
+  @aobac2.push(@vobac)
+  @apec2.push(@vpec)
+  @adac2.push(@vdac)
+  @adem2.push(@vdem)
+  @adpc2.push(@vdpc)
+  @adec2.push(@vdec)
+
+end
 
 #termina if
-end
+#end
 #termina item
 end
 #primer sitio de conta
@@ -401,23 +443,31 @@ end
 @ancho=@vancho.to_s
 
 @blabels.push(@alabels.reverse.join("|"))
-#@blabels2.push(@alabels2.reverse.join("|"))
+@blabels2.push(@alabels2.reverse.join("|"))
 
-
+#if @conta <29 then
 @adata.push(@aobac)
 @adata.push(@apec)
 @adata.push(@adac)
 @adata.push(@adem)
 @adata.push(@adpc)
 @adata.push(@adec)
+#else
+  @adata2.push(@aobac2)
+  @adata2.push(@apec2)
+  @adata2.push(@adac2)
+  @adata2.push(@adem2)
+  @adata2.push(@adpc2)
+  @adata2.push(@adec2)
 
+#end
 @dif=30*86400
 if @conta>0 then
 @bar =Gchart.bar(
-              :size   => '570x500',
-
+            #  :size   => '570x500',
+               :size   => '570x500',
               :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-              :title  => @titulo,
+              :title  => @titulo+@titu1,
               :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
@@ -442,6 +492,40 @@ if @conta>0 then
             #:max_value => 365,
               :data   =>@adata)
     end
+    if @conta2>0 then
+    @bar2 =Gchart.bar(
+                #  :size   => '570x500',
+                   :size   => '570x500',
+                  :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                  :title  => @titulo+@titu2,
+                  :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                  :orientation => 'horizontal',
+                  :stacked => true,
+
+                  :bg =>'EEEEEE',
+                  :legend_position => 'bottom',
+
+
+                  :bar_width_and_spacing => @ancho,
+
+                  :axis_with_labels => 'y,x,r',
+
+                 :axis_labels => [@blabels2],
+
+          #   :axis_range => [nil, [@vinicio.to_time.
+          #     strftime("%b %y"), Time.now.strftime("%b %y"),
+          #     DateTime.new(0,1,1)], [0,@conta,1]],
+
+              #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
+                :axis_range => [nil, [0,@dfin,10], [1,@conta2,1]],
+                #:min_value => 0,
+                #:max_value => 365,
+                  :data   =>@adata2)
+        end
+
+
+
+
               columns do
 
                      column do
@@ -675,7 +759,16 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                         end
                           end
                         end
-                      end
+                      #  panel "Grafico de Situacion de Expedientes" do
+                           li do
+                             if @conta2>0 then
+                             strong { image_tag @bar2}
+                            end
+                              end
+                            end
+                #      end
+
+
                 end
 
 
