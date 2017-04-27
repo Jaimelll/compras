@@ -353,7 +353,7 @@ form do |f|
 
 end
 
-sidebar "RESPONSABLE DE EJECUCION", only: :index do
+sidebar "RESPONSABLE POR EJECUCION", only: :index do
   # prueba ini
     table_for Formula.where(product_id:1)  do
          column("Institucion ") do |formula|
