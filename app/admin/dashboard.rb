@@ -117,7 +117,7 @@ end
 
   #empieza el item
 if @conta <29 then
-    @conta=@alabels.count
+    @conta=@alabels.count+1
   @vfec1=@vinicio
   @vfec2=@vinicio
   @vfec3=@vinicio
@@ -326,7 +326,7 @@ end
 
 
 
-unless @vprord==200
+unless @vprord==200 or @vprord==300 or @vprord==8
 
   case @uproc
      when 1
@@ -628,6 +628,34 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                  end
                            end
+
+                           table_for Formula.where(product_id:1,cantidad:1)  do
+                                column("OBAC ") do |formula|
+                                  formula.nombre
+                                end
+                                column("Autorizados RJ") do |formula|
+                                  Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id")).count.to_s+ "/("+
+                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                 end
+                                column("Total") do |formula|
+                                        Item.where(ejecucion:4,modalidad:3,obac:formula.orden).count.to_s+ "/("+
+                                       number_with_delimiter(Item.where(ejecucion:4,modalidad:3,obac:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                                end
+
+                                 column("Excluidos RJ") do |formula|
+                                   Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
+                                      number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                  end
+                                 column("Total") do |formula|
+                                   Item.where(ejecucion:4,modalidad:4,obac:formula.orden,modalidad:4).count.to_s+ "/("+
+                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:4,obac:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                  end
+
+
+
+
+                            end
 
                                    end
 

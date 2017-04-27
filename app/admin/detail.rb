@@ -157,8 +157,8 @@ end
 
                  f.input :tipo,:label => 'Documemto de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
-                 f.input :pfecha, :label => 'fechade recepcion' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-                 f.input :importe,:label => 'Importe de CPP o CPR',:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :pfecha, :label => 'fecha de recepcion' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
                           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
 
@@ -204,10 +204,10 @@ end
               end
 
 
-             f.input :tipo, :input_html => { :style =>  'width:30%'}
-             f.input :numero, :input_html => { :style =>  'width:30%'}
-             f.input :pfecha, :label => 'fecha' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-             f.input :importe,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :tipo, :label => 'Documemto de recepcion', :input_html => { :style =>  'width:30%'}
+             f.input :numero, :label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
+             f.input :pfecha, :label => 'fecha de recepcion' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :importe, :label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
              f.input :obs, :input_html => { :style =>  'width:30%'}
