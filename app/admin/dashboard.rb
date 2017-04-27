@@ -326,7 +326,7 @@ end
 
 
 
-unless @vprord==200 or @vprord==300 or @vprord==8
+unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
   case @uproc
      when 1
