@@ -76,15 +76,14 @@ case @var
 
    when 2
    #corporativa
-    @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente')
+     @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente')
 
   when 3
   # autorizados
-   @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC')
- #when 4
-  #encago la marina
+     @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC')
+   #encago la marina
   # @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
- when 5
+  when 5
   #excluidos
     @vitem=Item.where(ejecucion:4,modalidad:4).order('expediente')
 
