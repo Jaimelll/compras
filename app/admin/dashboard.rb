@@ -476,7 +476,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                 Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:4).count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                end
-                               column("Culminados") do |formula|
+                               column("Culminados ACFFAA") do |formula|
                                  Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
                                     number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -586,7 +586,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                               column("TOTAL") do |formula|
                                 Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
                               column("Autorizacion") do |formula|
                                 Item.where(ejecucion:4,modalidad:3,lista:formula.orden).count.to_s+ "/("+
@@ -615,7 +615,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                                 column("TOTAL") do |formula|
                                   Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3").count.to_s+ "/("+
-                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                   end
                                 column("Autorizacion") do |formula|
                                        Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "/("+
@@ -648,8 +648,8 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                       number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                   end
                                  column("Exclusion") do |formula|
-                                   Item.where(ejecucion:4,modalidad:4,obac:formula.orden,modalidad:4).count.to_s+ "/("+
-                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:4,obac:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                   Item.where(ejecucion:4,obac:formula.orden,modalidad:4).count.to_s+ "/("+
+                                      number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                   end
 
 
