@@ -94,9 +94,14 @@ end
 @adata=[]
 @alabels=[]
 @blabels=[]
+
 @adata2=[]
 @alabels2=[]
 @blabels2=[]
+
+@adata3=[]
+@alabels3=[]
+@blabels3=[]
 
 @vinicio = '01/01/2017'
 @dfin=(Time.now-@vinicio.to_time).to_i/86400
@@ -108,6 +113,7 @@ end
 @adpc=[]
 @adec=[]
 @conta=0
+
 @aobac2=[]
 @apec2=[]
 @adac2=[]
@@ -115,6 +121,14 @@ end
 @adpc2=[]
 @adec2=[]
 @conta2=0
+
+@aobac3=[]
+@apec3=[]
+@adac3=[]
+@adem3=[]
+@adpc3=[]
+@adec3=[]
+@conta3=0
 
 
 
@@ -130,11 +144,18 @@ if @conta <29 then
 
     @titu1=" "
 else
+   if @conta2 <29 then
     @conta=@alabels.count
-  @titu2=" 2 de 2"
-  @titu1=" 1 de 2"
-
+    @titu2=" 2 de 2"
+    @titu1=" 1 de 2"
     @conta2=@alabels2.count+1
+  else
+    @conta2=@alabels2.count
+    @titu3=" 3 de 3"
+    @titu2=" 2 de 3"
+    @titu1=" 1 de 3"
+    @conta3=@alabels3.count+1
+  end
 end
   @vfec1=@vinicio
   @vfec2=@vinicio
@@ -186,15 +207,28 @@ else
 
 end
 else
-  if @var==2 and item.expediente and item.expediente>="1" then
-  @alabels2.push(Formula.where(product_id:16,orden:item.expediente).
+ if @conta2 <29 then
+    if @var==2 and item.expediente and item.expediente>="1" then
+    @alabels2.push(Formula.where(product_id:16,orden:item.expediente).
            select('nombre as dd').first.dd+"-"+
            Formula.where(product_id:16,orden:item.expediente).
                     select('descripcion as dd').first.dd+
                     "----"+item.pac+"-"+@n1)
+    else
+    #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+    @alabels2.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+    end
   else
-  #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-  @alabels2.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+    if @var==2 and item.expediente and item.expediente>="1" then
+    @alabels3.push(Formula.where(product_id:16,orden:item.expediente).
+           select('nombre as dd').first.dd+"-"+
+           Formula.where(product_id:16,orden:item.expediente).
+                    select('descripcion as dd').first.dd+
+                    "----"+item.pac+"-"+@n1)
+    else
+    #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+    @alabels3.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+    end
 
   end
 end
@@ -419,13 +453,21 @@ if @conta <29 then
 @adpc.push(@vdpc)
 @adec.push(@vdec)
 else
-  @aobac2.push(@vobac)
-  @apec2.push(@vpec)
-  @adac2.push(@vdac)
-  @adem2.push(@vdem)
-  @adpc2.push(@vdpc)
-  @adec2.push(@vdec)
-
+  if @conta2 <29 then
+     @aobac2.push(@vobac)
+     @apec2.push(@vpec)
+     @adac2.push(@vdac)
+     @adem2.push(@vdem)
+     @adpc2.push(@vdpc)
+     @adec2.push(@vdec)
+  else
+    @aobac3.push(@vobac)
+    @apec3.push(@vpec)
+    @adac3.push(@vdac)
+    @adem3.push(@vdem)
+    @adpc3.push(@vdpc)
+    @adec3.push(@vdec)
+  end
 end
 
 #termina if
@@ -443,6 +485,7 @@ end
 
 @blabels.push(@alabels.reverse.join("|"))
 @blabels2.push(@alabels2.reverse.join("|"))
+@blabels3.push(@alabels3.reverse.join("|"))
 
 #if @conta <29 then
 @adata.push(@aobac)
@@ -460,6 +503,13 @@ end
   @adata2.push(@adec2)
 
 #end
+@adata3.push(@aobac3)
+@adata3.push(@apec3)
+@adata3.push(@adac3)
+@adata3.push(@adem3)
+@adata3.push(@adpc3)
+@adata3.push(@adec3)
+
 @dif=30*86400
 if @conta>0 then
 @bar =Gchart.bar(
@@ -521,6 +571,36 @@ if @conta>0 then
                 #:max_value => 365,
                   :data   =>@adata2)
         end
+        if @conta3>0 then
+        @bar3 =Gchart.bar(
+                    #  :size   => '570x500',
+                       :size   => '570x500',
+                      :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                      :title  => @titulo+@titu3,
+                      :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                      :orientation => 'horizontal',
+                      :stacked => true,
+
+                      :bg =>'EEEEEE',
+                      :legend_position => 'bottom',
+
+
+                      :bar_width_and_spacing => @ancho,
+
+                      :axis_with_labels => 'y,x,r',
+
+                     :axis_labels => [@blabels3],
+
+              #   :axis_range => [nil, [@vinicio.to_time.
+              #     strftime("%b %y"), Time.now.strftime("%b %y"),
+              #     DateTime.new(0,1,1)], [0,@conta,1]],
+
+                  #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
+                    :axis_range => [nil, [0,@dfin,10], [1,@conta3,1]],
+                    #:min_value => 0,
+                    #:max_value => 365,
+                      :data   =>@adata3)
+            end
 
 
 
@@ -756,6 +836,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                       end
                     end
+
                     column do
                     panel "Grafico de Situacion de Expedientes" do
                        li do
@@ -763,18 +844,25 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                          strong { image_tag @bar}
                         end
                           end
-                        end
+
                       #  panel "Grafico de Situacion de Expedientes" do
                            li do
                              if @conta2>0 then
                              strong { image_tag @bar2}
                             end
                               end
-                            end
-                #      end
 
 
-                end
+                            li do
+                              if @conta3>0 then
+                              strong { image_tag @bar3}
+                             end
+                               end
+
+                     end
+
+end
+              end
 
 
 
