@@ -716,6 +716,8 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                 column("OBAC ACFFAA") do |formula|
                                   formula.nombre
                                 end
+
+
                                 column("con RJ") do |formula|
                                   Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id")).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -734,7 +736,11 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    Item.where(ejecucion:4,obac:formula.orden,modalidad:4).count.to_s+ "/("+
                                       number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                   end
+                                  column("Procesos ACFFAA") do |formula|
+                                          Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3").count.to_s+ "/("+
+                                         number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
+                                  end
 
 
 
