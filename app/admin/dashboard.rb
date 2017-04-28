@@ -237,7 +237,7 @@ end
 
 Detail.where(item_id:item.id).order('pfecha ASC,id').each do |detail|
 #empieza detail
-if detail.pfecha then
+if detail.pfecha and detail.actividad  then
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
 @vprord=Formula.where(product_id:12,orden:detail.actividad).
