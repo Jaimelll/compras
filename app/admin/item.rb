@@ -255,7 +255,7 @@ form do |f|
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
           case current_admin_user.id # a_variable is the variable we want to compare
-          when 1,2,4,6,8,9
+          when 1,2,4,6,8,9 #solo gex
               f.actions
 
             end
@@ -292,27 +292,27 @@ form do |f|
 
           # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
           case current_admin_user.id # a_variable is the variable we want to compare
-          when 1,2,4,6,8,9
+          when 1,2,4,6,8,9 #gex
                    n3=1
-             when 7,11
+             when 11 #estudio de mercado
                   if n2==4
                     n3=1
                   else
                     n3=2
                   end
-              when 12
+              when 12 # catalogacion
                      if n2==3
                        n3=1
                      else
                        n3=2
                      end
-              when 13
+              when 13 #proceso de contrataciones
                         if n2==5
                           n3=1
                         else
                           n3=2
                         end
-              when 14
+              when 14 #ejecucion de contratos
                            if n2==6
                              n3=1
                            else
