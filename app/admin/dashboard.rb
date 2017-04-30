@@ -106,6 +106,7 @@ end
 @vinicio = '01/01/2017'
 @dfin=(Time.now-@vinicio.to_time).to_i/86400
 
+@aversion=[]
 @aobac=[]
 @apec=[]
 @adac=[]
@@ -165,7 +166,7 @@ end
   @vfec6=@vinicio
 
 
-
+@vversion=0
 @vobac=0
 @vpec=0
 @vdac=0
@@ -247,8 +248,11 @@ if detail.pfecha and detail.actividad  then
 if @vproc==1 then
   @uproc=1
     if @vobac==0 then
-
-       @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+       if @vprord=36 then
+          @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+        else
+           @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+        end
     else
        @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
      end
@@ -396,7 +400,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
   case @uproc
      when 1
-       @vobac=@dfin
+       @vobac=@dfin-@vversion
        @cobac= @cobac+1
             @vpec=0
             @vdac=0
@@ -405,7 +409,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
             @vdec=0
 
      when 2
-       @vpec=@dfin-@vobac
+       @vpec=@dfin-@vobac-@vversion
         @cpec= @cpec+1
 
            @vdac=0
@@ -413,7 +417,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
            @vdpc=0
            @vdec=0
      when 3
-       @vdac=@dfin-@vobac-@vpec
+       @vdac=@dfin-@vobac-@vpec-@vversion
          @cdac= @cdac+1
 
           @vdem=0
@@ -421,7 +425,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
           @vdec=0
 
      when 4
-       @vdem=@dfin-@vobac-@vpec-@vdac
+       @vdem=@dfin-@vobac-@vpec-@vdac-@vversion
           @cdem= @cdem+1
 
           @vdpc=0
@@ -429,7 +433,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
      when 5
 
-     @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
+     @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem-@vversion
      @cdpc= @cdpc+1
 
 
@@ -437,7 +441,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
      when 6
 
-       @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
+       @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc-@vversion
        @cdec= @cdec+1
 
   end
@@ -446,6 +450,7 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 end
 
 if @conta <29 then
+@aversion.push(@vvesion)
 @aobac.push(@vobac)
 @apec.push(@vpec)
 @adac.push(@vdac)
@@ -488,6 +493,7 @@ end
 @blabels3.push(@alabels3.reverse.join("|"))
 
 #if @conta <29 then
+@adata.push(@aversion)
 @adata.push(@aobac)
 @adata.push(@apec)
 @adata.push(@adac)
@@ -515,9 +521,9 @@ if @conta>0 then
 @bar =Gchart.bar(
             #  :size   => '570x500',
                :size   => '570x500',
-              :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+              :bar_colors => ['FF0033','FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
               :title  => @titulo+@titu1,
-              :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+              :legend => ['ver','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
               :orientation => 'horizontal',
               :stacked => true,
 
