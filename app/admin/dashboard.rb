@@ -115,6 +115,7 @@ end
 @adec=[]
 @conta=0
 
+@aversion2=[]
 @aobac2=[]
 @apec2=[]
 @adac2=[]
@@ -123,6 +124,7 @@ end
 @adec2=[]
 @conta2=0
 
+@aversion3=[]
 @aobac3=[]
 @apec3=[]
 @adac3=[]
@@ -247,12 +249,12 @@ if detail.pfecha and detail.actividad  then
 
 if @vproc==1 then
   @uproc=1
+
     if @vobac==0 then
-       if @vprord=36 then
-          @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
-        else
-           @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
-        end
+
+
+         @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+
     else
        @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
      end
@@ -377,16 +379,22 @@ if @vdec==0  then
     @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
   end
     @vfec6= detail.pfecha
-    #termina detail??
+
+
+
     end
 
+  #if @vprord==36 then
+  #  @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+
+  #  end
 
 end
 
 
 
 
-
+#termina detail??
 
 
 
@@ -400,6 +408,8 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
   case @uproc
      when 1
+
+
        @vobac=@dfin-@vversion
        @cobac= @cobac+1
             @vpec=0
@@ -445,12 +455,12 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
        @cdec= @cdec+1
 
   end
-
+  @vobac=@vobac-@vversion
 
 end
 
 if @conta <29 then
-@aversion.push(@vvesion)
+@aversion.push(@vversion)
 @aobac.push(@vobac)
 @apec.push(@vpec)
 @adac.push(@vdac)
@@ -459,6 +469,7 @@ if @conta <29 then
 @adec.push(@vdec)
 else
   if @conta2 <29 then
+    @aversion2.push(@vversion)
      @aobac2.push(@vobac)
      @apec2.push(@vpec)
      @adac2.push(@vdac)
@@ -466,6 +477,7 @@ else
      @adpc2.push(@vdpc)
      @adec2.push(@vdec)
   else
+    @aversion3.push(@vversion)
     @aobac3.push(@vobac)
     @apec3.push(@vpec)
     @adac3.push(@vdac)
@@ -501,6 +513,7 @@ end
 @adata.push(@adpc)
 @adata.push(@adec)
 #else
+ @adata2.push(@aversion2)
   @adata2.push(@aobac2)
   @adata2.push(@apec2)
   @adata2.push(@adac2)
@@ -509,6 +522,7 @@ end
   @adata2.push(@adec2)
 
 #end
+@adata3.push(@aversion3)
 @adata3.push(@aobac3)
 @adata3.push(@apec3)
 @adata3.push(@adac3)
@@ -518,42 +532,42 @@ end
 
 @dif=30*86400
 if @conta>0 then
-@bar =Gchart.bar(
-            #  :size   => '570x500',
-               :size   => '570x500',
-              :bar_colors => ['FF0033','FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-              :title  => @titulo+@titu1,
-              :legend => ['ver','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
-              :orientation => 'horizontal',
-              :stacked => true,
+  @bar =Gchart.bar(
+              #  :size   => '570x500',
+                 :size   => '570x500',
+                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                :title  => @titulo+@titu1,
+                :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                :orientation => 'horizontal',
+                :stacked => true,
 
-              :bg =>'EEEEEE',
-              :legend_position => 'bottom',
+                :bg =>'EEEEEE',
+                :legend_position => 'bottom',
 
 
-              :bar_width_and_spacing => @ancho,
+                :bar_width_and_spacing => @ancho,
 
-              :axis_with_labels => 'y,x,r',
+                :axis_with_labels => 'y,x,r',
 
-             :axis_labels => [@blabels],
+               :axis_labels => [@blabels],
 
-      #   :axis_range => [nil, [@vinicio.to_time.
-      #     strftime("%b %y"), Time.now.strftime("%b %y"),
-      #     DateTime.new(0,1,1)], [0,@conta,1]],
+        #   :axis_range => [nil, [@vinicio.to_time.
+        #     strftime("%b %y"), Time.now.strftime("%b %y"),
+        #     DateTime.new(0,1,1)], [0,@conta,1]],
 
-          #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-            :axis_range => [nil, [0,@dfin,10], [1,@conta,1]],
-            #:min_value => 0,
-            #:max_value => 365,
-              :data   =>@adata)
+            #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
+              :axis_range => [nil, [0,@dfin,10], [1,@conta,1]],
+              #:min_value => 0,
+              #:max_value => 365,
+                :data   =>@adata)
     end
     if @conta2>0 then
     @bar2 =Gchart.bar(
                 #  :size   => '570x500',
                    :size   => '570x500',
-                  :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                   :title  => @titulo+@titu2,
-                  :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                  :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -581,9 +595,9 @@ if @conta>0 then
         @bar3 =Gchart.bar(
                     #  :size   => '570x500',
                        :size   => '570x500',
-                      :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                        :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                       :title  => @titulo+@titu3,
-                      :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                      :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
