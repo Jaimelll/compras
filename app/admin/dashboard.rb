@@ -384,10 +384,10 @@ if @vdec==0  then
 
     end
 
-  #if @vprord==36 then
-  #  @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+  if @vprord==36 then
+    @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
 
-  #  end
+    end
 
 end
 
@@ -666,89 +666,45 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                end
 
                  table_for Formula.where(product_id:11)  do
+                   @p=ActiveRecord::Base.connection.execute("SELECT items.periodo,
+                   MAX(formulas.cantidad) as acti FROM public.items, public.details,
+                   public.formulas WHERE items.id = details.item_id AND
+                   details.actividad = formulas.orden AND
+                   formulas.product_id = 12 AND items.ejecucion=4 and
+                    items.modalidad<3 GROUP BY items.periodo,details.item_id").to_a
+
                                     column("Avance ACFFAA ") do |formula|
                                       formula.nombre
                                     end
                                     column("OBAC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").
-                                      count-
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                       order("items.id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad,details.id").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(id)")).length+
-                                           Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                             order("items.id,details.pfecha DESC").
-                                              select("items.id,details.pfecha,details.actividad,details.id").
-                                               where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                               select("item_id,max(pfecha)")).
-                                                where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                                 select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                                 where(product_id:12,cantidad:1).select("orden")).length
 
+                                      @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
 
                                     end
                                          column("GEX") do |formula|
-                                           Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                            order("items.id,details.pfecha DESC").
-                                             select("items.id,details.pfecha,details.actividad,details.id").
-                                              where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                              select("item_id,max(pfecha)")).
-                                               where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                                select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                                where(product_id:12,cantidad:2).select("orden")).length
+
+                                       @p.select {|f| f["acti"]== 2 and f["periodo"]==formula.orden}.count
+
 
                                     end
 
                                     column("DC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                       order("items.id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad,details.id").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                           where(product_id:12,cantidad:3).select("orden")).length
 
+                                       @p.select {|f| f["acti"]== 3 and f["periodo"]==formula.orden}.count
 
                                     end
 
                                     column("DEM") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                       order("items.id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad,details.id").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                           where(product_id:12,cantidad:4).select("orden")).length
-
+                                          @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
                                      end
                                      column("DPC") do |formula|
-                                       Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                        order("items.id,details.pfecha DESC").
-                                         select("items.id,details.pfecha,details.actividad,details.id").
-                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                          select("item_id,max(pfecha)")).
-                                           where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                            select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                            where(product_id:12,cantidad:5).select("orden")).length
-
+                                         @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
                                    end
                                    column("DEC") do |formula|
-                                     Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                      order("items.id,details.pfecha DESC").
-                                       select("items.id,details.pfecha,details.actividad,details.id").
-                                        where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                        select("item_id,max(pfecha)")).
-                                         where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                          select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                          where(product_id:12,cantidad:6).select("orden")).length
+                                   @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count
                                  end
                                  column("TOTAL PAC") do |formula|
-                                   Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").count
+                                   @p.select {|f|  f["periodo"]==formula.orden}.count
                                end
                                  end
                          table_for Formula.where(product_id:3)  do
