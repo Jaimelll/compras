@@ -106,6 +106,7 @@ end
 @vinicio = '01/01/2017'
 @dfin=(Time.now-@vinicio.to_time).to_i/86400
 
+@aversion=[]
 @aobac=[]
 @apec=[]
 @adac=[]
@@ -114,6 +115,7 @@ end
 @adec=[]
 @conta=0
 
+@aversion2=[]
 @aobac2=[]
 @apec2=[]
 @adac2=[]
@@ -122,6 +124,7 @@ end
 @adec2=[]
 @conta2=0
 
+@aversion3=[]
 @aobac3=[]
 @apec3=[]
 @adac3=[]
@@ -165,7 +168,7 @@ end
   @vfec6=@vinicio
 
 
-
+@vversion=0
 @vobac=0
 @vpec=0
 @vdac=0
@@ -246,9 +249,12 @@ if detail.pfecha and detail.actividad  then
 
 if @vproc==1 then
   @uproc=1
+
     if @vobac==0 then
 
-       @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+
+         @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+
     else
        @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
      end
@@ -373,8 +379,15 @@ if @vdec==0  then
     @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
   end
     @vfec6= detail.pfecha
-    #termina detail??
-    end
+
+
+
+      end
+
+      if @vprord==36 then
+         @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
+
+      end
 
 
 end
@@ -382,7 +395,7 @@ end
 
 
 
-
+#termina detail??
 
 
 
@@ -396,6 +409,8 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
 
   case @uproc
      when 1
+
+
        @vobac=@dfin
        @cobac= @cobac+1
             @vpec=0
@@ -441,11 +456,12 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
        @cdec= @cdec+1
 
   end
-
+  @vobac=@vobac-@vversion
 
 end
 
 if @conta <29 then
+@aversion.push(@vversion)
 @aobac.push(@vobac)
 @apec.push(@vpec)
 @adac.push(@vdac)
@@ -454,6 +470,7 @@ if @conta <29 then
 @adec.push(@vdec)
 else
   if @conta2 <29 then
+    @aversion2.push(@vversion)
      @aobac2.push(@vobac)
      @apec2.push(@vpec)
      @adac2.push(@vdac)
@@ -461,6 +478,7 @@ else
      @adpc2.push(@vdpc)
      @adec2.push(@vdec)
   else
+    @aversion3.push(@vversion)
     @aobac3.push(@vobac)
     @apec3.push(@vpec)
     @adac3.push(@vdac)
@@ -488,6 +506,7 @@ end
 @blabels3.push(@alabels3.reverse.join("|"))
 
 #if @conta <29 then
+@adata.push(@aversion)
 @adata.push(@aobac)
 @adata.push(@apec)
 @adata.push(@adac)
@@ -495,6 +514,7 @@ end
 @adata.push(@adpc)
 @adata.push(@adec)
 #else
+ @adata2.push(@aversion2)
   @adata2.push(@aobac2)
   @adata2.push(@apec2)
   @adata2.push(@adac2)
@@ -503,6 +523,7 @@ end
   @adata2.push(@adec2)
 
 #end
+@adata3.push(@aversion3)
 @adata3.push(@aobac3)
 @adata3.push(@apec3)
 @adata3.push(@adac3)
@@ -512,42 +533,42 @@ end
 
 @dif=30*86400
 if @conta>0 then
-@bar =Gchart.bar(
-            #  :size   => '570x500',
-               :size   => '570x500',
-              :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-              :title  => @titulo+@titu1,
-              :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
-              :orientation => 'horizontal',
-              :stacked => true,
+  @bar =Gchart.bar(
+              #  :size   => '570x500',
+                 :size   => '570x500',
+                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                :title  => @titulo+@titu1,
+                :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                :orientation => 'horizontal',
+                :stacked => true,
 
-              :bg =>'EEEEEE',
-              :legend_position => 'bottom',
+                :bg =>'EEEEEE',
+                :legend_position => 'bottom',
 
 
-              :bar_width_and_spacing => @ancho,
+                :bar_width_and_spacing => @ancho,
 
-              :axis_with_labels => 'y,x,r',
+                :axis_with_labels => 'y,x,r',
 
-             :axis_labels => [@blabels],
+               :axis_labels => [@blabels],
 
-      #   :axis_range => [nil, [@vinicio.to_time.
-      #     strftime("%b %y"), Time.now.strftime("%b %y"),
-      #     DateTime.new(0,1,1)], [0,@conta,1]],
+        #   :axis_range => [nil, [@vinicio.to_time.
+        #     strftime("%b %y"), Time.now.strftime("%b %y"),
+        #     DateTime.new(0,1,1)], [0,@conta,1]],
 
-          #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-            :axis_range => [nil, [0,@dfin,10], [1,@conta,1]],
-            #:min_value => 0,
-            #:max_value => 365,
-              :data   =>@adata)
+            #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
+              :axis_range => [nil, [0,@dfin,10], [1,@conta,1]],
+              #:min_value => 0,
+              #:max_value => 365,
+                :data   =>@adata)
     end
     if @conta2>0 then
     @bar2 =Gchart.bar(
                 #  :size   => '570x500',
                    :size   => '570x500',
-                  :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                   :title  => @titulo+@titu2,
-                  :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                  :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -575,9 +596,9 @@ if @conta>0 then
         @bar3 =Gchart.bar(
                     #  :size   => '570x500',
                        :size   => '570x500',
-                      :bar_colors => ['FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                        :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                       :title  => @titulo+@titu3,
-                      :legend => ['OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                      :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
@@ -646,89 +667,45 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                end
 
                  table_for Formula.where(product_id:11)  do
+                   @p=ActiveRecord::Base.connection.execute("SELECT items.periodo,
+                   MAX(formulas.cantidad) as acti FROM public.items, public.details,
+                   public.formulas WHERE items.id = details.item_id AND
+                   details.actividad = formulas.orden AND
+                   formulas.product_id = 12 AND items.ejecucion=4 and
+                    items.modalidad<3 GROUP BY items.periodo,details.item_id").to_a
+
                                     column("Avance ACFFAA ") do |formula|
                                       formula.nombre
                                     end
                                     column("OBAC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").
-                                      count-
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                       order("items.id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad,details.id").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(id)")).length+
-                                           Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                             order("items.id,details.pfecha DESC").
-                                              select("items.id,details.pfecha,details.actividad,details.id").
-                                               where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                               select("item_id,max(pfecha)")).
-                                                where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                                 select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                                 where(product_id:12,cantidad:1).select("orden")).length
 
+                                      @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
 
                                     end
                                          column("GEX") do |formula|
-                                           Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                            order("items.id,details.pfecha DESC").
-                                             select("items.id,details.pfecha,details.actividad,details.id").
-                                              where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                              select("item_id,max(pfecha)")).
-                                               where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                                select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                                where(product_id:12,cantidad:2).select("orden")).length
+
+                                       @p.select {|f| f["acti"]== 2 and f["periodo"]==formula.orden}.count
+
 
                                     end
 
                                     column("DC") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                       order("items.id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad,details.id").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                           where(product_id:12,cantidad:3).select("orden")).length
 
+                                       @p.select {|f| f["acti"]== 3 and f["periodo"]==formula.orden}.count
 
                                     end
 
                                     column("DEM") do |formula|
-                                      Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                       order("items.id,details.pfecha DESC").
-                                        select("items.id,details.pfecha,details.actividad,details.id").
-                                         where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                         select("item_id,max(pfecha)")).
-                                          where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                           select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                           where(product_id:12,cantidad:4).select("orden")).length
-
+                                          @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
                                      end
                                      column("DPC") do |formula|
-                                       Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                        order("items.id,details.pfecha DESC").
-                                         select("items.id,details.pfecha,details.actividad,details.id").
-                                          where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                          select("item_id,max(pfecha)")).
-                                           where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                            select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                            where(product_id:12,cantidad:5).select("orden")).length
-
+                                         @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
                                    end
                                    column("DEC") do |formula|
-                                     Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").joins(:details).
-                                      order("items.id,details.pfecha DESC").
-                                       select("items.id,details.pfecha,details.actividad,details.id").
-                                        where('(items.id,details.pfecha) IN(?)',Detail.group("item_id").
-                                        select("item_id,max(pfecha)")).
-                                         where('(items.id,details.id) IN(?)',Detail.group("item_id").
-                                          select("item_id,max(id)")). where('actividad IN(?)',Formula .
-                                          where(product_id:12,cantidad:6).select("orden")).length
+                                   @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count
                                  end
                                  column("TOTAL PAC") do |formula|
-                                   Item.where(periodo: formula.orden,ejecucion:4).where("modalidad<3").count
+                                   @p.select {|f|  f["periodo"]==formula.orden}.count
                                end
                                  end
                          table_for Formula.where(product_id:3)  do
