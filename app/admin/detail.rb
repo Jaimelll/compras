@@ -174,7 +174,7 @@ end
 
 
 
-                 f.input :tipo,:label => 'Documemto de recepcion', :input_html => { :style =>  'width:30%'}
+                 f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
                  f.input :pfecha, :label => 'fecha de documento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
