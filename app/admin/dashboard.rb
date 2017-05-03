@@ -202,11 +202,11 @@ if @var==2 and item.expediente and item.expediente>="1" then
 @alabels.push(Formula.where(product_id:16,orden:item.expediente).
          select('nombre as dd').first.dd+"-"+
          Formula.where(product_id:16,orden:item.expediente).
-                  select('descripcion as dd').first.dd+
+                  select('descripcion as dd').first.dd.capitalize+
                   "----"+item.pac+"-"+@n1)
 else
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-@alabels.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+@alabels.push(item.descripcion.underscore.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
 
 end
 else
@@ -215,22 +215,22 @@ else
     @alabels2.push(Formula.where(product_id:16,orden:item.expediente).
            select('nombre as dd').first.dd+"-"+
            Formula.where(product_id:16,orden:item.expediente).
-                    select('descripcion as dd').first.dd+
+                    select('descripcion as dd').first.dd.capitalize+
                     "----"+item.pac+"-"+@n1)
     else
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @alabels2.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+    @alabels2.push(item.descripcion.underscore.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
     end
   else
     if @var==2 and item.expediente and item.expediente>="1" then
     @alabels3.push(Formula.where(product_id:16,orden:item.expediente).
            select('nombre as dd').first.dd+"-"+
            Formula.where(product_id:16,orden:item.expediente).
-                    select('descripcion as dd').first.dd+
+                    select('descripcion as dd').first.dd.capitalize+
                     "----"+item.pac+"-"+@n1)
     else
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @alabels3.push(item.descripcion.underscore.truncate(40)+"----"+item.pac+"-"+@n1)
+    @alabels3.push(item.descripcion.underscore.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
     end
 
   end
