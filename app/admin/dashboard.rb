@@ -273,6 +273,11 @@ if @vproc==2 then
 
     else
          @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+         @vdac=0
+         @vdem=0
+         @vdpc=0
+         @vdec=0
+
 
     end
     @vfec2= detail.pfecha
@@ -294,6 +299,9 @@ if @vproc==3 then
 
     else
        @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
+       @vdem=0
+       @vdpc=0
+       @vdec=0
     end
     @vfec3= detail.pfecha
 
@@ -318,6 +326,8 @@ if @vproc==4 then
 
     else
                  @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
+                 @vdpc=0
+                 @vdec=0
     end
     @vfec4= detail.pfecha
 
@@ -346,6 +356,8 @@ if @vproc==5 then
 
     else
                @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
+
+               @vdec=0
     end
 
     @vfec5= detail.pfecha
