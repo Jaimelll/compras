@@ -736,10 +736,10 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
 
                               end
                               column("Corporativo") do |formula|
-
-                                  Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "/("+
+                             @corporativa=  formula.orden
+                                @lc=   Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
+                               link_to "#{@lc} ", reports_comment2_path(format: :pdf,:param2=> @corporativa)
                               end
 
                               column("TOTAL") do |formula|

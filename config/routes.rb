@@ -34,5 +34,6 @@ end
 
 root 'admin/dashboard#index'
 match 'reports/comment', via: [:get]
+match 'reports/comment2', via: [:get]
 
 end
