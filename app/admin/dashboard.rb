@@ -723,7 +723,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                  end
                          table_for Formula.where(product_id:3)  do
                               column("Listas ACFFAA") do |formula|
-                                formula.nombre
+                              formula.nombre
                               end
                               column("Encargo") do |formula|
 
