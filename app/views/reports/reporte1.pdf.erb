@@ -7,12 +7,13 @@
 <meta charset="utf-8">
 </head>
 
-<h2>Engargo - <%=   @lista %></h2>
+<h2>Encargo - <%=   @lista.titleize %></h2>
 
 <table>
   <thead>
 
     <tr>
+      <th>N°</th>
       <th>Pac</th>
 
       <th>Obac</th>
@@ -27,11 +28,14 @@
   </thead>
 
   <tbody>
+    <%  @conta=0 %>
     <% @items.each do |item| %>
         <tr>
+          <% @conta=@conta+1 %>
+        <td><%= @conta %></td>
         <td><%= item.pac %></td>
 
-        <td><%= item.obac %></td>
+        <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
 
         <td><%= item.descripcion.underscore.capitalize %></td>
 
@@ -40,8 +44,12 @@
 
       </td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
 
+    <% end %>
+
+  </tbody>
+
+</table>
+<h3>Procesos = <%=   @conta %></h3>
+<h3>Total(Soles) = <%=   number_with_delimiter(@items.sum(:certificado).to_i, delimiter: ",") %></h3>
 <br>
