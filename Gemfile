@@ -36,6 +36,8 @@ gem 'jbuilder', '~> 2.5'
 gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
 gem 'devise'
 gem 'googlecharts'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary-edge'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

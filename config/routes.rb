@@ -33,6 +33,6 @@ end
 
 
 root 'admin/dashboard#index'
-
+match 'reports/comment', via: [:get]
 
 end

@@ -855,6 +855,8 @@ end
               end
 
 
+          #  br
+          #    strong { link_to 'ver pdf reporte1', reports_comment_path(format: :pdf)}
 
 
   end # content

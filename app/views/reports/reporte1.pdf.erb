@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<%= wicked_pdf_stylesheet_link_tag 'pdf' %>
+<meta charset="utf-8">
+</head>
+
+<h1>Details</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Actividad</th>
+      <th>Tipo</th>
+      <th>Numero</th>
+      <th>Pfecha</th>
+      <th>Importe</th>
+      <th>Obs</th>
+
+      <th>IdPac</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @details.each do |detail| %>
+      <tr>
+        <td><%= detail.actividad %></td>
+        <td><%= detail.tipo %></td>
+        <td><%= detail.numero %></td>
+        <td><%= detail.pfecha %></td>
+        <td><%= detail.importe %></td>
+        <td><%= detail.obs %></td>
+
+        <td><%= detail.item_id %></td>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
