@@ -7,35 +7,37 @@
 <meta charset="utf-8">
 </head>
 
-<h1>Details</h1>
+<h1>Items</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Actividad</th>
-      <th>Tipo</th>
-      <th>Numero</th>
-      <th>Pfecha</th>
-      <th>Importe</th>
-      <th>Obs</th>
+      <th>Pac</th>
 
-      <th>IdPac</th>
+      <th>Obac</th>
+
+      <th>Descripcion</th>
+
+      <th>Certificado</th>
+
+
       <th colspan="3"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @details.each do |detail| %>
+    <% @items.each do |item| %>
       <tr>
-        <td><%= detail.actividad %></td>
-        <td><%= detail.tipo %></td>
-        <td><%= detail.numero %></td>
-        <td><%= detail.pfecha %></td>
-        <td><%= detail.importe %></td>
-        <td><%= detail.obs %></td>
+        <td><%= item.pac %></td>
 
-        <td><%= detail.item_id %></td>
+        <td><%= item.obac %></td>
 
+        <td><%= item.descripcion.underscore.capitalize %></td>
+
+        <td><%= number_with_delimiter(item.certificado.to_i, delimiter: ",") %></td>
+
+
+      </td>
       </tr>
     <% end %>
   </tbody>

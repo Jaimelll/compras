@@ -1,7 +1,8 @@
 class ReportsController < ApplicationController
 
 def comment
-  @details = Detail.where("pfecha>'02/05/2017'")
+
+  @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2])
 respond_to do |format|
 
 format.html

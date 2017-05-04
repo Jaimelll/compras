@@ -726,8 +726,13 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                 formula.nombre
                               end
                               column("Encargo") do |formula|
-                                  Item.where(ejecucion:4,modalidad:2,lista:formula.orden).count.to_s+ "/("+
+
+                              @encargo=  formula.orden
+
+                              @le= Item.where(ejecucion:4,modalidad:2,lista:formula.orden).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:2,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                              link_to "#{@le} ", reports_comment_path(format: :pdf,:param2=> @encargo)
 
                               end
                               column("Corporativo") do |formula|
@@ -855,8 +860,6 @@ end
               end
 
 
-          #  br
-          #    strong { link_to 'ver pdf reporte1', reports_comment_path(format: :pdf)}
 
 
   end # content
