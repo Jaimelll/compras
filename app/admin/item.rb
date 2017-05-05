@@ -181,7 +181,7 @@ form do |f|
 
        f.input :pac ,:label => 'PAC SEACE', :input_html => { :style =>  'width:30%'}
        f.input :expediente, :as => :select, :collection =>
-         Formula.where(product_id:16).map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
+         Formula.where(product_id:16).map{|u| [u.nombre+"-"+u.descripcion, u.nombre]}
 
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}

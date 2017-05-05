@@ -72,20 +72,20 @@ end
 case @var
    when 1
      #encargo sin la MGP
-     @vitem=Item.where(ejecucion:4,modalidad:2).order('obac ASC')
+     @vitem=Item.where(ejecucion:4,modalidad:2).order('obac ASC,pac')
 
    when 2
    #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente')
+     @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente,obac')
 
   when 3
   # autorizados
-     @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC')
+     @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC,pac')
    #encago la marina
   # @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
   when 5
   #excluidos
-    @vitem=Item.where(ejecucion:4,modalidad:4).order('expediente')
+    @vitem=Item.where(ejecucion:4,modalidad:4).order('obac ASC,pac')
 
 
 
@@ -198,10 +198,10 @@ end
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 #@alabels2.push(item.descripcion.first(10))
 if @conta <29 then
-if @var==2 and item.expediente and item.expediente>="1" then
-@alabels.push(Formula.where(product_id:16,orden:item.expediente).
+if @var==2 and item.expediente and item.expediente>="01" then
+@alabels.push(Formula.where(product_id:16,nombre:item.expediente).
          select('nombre as dd').first.dd+"-"+
-         Formula.where(product_id:16,orden:item.expediente).
+         Formula.where(product_id:16,nombre:item.expediente).
                   select('descripcion as dd').first.dd.capitalize+
                   "----"+item.pac+"-"+@n1)
 else
@@ -212,9 +212,9 @@ end
 else
  if @conta2 <29 then
     if @var==2 and item.expediente and item.expediente>="1" then
-    @alabels2.push(Formula.where(product_id:16,orden:item.expediente).
+    @alabels2.push(Formula.where(product_id:16,nombre:item.expediente).
            select('nombre as dd').first.dd+"-"+
-           Formula.where(product_id:16,orden:item.expediente).
+           Formula.where(product_id:16,nombre:item.expediente).
                     select('descripcion as dd').first.dd.capitalize+
                     "----"+item.pac+"-"+@n1)
     else
@@ -223,9 +223,9 @@ else
     end
   else
     if @var==2 and item.expediente and item.expediente>="1" then
-    @alabels3.push(Formula.where(product_id:16,orden:item.expediente).
+    @alabels3.push(Formula.where(product_id:16,nombre:item.expediente).
            select('nombre as dd').first.dd+"-"+
-           Formula.where(product_id:16,orden:item.expediente).
+           Formula.where(product_id:16,nombre:item.expediente).
                     select('descripcion as dd').first.dd.capitalize+
                     "----"+item.pac+"-"+@n1)
     else
@@ -833,7 +833,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                     end
 
                     column do
-                    panel "Grafico de Situacion de Expedientes" do
+                    panel "Grafico de Situacion de Procesos" do
                        li do
                          if @conta>0 then
                          strong { image_tag @bar}
