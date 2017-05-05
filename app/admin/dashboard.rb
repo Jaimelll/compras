@@ -688,9 +688,12 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    number_with_delimiter(Item.where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-                              column("Excluidos ACFFAA") do |formula|
-                                Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:4).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              column("Excluidos RJ ACFFAA") do |formula|
+
+                                   Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
+                                      number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+
                                end
                                column("Culminados ACFFAA") do |formula|
                                  Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
@@ -793,6 +796,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                  column("Excluidos con RJ") do |formula|
                                    Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
                                       number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
                                   end
 
                                   column("Por Excluir") do |formula|
