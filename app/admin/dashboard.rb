@@ -197,24 +197,26 @@ end
 
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 #@alabels2.push(item.descripcion.first(10))
-if @conta <29 then
-if @var==2 and item.expediente and item.expediente>="01" then
-
-@alabels.push(Formula.where(product_id:16,nombre:item.expediente).
-         select('nombre as dd').first.dd+"-"+
-          Formula.where(product_id:16,nombre:item.expediente).
-                    select('descripcion as dd').first.dd.underscore+
-                  "----"+item.pac+"-"+@n1)
-else
-#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 @desc=item.descripcion.underscore
 
 if @desc[0,3]=='adq' then
     @desc=@desc[15,54]
 else
  @desc=@desc
-#  @desc=@desc[0,3]
+
 end
+
+if @conta <29 then
+if @var==2 and item.expediente and item.expediente>="01" then
+
+@alabels.push(Formula.where(product_id:16,nombre:item.expediente).
+         select('nombre as dd').first.dd+"-"+
+          Formula.where(product_id:16,nombre:item.expediente).
+                    select('descripcion as dd').first.dd.underscore.truncate(30)+
+                  "----"+item.pac+"-"+@n1)
+else
+#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+
 
 
 
@@ -228,22 +230,27 @@ else
     @alabels2.push(Formula.where(product_id:16,nombre:item.expediente).
            select('nombre as dd').first.dd+"-"+
            Formula.where(product_id:16,nombre:item.expediente).
-                    select('descripcion as dd').first.dd.capitalize+
+                    select('descripcion as dd').first.dd.capitalize.truncate(30)+
                     "----"+item.pac+"-"+@n1)
     else
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @alabels2.push(item.descripcion.underscore.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
+
+    @alabels2.push(@desc.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
+
+
     end
   else
     if @var==2 and item.expediente and item.expediente>="1" then
     @alabels3.push(Formula.where(product_id:16,nombre:item.expediente).
            select('nombre as dd').first.dd+"-"+
            Formula.where(product_id:16,nombre:item.expediente).
-                    select('descripcion as dd').first.dd.capitalize+
+                    select('descripcion as dd').first.dd.capitalize.truncate(30)+
                     "----"+item.pac+"-"+@n1)
     else
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @alabels3.push(item.descripcion.underscore.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
+
+    @alabels3.push(@desc.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
+
     end
 
   end
