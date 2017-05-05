@@ -33,7 +33,7 @@
         <tr>
           <% @conta=@conta+1 %>
         <td><%= @conta.to_s+".-" %></td>
-        <td><%= item.pac %></td>
+        <td><%= item.pac.to_i %></td>
 
 
            <% if item.expediente.to_i>0 then %>

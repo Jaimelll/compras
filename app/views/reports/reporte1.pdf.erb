@@ -33,7 +33,7 @@
         <tr>
           <% @conta=@conta+1 %>
         <td><%= @conta.to_s+".-" %></td>
-        <td><%= item.pac %></td>
+        <td><%= item.pac.to_i %></td>
 
         <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
 
