@@ -199,14 +199,27 @@ end
 #@alabels2.push(item.descripcion.first(10))
 if @conta <29 then
 if @var==2 and item.expediente and item.expediente>="01" then
+
 @alabels.push(Formula.where(product_id:16,nombre:item.expediente).
          select('nombre as dd').first.dd+"-"+
-         Formula.where(product_id:16,nombre:item.expediente).
-                  select('descripcion as dd').first.dd.capitalize+
+          Formula.where(product_id:16,nombre:item.expediente).
+                    select('descripcion as dd').first.dd.underscore+
                   "----"+item.pac+"-"+@n1)
 else
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-@alabels.push(item.descripcion.underscore.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
+@desc=item.descripcion.underscore
+
+if @desc[0,3]=='adq' then
+    @desc=@desc[15,54]
+else
+ @desc=@desc
+#  @desc=@desc[0,3]
+end
+
+
+
+
+@alabels.push(@desc.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
 
 end
 else
@@ -641,7 +654,7 @@ if @conta>0 then
               columns do
 
                      column do
-                       panel "PROCESOS Y MONTOS POR PERIODO, LISTAS Y MERCADO AF-2017" do
+                       panel "PROCESOS PROCESOS EN CURSO AF-2017" do
                          table_for Formula.where(product_id:11)  do
                               column("Periodo PAC") do |formula|
                                 formula.nombre
@@ -746,76 +759,46 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                 Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
-                              column("Autorizacion") do |formula|
-                                Item.where(ejecucion:4,modalidad:3,lista:formula.orden).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,modalidad:3,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
-                              column("Exclusion") do |formula|
-                                Item.where(ejecucion:4,modalidad:4,lista:formula.orden).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,modalidad:4,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
+
 
                           end
-                          table_for Formula.where(product_id:6)  do
-                               column("Mercado ACFFAA ") do |formula|
-                                 formula.nombre
-                               end
-                               column("Encargo") do |formula|
-                                 Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).count.to_s+ "/("+
-                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:2,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                               end
-                               column("Corporativo") do |formula|
-                                 Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).count.to_s+ "/("+
-                                    number_with_delimiter(Item.where(ejecucion:4,modalidad:1,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                               end
-
-                                column("TOTAL") do |formula|
-                                  Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3").count.to_s+ "/("+
-                                     number_with_delimiter(Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                  end
-                                column("Autorizacion") do |formula|
-                                       Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).count.to_s+ "/("+
-                                          number_with_delimiter(Item.where(ejecucion:4,modalidad:3,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                      end
-
-
-                                column("Exclusion") do |formula|
-                                  Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).count.to_s+ "/("+
-                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:4,tipo:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                 end
-                           end
 
                            table_for Formula.where(product_id:1,cantidad:1)  do
-                                column("OBAC ACFFAA") do |formula|
+                                column("Autorizados y Excluidos") do |formula|
                                   formula.nombre
                                 end
 
 
-                                column("con RJ") do |formula|
+                                column("Autorizados con RJ") do |formula|
                                   Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id")).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                  end
-                                column("Autorizacion") do |formula|
-                                        Item.where(ejecucion:4,modalidad:3,obac:formula.orden).count.to_s+ "/("+
-                                       number_with_delimiter(Item.where(ejecucion:4,modalidad:3,obac:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                                end
 
-                                 column("con RJ") do |formula|
+                                 column("Por Autorizar") do |formula|
+                                  @auto=Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
+                                  @aurj= Item.where(ejecucion:4,modalidad:3,obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).select("item_id"))
+                                         (@auto.count-@aurj.count).to_s+ "/("+
+                                        number_with_delimiter((@auto.sum(:certificado)-@aurj.sum(:certificado)).to_i, delimiter: ",").to_s+ ")"
+
+                                  end
+
+                                 column("Excluidos con RJ") do |formula|
                                    Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
                                       number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                   end
-                                 column("Exclusion") do |formula|
-                                   Item.where(ejecucion:4,obac:formula.orden,modalidad:4).count.to_s+ "/("+
-                                      number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                  end
-                                  column("Procesos ACFFAA") do |formula|
-                                          Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3").count.to_s+ "/("+
-                                         number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                                  end
+                                  column("Por Excluir") do |formula|
+                                    @excl=Item.where(ejecucion:4,obac:formula.orden,modalidad:4)
+                                    @exrj=Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
+                                    where('id IN(?)',Detail.where(actividad:200).select("item_id"))
+
+                                    (@excl.count-@exrj.count).to_s+ "/("+
+                                      number_with_delimiter((@excl.sum(:certificado)-@exrj.
+                                      sum(:certificado)).to_i, delimiter: ",").to_s+ ")"
+
+
+                                   end
 
 
 

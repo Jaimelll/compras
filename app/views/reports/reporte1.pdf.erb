@@ -5,13 +5,15 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
+<h3><%=   @lista.titleize %> </h3>
 </head>
 
-<h2>Encargo - <%=   @lista.titleize %></h2>
+  <% if @items.where(tipo:1).count>0 then %>
 
 <table>
-  <thead>
 
+  <thead>
+<h4> ENCARGO-NACIONALES:  </h4>
     <tr>
       <th>N°</th>
       <th>Pac</th>
@@ -28,8 +30,11 @@
   </thead>
 
   <tbody>
+
     <%  @conta=0 %>
-    <% @items.each do |item| %>
+
+    <% @items.where(tipo:1).each do |item| %>
+
         <tr>
           <% @conta=@conta+1 %>
         <td><%= @conta.to_s+".-" %></td>
@@ -51,5 +56,73 @@
 
 </table>
 <h3>Procesos = <%=   @conta %></h3>
-<h3>Total(Soles) = <%=   number_with_delimiter(@items.sum(:certificado).to_i, delimiter: ",") %></h3>
+<h3>Total(Soles) = <%=   number_with_delimiter(@items.where(tipo:1).sum(:certificado).to_i, delimiter: ",") %></h3>
+
 <br>
+<% else %>
+<br>
+<br>
+ <td> No hay procesos Encargo-Nacionales en esta Lista  </td>
+ <br>
+ <br>
+<% end %>
+  <% if @items.where(tipo:2).count>0 then %>
+
+<table>
+
+
+  <thead>
+
+
+
+<h3> ENCARGO-INTERNACIONALES:  </h3>
+    <tr>
+      <th>N°</th>
+      <th>Pac</th>
+
+      <th>Obac</th>
+
+      <th>Descripcion</th>
+
+      <th>Estimado</th>
+
+
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%  @conta=0 %>
+
+    <% @items.where(tipo:2).each do |item| %>
+        <tr>
+          <% @conta=@conta+1 %>
+        <td><%= @conta.to_s+".-" %></td>
+        <td><%= item.pac.to_i %></td>
+
+        <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
+
+        <td><%= item.descripcion.underscore.capitalize %></td>
+
+        <td><%= number_with_delimiter(item.certificado.to_i, delimiter: ",") %></td>
+
+
+      </td>
+      </tr>
+
+    <% end %>
+
+  </tbody>
+
+</table>
+<h3>Procesos = <%=   @conta %></h3>
+<h3>Total(Soles) = <%=   number_with_delimiter(@items.where(tipo:2).sum(:certificado).to_i, delimiter: ",") %></h3>
+<br>
+<br>
+<% else %>
+<br>
+<br>
+ <td> No hay procesos Encargo-Internacionales en esta Lista  </td>
+ <br>
+ <br>
+<% end %>
