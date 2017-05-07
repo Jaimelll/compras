@@ -141,25 +141,13 @@ end
   #prueba conta
 
   #empieza el item
-if @conta <29 then
 
-    @conta=@alabels.count+1
 
-    @titu1=" "
-else
-   if @conta2 <29 then
-    @conta=@alabels.count
-    @titu2=" 2 de 2"
-    @titu1=" 1 de 2"
-    @conta2=@alabels2.count+1
-  else
-    @conta2=@alabels2.count
-    @titu3=" 3 de 3"
-    @titu2=" 2 de 3"
-    @titu1=" 1 de 3"
-    @conta3=@alabels3.count+1
-  end
-end
+
+
+
+
+
   @vfec1=@vinicio
   @vfec2=@vinicio
   @vfec3=@vinicio
@@ -187,74 +175,16 @@ end
 @cdpc=0
 @cdec=0
 
-if item.obac and item.obac>0 then
-    @n1=Formula.where(product_id:1, orden:item.obac).
-       select('nombre as dd').first.dd
-
-else
-    @n1="s/d"
-end
-
-#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-#@alabels2.push(item.descripcion.first(10))
-@desc=item.descripcion.underscore
-
-if @desc[0,3]=='adq' then
-    @desc=@desc[15,54]
-else
- @desc=@desc
-
-end
-
-if @conta <29 then
-if @var==2 and item.expediente and item.expediente>="01" then
-
-@alabels.push(Formula.where(product_id:16,nombre:item.expediente).
-         select('nombre as dd').first.dd+"-"+
-          Formula.where(product_id:16,nombre:item.expediente).
-                    select('descripcion as dd').first.dd.underscore.truncate(30)+
-                  "----"+item.pac+"-"+@n1)
-else
-#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 
 
 
 
 
-@alabels.push(@desc.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
-
-end
-else
- if @conta2 <29 then
-    if @var==2 and item.expediente and item.expediente>="1" then
-    @alabels2.push(Formula.where(product_id:16,nombre:item.expediente).
-           select('nombre as dd').first.dd+"-"+
-           Formula.where(product_id:16,nombre:item.expediente).
-                    select('descripcion as dd').first.dd.capitalize.truncate(30)+
-                    "----"+item.pac+"-"+@n1)
-    else
-    #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-
-    @alabels2.push(@desc.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
 
 
-    end
-  else
-    if @var==2 and item.expediente and item.expediente>="1" then
-    @alabels3.push(Formula.where(product_id:16,nombre:item.expediente).
-           select('nombre as dd').first.dd+"-"+
-           Formula.where(product_id:16,nombre:item.expediente).
-                    select('descripcion as dd').first.dd.capitalize.truncate(30)+
-                    "----"+item.pac+"-"+@n1)
-    else
-    #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
 
-    @alabels3.push(@desc.capitalize.truncate(40)+"----"+item.pac+"-"+@n1)
 
-    end
 
-  end
-end
 
 
 
@@ -491,39 +421,96 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
   @vobac=@vobac-@vversion
 
 end
+if item.obac and item.obac>0 then
+    @n1=Formula.where(product_id:1, orden:item.obac).
+       select('nombre as dd').first.dd
 
-if @conta <29 then
-@aversion.push(@vversion)
-@aobac.push(@vobac)
-@apec.push(@vpec)
-@adac.push(@vdac)
-@adem.push(@vdem)
-@adpc.push(@vdpc)
-@adec.push(@vdec)
 else
-  if @conta2 <29 then
-    @aversion2.push(@vversion)
-     @aobac2.push(@vobac)
-     @apec2.push(@vpec)
-     @adac2.push(@vdac)
-     @adem2.push(@vdem)
-     @adpc2.push(@vdpc)
-     @adec2.push(@vdec)
-  else
-    @aversion3.push(@vversion)
-    @aobac3.push(@vobac)
-    @apec3.push(@vpec)
-    @adac3.push(@vdac)
-    @adem3.push(@vdem)
-    @adpc3.push(@vdpc)
-    @adec3.push(@vdec)
+    @n1="s/d"
+end
+
+#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+#@alabels2.push(item.descripcion.first(10))
+@desc=item.descripcion.underscore
+
+if @desc[0,3]=='adq' then
+    @desc=@desc[15,54]
+else
+ @desc=@desc
+
+end
+if @var==2 and item.expediente and item.expediente>="01" then
+
+@lab1=Formula.where(product_id:16,nombre:item.expediente).
+         select('nombre as dd').first.dd+"-"+
+          Formula.where(product_id:16,nombre:item.expediente).
+                    select('descripcion as dd').first.dd.underscore.truncate(30)+
+                  "--"+item.pac+"-"+@n1
+else
+#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+@lab1=@desc.capitalize.truncate(40)+"--"+item.pac+"-"+@n1
+
+end
+
+
+
+if @conta <29  then
+   @alabels.push(@lab1)
+   @aversion.push(@vversion)
+   @aobac.push(@vobac)
+   @apec.push(@vpec)
+   @adac.push(@vdac)
+   @adem.push(@vdem)
+   @adpc.push(@vdpc)
+   @adec.push(@vdec)
+   @conta=@conta+1
+   @titu1=" "
+else
+   if @conta2 <29  then
+      @alabels2.push(@lab1)
+      @aversion2.push(@vversion)
+       @aobac2.push(@vobac)
+       @apec2.push(@vpec)
+       @adac2.push(@vdac)
+       @adem2.push(@vdem)
+       @adpc2.push(@vdpc)
+       @adec2.push(@vdec)
+      @titu2=" 2 de 2"
+      @titu1=" 1 de 2"
+      @conta2=  @conta2+1
+   else
+
+   @alabels3.push(@lab1)
+   @aversion3.push(@vversion)
+   @aobac3.push(@vobac)
+   @apec3.push(@vpec)
+   @adac3.push(@vdac)
+   @adem3.push(@vdem)
+   @adpc3.push(@vdpc)
+   @adec3.push(@vdec)
+   @titu3=" 3 de 3"
+   @titu2=" 2 de 3"
+   @titu1=" 1 de 3"
+   @conta3= @conta3+1
   end
 end
+
+
+
+
+
 
 #termina if
 #end
 #termina item
 end
+
+#@conta=@alabels.count
+#@conta2=@alabels2.count
+#@conta3=@alabels3.count
+
+
+
 #primer sitio de conta
 #@conta=@alabels.count
 
