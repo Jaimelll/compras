@@ -570,7 +570,7 @@ if @conta>0 then
                  :size   => '570x500',
                 :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                 :title  => @titulo+@titu1,
-                :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                :legend => [' ','S/EXP', 'GEX','DCA','DEM','DPC','DEC'],
                 :orientation => 'horizontal',
                 :stacked => true,
 
@@ -600,7 +600,7 @@ if @conta>0 then
                    :size   => '570x500',
                   :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                   :title  => @titulo+@titu2,
-                  :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                  :legend => [' ','S/EXP', 'GEX','DCA','DEM','DPC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -630,7 +630,7 @@ if @conta>0 then
                        :size   => '570x500',
                         :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                       :title  => @titulo+@titu3,
-                      :legend => [' ','OBAC', 'GEX','DCA','DEM','DPC','DEC'],
+                      :legend => [' ','S/EXP', 'GEX','DCA','DEM','DPC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
@@ -663,7 +663,7 @@ if @conta>0 then
                      column do
                        panel "PROCESOS PROCESOS EN CURSO AF-2017" do
                          table_for Formula.where(product_id:11)  do
-                              column("Periodo PAC") do |formula|
+                              column("Periodo" ) do |formula|
                                 formula.nombre
                               end
                               column("ACFFAA") do |formula|
@@ -713,7 +713,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                     column("Avance ACFFAA ") do |formula|
                                       formula.nombre
                                     end
-                                    column("OBAC") do |formula|
+                                    column("S/EXP") do |formula|
 
                                       @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
 
