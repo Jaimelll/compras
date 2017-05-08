@@ -207,7 +207,13 @@ if @vproc==1 then
 
     else
        @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
+
      end
+     @vpec=0
+     @vdac=0
+     @vdem=0
+     @vdpc=0
+     @vdec=0
    @vfec1= detail.pfecha
 
  end
@@ -223,13 +229,14 @@ if @vproc==2 then
 
     else
          @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
-         @vdac=0
-         @vdem=0
-         @vdpc=0
-         @vdec=0
+
 
 
     end
+    @vdac=0
+    @vdem=0
+    @vdpc=0
+    @vdec=0
     @vfec2= detail.pfecha
 
 end
@@ -249,10 +256,11 @@ if @vproc==3 then
 
     else
        @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
-       @vdem=0
-       @vdpc=0
-       @vdec=0
+
     end
+    @vdem=0
+    @vdpc=0
+    @vdec=0
     @vfec3= detail.pfecha
 
 
@@ -276,9 +284,10 @@ if @vproc==4 then
 
     else
                  @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
-                 @vdpc=0
-                 @vdec=0
+
     end
+    @vdpc=0
+    @vdec=0
     @vfec4= detail.pfecha
 
 end
@@ -307,9 +316,9 @@ if @vproc==5 then
     else
                @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
 
-               @vdec=0
-    end
 
+    end
+     @vdec=0
     @vfec5= detail.pfecha
 
 end
@@ -346,11 +355,11 @@ if @vdec==0  then
 
       end
 
+
       if @vprord==36 then
          @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
 
       end
-
 
 end
 
@@ -363,7 +372,9 @@ end
 
 end
 
-
+#if @dfin<(@vobac+@vpec+@vdac+@vdem+@vdpc+@vdec) then
+#  @vobac=@dfin-(@vpec+@vdac+@vdem+@vdpc+@vdec)
+#end
 
 
 
@@ -382,7 +393,11 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
             @vdec=0
 
      when 2
+       if @dfin>@vobac then
        @vpec=@dfin-@vobac
+       else
+         @vobac=@dfin-@vpec
+       end
         @cpec= @cpec+1
 
            @vdac=0
@@ -390,6 +405,12 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
            @vdpc=0
            @vdec=0
      when 3
+       if @dfin>(@vobac+@vpec) then
+        @vdac=@dfin-@vobac-@vpec
+       else
+        @vobac=@dfin-@vpec-@vdac
+       end
+
        @vdac=@dfin-@vobac-@vpec
          @cdac= @cdac+1
 
@@ -398,27 +419,43 @@ unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
           @vdec=0
 
      when 4
-       @vdem=@dfin-@vobac-@vpec-@vdac
+       if @dfin>(@vobac+@vpec+@vdac) then
+        @vdem=@dfin-@vobac-@vpec-@vdac
+       else
+        @vobac=@dfin-@vpec-@vdac-@vdem
+       end
+
           @cdem= @cdem+1
 
           @vdpc=0
           @vdec=0
 
      when 5
+       if @dfin>(@vobac+@vpec+@vdac+@vdem) then
+        @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
+       else
+        @vobac=@dfin-@vpec-@vdac-@vdem- @vdpc
+       end
 
-     @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
+
      @cdpc= @cdpc+1
 
 
        @vdec=0
 
      when 6
+       if @dfin>(@vobac+@vpec+@vdac+@vdem+@vdpc) then
+        @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
+       else
+        @vobac=@dfin-@vpec-@vdac-@vdem-@vdpc-@vdec
+       end
 
-       @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
+
+
        @cdec= @cdec+1
 
   end
-  @vobac=@vobac-@vversion
+@vobac=@vobac-@vversion
 
 end
 if item.obac and item.obac>0 then
