@@ -594,7 +594,7 @@ if @conta>0 then
                  :size   => '570x500',
                 :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                 :title  => @titulo+@titu1,
-                :legend => [' ','S/EXP', 'GEX','DCA','DEM','DPC','DEC'],
+                :legend => [' ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
                 :orientation => 'horizontal',
                 :stacked => true,
 
@@ -624,7 +624,7 @@ if @conta>0 then
                    :size   => '570x500',
                   :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                   :title  => @titulo+@titu2,
-                  :legend => [' ','S/EXP', 'GEX','DCA','DEM','DPC','DEC'],
+                  :legend => [' ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -654,7 +654,7 @@ if @conta>0 then
                        :size   => '570x500',
                         :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                       :title  => @titulo+@titu3,
-                      :legend => [' ','S/EXP', 'GEX','DCA','DEM','DPC','DEC'],
+                      :legend => [' ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
@@ -685,18 +685,18 @@ if @conta>0 then
               columns do
 
                      column do
-                       panel "PROCESOS PROCESOS EN CURSO AF-2017" do
+                       panel "PROCESOS EN CURSO AF-2017" do
                          table_for Formula.where(product_id:11)  do
-                              column("Periodo" ) do |formula|
+                              column("Periodos" ) do |formula|
                                 formula.nombre
                               end
-                              column("ACFFAA") do |formula|
+                              column("PAC EN ACFFAA 'PAC/(SOLES)'") do |formula|
                                 Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
 
-                              column("Instituciones") do |formula|
+                              column("PAC EN OBAC 'PAC/(SOLES)'" ) do |formula|
                                 (Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count+
     Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
 #(number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)+
@@ -707,23 +707,19 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
 
                               end
-                              column("TOTAL PAC") do |formula|
+                              column("TOTAL PAC 'PAC/(SOLES)' ") do |formula|
                                 Item.where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
                                    number_with_delimiter(Item.where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-                              column("Excluidos RJ ACFFAA") do |formula|
-
-                                   Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
-                                      number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-
-                               end
-                               column("Culminados ACFFAA") do |formula|
-                                 Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
-                                    number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                               end
+                          #    column("Excluidos RJ ACFFAA") do |formula|
+                          #         Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
+                          #            number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                          #     end
+                          #     column("Culminados ACFFAA") do |formula|
+                          #     Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
+                          #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                          #    end
 
                  table_for Formula.where(product_id:11)  do
                    @p=ActiveRecord::Base.connection.execute("SELECT items.periodo,
@@ -742,7 +738,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                       @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
 
                                     end
-                                         column("GEX") do |formula|
+                                         column("C/EXP") do |formula|
 
                                        @p.select {|f| f["acti"]== 2 and f["periodo"]==formula.orden}.count
 
@@ -772,7 +768,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                               column("Listas ACFFAA") do |formula|
                               formula.nombre
                               end
-                              column("Encargo") do |formula|
+                              column("Encargo 'PAC/(SOLES)'") do |formula|
 
                               @encargo=  formula.orden
 
@@ -782,14 +778,14 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                               link_to "#{@le} ", reports_comment_path(format: :pdf,:param2=> @encargo)
 
                               end
-                              column("Corporativo") do |formula|
+                              column("Corporativos 'PAC/(SOLES)'") do |formula|
                              @corporativa=  formula.orden
                                 @lc=   Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                link_to "#{@lc} ", reports_comment2_path(format: :pdf,:param2=> @corporativa)
                               end
 
-                              column("TOTAL") do |formula|
+                              column("TOTAL 'PAC/(SOLES)'") do |formula|
                                 Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
@@ -798,7 +794,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                           end
 
                            table_for Formula.where(product_id:1,cantidad:1)  do
-                                column("Autorizados y Excluidos") do |formula|
+                                column("Autorizaciones y Exclusiones") do |formula|
                                   formula.nombre
                                 end
 
@@ -851,7 +847,7 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                     end
 
                     column do
-                    panel "Grafico de Situacion de Procesos" do
+                    panel "Grafico del Estado de los Procesos PAC" do
                        li do
                          if @conta>0 then
                          strong { image_tag @bar}
