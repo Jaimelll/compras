@@ -690,13 +690,13 @@ if @conta>0 then
                               column("Periodos" ) do |formula|
                                 formula.nombre
                               end
-                              column("PAC EN ACFFAA 'PAC/(SOLES)'") do |formula|
+                              column("EN ACFFAA 'PAC/(SOLES)'") do |formula|
                                 Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").count.to_s+ "/("+
                                    number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
 
-                              column("PAC EN OBAC 'PAC/(SOLES)'" ) do |formula|
+                              column("EN OBAC 'PAC/(SOLES)'" ) do |formula|
                                 (Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count+
     Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
 #(number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)+
@@ -707,7 +707,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
 
                               end
-                              column("TOTAL PAC 'PAC/(SOLES)' ") do |formula|
+                              column("TOTAL  'PAC/(SOLES)' ") do |formula|
                                 Item.where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
                                    number_with_delimiter(Item.where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
