@@ -72,6 +72,7 @@ action_item :view, only: :show do
 
 
 filter :pac, label:'PAC'
+filter :descripcion
 filter :certificado
 
 
@@ -92,8 +93,9 @@ index do
 
   column("NoPac", :sortable => :pac) {|item|
    link_to "#{item.pac} ", admin_item_path(item) }
-  column("expediente")
+#  column("expediente")
 
+   column("descripcion")
 
 
 
@@ -155,14 +157,14 @@ index do
   #            "s/d"
   #        end
   #    end
-      column("fuente") do |item|
-          if item.fuente and item.fuente>0 then
-             Formula.where(product_id:8, orden:item.fuente).
-              select('nombre as dd').first.dd
-            else
-                "s/d"
-            end
-        end
+    #  column("fuente") do |item|
+    #      if item.fuente and item.fuente>0 then
+    #         Formula.where(product_id:8, orden:item.fuente).
+    #          select('nombre as dd').first.dd
+    #        else
+    #            "s/d"
+    #        end
+    #    end
 
     column("certificado") do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
@@ -266,7 +268,9 @@ form do |f|
 
   show do
     nn=Item.where(id:params[:id]).
-               select('pac as dd').first.dd.capitalize
+               select('pac as dd').first.dd.capitalize+"-"+
+        Item.where(id:params[:id]).
+                select('descripcion as dd').first.dd.capitalize
 
          panel "pac-#{nn}" do
 
