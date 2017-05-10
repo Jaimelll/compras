@@ -73,19 +73,21 @@ case @var
    when 1
      #encargo sin la MGP
      @vitem=Item.where(ejecucion:4,modalidad:2).order('obac ASC,pac')
-
+     @iconta=Item.where(ejecucion:4,modalidad:2).count
    when 2
    #corporativa
      @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente')
-
+      @iconta=Item.where(ejecucion:4,modalidad:1).count
   when 3
   # autorizados
      @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC,pac')
+      @iconta=Item.where(ejecucion:4,modalidad:3).count
    #encago la marina
   # @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
   when 5
   #excluidos
     @vitem=Item.where(ejecucion:4,modalidad:4).order('obac ASC,pac')
+     @iconta=Item.where(ejecucion:4,modalidad:4).count
 
 
 
@@ -103,9 +105,9 @@ end
 @alabels3=[]
 @blabels3=[]
 
-@vinicio = '01/01/2017'
+@vinicio = '2017/01/01'
 @dfin=(Time.now-@vinicio.to_time).to_i/86400
-
+@vfin=Time.now
 @aversion=[]
 @aobac=[]
 @apec=[]
@@ -134,6 +136,7 @@ end
 @conta3=0
 
 
+@vproceso=[]
 
 
 @vitem.each do |item|
@@ -147,33 +150,7 @@ end
 
 
 
-
-  @vfec1=@vinicio
-  @vfec2=@vinicio
-  @vfec3=@vinicio
-  @vfec4=@vinicio
-  @vfec5=@vinicio
-  @vfec6=@vinicio
-
-
-@vversion=0
-@vobac=0
-@vpec=0
-@vdac=0
-@vdem=0
-@vdpc=0
-@vdec=0
-
-
-
-@uproc=1
-
-@cobac=0
-@cpec=0
-@cdac=0
-@cdem=0
-@cdpc=0
-@cdec=0
+  @vfec1=Time.now
 
 
 
@@ -184,193 +161,80 @@ end
 
 
 
+@vproceso=[0,0,0,0,0,0,0]
+@nconta1=0
+
+
+@nconta=Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
+order('details.pfecha DESC,details.id').count
+
+Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
+order('details.pfecha DESC,details.id').each do |detail|
+  #empieza detail
+
+  @nconta1=@nconta1+1
 
 
 
 
-Detail.where(item_id:item.id).order('pfecha ASC,id').each do |detail|
-#empieza detail
+
+
 if detail.pfecha and detail.actividad  then
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
+#proceso
 @vprord=Formula.where(product_id:12,orden:detail.actividad).
             select('orden as dd').first.dd
-
-
-if @vproc==1 then
-  @uproc=1
-
-    if @vobac==0 then
-
-
-         @vobac=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
-
-    else
-       @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
-
-     end
-     @vpec=0
-     @vdac=0
-     @vdem=0
-     @vdpc=0
-     @vdec=0
-   @vfec1= detail.pfecha
-
- end
-
-
-if @vproc==2 then
-  @uproc=2
-    if @vpec==0  then
-
-       @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
-
-       @vpec=1
-
-    else
-         @vpec=@vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+#actividad
 
 
 
-    end
-    @vdac=0
-    @vdem=0
-    @vdpc=0
-    @vdec=0
-    @vfec2= detail.pfecha
 
-end
+   unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
+
+
+    @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
 
 
 
-if @vproc==3 then
-    @uproc=3
-    if @vdac==0  then
-        if @vpec==0 then
-          @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
-        else
-           @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
+   end
+
+   if @nconta1==@nconta  then
+         if @vprord==36 then
+
+          @vproceso[0]= ( @vfec1.to_time-@vinicio.to_time).to_i/864000
 
         end
-       @vdac=1
-
-    else
-       @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
-
-    end
-    @vdem=0
-    @vdpc=0
-    @vdec=0
-    @vfec3= detail.pfecha
+            @vproceso[1]=@dfin-(@vproceso[0]+ @vproceso[2]+@vproceso[3]+@vproceso[4]+
+                         @vproceso[5]+@vproceso[6])
 
 
-end
+   end
 
-
-if @vproc==4 then
-  @uproc=4
-    if @vdem==0  then
-         if @vdac==0  then
-             if @vpec==0  then
-                  @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
-             else
-                  @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
-             end
-         else
-               @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
-
-         end
-         @vdem=1
-
-    else
-                 @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
-
-    end
-    @vdpc=0
-    @vdec=0
-    @vfec4= detail.pfecha
-
-end
-
-
-if @vproc==5 then
-  @uproc=5
-  if @vdpc==0  then
-      if @vdem==0  then
-           if @vdac==0  then
-               if @vpec==0  then
-
-                     @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
-
-               else
-                    @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
-               end
-           else
-                   @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
-           end
-      else
-                 @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
-      end
-      @vdpc=1
-
-    else
-               @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
-
-
-    end
-     @vdec=0
-    @vfec5= detail.pfecha
-
-end
-
-if @vproc==6 then
-  @uproc=6
-if @vdec==0  then
-    if @vdpc==0  then
-        if @vdem==0  then
-             if @vdac==0  then
-                 if @vpec==0  then
-                      @vobac=@vobac+( detail.pfecha.to_time-@vfec1.to_time).to_i/86400
-                 else
-                      @vpec= @vpec+( detail.pfecha.to_time-@vfec2.to_time).to_i/86400
-                 end
-             else
-                      @vdac=@vdac+( detail.pfecha.to_time-@vfec3.to_time).to_i/86400
-             end
-        else
-                    @vdem=@vdem+( detail.pfecha.to_time-@vfec4.to_time).to_i/86400
-        end
-
-    else
-               @vdpc=@vdpc+( detail.pfecha.to_time-@vfec5.to_time).to_i/86400
-    end
-    @vdec=1
-
-  else
-    @vdec=@vdec+( detail.pfecha.to_time-@vfec6.to_time).to_i/86400
   end
-    @vfec6= detail.pfecha
-
-
-
-      end
-
-
-      if @vprord==36 then
-         @vversion=( detail.pfecha.to_time-@vinicio.to_time).to_i/86400
-
-      end
-
-end
-
-
-
-
+@vfec1=detail.pfecha.to_time
 #termina detail??
-
-
-
 end
+
+
+
+
+
+
+
+
+
+
+@vversion=@vproceso[0]
+   @vobac=@vproceso[1]
+    @vpec=@vproceso[2]
+    @vdac=@vproceso[3]
+    @vdem=@vproceso[4]
+    @vdpc=@vproceso[5]
+    @vdec=@vproceso[6]
+
+
+
 
 #if @dfin<(@vobac+@vpec+@vdac+@vdem+@vdpc+@vdec) then
 #  @vobac=@dfin-(@vpec+@vdac+@vdem+@vdpc+@vdec)
@@ -378,86 +242,8 @@ end
 
 
 
-unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
-
-  case @uproc
-     when 1
 
 
-       @vobac=@dfin
-       @cobac= @cobac+1
-            @vpec=0
-            @vdac=0
-            @vdem=0
-            @vdpc=0
-            @vdec=0
-
-     when 2
-       if @dfin>@vobac then
-       @vpec=@dfin-@vobac
-       else
-         @vobac=@dfin-@vpec
-       end
-        @cpec= @cpec+1
-
-           @vdac=0
-           @vdem=0
-           @vdpc=0
-           @vdec=0
-     when 3
-       if @dfin>(@vobac+@vpec) then
-        @vdac=@dfin-@vobac-@vpec
-       else
-        @vobac=@dfin-@vpec-@vdac
-       end
-
-       @vdac=@dfin-@vobac-@vpec
-         @cdac= @cdac+1
-
-          @vdem=0
-          @vdpc=0
-          @vdec=0
-
-     when 4
-       if @dfin>(@vobac+@vpec+@vdac) then
-        @vdem=@dfin-@vobac-@vpec-@vdac
-       else
-        @vobac=@dfin-@vpec-@vdac-@vdem
-       end
-
-          @cdem= @cdem+1
-
-          @vdpc=0
-          @vdec=0
-
-     when 5
-       if @dfin>(@vobac+@vpec+@vdac+@vdem) then
-        @vdpc=@dfin-@vobac-@vpec-@vdac-@vdem
-       else
-        @vobac=@dfin-@vpec-@vdac-@vdem- @vdpc
-       end
-
-
-     @cdpc= @cdpc+1
-
-
-       @vdec=0
-
-     when 6
-       if @dfin>(@vobac+@vpec+@vdac+@vdem+@vdpc) then
-        @vdec=@dfin-@vobac-@vpec-@vdac-@vdem-@vdpc
-       else
-        @vobac=@dfin-@vpec-@vdac-@vdem-@vdpc-@vdec
-       end
-
-
-
-       @cdec= @cdec+1
-
-  end
-@vobac=@vobac-@vversion
-
-end
 if item.obac and item.obac>0 then
     @n1=Formula.where(product_id:1, orden:item.obac).
        select('nombre as dd').first.dd
@@ -491,7 +277,7 @@ end
 
 
 
-if @conta <29  then
+if @alabels.length <29  then
    @alabels.push(@lab1)
    @aversion.push(@vversion)
    @aobac.push(@vobac)
@@ -503,7 +289,7 @@ if @conta <29  then
    @conta=@conta+1
    @titu1=" "
 else
-   if @conta2 <29  then
+   if @alabels2.length  <29  then
       @alabels2.push(@lab1)
       @aversion2.push(@vversion)
        @aobac2.push(@vobac)
@@ -588,7 +374,7 @@ end
 @adata3.push(@adec3)
 
 @dif=30*86400
-if @conta>0 then
+if @alabels.length <=29 then
   @bar =Gchart.bar(
               #  :size   => '570x500',
                  :size   => '570x500',
@@ -613,12 +399,12 @@ if @conta>0 then
         #     DateTime.new(0,1,1)], [0,@conta,1]],
 
             #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-              :axis_range => [nil, [0,@dfin,10], [1,@conta,1]],
+              :axis_range => [nil, [0,@dfin,10], [1,@alabels.length,1]],
               #:min_value => 0,
               #:max_value => 365,
                 :data   =>@adata)
     end
-    if @conta2>0 then
+    if @alabels2.length <=29 and @alabels2.length >0 then
     @bar2 =Gchart.bar(
                 #  :size   => '570x500',
                    :size   => '570x500',
@@ -643,12 +429,12 @@ if @conta>0 then
           #     DateTime.new(0,1,1)], [0,@conta,1]],
 
               #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                :axis_range => [nil, [0,@dfin,10], [1,@conta2,1]],
+                :axis_range => [nil, [0,@dfin,10], [1,@alabels2.length,1]],
                 #:min_value => 0,
                 #:max_value => 365,
                   :data   =>@adata2)
         end
-        if @conta3>0 then
+        if @alabels3.length <=29 and @alabels3.length >0 then
         @bar3 =Gchart.bar(
                     #  :size   => '570x500',
                        :size   => '570x500',
@@ -673,7 +459,7 @@ if @conta>0 then
               #     DateTime.new(0,1,1)], [0,@conta,1]],
 
                   #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                    :axis_range => [nil, [0,@dfin,10], [1,@conta3,1]],
+                    :axis_range => [nil, [0,@dfin,10], [1,@alabels3.length,1]],
                     #:min_value => 0,
                     #:max_value => 365,
                       :data   =>@adata3)
