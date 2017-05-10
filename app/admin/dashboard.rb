@@ -163,7 +163,7 @@ end
 
 @vproceso=[0,0,0,0,0,0,0]
 @nconta1=0
-
+@uproc=6
 
 @nconta=Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
 order('details.pfecha DESC,details.id').count
@@ -191,14 +191,16 @@ if detail.pfecha and detail.actividad  then
 
 
    unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
-
+   if  @uproc>=@vproc then
 
     @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
-
+    @uproc=@vproc
+  else
+     @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
 
 
    end
-
+ end
    if @nconta1==@nconta  then
          if @vprord==36 then
 
@@ -213,6 +215,7 @@ if detail.pfecha and detail.actividad  then
 
   end
 @vfec1=detail.pfecha.to_time
+
 #termina detail??
 end
 
