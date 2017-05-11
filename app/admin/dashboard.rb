@@ -195,6 +195,9 @@ if detail.pfecha and detail.actividad  then
          if  @uproc>=@vproc then
 
             @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
+            if Time.now.to_time<detail.pfecha.to_time+3*864000 then
+            @vproceso[@vproc]=@vproceso[@vproc]+4
+            end
             @uproc=@vproc
         else
             @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
@@ -521,7 +524,10 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                    details.actividad = formulas.orden AND
                    formulas.product_id = 12 AND items.ejecucion=4 and
                     items.modalidad<3 AND ((details.item_id,details.pfecha)
-IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP BY   details.item_id)) GROUP BY items.periodo,details.item_id").to_a
+                   IN(SELECT   details.item_id,   MAX(details.pfecha)
+                  FROM   public.details
+                  GROUP BY   details.item_id)) GROUP BY
+                  items.periodo,details.item_id").to_a
 
                                     column("Avance ACFFAA ") do |formula|
                                       formula.nombre
@@ -545,10 +551,15 @@ IN(SELECT   details.item_id,   MAX(details.pfecha)FROM   public.details   GROUP 
                                     end
 
                                     column("DEM") do |formula|
-                                          @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
+                                      @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
+
                                      end
                                      column("DPC") do |formula|
-                                         @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
+                                       @dpc=  formula.orden
+                                       @dpcl=   @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
+                                          #   link_to "#{@dpcl} ", reports_comment7_path(format: :pdf,:param2=> @dpc)
+
+
                                    end
                                    column("DEC") do |formula|
                                    @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count

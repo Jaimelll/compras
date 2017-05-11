@@ -39,5 +39,6 @@ match 'reports/comment3', via: [:get]
 match 'reports/comment4', via: [:get]
 match 'reports/comment5', via: [:get]
 match 'reports/comment6', via: [:get]
+match 'reports/comment7', via: [:get]
 
 end

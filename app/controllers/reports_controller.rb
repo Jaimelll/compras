@@ -83,4 +83,20 @@ format.pdf{render template: 'reports/reporte6.pdf.erb', pdf:'detalle'}
 end
 end
 
+
+def comment7
+  @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
+  select('descripcion as dd').first.dd
+
+
+respond_to do |format|
+
+format.html
+format.json
+format.pdf{render template: 'reports/reporte7.pdf.erb', pdf:'detalle'}
+end
+end
+
+
+
 end
