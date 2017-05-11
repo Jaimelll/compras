@@ -5,5 +5,85 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @lista.titleize %> </h3>
+<h3>Periodo:<%=   @lista.titleize %> </h3>
 </head>
+<% if @items.select {|f| f["acti"]== 5 and f["periodo"]==@vperiodo}.count>0 then %>
+
+
+
+
+</h4>
+
+
+<table>
+
+  <thead>
+<h4>EXPEDIENTES EN PROCESO DE COMPRAS:</h4>
+    <tr>
+      <th>N°</th>
+
+       <th>Exp</th>
+         <th>Pac</th>
+        <th>Obac</th>
+
+      <th>Descripcion</th>
+
+      <th>Estimado</th>
+
+
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%  @conta=0 %>
+
+    <% @items.select {|f| f["acti"]== 5 and f["periodo"]==@vperiodo}.
+    sort_by { |k| k["obac"] and k["pac"] }.each do |variable| %>
+    <% @var= variable["id"] %>
+        <tr>
+          <% @conta=@conta+1 %>
+        <td><%= @conta.to_s+".-" %></td>
+        <%@vexp= @vite.where(id:@var).
+         select('expediente as dd').first.dd %>
+        <% if @vexp.to_i>0 then %>
+
+           <td><%= Formula.where(product_id:16,orden:@vexp.to_i).select('nombre as dd').first.dd %></td>
+          <% else %>
+        <td><%= " s/d"   %></td>
+          <% end %>
+
+
+        <td><%= @vite.where(id:@var).
+         select('pac as dd').first.dd %></td>
+
+         <%@vobac= @vite.where(id:@var).
+          select('obac as dd').first.dd%>
+
+
+        <td><%= Formula.where(product_id:1,orden:@vobac).select('nombre as dd').first.dd %></td>
+
+        <td><%= @vite.where(id:@var).
+         select('descripcion as dd').first.dd %></td>
+         <%@vval= @vite.where(id:@var).
+          select('certificado as dd').first.dd%>
+
+        <td><%= number_with_delimiter(@vval.to_i, delimiter: ",") %></td>
+
+
+      </td>
+      </tr>
+
+    <% end %>
+
+  </tbody>
+
+</table>
+
+<% else %>
+<br>
+<br>
+ <td> No hay procesos en esta etapa  </td>
+ <br>
+ <br>
+<% end %>

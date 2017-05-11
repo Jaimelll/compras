@@ -557,7 +557,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                      column("DPC") do |formula|
                                        @dpc=  formula.orden
                                        @dpcl=   @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
-                                          #   link_to "#{@dpcl} ", reports_comment7_path(format: :pdf,:param2=> @dpc)
+                                             link_to "#{@dpcl} ", reports_comment7_path(format: :pdf,:param2=> @dpc)
 
 
                                    end
