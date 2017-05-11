@@ -164,6 +164,7 @@ end
 @vproceso=[0,0,0,0,0,0,0]
 @nconta1=0
 @uproc=6
+@corta=0
 
 @nconta=Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
 order('details.pfecha DESC,details.id').count
@@ -191,24 +192,27 @@ if detail.pfecha and detail.actividad  then
 
 
    unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
-   if  @uproc>=@vproc then
+         if  @uproc>=@vproc then
 
-    @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
-    @uproc=@vproc
-  else
-     @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
+            @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
+            @uproc=@vproc
+        else
+            @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
 
 
-   end
- end
+         end
+    else
+       @corta=( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
+    end
    if @nconta1==@nconta  then
          if @vprord==36 then
 
           @vproceso[0]= ( @vfec1.to_time-@vinicio.to_time).to_i/864000
 
-        end
-            @vproceso[1]=@dfin-(@vproceso[0]+ @vproceso[2]+@vproceso[3]+@vproceso[4]+
-                         @vproceso[5]+@vproceso[6])
+         end
+
+        @vproceso[1]=@dfin-(@vproceso[0]+ @vproceso[2]+@vproceso[3]+@vproceso[4]+
+                         @vproceso[5]+@vproceso[6]+@corta)
 
 
    end
