@@ -62,9 +62,11 @@
 
 
         <td><%= Formula.where(product_id:1,orden:@vobac).select('nombre as dd').first.dd %></td>
+        <%@vdesc= @vite.where(id:@var).
+         select('descripcion as dd').first.dd%>
 
-        <td><%= @vite.where(id:@var).
-         select('descripcion as dd').first.dd %></td>
+        <td><%= @vdesc.capitalize %></td>
+
          <%@vval= @vite.where(id:@var).
           select('certificado as dd').first.dd%>
 
