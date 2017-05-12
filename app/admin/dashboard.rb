@@ -608,12 +608,13 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                                 column("Autorizados con RJ") do |formula|
                                     @auto=  formula.orden
+                                    @vmoda= 3
                                   @autol=  Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
                                   .where('id IN(?)',Detail.where(actividad:8).select("item_id")).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:3,
                                      obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).
                                      select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,:param2=>   @auto)
+                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,:param2=>   @auto,:param3=>   @vmoda)
                                  end
 
 

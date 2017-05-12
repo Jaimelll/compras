@@ -25,9 +25,13 @@ end
 end
 
 def comment3
+  #autorizados con rj
+  @tita="PROCESOS AUTORIZADOS CON RJ:"
+  @piea="No hay procesos Autorizados para esta Entidad "
+
   @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
   select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2])
+  @items=Item.where(ejecucion:4,modalidad:params[:param3],obac:params[:param2])
   .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
 
 respond_to do |format|
@@ -41,6 +45,8 @@ end
 
 
 def comment4
+  #en tramite de autorizacion
+
   @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
   select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2])
