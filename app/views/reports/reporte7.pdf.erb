@@ -32,7 +32,7 @@
       <th colspan="3"></th>
     </tr>
 
-    
+
     <%  @conta=0 %>
 
     <% @items.select {|f| f["acti"]== 5 and f["periodo"]==@vperiodo}.
@@ -80,7 +80,8 @@
 
     </table>
 
-      <% if @vdetalle.where("details.actividad=18 or details.actividad=20 or details.actividad=56").count>0 then %>
+      <% if @vdetalle.where(item_id:@var).where("details.actividad=18 or
+        details.actividad=20 or details.actividad=56").count>0 then %>
       <table width="800" border="1">
 
           <tr>
@@ -93,7 +94,8 @@
         <tbody>
 
 
-          <% @vdetalle.where("details.actividad=18 or details.actividad=20 or details.actividad=56").
+          <% @vdetalle.where(item_id:@var).where("details.actividad=18 or
+           details.actividad=20 or details.actividad=56").
           each do |deta| %>
 
 
