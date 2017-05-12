@@ -89,9 +89,10 @@ def comment7
   select('nombre as dd').first.dd
   @vperiodo=Formula.where(product_id:11,orden:params[:param2]).
   select('orden as dd').first.dd
-  @vdetalle=Detail.all
+  @vdetalle=Detail.order('pfecha')
   @vite=Item.all
-  @items=ActiveRecord::Base.connection.execute("SELECT items.periodo,items.id,items.obac,items.pac,items.certificado,items.expediente,
+  @items=ActiveRecord::Base.connection.execute("SELECT items.periodo,items.id,items.obac,
+  items.pac,items.certificado,items.expediente,
     MAX(formulas.cantidad) as acti
    FROM public.items, public.details,
   public.formulas WHERE items.id = details.item_id AND
