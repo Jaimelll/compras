@@ -39,7 +39,9 @@
     <%  @conta=0 %>
 
     <% @items.select {|f| f["acti"]== 5 and f["periodo"]==@vperiodo}.
-    sort_by { |k| k["obac"] and k["pac"] }.each do |variable| %>
+    sort_by { |k| [k["obac"], k["pac"]] }.each do |variable| %>
+
+
     <% @var= variable["id"] %>
         <tr>
           <% @conta=@conta+1 %>
