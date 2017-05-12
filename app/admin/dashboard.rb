@@ -627,6 +627,17 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                     link_to "#{@noautol} ", reports_comment4_path(format: :pdf,:param2=>   @noauto)
                                   end
 
+                                  column("Autorizaciones Rechazadas") do |formula|
+                                    @arec=  formula.orden
+                                    @arecl= Item.where(ejecucion:4,obac:formula.orden)
+                                    .where("modalidad=1 or modalidad=2")
+                                    .where('id IN(?)',Detail.where(actividad:24).select("item_id")).count.to_s+ "/("+
+                                       number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden)
+                                       .where("modalidad=1 or modalidad=2")
+                                       .where('id IN(?)',Detail.where(actividad:24).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                                   end
+
                                  column("Excluidos con RJ") do |formula|
                                     @noexclu=  formula.orden
                                     @noexclul= Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
