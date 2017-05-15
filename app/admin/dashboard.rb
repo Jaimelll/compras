@@ -644,13 +644,18 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                                 column("Autorizados con RJ") do |formula|
                                     @auto=  formula.orden
-                                    @vmoda= 3
+                                    @tita1="PROCESOS AUTORIZADOS CON RJ:"
+                                    @piea1="No hay procesos Autorizados para esta Entidad "
+                                    @vopc1=1
                                   @autol=  Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
                                   .where('id IN(?)',Detail.where(actividad:8).select("item_id")).count.to_s+ "/("+
                                      number_with_delimiter(Item.where(ejecucion:4,modalidad:3,
                                      obac:formula.orden).where('id IN(?)',Detail.where(actividad:8).
                                      select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,:param2=>   @auto,:param3=>   @vmoda)
+
+                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,
+                                   :param2=>   @auto,:param3=>   @tita1,
+                                   :param4=>   @piea1,:param5=>   @vopc1)
                                  end
 
 
@@ -665,13 +670,28 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                   end
 
                                   column("Autorizaciones Rechazadas") do |formula|
-                                    @arec=  formula.orden
-                                    @arecl= Item.where(ejecucion:4,obac:formula.orden)
-                                    .where("modalidad=1 or modalidad=2")
-                                    .where('id IN(?)',Detail.where(actividad:24).select("item_id")).count.to_s+ "/("+
-                                       number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden)
+
+
+                                       @arec=  formula.orden
+                                       @tita1="AUTORIZACIONES RECHAZADAS :"
+                                       @piea1="No hay autorizaciones rechazadas para esta Entidad "
+                                       @vopc1=5
+                                       @arecl= Item.where(ejecucion:4,obac:formula.orden)
                                        .where("modalidad=1 or modalidad=2")
-                                       .where('id IN(?)',Detail.where(actividad:24).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                       .where('id IN(?)',Detail.where(actividad:24).select("item_id")).count.to_s+ "/("+
+                                          number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden)
+                                          .where("modalidad=1 or modalidad=2")
+                                          .where('id IN(?)',Detail.where(actividad:24).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                                      link_to "#{@arecl} ", reports_comment3_path(format: :pdf,
+                                      :param2=>   @arec,:param3=>   @tita1,
+                                      :param4=>   @piea1,:param5=>   @vopc1)
+
+
+
+
+
+
 
                                    end
 

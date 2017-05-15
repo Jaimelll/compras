@@ -26,13 +26,25 @@ end
 
 def comment3
   #autorizados con rj
-  @tita="PROCESOS AUTORIZADOS CON RJ:"
-  @piea="No hay procesos Autorizados para esta Entidad "
+  @tita=params[:param3]
+  @piea=params[:param4]
+  @vopc=params[:param5].to_i
 
   @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
   select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:params[:param3],obac:params[:param2])
+
+
+
+  case @vopc
+when 1
+  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2])
   .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
+when 5
+  @items=Item.where(ejecucion:4,obac:params[:param2])
+  .where("modalidad=1 or modalidad=2")
+  .where('id IN(?)',Detail.where(actividad:24).select("item_id"))
+end
+
 
 respond_to do |format|
 

@@ -6,6 +6,7 @@
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
 <h3><%=   @lista.titleize %> </h3>
+
 </head>
 
   <% if @items.count>0 then %>
@@ -50,7 +51,7 @@
 
         <td><%= item.descripcion.underscore.capitalize %></td>
 
-        <td><%= number_with_delimiter(item.certificado.to_i, delimiter: ",") %></td>
+        <td ALIGN=right><%= number_with_delimiter(item.certificado.to_i, delimiter: ",") %></td>
 
 
       </td>
