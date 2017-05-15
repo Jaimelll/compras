@@ -560,7 +560,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                                        @dpc=  formula.orden
                                       @vpas=3
-                                      @titproc1="EXPEDIENTES CATALOGACION"
+                                      @titproc1="EXPEDIENTES EN CATALOGACION"
                                        @dpcl=   @p.select {|f| f["acti"]== 3 and f["periodo"]==formula.orden}.count
                                              link_to "#{@dpcl} ",
                                               reports_comment7_path(format: :pdf,
