@@ -195,8 +195,8 @@ if detail.pfecha and detail.actividad  then
          if  @uproc>=@vproc then
 
             @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
-            if Time.now.to_time<detail.pfecha.to_time+3*864000 then
-            @vproceso[@vproc]=@vproceso[@vproc]+4
+            if @nconta1==1 then
+            @vproceso[@vproc]=@vproceso[@vproc]+1
             end
             @uproc=@vproc
         else
