@@ -91,10 +91,14 @@ end
 
 
 def comment7
+  @titproc=params[:param4].to_s
+  @numproc=params[:param3].to_i
   @lista=Formula.where(product_id:11,orden:params[:param2]).
   select('nombre as dd').first.dd
   @vperiodo=Formula.where(product_id:11,orden:params[:param2]).
   select('orden as dd').first.dd
+  @vperiodo2=Formula.where(product_id:11,orden:params[:param2]).
+  select('nombre as dd').first.dd
   @vdetalle=Detail.order('pfecha')
   @vite=Item.all
   @items=ActiveRecord::Base.connection.execute("SELECT items.periodo,items.id,items.obac,
