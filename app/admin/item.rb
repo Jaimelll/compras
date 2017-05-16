@@ -92,7 +92,25 @@ filter :obac,  :as => :select, :collection =>
 index do
 
   column("NoPac", :sortable => :pac) {|item|
-   link_to "#{item.pac} ", admin_item_path(item) }
+    vsec=1
+if current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+  vsec=0
+end
+if current_admin_user.id==6 and item.obac==2 then
+  vsec=1
+end
+
+if current_admin_user.id==8 and item.obac==3 then
+  vsec=1
+end
+
+if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
+  vsec=1
+end
+
+
+
+   link_to_if vsec==1, "#{item.pac} ", admin_item_path(item) }
 #  column("expediente")
 
    column("descripcion")
@@ -169,8 +187,11 @@ index do
     column("certificado") do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
-    actions
 
+unless current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+
+  actions
+end
 
 end
 

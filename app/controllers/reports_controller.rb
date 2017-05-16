@@ -37,10 +37,10 @@ def comment3
 
   case @vopc
 when 1
-  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2])
+  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('obac,pac')
   .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
 when 5
-  @items=Item.where(ejecucion:4,obac:params[:param2])
+  @items=Item.where(ejecucion:4,obac:params[:param2]).order('obac,pac')
   .where("modalidad=1 or modalidad=2")
   .where('id IN(?)',Detail.where(actividad:24).select("item_id"))
 end
