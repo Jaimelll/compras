@@ -317,8 +317,14 @@ form do |f|
 
           # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
           case current_admin_user.id # a_variable is the variable we want to compare
-          when 1,2,4,6,8,9 #gex
+              when 1,2,4 #gex
                    n3=1
+               when 6,8,9 #gex
+                 if n2==1 or n2==2 then
+                          n3=1
+                else
+                   n3=2
+                end
              when 11 #estudio de mercado
                   if n2==4
                     n3=1
