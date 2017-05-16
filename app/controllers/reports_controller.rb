@@ -42,7 +42,7 @@ when 1
 when 5
   @items=Item.where(ejecucion:4,obac:params[:param2]).order('obac,pac')
   .where("modalidad=1 or modalidad=2")
-  .where('id IN(?)',Detail.where(actividad:24).select("item_id"))
+  .where('id IN(?)',Detail.where(actividad:57).select("item_id"))
 end
 
 
