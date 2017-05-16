@@ -170,7 +170,7 @@ end
 order('details.pfecha DESC,details.id').count
 
 Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
-order('details.pfecha DESC,details.id').each do |detail|
+order('details.pfecha DESC,details.id DESC').each do |detail|
   #empieza detail
 
   @nconta1=@nconta1+1
