@@ -300,6 +300,8 @@ form do |f|
         t.column("Actividad", :sortable => :item_id) {|detail|
 
           if detail.actividad then
+            n4=Formula.where(product_id:12,orden:detail.actividad).
+                    select('orden as dd').first.dd
             n2=Formula.where(product_id:12,orden:detail.actividad).
                     select('cantidad as dd').first.dd
 
@@ -308,8 +310,11 @@ form do |f|
                       "-----"+
                        "#{Formula.where(product_id:10,orden:n2).
                                 select('nombre as dd').first.dd}"
-
-
+            if n4==31 or n4==16 or n4==17 or n4==26 then
+              n5=1
+            else
+              n5=0
+            end
 
          else
                   n1="s/d"
@@ -320,7 +325,7 @@ form do |f|
               when 1,2,4 #gex
                    n3=1
                when 6,8,9 #gex
-                 if n2==1 or n2==2 then
+                 if n2==1 or n2==2 or n5==1 then
                           n3=1
                 else
                    n3=2
