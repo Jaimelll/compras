@@ -310,7 +310,7 @@ form do |f|
                       "-----"+
                        "#{Formula.where(product_id:10,orden:n2).
                                 select('nombre as dd').first.dd}"
-            if n4==31 or n4==16 or n4==17 or n4==26 then
+            if n4==25 or n4==15 or n4==17 or n4==26 then
               n5=1
             else
               n5=0

@@ -205,7 +205,7 @@ end
                     u.orden]}
             when 6,8,9  #gex
                       Formula.where(product_id:12).where(product_id:12)
-                      .where("cantidad=1 or cantidad=2 or orden=31 or orden=16 or orden=17 or orden=26")
+                      .where("cantidad=1 or cantidad=2 or orden=25 or orden=15 or orden=17 or orden=26")
                       .order("descripcion").map{|u| [u.descripcion.capitalize,
                          u.orden]}
              when 7,11     #castaneda
