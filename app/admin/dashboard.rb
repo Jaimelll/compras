@@ -681,7 +681,8 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                        .where('id IN(?)',Detail.where(actividad:57).select("item_id")).count.to_s+ "/("+
                                           number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden)
                                           .where("modalidad=1 or modalidad=2")
-                                          .where('id IN(?)',Detail.where(actividad:24).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                          .where('id IN(?)',Detail.where(actividad:57).select("item_id"))
+                                          .sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                                       link_to "#{@arecl} ", reports_comment3_path(format: :pdf,
                                       :param2=>   @arec,:param3=>   @tita1,
