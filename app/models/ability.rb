@@ -9,12 +9,18 @@ class Ability
   case user.id # a_variable is the variable we want to compare
       when 2
           can :manage, :all
-      when 3,10,5,15,16 #roy,asesor,ballesteros
+      when 3,10,5,16 #roy,asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read, :update], [Item, Detail]
     #   when 5 # ballesteros
     #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
     #    can [:read], [Item, Detail]
+  when 15,17 #roy,asesor,ballesteros
+    can :read, ActiveAdmin::Page, :name =>"Dashboard"
+    can [:read], [Item, Detail]
+#   when 5 # ballesteros
+#    can :read, ActiveAdmin::Page, :name =>"Dashboard"
+#    can [:read], [Item, Detail]
       when 7,11,12,13,14 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read,:update], Item
