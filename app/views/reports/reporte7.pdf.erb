@@ -6,13 +6,13 @@
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
 <h3>Periodo:<%=   @lista.titleize %> </h3>
-</head>
 <h4><%= @titproc %></h4>
+</head>
 <% if @items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo}.count>0 then %>
 
 <table >
     <tr>
-        <br>
+
        <th>N°</th>
        <th>Exp</th>
        <th>Pac</th>
@@ -130,3 +130,4 @@
  <br>
  <br>
 <% end %>
+</html>
