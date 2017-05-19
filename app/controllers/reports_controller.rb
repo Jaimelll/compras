@@ -37,10 +37,10 @@ def comment3
 
   case @vopc
 when 1
-  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('obac,pac')
+  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
   .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
 when 5
-  @items=Item.where(ejecucion:4,obac:params[:param2]).order('obac,pac')
+  @items=Item.where(ejecucion:4,obac:params[:param2]).order('certificado')
   .where("modalidad=1 or modalidad=2")
   .where('id IN(?)',Detail.where(actividad:57).select("item_id"))
 end
@@ -61,7 +61,7 @@ def comment4
 
   @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
   select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2])
+  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
   .where.not('id IN(?)',Detail.where(actividad:8).select("item_id"))
 
 respond_to do |format|
@@ -75,8 +75,8 @@ end
 def comment5
   @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
   select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,obac:params[:param2],modalidad:4).
- where('id IN(?)',Detail.where(actividad:200).select("item_id"))
+  @items=Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
+ .where('id IN(?)',Detail.where(actividad:200).select("item_id"))
 
 respond_to do |format|
 
@@ -90,8 +90,8 @@ end
 def comment6
   @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
   select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,obac:params[:param2],modalidad:4).
- where.not('id IN(?)',Detail.where(actividad:200).select("item_id"))
+  @items=Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
+ .where.not('id IN(?)',Detail.where(actividad:200).select("item_id"))
 
 respond_to do |format|
 

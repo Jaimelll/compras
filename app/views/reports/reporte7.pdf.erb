@@ -16,9 +16,10 @@
        <th>N°</th>
        <th>Exp</th>
        <th>Pac</th>
-      <th>Obac</th>
-      <th>Descripcion</th>
-      <th>Estimado</th>
+       <th>Obac</th>
+       <th>Lista</th>
+       <th>Descripcion</th>
+       <th>Estimado</th>
 
       <th colspan="3"></th>
     </tr>
@@ -51,13 +52,23 @@
         <td  VALIGN=top><%= @vite.where(id:@var).
          select('pac as dd').first.dd %></td>
 
+
          <%@vobac= @vite.where(id:@var).
           select('obac as dd').first.dd%>
 
 
         <td  VALIGN=top><%= Formula.where(product_id:1,orden:@vobac).select('nombre as dd').first.dd %></td>
+
+
+         <%@vlist= @vite.where(id:@var).
+          select('lista as dd').first.dd%>
+        <td  VALIGN=top><%= Formula.where(product_id:3,orden:@vlist).select('nombre as dd').first.dd %></td>
+
+
         <%@vdesc= @vite.where(id:@var).
          select('descripcion as dd').first.dd%>
+
+
 
         <td  ><h4><%= @vdesc.capitalize %></h4>
 
@@ -114,7 +125,7 @@
     <%@vval= @vite.where(id:@var).
      select('certificado as dd').first.dd%>
 
-   <td  VALIGN=top><%= number_with_delimiter(@vval.to_i, delimiter: ",") %></td>
+   <td  VALIGN=top ALIGN=right><%= number_with_delimiter(@vval.to_i, delimiter: ",") %></td>
     </tr>
 
 
