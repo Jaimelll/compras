@@ -71,12 +71,12 @@ end
                           select('nombre as dd').first.dd
 case @var
    when 1
-     #encargo sin la MGP
-     @vitem=Item.where(ejecucion:4,modalidad:2).order('obac ASC,pac')
+     #encargo
+     @vitem=Item.where(ejecucion:4,modalidad:2).order('periodo,obac ASC,pac')
      @iconta=Item.where(ejecucion:4,modalidad:2).count
    when 2
    #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1).order('expediente')
+     @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,expediente')
       @iconta=Item.where(ejecucion:4,modalidad:1).count
   when 3
   # autorizados
