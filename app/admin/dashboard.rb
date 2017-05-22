@@ -145,40 +145,29 @@ end
 
   #empieza el item
 
-
-
-
-
-
-  @vfec1=Time.now
-
-
-
-
-
-
-
-
-
+@vfec1=Time.now
 
 @vproceso=[0,0,0,0,0,0,0]
-@nconta1=0
+
 @uproc=6
 @corta=0
 
-@nconta=Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
-order('details.pfecha DESC,details.id').count
+@nconta1=0
+@nconta=Detail.where(item_id:item.id).
+where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").count
+
+
+
+
+
+
+
 
 Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
 order('details.pfecha DESC,details.id DESC').each do |detail|
   #empieza detail
 
   @nconta1=@nconta1+1
-
-
-
-
-
 
 if detail.pfecha and detail.actividad  then
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
@@ -192,39 +181,50 @@ if detail.pfecha and detail.actividad  then
 
 
    unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
-         if  @uproc>=@vproc then
+     if  @uproc>=@vproc then
 
-            @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
+            @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1-detail.pfecha.to_time).to_i/86400
             if @nconta1==1 then
-            @vproceso[@vproc]=@vproceso[@vproc]+1
+               @vproceso[@vproc]=@vproceso[@vproc]+2
             end
             @uproc=@vproc
-        else
-            @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
+      else
+            @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1-detail.pfecha.to_time).to_i/86400
 
 
-         end
+       end
     else
-       @corta=( @vfec1.to_time-detail.pfecha.to_time).to_i/86400
-    end
-   if @nconta1==@nconta  then
-         if @vprord==36 then
-
-          @vproceso[0]= ( @vfec1.to_time-@vinicio.to_time).to_i/864000
-
-         end
-
-        @vproceso[1]=@dfin-(@vproceso[0]+ @vproceso[2]+@vproceso[3]+@vproceso[4]+
-                         @vproceso[5]+@vproceso[6]+@corta)
+       @corta=( @vfec1-detail.pfecha.to_time).to_i/86400
 
 
-   end
+    end #de unless
 
-  end
-@vfec1=detail.pfecha.to_time
 
-#termina detail??
-end
+    if @nconta1==@nconta  then
+      if @vprord==36 then
+           @vproceso[0]= ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400+1
+       end
+        @vproceso[@vproc]=@vproceso[@vproc]+ ( detail.pfecha.to_time-
+                         @vinicio.to_time).to_i/86400-@vproceso[0]+1
+
+        # end
+    # @suproc=@dfin-(@vproceso[0]+ @vproceso[1]+ @vproceso[2]+@vproceso[3]+
+    #                @vproceso[4]+ @vproceso[5]+@vproceso[6]+@corta)
+
+
+
+     #@vproceso[@vproc]=@vproceso[@vproc]+10
+
+
+    end  #if  @nconta1
+
+
+  @vfec1=detail.pfecha.to_time
+  end #actividad
+
+
+
+end #termina detail??
 
 
 
