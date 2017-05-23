@@ -21,7 +21,7 @@
        <th>Descripcion</th>
        <th>Estimado</th>
 
-      
+
     </tr>
 
 
@@ -70,7 +70,7 @@
 
 
 
-        <td  ><h4><%= @vdesc.capitalize %></h4>
+        <td  VALIGN=top ><h4><%= @vdesc.capitalize %></h4>
 
 
 
@@ -106,10 +106,10 @@
 
 
 
-               <td ><%= deta.pfecha.strftime("%d-%m-%Y") %></td>
-               <td ><%=Formula.where(product_id:12,orden:deta.actividad).
+               <td ALIGN=center><%= deta.pfecha.strftime("%d-%m-%Y") %></td>
+               <td ALIGN=center><%=Formula.where(product_id:12,orden:deta.actividad).
                            select('descripcion as dd').first.dd.capitalize  %></td>
-               <td ><%= deta.obs.capitalize %></td>
+               <td ALIGN=center><%= deta.obs.capitalize %></td>
 
        </tr>
 
