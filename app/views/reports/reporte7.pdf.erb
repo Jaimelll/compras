@@ -77,7 +77,7 @@
 
 
       <% if @vdetalle.where(item_id:@var).where("details.actividad=18 or
-        details.actividad=20 or details.actividad=56").count>0 then %>
+        details.actividad=20 or details.actividad=56 or details.actividad=300").count>0 then %>
       <table width="800" border="1">
 
           <tr>
@@ -91,7 +91,7 @@
 
 
           <% @vdetalle.where(item_id:@var).where("details.actividad=18 or
-           details.actividad=20 or details.actividad=56").
+           details.actividad=20 or details.actividad=56 or details.actividad=300").
           each do |deta| %>
 
 

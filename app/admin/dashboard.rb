@@ -17,9 +17,7 @@ end
 action_item :only=> :index do
     link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
 end
-#action_item :only=> :index do
-#   link_to 'Corporativos 2', corporativo_admin_formula_path( :@num), method: :put
-#end
+
 
 
 action_item :only=> :index do
@@ -30,8 +28,21 @@ action_item :only=> :index do
     link_to 'Exclusiones', excluido_admin_formula_path( :@num), method: :put
 end
 
+action_item :only=> :index do
+   link_to 'DEC', dec_admin_formula_path( :@num), method: :put
+end
 
+action_item :only=> :index do
+   link_to 'DPC', dpc_admin_formula_path( :@num), method: :put
+end
 
+action_item :only=> :index do
+   link_to 'DEM', dem_admin_formula_path( :@num), method: :put
+end
+
+action_item :only=> :index do
+   link_to 'GEX', gex_admin_formula_path( :@num), method: :put
+end
 
 
 
@@ -73,25 +84,44 @@ case @var
    when 1
      #encargo
      @vitem=Item.where(ejecucion:4,modalidad:2).order('periodo,obac ASC,pac')
-     @iconta=Item.where(ejecucion:4,modalidad:2).count
+     @iproce=100
    when 2
    #corporativa
      @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,expediente')
-      @iconta=Item.where(ejecucion:4,modalidad:1).count
+    @iproce=100
   when 3
   # autorizados
      @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC,pac')
-      @iconta=Item.where(ejecucion:4,modalidad:3).count
-   #encago la marina
-  # @vitem=Item.where(ejecucion:4,modalidad:2).where(obac:2).order('obac ASC')
+     @iproce=100
+ when 4
+#DEC proceso 6
+  @vitem=Item.where(ejecucion:4).where("modalidad<3").order('obac ASC,pac')
+   @iproce=6
+
   when 5
   #excluidos
     @vitem=Item.where(ejecucion:4,modalidad:4).order('obac ASC,pac')
-     @iconta=Item.where(ejecucion:4,modalidad:4).count
+    @iproce=100
 
+ when 6
+#dpc
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('obac ASC,pac')
+ @iproce=5
 
+ when 7
+#dem
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('obac ASC,pac')
+ @iproce=4
 
+when 8
+#gex
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('obac ASC,pac')
+ @iproce=2
 end
+
+
+
+
 
 @adata=[]
 @alabels=[]
@@ -153,13 +183,11 @@ end
 @corta=0
 
 @nconta1=0
+
+
+  #@nconta numero de actividades
 @nconta=Detail.where(item_id:item.id).
 where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").count
-
-
-
-
-
 
 
 
@@ -168,6 +196,7 @@ order('details.pfecha DESC,details.id DESC').each do |detail|
   #empieza detail
 
   @nconta1=@nconta1+1
+
 
 if detail.pfecha and detail.actividad  then
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
@@ -178,6 +207,15 @@ if detail.pfecha and detail.actividad  then
 #actividad
 
 
+if  @nconta1==1 then
+      @vlog=false
+   if @vproc==@iproce or @iproce==100 then
+    @vlog=true
+   end
+end
+
+if @vlog then
+# empieza @vlog
 
 
    unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
@@ -200,28 +238,23 @@ if detail.pfecha and detail.actividad  then
     end #de unless
 
 
-    if @nconta1==@nconta  then
+    if @nconta1==@nconta then
       if @vprord==36 then
            @vproceso[0]= ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400+1
        end
-        @vproceso[@vproc]=@vproceso[@vproc]+ ( detail.pfecha.to_time-
-                         @vinicio.to_time).to_i/86400-@vproceso[0]+1
 
-        # end
-    # @suproc=@dfin-(@vproceso[0]+ @vproceso[1]+ @vproceso[2]+@vproceso[3]+
-    #                @vproceso[4]+ @vproceso[5]+@vproceso[6]+@corta)
+     @vproceso[@vproc]=@vproceso[@vproc]+( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]+1
 
-
-
-     #@vproceso[@vproc]=@vproceso[@vproc]+10
 
 
     end  #if  @nconta1
 
 
   @vfec1=detail.pfecha.to_time
-  end #actividad
 
+end # termina @vlog
+
+end #termina actividad
 
 
 end #termina detail??
@@ -231,8 +264,8 @@ end #termina detail??
 
 
 
-
-
+# empieza @vlog
+if @vlog then
 
 
 @vversion=@vproceso[0]
@@ -246,9 +279,7 @@ end #termina detail??
 
 
 
-#if @dfin<(@vobac+@vpec+@vdac+@vdem+@vdpc+@vdec) then
-#  @vobac=@dfin-(@vpec+@vdac+@vdem+@vdpc+@vdec)
-#end
+
 
 
 
@@ -272,6 +303,7 @@ else
  @desc=@desc
 
 end
+
 if @var==2 and item.expediente and item.expediente>="01" then
 
 @lab1=Formula.where(product_id:16,nombre:item.expediente).
@@ -326,28 +358,20 @@ else
    @titu1=" 1 de 3"
    @conta3= @conta3+1
   end
+# termina @vlog
+end
+
+# admin
 end
 
 
 
 
 
-
-#termina if
-#end
 #termina item
 end
 
-#@conta=@alabels.count
-#@conta2=@alabels2.count
-#@conta3=@alabels3.count
 
-
-
-#primer sitio de conta
-#@conta=@alabels.count
-
-#@vancho=(280/@conta).to_i
 if @conta>0 then
 @vancho=(280/@conta).to_i
 end
