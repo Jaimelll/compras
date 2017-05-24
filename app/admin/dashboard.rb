@@ -28,12 +28,9 @@ action_item :only=> :index do
     link_to 'Exclusiones', excluido_admin_formula_path( :@num), method: :put
 end
 
-action_item :only=> :index do
-   link_to 'DEC', dec_admin_formula_path( :@num), method: :put
-end
 
 action_item :only=> :index do
-   link_to 'DPC', dpc_admin_formula_path( :@num), method: :put
+   link_to 'GEX', gex_admin_formula_path( :@num), method: :put
 end
 
 action_item :only=> :index do
@@ -41,10 +38,12 @@ action_item :only=> :index do
 end
 
 action_item :only=> :index do
-   link_to 'GEX', gex_admin_formula_path( :@num), method: :put
+   link_to 'DPC', dpc_admin_formula_path( :@num), method: :put
 end
 
-
+action_item :only=> :index do
+   link_to 'DEC', dec_admin_formula_path( :@num), method: :put
+end
 
 
 
