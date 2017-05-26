@@ -86,7 +86,7 @@ case @var
      @iproce=100
    when 2
    #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,expediente,obac')
+     @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,exped,obac')
     @iproce=100
   when 3
   # autorizados
@@ -94,7 +94,7 @@ case @var
      @iproce=100
  when 4
 #DEC proceso 6
-  @vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,expediente,obac')
+  @vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
    @iproce=6
 
   when 5
@@ -104,17 +104,17 @@ case @var
 
  when 6
 #dpc
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,expediente,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
  @iproce=5
 
  when 7
 #dem
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,expediente,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
  @iproce=4
 
 when 8
 #gex
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,expediente,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
  @iproce=2
 end
 
@@ -303,16 +303,16 @@ else
 
 end
 
-if item.expediente and item.expediente>="01" then
+if item.exped and item.exped>0 then
 
-@lab1=Formula.where(product_id:16,nombre:item.expediente).
+@lab1=Formula.where(product_id:16,orden:item.exped).
          select('nombre as dd').first.dd+"-"+
-          Formula.where(product_id:16,nombre:item.expediente).
+          Formula.where(product_id:16,orden:item.exped).
                     select('descripcion as dd').first.dd.underscore.truncate(30)+
-                  "--"+item.pac+"-"+@n1
+                  "-"+item.pac+"-"+@n1
 else
 #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-@lab1=@desc.capitalize.truncate(40)+"--"+item.pac+"-"+@n1
+@lab1=@desc.capitalize.truncate(40)+"-"+item.pac+"-"+@n1
 
 end
 

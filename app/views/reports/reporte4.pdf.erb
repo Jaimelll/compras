@@ -16,7 +16,7 @@
     <tr>
       <th>N°</th>
 
-       <th>Exp</th>
+       <th>Exped</th>
          <th>Pac</th>
         <th>Obac</th>
 
@@ -35,8 +35,8 @@
         <tr>
           <% @conta=@conta+1 %>
         <td><%= @conta.to_s+".-" %></td>
-        <% if item.expediente.to_i>0 then %>
-           <td><%= Formula.where(product_id:16,orden:item.expediente.to_i).select('nombre as dd').first.dd %></td>
+        <% if item.exped>0 then %>
+           <td><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd %></td>
           <% else %>
         <td><%= " s/d"   %></td>
           <% end %>

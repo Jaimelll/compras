@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505152847) do
+ActiveRecord::Schema.define(version: 20170526174942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,8 +90,8 @@ ActiveRecord::Schema.define(version: 20170505152847) do
     t.float    "certificado"
     t.integer  "fuente"
     t.integer  "admin_user_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.integer  "rubro"
     t.integer  "seleccion"
     t.date     "mesconvoca"
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 20170505152847) do
     t.integer  "periodo"
     t.string   "expediente"
     t.string   "observacion"
+    t.integer  "exped",         default: 0
+    t.integer  "exped2"
     t.index ["admin_user_id"], name: "index_items_on_admin_user_id", using: :btree
   end
 

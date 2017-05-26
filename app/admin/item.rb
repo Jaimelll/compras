@@ -17,7 +17,7 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
               :certificado, :constancia, :moneda, :fuente, :seleccion,
               :mesconvoca, :rubro, :admin_user_id, :cuadrante, :expediente,
-              :observacion
+              :observacion, :exped
 # or
 #
 # permit_params do
@@ -76,6 +76,8 @@ filter :descripcion
 filter :certificado
 
 
+filter :exped, label:'Expediente', :as => :select, :collection =>
+     Formula.where(product_id:16).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :periodo , :as => :select, :collection =>
      Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :modalidad , :as => :select, :collection =>
@@ -112,6 +114,18 @@ end
 
    link_to_if vsec==1, "#{item.pac} ", admin_item_path(item) }
 #  column("expediente")
+
+
+column("exped")do |item|
+    if item.exped and item.exped>0 then
+
+       Formula.where(product_id:16, orden:item.exped).
+        select('nombre as dd').first.dd
+
+      else
+          "s/d"
+      end
+  end
 
    column("descripcion")
 
@@ -203,8 +217,8 @@ form do |f|
 
 
        f.input :pac ,:label => 'PAC SEACE', :input_html => { :style =>  'width:30%'}
-       f.input :expediente, :as => :select, :collection =>
-         Formula.where(product_id:16).map{|u| [u.nombre+"-"+u.descripcion, u.nombre]}
+       f.input :exped,:label => 'Expediente', :as => :select, :collection =>
+         Formula.where(product_id:16).map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
 
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}

@@ -14,7 +14,7 @@
     <tr>
 
        <th>N°</th>
-       <th>Exp</th>
+       <th>Expediente</th>
        <th>Pac</th>
        <th>Obac</th>
        <th>Lista</th>
@@ -40,12 +40,12 @@
 
         <td VALIGN=top><%= @conta.to_s+".-" %></td>
               <%@vexp= @vite.where(id:@var).
-              select('expediente as dd').first.dd %>
-            <% if @vexp.to_i>0 then %>
+              select('exped as dd').first.dd %>
+            <% if @vexp>0 then %>
 
          <td VALIGN=top><%= Formula.where(product_id:16,orden:@vexp.to_i).select('nombre as dd').first.dd %></td>
              <% else %>
-        <td><%= " s/d"   %></td>
+        <td VALIGN=top><%= " s/d"   %></td>
              <% end %>
 
 
