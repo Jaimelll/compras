@@ -144,6 +144,7 @@ end
 @adem=[]
 @adpc=[]
 @adec=[]
+@aeobac=[]
 @conta=0
 
 @aversion2=[]
@@ -153,6 +154,7 @@ end
 @adem2=[]
 @adpc2=[]
 @adec2=[]
+@aeobac2=[]
 @conta2=0
 
 @aversion3=[]
@@ -162,6 +164,7 @@ end
 @adem3=[]
 @adpc3=[]
 @adec3=[]
+@aeobac3=[]
 @conta3=0
 
 
@@ -176,9 +179,9 @@ end
 
 @vfec1=Time.now
 
-@vproceso=[0,0,0,0,0,0,0]
+@vproceso=[0,0,0,0,0,0,0,0]
 
-@uproc=6
+@uproc=7
 @corta=0
 
 @nconta1=0
@@ -274,6 +277,7 @@ if @vlog then
     @vdem=@vproceso[4]
     @vdpc=@vproceso[5]
     @vdec=@vproceso[6]
+    @veobac=@vproceso[7]
 
 
 
@@ -327,6 +331,7 @@ if @alabels.length <29  then
    @adem.push(@vdem)
    @adpc.push(@vdpc)
    @adec.push(@vdec)
+   @aeobac.push(@veobac)
    @conta=@conta+1
    @titu1=" "
 else
@@ -339,6 +344,7 @@ else
        @adem2.push(@vdem)
        @adpc2.push(@vdpc)
        @adec2.push(@vdec)
+      @aeobac2.push(@veobac)
       @titu2=" 2 de 2"
       @titu1=" 1 de 2"
       @conta2=  @conta2+1
@@ -352,6 +358,7 @@ else
    @adem3.push(@vdem)
    @adpc3.push(@vdpc)
    @adec3.push(@vdec)
+  @aeobac3.push(@veobac)
    @titu3=" 3 de 3"
    @titu2=" 2 de 3"
    @titu1=" 1 de 3"
@@ -388,6 +395,7 @@ end
 @adata.push(@adem)
 @adata.push(@adpc)
 @adata.push(@adec)
+@adata.push(@aeobac)
 #else
  @adata2.push(@aversion2)
   @adata2.push(@aobac2)
@@ -396,6 +404,7 @@ end
   @adata2.push(@adem2)
   @adata2.push(@adpc2)
   @adata2.push(@adec2)
+  @adata2.push(@aeobac2)
 
 #end
 @adata3.push(@aversion3)
@@ -405,15 +414,16 @@ end
 @adata3.push(@adem3)
 @adata3.push(@adpc3)
 @adata3.push(@adec3)
+@adata3.push(@aeobac3)
 
 @dif=30*86400
 if @alabels.length <=29 then
   @bar =Gchart.bar(
               #  :size   => '570x500',
                  :size   => '570x500',
-                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
                 :title  => @titulo+@titu1,
-                :legend => [' ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
+                :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC','EC/OBAC'],
                 :orientation => 'horizontal',
                 :stacked => true,
 
@@ -441,9 +451,9 @@ if @alabels.length <=29 then
     @bar2 =Gchart.bar(
                 #  :size   => '570x500',
                    :size   => '570x500',
-                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
                   :title  => @titulo+@titu2,
-                  :legend => [' ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
+                  :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC','EC/OBAC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -471,9 +481,9 @@ if @alabels.length <=29 then
         @bar3 =Gchart.bar(
                     #  :size   => '570x500',
                        :size   => '570x500',
-                        :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
+                      :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
                       :title  => @titulo+@titu3,
-                      :legend => [' ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
+                      :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC','EC/OBAC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
@@ -510,8 +520,10 @@ if @alabels.length <=29 then
                                 formula.nombre
                               end
                               column("EN ACFFAA 'PAC/(SOLES)'") do |formula|
-                                Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              @vpcu1=   Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3")
+                                  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                                @vpcu1.count.to_s+ "/("+
+                                   number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
 
@@ -531,10 +543,12 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    number_with_delimiter(Item.where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-                          #    column("Excluidos RJ ACFFAA") do |formula|
-                          #         Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).count.to_s+ "/("+
-                          #            number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden,modalidad:4).where('id IN(?)',Detail.where(actividad:200).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                          #     end
+                             column("Ejecucion Contractual en OBAC") do |formula|
+                                 @vpcu2= Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3")
+                                 .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                                  @vpcu2.count.to_s+ "/("+
+                                    number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                               end
                           #     column("Culminados ACFFAA") do |formula|
                           #     Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
                           #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -622,10 +636,30 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                           reports_comment7_path(format: :pdf,
                                           :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
 
+
                                  end
+
+
+
+
                                  column("TOTAL PAC") do |formula|
-                                   @p.select {|f|  f["periodo"]==formula.orden}.count
+                                   @p.select {|f| f["acti"]< 7 and f["periodo"]==formula.orden}.count
                                end
+
+                               column("EC/OBAC") do |formula|
+
+                               @dpc=  formula.orden
+                              @vpas=7
+                              @titproc1="EXPEDIENTES EN EC/ OBAC"
+                               @dpcl=   @p.select {|f| f["acti"]== 7 and f["periodo"]==formula.orden}.count
+                                     link_to "#{@dpcl} ",
+                                      reports_comment7_path(format: :pdf,
+                                      :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+
+                              end
+
+
                                  end
                          table_for Formula.where(product_id:3)  do
                               column("Listas ACFFAA") do |formula|
@@ -634,28 +668,39 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                               column("Encargo 'PAC/(SOLES)'") do |formula|
 
                               @encargo=  formula.orden
-
-                              @le= Item.where(ejecucion:4,modalidad:2,lista:formula.orden).count.to_s+ "/("+
-                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:2,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
+                                   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                              @le= @le1.count.to_s+ "/("+
+                                     number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
                               link_to "#{@le} ", reports_comment_path(format: :pdf,:param2=> @encargo)
 
                               end
                               column("Corporativos 'PAC/(SOLES)'") do |formula|
                              @corporativa=  formula.orden
-                                @lc=   Item.where(ejecucion:4,modalidad:1,lista:formula.orden).count.to_s+ "/("+
-                                     number_with_delimiter(Item.where(ejecucion:4,modalidad:1,lista:formula.orden).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                @lc1=   Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
+                                      .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                                @lc=   @lc1.count.to_s+ "/("+
+                                     number_with_delimiter(@lc1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                link_to "#{@lc} ", reports_comment2_path(format: :pdf,:param2=> @corporativa)
                               end
 
                               column("TOTAL 'PAC/(SOLES)'") do |formula|
 
-
-
-                                Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                               @lt=Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3")
+                                     .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                                @lt.count.to_s+ "/("+
+                                   number_with_delimiter(@lt.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
+                              column("Ejecucion Contractural en OBAC 'PAC/(SOLES)'") do |formula|
+
+                                @ls1=   Item.where(ejecucion:4,lista:formula.orden)
+                                         .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                                @ls=   @ls1.count.to_s+ "/("+
+                                     number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                              end
 
                           end
 
