@@ -363,7 +363,7 @@ form do |f|
                           n3=2
                         end
               when 14 #ejecucion de contratos
-                           if n2==6
+                           if n2==6 or n2===7 then
                              n3=1
                            else
                              n3=2

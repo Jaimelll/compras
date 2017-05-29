@@ -167,8 +167,9 @@ end
                                   u.orden]}
 
                  when 14    #dec
-                                    Formula.where(product_id:12,cantidad:6).order("orden").
-                                      map{|u| [u.descripcion.capitalize,
+                           Formula.where(product_id:12).where("cantidad=6 or cantidad=7")
+                             .order("orden").
+                                map{|u| [u.descripcion.capitalize,
                                        u.orden]}
                   end
 
@@ -222,7 +223,8 @@ end
                                    u.orden]}
 
                   when 14    #dec
-                                     Formula.where(product_id:12,cantidad:6).order("orden").
+                                     Formula.where(product_id:12).where("cantidad=6 or cantidad=7")
+                                     .order("orden").
                                        map{|u| [u.descripcion.capitalize,
                                         u.orden]}
               end
