@@ -1,8 +1,28 @@
 class ReportsController < ApplicationController
 
 def comment
+
+  @tit1=params[:param3].to_s
+
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
+  @vopc=params[:param4].to_i
+  
+  case @vopc
+when 1
+
   @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('obac,pac')
+  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+when 3
+
+  @items=Item.where(ejecucion:4,lista:params[:param2]).order('obac,pac')
+   .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+
+
+end
+
+
+
+
 
 respond_to do |format|
 
@@ -16,6 +36,7 @@ end
 def comment2
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
+  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 respond_to do |format|
 
 format.html

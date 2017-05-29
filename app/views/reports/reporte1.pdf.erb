@@ -5,7 +5,7 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @lista.titleize %> </h3>
+<h3><%=   @lista.titleize %>- <%= @tit1 %> </h3>
 </head>
 
   <% if @items.where(tipo:1).count>0 then %>
@@ -13,7 +13,8 @@
 <table>
 
   <thead>
-<h4> ENCARGO-NACIONALES:  </h4>
+<h4> NACIONALES:  </h4>
+
     <tr>
       <th>N°</th>
       <th>Pac</th>
@@ -62,7 +63,7 @@
 <% else %>
 <br>
 <br>
- <td> No hay procesos Encargo-Nacionales en esta Lista  </td>
+ <td> No hay procesos Nacionales en esta Lista  </td>
  <br>
  <br>
 <% end %>
@@ -75,7 +76,7 @@
 
 
 
-<h3> ENCARGO-INTERNACIONALES:  </h3>
+<h3>INTERNACIONALES:  </h3>
     <tr>
       <th>N°</th>
       <th>Pac</th>
@@ -122,7 +123,7 @@
 <% else %>
 <br>
 <br>
- <td> No hay procesos Encargo-Internacionales en esta Lista  </td>
+ <td> No hay procesos Internacionales en esta Lista  </td>
  <br>
  <br>
 <% end %>

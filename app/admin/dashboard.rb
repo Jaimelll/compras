@@ -514,7 +514,7 @@ if @alabels.length <=29 then
               columns do
 
                      column do
-                       panel "PROCESOS EN CURSO AF-2017" do
+                       panel "PROCESOS  EN  CURSO  AF-2017  Y  EN  EJECUCION  CONTRACTUAL  AF-2015  Y  2016" do
                          table_for Formula.where(product_id:11)  do
                               column("Periodos" ) do |formula|
                                 formula.nombre
@@ -666,14 +666,19 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                               formula.nombre
                               end
                               column("Encargo 'PAC/(SOLES)'") do |formula|
+                                @auto=  formula.orden
+                                @tita1="POR ENCARGO"
+                                @vopc1=1
 
-                              @encargo=  formula.orden
                               @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
                                    .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                              link_to "#{@le} ", reports_comment_path(format: :pdf,:param2=> @encargo)
+                              link_to "#{@le} ", reports_comment_path(format: :pdf,
+                              :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
 
                               end
                               column("Corporativos 'PAC/(SOLES)'") do |formula|
@@ -695,10 +700,19 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                               column("Ejecucion Contractural en OBAC 'PAC/(SOLES)'") do |formula|
 
+                                @auto=  formula.orden
+                                @tita1="Ejecucion Contractural en OBAC"
+                                @vopc1=3
+
                                 @ls1=   Item.where(ejecucion:4,lista:formula.orden)
                                          .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
                                 @ls=   @ls1.count.to_s+ "/("+
                                      number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                                     link_to "#{@ls} ", reports_comment_path(format: :pdf,
+                                     :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
 
                               end
 
