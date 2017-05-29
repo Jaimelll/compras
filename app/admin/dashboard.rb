@@ -95,7 +95,7 @@ case @var
  when 4
 #DEC proceso 6
   @vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
-   @iproce=6
+   @iproce=7
 
   when 5
   #excluidos
