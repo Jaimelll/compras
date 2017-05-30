@@ -529,7 +529,7 @@ if @alabels.length <=29 then
 
                               column("EN OBAC 'PAC/(SOLES)'" ) do |formula|
                                 (Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count+
-    Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
+                                 Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
 #(number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)+
 number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado)+
                        Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)).to_i, delimiter: ",").to_s+ ")"
@@ -539,8 +539,10 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                               end
                               column("TOTAL  'PAC/(SOLES)' ") do |formula|
-                                Item.where(periodo:formula.orden).where.not(modalidad:4).count.to_s+ "/("+
-                                   number_with_delimiter(Item.where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                @vtproc=Item.where(periodo:formula.orden).where.not(modalidad:4)
+                                  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                              @vtproc.count.to_s+ "/("+
+                                   number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
                              column("Ejecucion Contractual en OBAC") do |formula|
