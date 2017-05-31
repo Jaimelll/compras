@@ -218,7 +218,7 @@ form do |f|
 
        f.input :pac ,:label => 'PAC SEACE', :input_html => { :style =>  'width:30%'}
        f.input :exped,:label => 'Expediente', :as => :select, :collection =>
-         Formula.where(product_id:16).map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
+         Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
 
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
@@ -421,5 +421,51 @@ sidebar "RESPONSABLE POR EJECUCION", only: :index do
 
   # prueba ini
   end
+  sidebar "EJECUCION ACFFAA", only: :index do
+    # prueba ini
 
+
+
+        table_for Formula.where(product_id:1,cantidad:1)  do
+             column("Institucion 'PAC/(SOLES)'" ) do |formula|
+               formula.nombre
+             end
+             column("EN ACFFAA ") do |formula|
+             @vpcu1=   Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
+                 .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+               @vpcu1.count.to_s+ "/("+
+                  number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+             end
+
+
+
+
+            column("Ejecucion Contractual") do |formula|
+                @vpcu2= Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
+                .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                 @vpcu2.count.to_s+ "/("+
+                   number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+              end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
+
+    # prueba ini
+end
 end

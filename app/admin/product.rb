@@ -76,6 +76,7 @@ end
                    link_to "#{formula.descripcion.capitalize} ",  admin_product_formula_path(product,formula) }
           t.column("orden")
           t.column("cantidad")
+          t.column("numero")
 
 
         end

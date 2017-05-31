@@ -149,26 +149,33 @@ end
                  f.input :actividad, :as => :select, :collection =>
 
                  case current_admin_user.id # a_variable is the variable we want to compare
-                 when 1,2,4,6,8,9   #mgp
-                     Formula.where(product_id:12).order("descripcion").
+                 when 1,2,4  #admi
+                     Formula.where(product_id:12).order("numero,descripcion").
                        map{|u| [u.descripcion.capitalize,
                         u.orden]}
-                 when 7,11     #castaneda
-                     Formula.where(product_id:12,cantidad:4).order("orden").
+                  when 6,8,9  #gex
+                        Formula.where(product_id:12)
+                          .where("cantidad=1 or cantidad=2 or orden=25 or orden=15 or orden=17 or orden=26")
+                          .order("numero,descripcion").map{|u| [u.descripcion.capitalize,
+                             u.orden]}
+
+
+                 when 7,11     #castaneda,dem
+                     Formula.where(product_id:12,cantidad:4).order("numero,descripcion").
                        map{|u| [u.descripcion.capitalize,
                         u.orden]}
                  when 12     #dc
-                          Formula.where(product_id:12,cantidad:3).order("orden").
+                          Formula.where(product_id:12,cantidad:3).order("numero,descripcion").
                             map{|u| [u.descripcion.capitalize,
                              u.orden]}
                  when 13     #dpc
-                               Formula.where(product_id:12,cantidad:5).order("orden").
+                               Formula.where(product_id:12,cantidad:5).order("numero,descripcion").
                                  map{|u| [u.descripcion.capitalize,
                                   u.orden]}
 
                  when 14    #dec
                            Formula.where(product_id:12).where("cantidad=6 or cantidad=7")
-                             .order("orden").
+                             .order("numero,descripcion").
                                 map{|u| [u.descripcion.capitalize,
                                        u.orden]}
                   end
@@ -201,30 +208,30 @@ end
              f.input :actividad, :as => :select, :collection =>
              case current_admin_user.id # a_variable is the variable we want to compare
              when 1,2,4  #admi
-                 Formula.where(product_id:12).order("descripcion").
+                 Formula.where(product_id:12).order("numero,descripcion").
                    map{|u| [u.descripcion.capitalize,
                     u.orden]}
             when 6,8,9  #gex
-                      Formula.where(product_id:12).where(product_id:12)
+                      Formula.where(product_id:12)
                       .where("cantidad=1 or cantidad=2 or orden=25 or orden=15 or orden=17 or orden=26")
-                      .order("descripcion").map{|u| [u.descripcion.capitalize,
+                      .order("numero,descripcion").map{|u| [u.descripcion.capitalize,
                          u.orden]}
-             when 7,11     #castaneda
-                 Formula.where(product_id:12,cantidad:4).order("orden").
+             when 7,11     #castaneda,dem
+                 Formula.where(product_id:12,cantidad:4).order("numero,descripcion").
                    map{|u| [u.descripcion.capitalize,
                     u.orden]}
                   when 12     #dc
-                           Formula.where(product_id:12,cantidad:3).order("orden").
+                           Formula.where(product_id:12,cantidad:3).order("numero,descripcion").
                              map{|u| [u.descripcion.capitalize,
                               u.orden]}
                   when 13     #dpc
-                                Formula.where(product_id:12,cantidad:5).order("orden").
+                                Formula.where(product_id:12,cantidad:5).order("numero,descripcion").
                                   map{|u| [u.descripcion.capitalize,
                                    u.orden]}
 
                   when 14    #dec
                                      Formula.where(product_id:12).where("cantidad=6 or cantidad=7")
-                                     .order("orden").
+                                     .order("numero,descripcion").
                                        map{|u| [u.descripcion.capitalize,
                                         u.orden]}
               end

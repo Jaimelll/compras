@@ -1,8 +1,8 @@
 ActiveAdmin.register Formula do
 
 menu false
-permit_params  :nombre, :descripcion,
-      :orden, :cantidad, :admin_user_id, :product_id
+permit_params  :nombre, :descripcion,  :orden,
+   :cantidad, :admin_user_id, :product_id,  :numero
 
 
 
@@ -97,6 +97,7 @@ permit_params  :nombre, :descripcion,
                f.input :descripcion
                f.input :orden, :input_html => { :style =>  'width:30%'}
                f.input :cantidad, :input_html => { :style =>  'width:30%'}
+               f.input :numero, :input_html => { :style =>  'width:30%'}
                f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
 
@@ -113,6 +114,7 @@ permit_params  :nombre, :descripcion,
               f.input :descripcion
               f.input :orden, :input_html => { :style =>  'width:30%'}
               f.input :cantidad, :input_html => { :style =>  'width:30%'}
+                f.input :numero, :input_html => { :style =>  'width:30%'}
               f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
            end
               f.actions
