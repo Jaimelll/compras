@@ -423,7 +423,7 @@ if @alabels.length <=29 then
                  :size   => '570x500',
                 :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
                 :title  => @titulo+@titu1,
-                :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC','EC/OBAC'],
+                :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
                 :orientation => 'horizontal',
                 :stacked => true,
 
@@ -453,7 +453,7 @@ if @alabels.length <=29 then
                    :size   => '570x500',
                   :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
                   :title  => @titulo+@titu2,
-                  :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC','EC/OBAC'],
+                  :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -483,7 +483,7 @@ if @alabels.length <=29 then
                        :size   => '570x500',
                       :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
                       :title  => @titulo+@titu3,
-                      :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC','EC/OBAC'],
+                      :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
@@ -545,7 +545,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-                             column("Ejecucion Contractual en OBAC") do |formula|
+                             column("Ejecucion Contractual") do |formula|
                                  @vpcu2= Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3")
                                  .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
                                   @vpcu2.count.to_s+ "/("+
@@ -628,7 +628,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
 
                                    end
-                                   column("DEC") do |formula|
+                                   column("FC") do |formula|
 
                                    @dpc=  formula.orden
                                   @vpas=6
@@ -648,7 +648,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    @p.select {|f| f["acti"]< 7 and f["periodo"]==formula.orden}.count
                                end
 
-                               column("EC/OBAC") do |formula|
+                               column("DEC") do |formula|
 
                                @dpc=  formula.orden
                               @vpas=7
@@ -700,7 +700,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    number_with_delimiter(@lt.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-                              column("Ejecucion Contractural en OBAC 'PAC/(SOLES)'") do |formula|
+                              column("Ejecucion Contractural 'PAC/(SOLES)'") do |formula|
 
                                 @auto=  formula.orden
                                 @tita1="Ejecucion Contractural en OBAC"
