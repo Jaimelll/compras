@@ -12,13 +12,13 @@
 
 <table>
 
-  <thead>
+
 <h4> NACIONALES:  </h4>
 
     <tr>
       <th>N°</th>
       <th>Pac</th>
-
+      <th>Expediente</th>
       <th>Obac</th>
 
       <th>Descripcion</th>
@@ -28,7 +28,7 @@
 
       <th colspan="3"></th>
     </tr>
-  </thead>
+
 
   <tbody>
 
@@ -38,10 +38,16 @@
 
         <tr>
           <% @conta=@conta+1 %>
-        <td><%= @conta.to_s+".-" %></td>
-        <td><%= item.pac.to_i %></td>
+        <td ALIGN=center><%= @conta.to_s+".-" %></td>
+        <td ALIGN=center><%= item.pac.to_i %></td>
 
-        <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
+        <% if item.exped>0 then %>
+           <td ALIGN=center><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd.downcase %></td>
+          <% else %>
+        <td ALIGN=center><%= " s/d"   %></td>
+          <% end %>
+
+        <td ALIGN=center><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
 
         <td><%= item.descripcion.underscore.capitalize %></td>
 
@@ -72,7 +78,7 @@
 <table>
 
 
-  <thead>
+
 
 
 
@@ -80,7 +86,7 @@
     <tr>
       <th>N°</th>
       <th>Pac</th>
-
+      <th>Expediente</th>
       <th>Obac</th>
 
       <th>Descripcion</th>
@@ -90,7 +96,7 @@
 
       <th colspan="3"></th>
     </tr>
-  </thead>
+
 
   <tbody>
     <%  @conta=0 %>
@@ -98,10 +104,16 @@
     <% @items.where(tipo:2).each do |item| %>
         <tr>
           <% @conta=@conta+1 %>
-        <td><%= @conta.to_s+".-" %></td>
-        <td><%= item.pac.to_i %></td>
+        <td ALIGN=center><%= @conta.to_s+".-" %></td>
+        <td ALIGN=center><%= item.pac.to_i %></td>
 
-        <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
+        <% if item.exped>0 then %>
+           <td ALIGN=center><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd.downcase %></td>
+          <% else %>
+        <td ALIGN=center><%= " s/d"   %></td>
+          <% end %>
+
+        <td ALIGN=center><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
 
         <td><%= item.descripcion.underscore.capitalize %></td>
 

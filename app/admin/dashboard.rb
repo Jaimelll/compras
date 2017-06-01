@@ -684,12 +684,19 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                               end
                               column("Corporativos 'PAC/(SOLES)'") do |formula|
-                             @corporativa=  formula.orden
-                                @lc1=   Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
-                                      .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                                @lc=   @lc1.count.to_s+ "/("+
-                                     number_with_delimiter(@lc1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                               link_to "#{@lc} ", reports_comment2_path(format: :pdf,:param2=> @corporativa)
+                                @auto=  formula.orden
+                                @tita1="CORPORATIVOS"
+                                @vopc1=2
+
+                              @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
+                                    .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                              @le= @le1.count.to_s+ "/("+
+                                     number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                              link_to "#{@le} ", reports_comment_path(format: :pdf,
+                              :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
                               end
 
                               column("TOTAL 'PAC/(SOLES)'") do |formula|
@@ -744,14 +751,22 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
 
                                  column("Por Autorizar") do |formula|
-                                   @noauto=  formula.orden
-                                   @noautol= Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
+
+                                   @auto=  formula.orden
+                                   @tita1="PROCESOS POR AUTORIZAR:"
+                                   @piea1="No hay procesos Por Autorizar para esta Entidad "
+                                   @vopc1=2
+                                   @autol=  Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
                                    .where.not('id IN(?)',Detail.where(actividad:8).select("item_id")).count.to_s+ "/("+
                                       number_with_delimiter(Item.where(ejecucion:4,modalidad:3,
                                       obac:formula.orden).where.not('id IN(?)',Detail.where(actividad:8).
                                       select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                    link_to "#{@noautol} ", reports_comment4_path(format: :pdf,:param2=>   @noauto)
-                                  end
+
+                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,
+                                   :param2=>   @auto,:param3=>   @tita1,
+                                   :param4=>   @piea1,:param5=>   @vopc1)
+
+                                 end
 
                                   column("Autorizaciones Rechazadas") do |formula|
 
@@ -781,28 +796,47 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                    end
 
                                  column("Excluidos con RJ") do |formula|
-                                    @noexclu=  formula.orden
-                                    @noexclul= Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
-                                   where('id IN(?)',Detail.where(actividad:200).select("item_id")).
-                                   count.to_s+ "/("+
-                                      number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
-                                      where('id IN(?)',Detail.where(actividad:200).select("item_id")).
-                                      sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                        link_to "#{@noexclul} ", reports_comment5_path(format: :pdf,:param2=>   @noexclu)
+                                   @auto=  formula.orden
+                                   @tita1="PROCESOS EXCLUIDOS CON RJ:"
+                                   @piea1="No hay procesos Excluidos con RJ para esta Entidad "
+                                   @vopc1=3
+                                   @autol=  Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
+                                  where('id IN(?)',Detail.where(actividad:200).select("item_id")).
+                                  count.to_s+ "/("+
+                                     number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
+                                     where('id IN(?)',Detail.where(actividad:200).select("item_id")).
+                                     sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,
+                                   :param2=>   @auto,:param3=>   @tita1,
+                                   :param4=>   @piea1,:param5=>   @vopc1)
 
                                   end
 
+
+
+
                                   column("Por Excluir") do |formula|
-                                    @pexclu=  formula.orden
-                                    @pexclul=   Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
+                                    @auto=  formula.orden
+                                    @tita1="PROCESOS POR EXCLUIR:"
+                                    @piea1="No hay procesos Por Excluir para esta Entidad "
+                                    @vopc1=4
+                                    @autol=   Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
                                     where.not('id IN(?)',Detail.where(actividad:200).select("item_id")).
                                     count.to_s+ "/("+
                                        number_with_delimiter(Item.where(ejecucion:4,obac:formula.orden,modalidad:4).
                                        where.not('id IN(?)',Detail.where(actividad:200).select("item_id")).
                                        sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                                 link_to "#{@pexclul} ", reports_comment6_path(format: :pdf,:param2=>   @pexclu)
 
-                                   end
+                                    link_to "#{@autol} ", reports_comment3_path(format: :pdf,
+                                    :param2=>   @auto,:param3=>   @tita1,
+                                    :param4=>   @piea1,:param5=>   @vopc1)
+
+                                    end
+
+
+
+
 
 
 

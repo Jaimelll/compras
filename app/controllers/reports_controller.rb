@@ -6,11 +6,15 @@ def comment
 
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @vopc=params[:param4].to_i
-  
+
   case @vopc
 when 1
 
   @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('obac,pac')
+  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+when 2
+
+  @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 when 3
 
@@ -33,17 +37,17 @@ end
 end
 
 
-def comment2
-  @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
-  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-respond_to do |format|
+#def comment2
+#  @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
+#  @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
+#  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+#respond_to do |format|
 
-format.html
-format.json
-format.pdf{render template: 'reports/reporte2.pdf.erb', pdf:'detalle'}
-end
-end
+#format.html
+#format.json
+#format.pdf{render template: 'reports/reporte2.pdf.erb', pdf:'detalle'}
+#end
+#end
 
 def comment3
   #autorizados con rj
@@ -60,6 +64,16 @@ def comment3
 when 1
   @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
   .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
+when 2
+@items=  Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
+  .where.not('id IN(?)',Detail.where(actividad:8).select("item_id"))
+when 3
+@items=   Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
+  .where('id IN(?)',Detail.where(actividad:200).select("item_id"))
+when 4
+@items=  Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
+.where.not('id IN(?)',Detail.where(actividad:200).select("item_id"))
+
 when 5
   @items=Item.where(ejecucion:4,obac:params[:param2]).order('certificado')
   .where("modalidad=1 or modalidad=2")
@@ -77,50 +91,8 @@ end
 
 
 
-def comment4
-  #en tramite de autorizacion
-
-  @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
-  select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
-  .where.not('id IN(?)',Detail.where(actividad:8).select("item_id"))
-
-respond_to do |format|
-
-format.html
-format.json
-format.pdf{render template: 'reports/reporte4.pdf.erb', pdf:'detalle'}
-end
-end
-
-def comment5
-  @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
-  select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
- .where('id IN(?)',Detail.where(actividad:200).select("item_id"))
-
-respond_to do |format|
-
-format.html
-format.json
-format.pdf{render template: 'reports/reporte5.pdf.erb', pdf:'detalle'}
-end
-end
 
 
-def comment6
-  @lista=Formula.where(product_id:1,cantidad:1,orden:params[:param2]).
-  select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
- .where.not('id IN(?)',Detail.where(actividad:200).select("item_id"))
-
-respond_to do |format|
-
-format.html
-format.json
-format.pdf{render template: 'reports/reporte6.pdf.erb', pdf:'detalle'}
-end
-end
 
 
 def comment7
