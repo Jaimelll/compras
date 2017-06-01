@@ -216,20 +216,23 @@ if  @nconta1==1 then
    end
 end
 
-if @vlog then
+if @vlog  then
 # empieza @vlog
 
 
    unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
      if  @uproc>=@vproc then
 
-            @vproceso[@vproc]=@vproceso[@vproc]+ ( @vfec1-detail.pfecha.to_time).to_i/86400
+            @vproceso[@vproc]=@vproceso[@vproc]+
+            ( @vfec1-detail.pfecha.to_time).to_i/86400
+
             if @nconta1==1 then
                @vproceso[@vproc]=@vproceso[@vproc]+2
             end
             @uproc=@vproc
       else
-            @vproceso[@uproc]=@vproceso[@uproc]+ ( @vfec1-detail.pfecha.to_time).to_i/86400
+            @vproceso[@uproc]=@vproceso[@uproc]+
+            ( @vfec1-detail.pfecha.to_time).to_i/86400
 
 
        end
@@ -242,10 +245,12 @@ if @vlog then
 
     if @nconta1==@nconta then
       if @vprord==36 then
-           @vproceso[0]= ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400+1
+           @vproceso[0]= ( detail.pfecha.to_time-
+           @vinicio.to_time).to_i/86400
        end
 
-     @vproceso[@vproc]=@vproceso[@vproc]+( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]+1
+     @vproceso[@vproc]=@vproceso[@vproc]+
+     ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]
 
 
 
