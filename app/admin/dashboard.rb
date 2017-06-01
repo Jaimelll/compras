@@ -442,7 +442,7 @@ if @alabels.length <=29 then
         #     DateTime.new(0,1,1)], [0,@conta,1]],
 
             #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-              :axis_range => [nil, [0,@dfin,10], [1,@alabels.length,1]],
+              :axis_range => [nil, [0,@dfin,15], [1,@alabels.length,1]],
               #:min_value => 0,
               #:max_value => 365,
                 :data   =>@adata)
@@ -472,7 +472,7 @@ if @alabels.length <=29 then
           #     DateTime.new(0,1,1)], [0,@conta,1]],
 
               #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                :axis_range => [nil, [0,@dfin,10], [1,@alabels2.length,1]],
+                :axis_range => [nil, [0,@dfin,15], [1,@alabels2.length,1]],
                 #:min_value => 0,
                 #:max_value => 365,
                   :data   =>@adata2)
@@ -502,7 +502,7 @@ if @alabels.length <=29 then
               #     DateTime.new(0,1,1)], [0,@conta,1]],
 
                   #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                    :axis_range => [nil, [0,@dfin,10], [1,@alabels3.length,1]],
+                    :axis_range => [nil, [0,@dfin,15], [1,@alabels3.length,1]],
                     #:min_value => 0,
                     #:max_value => 365,
                       :data   =>@adata3)
@@ -710,7 +710,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                               column("Ejecucion Contractural 'PAC/(SOLES)'") do |formula|
 
                                 @auto=  formula.orden
-                                @tita1="Ejecucion Contractural en OBAC"
+                                @tita1="Ejecucion Contractural"
                                 @vopc1=3
 
                                 @ls1=   Item.where(ejecucion:4,lista:formula.orden)
