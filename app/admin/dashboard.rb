@@ -82,39 +82,39 @@ end
 case @var
    when 1
      #encargo
-     @vitem=Item.where(ejecucion:4,modalidad:2).where(exped2:3).order('periodo,obac ASC,pac')
+     @vitem=Item.where(ejecucion:4,modalidad:2).order('periodo,obac ASC,pac')
      @iproce=100
    when 2
    #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1).where(exped2:3).order('periodo,exped,obac')
+     @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,exped,obac')
     @iproce=100
   when 3
   # autorizados
-     @vitem=Item.where(ejecucion:4,modalidad:3).where(exped2:3).order('obac ASC,pac')
+     @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC,pac')
      @iproce=100
  when 4
 #DEC proceso 6
-  @vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
+  @vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
    @iproce=7
 
   when 5
   #excluidos
-    @vitem=Item.where(ejecucion:4,modalidad:4).where(exped2:3).order('obac ASC,pac')
+    @vitem=Item.where(ejecucion:4,modalidad:4).order('obac ASC,pac')
     @iproce=100
 
  when 6
 #dpc
-@vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
  @iproce=5
 
  when 7
 #dem
-@vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
  @iproce=4
 
 when 8
 #gex
-@vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
  @iproce=2
 end
 
