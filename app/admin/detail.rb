@@ -141,8 +141,10 @@ end
               n1=Detail.where(id:params[:id]).
                        select('item_id as dd').first.dd.to_i
                nn=Item.where(id:n1).
-                          select('pac as dd').first.dd.capitalize
-          f.inputs "PAC-#{nn}" do
+                          select('pac as dd').first.dd.capitalize+"-"+
+                   Item.where(id:n1).
+                           select('descripcion as dd').first.dd.capitalize
+          f.inputs "pac-#{nn}" do
                  f.input :item_id, :label => 'PAC', :as => :select, :collection =>
                       Item.all.order('pac ASC').map{|u| [u.pac, u.id]}
 
@@ -200,8 +202,10 @@ end
 #nuevo
             if params[:item_id] then
                nn=Item.where(id:  params[:item_id]).
-                        select('pac as dd').first.dd.capitalize
-           f.inputs "#{nn}" do
+                        select('pac as dd').first.dd.capitalize+"-"+
+                 Item.where(id:params[:item_id]).
+                         select('descripcion as dd').first.dd.capitalize
+           f.inputs "pac-#{nn}" do
              f.input :item_id, :label => 'PAC' ,
                       :input_html => { :value =>   params[:item_id]}, :as => :hidden
 

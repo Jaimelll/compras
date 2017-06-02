@@ -117,7 +117,7 @@ def comment7
   public.formulas WHERE items.id = details.item_id AND
   details.actividad = formulas.orden AND
   formulas.product_id = 12 AND items.ejecucion=4  and
-   items.modalidad<3 AND ((details.item_id,details.pfecha)
+   items.modalidad<3  AND items.exped2=3 AND ((details.item_id,details.pfecha)
   IN(SELECT   details.item_id,   MAX(details.pfecha)
  FROM   public.details
  GROUP BY   details.item_id)) GROUP BY

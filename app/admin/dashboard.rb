@@ -82,39 +82,39 @@ end
 case @var
    when 1
      #encargo
-     @vitem=Item.where(ejecucion:4,modalidad:2).order('periodo,obac ASC,pac')
+     @vitem=Item.where(ejecucion:4,modalidad:2).where(exped2:3).order('periodo,obac ASC,pac')
      @iproce=100
    when 2
    #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,exped,obac')
+     @vitem=Item.where(ejecucion:4,modalidad:1).where(exped2:3).order('periodo,exped,obac')
     @iproce=100
   when 3
   # autorizados
-     @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC,pac')
+     @vitem=Item.where(ejecucion:4,modalidad:3).where(exped2:3).order('obac ASC,pac')
      @iproce=100
  when 4
 #DEC proceso 6
-  @vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+  @vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
    @iproce=7
 
   when 5
   #excluidos
-    @vitem=Item.where(ejecucion:4,modalidad:4).order('obac ASC,pac')
+    @vitem=Item.where(ejecucion:4,modalidad:4).where(exped2:3).order('obac ASC,pac')
     @iproce=100
 
  when 6
 #dpc
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
  @iproce=5
 
  when 7
 #dem
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
  @iproce=4
 
 when 8
 #gex
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3").where(exped2:3).order('periodo,exped,obac')
  @iproce=2
 end
 
@@ -519,43 +519,41 @@ if @alabels.length <=29 then
               columns do
 
                      column do
-                       panel "PROCESOS  EN  CURSO  AF-2017  Y  EN  EJECUCION  CONTRACTUAL  AF-2015  Y  2016" do
+                       panel "PROCESOS  EN  CURSO  AF-2017 " do
                          table_for Formula.where(product_id:11)  do
                               column("Periodos" ) do |formula|
                                 formula.nombre
                               end
                               column("EN ACFFAA 'PAC/(SOLES)'") do |formula|
-                              @vpcu1=   Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3")
+                              @vpcu1=   Item.where(ejecucion:4,periodo:formula.orden).where(exped2:3).where("modalidad<3")
                                   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
                                 @vpcu1.count.to_s+ "/("+
                                    number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
 
-
-                              column("EN OBAC 'PAC/(SOLES)'" ) do |formula|
-                                (Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).count+
-                                 Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
-#(number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)+
-number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado)+
-                       Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)).to_i, delimiter: ",").to_s+ ")"
-
-
-
-
-                              end
-                              column("TOTAL  'PAC/(SOLES)' ") do |formula|
-                                @vtproc=Item.where(periodo:formula.orden).where.not(modalidad:4)
-                                  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                              @vtproc.count.to_s+ "/("+
-                                   number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
-
                              column("Ejecucion Contractual") do |formula|
-                                 @vpcu2= Item.where(ejecucion:4,periodo:formula.orden).where("modalidad<3")
+                                 @vpcu2= Item.where(ejecucion:4,periodo:formula.orden).where(exped2:3).where("modalidad<3")
                                  .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
                                   @vpcu2.count.to_s+ "/("+
                                     number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                end
+
+                              column("EN OBAC 'PAC/(SOLES)'" ) do |formula|
+                                (Item.where.not(ejecucion:4).where(periodo:formula.orden).where(exped2:3).where.not(modalidad:4).count+
+                                 Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).count).to_s+ "/("+
+#(number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)+
+number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).where.not(modalidad:4).sum(:certificado)+
+                       Item.where(ejecucion:4,periodo:formula.orden).where(modalidad:3).sum(:certificado)).to_i, delimiter: ",").to_s+ ")"
+                              end
+
+
+                              column("TOTAL  'PAC/(SOLES)' ") do |formula|
+                                @vtproc=Item.where(periodo:formula.orden).where(exped2:3).where.not(modalidad:4)
+
+                              @vtproc.count.to_s+ "/("+
+                                   number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              end
+
                           #     column("Culminados ACFFAA") do |formula|
                           #     Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
                           #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -567,7 +565,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                    public.formulas WHERE items.id = details.item_id AND
                    details.actividad = formulas.orden AND
                    formulas.product_id = 12 AND items.ejecucion=4 and
-                    items.modalidad<3 AND ((details.item_id,details.pfecha)
+                    items.modalidad<3 AND items.exped2=3 AND((details.item_id,details.pfecha)
                    IN(SELECT   details.item_id,   MAX(details.pfecha)
                   FROM   public.details
                   GROUP BY   details.item_id)) GROUP BY
@@ -637,7 +635,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                                    @dpc=  formula.orden
                                   @vpas=6
-                                  @titproc1="EXPEDIENTES EN EJECUCION DE CONTRATOS"
+                                  @titproc1="EXPEDIENTES POR SUSCRIPCION DE CONTRATO"
                                    @dpcl=   @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count
                                          link_to "#{@dpcl} ",
                                           reports_comment7_path(format: :pdf,
@@ -645,26 +643,26 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
 
                                  end
+                                 column("DEC") do |formula|
 
+                                 @dpc=  formula.orden
+                                @vpas=7
+                                @titproc1="EXPEDIENTES EN DEC"
+                                 @dpcl=   @p.select {|f| f["acti"]== 7 and f["periodo"]==formula.orden}.count
+                                       link_to "#{@dpcl} ",
+                                        reports_comment7_path(format: :pdf,
+                                        :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+
+                                end
 
 
 
                                  column("TOTAL PAC") do |formula|
-                                   @p.select {|f| f["acti"]< 7 and f["periodo"]==formula.orden}.count
+                                   @p.select {|f|  f["periodo"]==formula.orden}.count
                                end
 
-                               column("DEC") do |formula|
 
-                               @dpc=  formula.orden
-                              @vpas=7
-                              @titproc1="EXPEDIENTES EN EC/ OBAC"
-                               @dpcl=   @p.select {|f| f["acti"]== 7 and f["periodo"]==formula.orden}.count
-                                     link_to "#{@dpcl} ",
-                                      reports_comment7_path(format: :pdf,
-                                      :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-
-                              end
 
 
                                  end
@@ -677,7 +675,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                 @tita1="POR ENCARGO"
                                 @vopc1=1
 
-                              @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
+                              @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden).where(exped2:3)
                                    .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -693,7 +691,7 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
                                 @tita1="CORPORATIVOS"
                                 @vopc1=2
 
-                              @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
+                              @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden).where(exped2:3)
                                     .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -704,21 +702,13 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
                               end
 
-                              column("TOTAL 'PAC/(SOLES)'") do |formula|
-
-                               @lt=Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3")
-                                     .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                                @lt.count.to_s+ "/("+
-                                   number_with_delimiter(@lt.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
-
                               column("Ejecucion Contractural 'PAC/(SOLES)'") do |formula|
 
                                 @auto=  formula.orden
                                 @tita1="Ejecucion Contractural"
                                 @vopc1=3
 
-                                @ls1=   Item.where(ejecucion:4,lista:formula.orden)
+                                @ls1=   Item.where(ejecucion:4,lista:formula.orden).where(exped2:3)
                                          .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
                                 @ls=   @ls1.count.to_s+ "/("+
                                      number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -729,6 +719,21 @@ number_with_delimiter((Item.where.not(ejecucion:4).where(periodo:formula.orden).
 
 
                               end
+
+
+
+
+
+
+                              column("TOTAL 'PAC/(SOLES)'") do |formula|
+
+                               @lt=Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3").where(exped2:3)
+
+                                @lt.count.to_s+ "/("+
+                                   number_with_delimiter(@lt.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              end
+
+
 
                           end
 

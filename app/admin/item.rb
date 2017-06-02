@@ -17,7 +17,7 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
               :certificado, :constancia, :moneda, :fuente, :seleccion,
               :mesconvoca, :rubro, :admin_user_id, :cuadrante, :expediente,
-              :observacion, :exped
+              :observacion, :exped, :exped2
 # or
 #
 # permit_params do
@@ -289,6 +289,8 @@ form do |f|
         #f.input :cpr , :label => 'No constacia de prevision de recurso', :input_html => { :style =>  'width:30%'}
         f.input :rubro, :as => :select, :collection =>
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
+        f.input :periodo, :label => 'Año Fiscal', :as => :select, :collection =>
+                    Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
           case current_admin_user.id # a_variable is the variable we want to compare
@@ -385,13 +387,14 @@ form do |f|
         t.column("importe") do |detail|
          number_with_delimiter(detail.importe, delimiter: ",")
        end
+
         t.column("moneda") do |detail|
           if detail.moneda then
             Formula.where(product_id:7,orden:detail.moneda).select('nombre as dd').first.dd.to_s
 
           end
         end
-      #  t.column("obs")
+      t.column("obs")
 
 
       end
