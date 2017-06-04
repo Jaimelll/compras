@@ -9,6 +9,12 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 #end
 
 action_item :only=> :index do
+
+    link_to   'Cambiar AF', af_admin_formula_path( :@num), method: :put
+end
+
+
+action_item :only=> :index do
     link_to 'Encargo', encargo_admin_formula_path( :@num), method: :put
 end
 #action_item :only=> :index do
@@ -444,6 +450,9 @@ end
 
 if @conta>0 then
 @vancho=(280/@conta).to_i
+if @vancho>30 then
+  @vancho=30
+end
 end
 @ancho=@vancho.to_s
 

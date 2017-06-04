@@ -11,6 +11,19 @@ permit_params  :nombre, :descripcion,  :orden,
         link_to 'Ir a Productos', admin_products_path()
       end
 
+      member_action :af, method: :put do
+        case current_admin_user.id # a_variable is the variable we want to compare
+        when 2,3 #roy o administrador
+
+         @vaf=Formula.where(product_id:11,cantidad:1).select('numero as dd').first.dd
+         @num=Formula.where(product_id: 11, orden:@vaf).
+                select('id as dd').first.dd
+        Formula.where( product_id:11 ).update_all( cantidad:0 )
+        Formula.where( product_id:11 ,orden:@vaf).update_all( cantidad:1 )
+        redirect_to admin_dashboard_path
+
+        end
+      end
 
 
 

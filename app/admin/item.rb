@@ -53,7 +53,7 @@ action_item :view, only: :show do
 
      scope :todos, :default => true do |items|
        @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-           items.where(exped2:@vaf).order('pac')
+           items.order('pac')
       end
      scope :Ejercito, :default => true do |items|
        @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -157,14 +157,14 @@ column("exped")do |item|
           "s/d"
         end
     end
-  column("dependencia") do |item|
-            if item.dependencia and item.dependencia>0 then
-           Formula.where(product_id:5, orden:item.dependencia).
-            select('nombre as dd').first.dd
-          else
-            "s/d"
-          end
-  end
+#  column("dependencia") do |item|
+#            if item.dependencia and item.dependencia>0 then
+#           Formula.where(product_id:5, orden:item.dependencia).
+#            select('nombre as dd').first.dd
+#          else
+#            "s/d"
+#          end
+#  end
 
 
   column("lista") do |item|
@@ -411,36 +411,41 @@ form do |f|
 
 
 end
+   @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
 
-sidebar "RESPONSABLE POR EJECUCION", only: :index do
+sidebar  @vaf1+" RESPONSABLE POR EJECUCION", only: :index do
   # prueba ini
     table_for Formula.where(product_id:1)  do
+        @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
          column("Institucion ") do |formula|
            formula.nombre
          end
          column("pac") do |formula|
-           Item.where(ejecucion:formula.orden).count
+           Item.where(ejecucion:formula.orden).where(exped2:@vaf).count
          end
          column("monto") do |formula|
 
-              number_with_delimiter(Item.where(ejecucion:formula.orden).
-              sum(:certificado).to_i, delimiter: ",")
+              number_with_delimiter(Item.where(ejecucion:formula.orden)
+              .where(exped2:@vaf)
+              .sum(:certificado).to_i, delimiter: ",")
          end
       end
 
   # prueba ini
   end
-  sidebar "EJECUCION ACFFAA", only: :index do
+  sidebar @vaf1+" EJECUCION ACFFAA", only: :index do
     # prueba ini
 
 
 
         table_for Formula.where(product_id:1,cantidad:1)  do
+            @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
              column("Institucion 'PAC/(SOLES)'" ) do |formula|
                formula.nombre
              end
              column("EN ACFFAA ") do |formula|
              @vpcu1=   Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
+                  .where(exped2:@vaf)
                  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
                @vpcu1.count.to_s+ "/("+
                   number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -451,6 +456,7 @@ sidebar "RESPONSABLE POR EJECUCION", only: :index do
 
             column("Ejecucion Contractual") do |formula|
                 @vpcu2= Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
+                .where(exped2:@vaf)
                 .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
                  @vpcu2.count.to_s+ "/("+
                    number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
