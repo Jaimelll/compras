@@ -571,7 +571,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                    public.formulas WHERE items.id = details.item_id AND
                    details.actividad = formulas.orden AND
                    formulas.product_id = 12 AND items.ejecucion=4 and
-                    items.modalidad<3  AND exped2=(SELECT max(cantidad) FROM  formulas
+                    items.modalidad<3  AND exped2=(SELECT max(orden) FROM  formulas where cantidad=1
                      GROUP BY product_id HAVING product_id=11) AND ((details.item_id,details.pfecha)
                    IN(SELECT   details.item_id,   MAX(details.pfecha)
                   FROM   public.details
