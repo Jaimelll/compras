@@ -197,7 +197,7 @@ column("exped")do |item|
     #            "s/d"
     #        end
     #    end
-    
+
     column("certificado") do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
@@ -289,7 +289,7 @@ form do |f|
         #f.input :cpr , :label => 'No constacia de prevision de recurso', :input_html => { :style =>  'width:30%'}
         f.input :rubro, :as => :select, :collection =>
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
-        f.input :periodo, :label => 'Año Fiscal', :as => :select, :collection =>
+        f.input :exped2, :label => 'Año Fiscal', :as => :select, :collection =>
                     Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
