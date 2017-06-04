@@ -1,7 +1,7 @@
 class ReportsController < ApplicationController
 
 def comment
-
+  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
   @tit1=params[:param3].to_s
 
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
@@ -11,14 +11,17 @@ def comment
 when 1
 
   @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('obac,pac')
+  .where(exped2:@vaf)
   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 when 2
 
   @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
+  .where(exped2:@vaf)
   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 when 3
 
   @items=Item.where(ejecucion:4,lista:params[:param2]).order('obac,pac')
+  .where(exped2:@vaf)
    .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
 
 
@@ -51,6 +54,7 @@ end
 
 def comment3
   #autorizados con rj
+  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
   @tita=params[:param3]
   @piea=params[:param4]
   @vopc=params[:param5].to_i
@@ -63,19 +67,24 @@ def comment3
   case @vopc
 when 1
   @items=Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
+  .where(exped2:@vaf)
   .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
 when 2
 @items=  Item.where(ejecucion:4,modalidad:3,obac:params[:param2]).order('certificado')
+  .where(exped2:@vaf)
   .where.not('id IN(?)',Detail.where(actividad:8).select("item_id"))
 when 3
 @items=   Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
+  .where(exped2:@vaf)
   .where('id IN(?)',Detail.where(actividad:200).select("item_id"))
 when 4
 @items=  Item.where(ejecucion:4,obac:params[:param2],modalidad:4).order('certificado')
+.where(exped2:@vaf)
 .where.not('id IN(?)',Detail.where(actividad:200).select("item_id"))
 
 when 5
   @items=Item.where(ejecucion:4,obac:params[:param2]).order('certificado')
+  .where(exped2:@vaf)
   .where("modalidad=1 or modalidad=2")
   .where('id IN(?)',Detail.where(actividad:57).select("item_id"))
 end
@@ -117,7 +126,9 @@ def comment7
   public.formulas WHERE items.id = details.item_id AND
   details.actividad = formulas.orden AND
   formulas.product_id = 12 AND items.ejecucion=4  and
-   items.modalidad<3   AND ((details.item_id,details.pfecha)
+   items.modalidad<3 AND exped2=(SELECT max(orden) FROM  formulas where cantidad=1
+    GROUP BY product_id HAVING product_id=11)
+     AND ((details.item_id,details.pfecha)
   IN(SELECT   details.item_id,   MAX(details.pfecha)
  FROM   public.details
  GROUP BY   details.item_id)) GROUP BY
