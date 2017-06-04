@@ -79,42 +79,51 @@ end
                           select('orden as dd').first.dd
      @titulo=Formula.where(product_id:15,cantidad:1).
                           select('nombre as dd').first.dd
+      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
 case @var
    when 1
      #encargo
-     @vitem=Item.where(ejecucion:4,modalidad:2).order('periodo,obac ASC,pac')
+     @vitem=Item.where(ejecucion:4,modalidad:2)
+     .where(exped2:@vaf).order('periodo,obac ASC,pac')
      @iproce=100
    when 2
    #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1).order('periodo,exped,obac')
+     @vitem=Item.where(ejecucion:4,modalidad:1)
+     .where(exped2:@vaf).order('periodo,exped,obac')
     @iproce=100
   when 3
   # autorizados
-     @vitem=Item.where(ejecucion:4,modalidad:3).order('obac ASC,pac')
+     @vitem=Item.where(ejecucion:4,modalidad:3)
+     .where(exped2:@vaf).order('obac ASC,pac')
      @iproce=100
  when 4
 #DEC proceso 6
-  @vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+  @vitem=Item.where(ejecucion:4).where("modalidad<3")
+  .where(exped2:@vaf).order('periodo,exped,obac')
    @iproce=7
 
   when 5
   #excluidos
-    @vitem=Item.where(ejecucion:4,modalidad:4).order('obac ASC,pac')
+    @vitem=Item.where(ejecucion:4,modalidad:4)
+    .where(exped2:@vaf).order('obac ASC,pac')
     @iproce=100
 
  when 6
 #dpc
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3")
+.where(exped2:@vaf).order('periodo,exped,obac')
  @iproce=5
 
  when 7
 #dem
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3")
+.where(exped2:@vaf).order('periodo,exped,obac')
  @iproce=4
 
 when 8
 #gex
-@vitem=Item.where(ejecucion:4).where("modalidad<3").order('periodo,exped,obac')
+@vitem=Item.where(ejecucion:4).where("modalidad<3")
+.where(exped2:@vaf).order('periodo,exped,obac')
  @iproce=2
 end
 
@@ -188,15 +197,65 @@ end
 
 
   #@nconta numero de actividades
-@nconta=Detail.where(item_id:item.id).
-where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").count
+
+#comienza cas
+case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+   when 1
+     @vinicio = Date.parse('2015/01/01')
+     @dfin=365
+     @vfin=Date.parse('2015/12/31')
+     @vrang=30
+     @vtitun=" AF-2015"
+
+     @nconta=Detail.where(item_id:item.id).
+        where("details.pfecha>='2015/01/01'and details.pfecha<='2015/12/31' and
+        details.pfecha<=current_date").count
+      @deta1=Detail.where(item_id:item.id).where("details.pfecha>='2015/01/01' and
+       details.pfecha<='2015/12/31' and details.pfecha<=current_date").
+      order('details.pfecha DESC,details.id DESC')
+
+
+    when 2
+      @vinicio = Date.parse('2016/01/01')
+      @dfin=365
+      @vfin=Date.parse('2016/12/31')
+       @vrang=30
+       @vtitun=" AF-2016"
+
+      @nconta=Detail.where(item_id:item.id).
+         where("details.pfecha>='2016/01/01'and details.pfecha<='2016/12/31' and
+         details.pfecha<=current_date").count
+       @deta1=Detail.where(item_id:item.id).where("details.pfecha>='2016/01/01' and
+        details.pfecha<='2016/12/31' and details.pfecha<=current_date").
+       order('details.pfecha DESC,details.id DESC')
+
+
+     when 3
+       @vinicio = Date.parse('2017/01/01')
+       @dfin=(Time.now-@vinicio.to_time).to_i/86400
+       @vfin=Time.now
+        @vrang=15
+        @vtitun=" AF-2017"
+
+       @nconta=Detail.where(item_id:item.id).
+          where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").count
+        @deta1=Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
+        order('details.pfecha DESC,details.id DESC')
+  end
+
+#termina cas
 
 
 
-Detail.where(item_id:item.id).where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
-order('details.pfecha DESC,details.id DESC').each do |detail|
+
+
+
+
+@deta1.each do |detail|
+
   #empieza detail
-
+#end
+#termina cas
   @nconta1=@nconta1+1
 
 
@@ -427,7 +486,7 @@ if @alabels.length <=29 and @alabels.length>0 then
               #  :size   => '570x500',
                  :size   => '570x500',
                 :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
-                :title  => @titulo+@titu1,
+                :title  => @titulo+@titu1+@vtitun,
                 :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
                 :orientation => 'horizontal',
                 :stacked => true,
@@ -447,7 +506,7 @@ if @alabels.length <=29 and @alabels.length>0 then
         #     DateTime.new(0,1,1)], [0,@conta,1]],
 
             #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-              :axis_range => [nil, [0,@dfin,15], [1,@alabels.length,1]],
+              :axis_range => [nil, [0,@dfin, @vrang], [1,@alabels.length,1]],
               #:min_value => 0,
               #:max_value => 365,
                 :data   =>@adata)
@@ -457,7 +516,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                 #  :size   => '570x500',
                    :size   => '570x500',
                   :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
-                  :title  => @titulo+@titu2,
+                  :title  => @titulo+@titu2+@vtitun,
                   :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
@@ -477,7 +536,7 @@ if @alabels.length <=29 and @alabels.length>0 then
           #     DateTime.new(0,1,1)], [0,@conta,1]],
 
               #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                :axis_range => [nil, [0,@dfin,15], [1,@alabels2.length,1]],
+                :axis_range => [nil, [0,@dfin, @vrang], [1,@alabels2.length,1]],
                 #:min_value => 0,
                 #:max_value => 365,
                   :data   =>@adata2)
@@ -487,7 +546,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                     #  :size   => '570x500',
                        :size   => '570x500',
                       :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
-                      :title  => @titulo+@titu3,
+                      :title  => @titulo+@titu3+@vtitun,
                       :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
@@ -507,7 +566,7 @@ if @alabels.length <=29 and @alabels.length>0 then
               #     DateTime.new(0,1,1)], [0,@conta,1]],
 
                   #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                    :axis_range => [nil, [0,@dfin,15], [1,@alabels3.length,1]],
+                    :axis_range => [nil, [0,@dfin, @vrang], [1,@alabels3.length,1]],
                     #:min_value => 0,
                     #:max_value => 365,
                       :data   =>@adata3)
@@ -517,9 +576,9 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
               columns do
-
+                   @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
                      column do
-                       panel "PROCESOS  EN  CURSO  AF-2017 " do
+                       panel  @vaf do
                          table_for Formula.where(product_id:11).order('orden')  do
                             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
 

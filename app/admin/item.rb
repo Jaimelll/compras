@@ -47,24 +47,30 @@ action_item :view, only: :show do
 
 
     scope :ACFFAA, :default => true do |items|
-         items.where("ejecucion=4").order('pac')
+@vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+         items.where(ejecucion:4,exped2:@vaf).order('pac')
    end
 
      scope :todos, :default => true do |items|
-           items.order('pac')
+       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+           items.where(exped2:@vaf).order('pac')
       end
      scope :Ejercito, :default => true do |items|
-          items.where(obac:1).order('pac')
+       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+          items.where(obac:1).where(exped2:@vaf).order('pac')
      end
      scope :Marina, :default => true do |items|
-          items.where(obac:2).order('pac')
+       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+          items.where(obac:2).where(exped2:@vaf).order('pac')
      end
      scope :FAP, :default => true do |items|
-          items.where(obac:3).order('pac')
+       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+          items.where(obac:3).where(exped2:@vaf).order('pac')
      end
 
      scope :Otros, :default => true do |items|
-          items.where("obac > 3").order('pac')
+       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+          items.where("obac > 3").where(exped2:@vaf).order('pac')
      end
 
 
