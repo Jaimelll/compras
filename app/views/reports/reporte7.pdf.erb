@@ -9,8 +9,8 @@
 <h4><%= @titproc %></h4>
 </head>
 <% if @items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo}.count>0 then %>
-
-
+<%  @vtipo1=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1}.count %>
+<%  @vtipo2=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2}.count %>
   <table >
     <tr>
 
@@ -29,15 +29,28 @@
     <%  @conta=0 %>
 
     <% @items.select {|f| f["acti"]==@numproc and f["periodo"]==@vperiodo}.
-    sort_by { |k| [k["obac"], k["pac"]] }.each do |variable| %>
+    sort_by { |k| [k["tipo"], k["modalidad"],k["obac"], k["pac"]] }.
+    each do |variable| %>
 
 
     <% @var= variable["id"] %>
         <tr>
             <tbody>
+      <% @conta=@conta+1 %>
+
+      <%  if @vtipo1>0 and @conta==1 and  variable["tipo"]==1 then %>
+     <tr> <td> <h4>NACIONALES:</h4> </td> </tr>
+
+      <% end %>
+
+      <%  if @vtipo2>0 and @conta==@vtipo1+1 and  variable["tipo"]==2 then %>
+     <tr> <td> <h4>INTERNACIONALES:</h4> </td> </tr>
+
+      <% end %>
 
 
-          <% @conta=@conta+1 %>
+
+
 
         <td VALIGN=top ALIGN=center><h5><%= @conta.to_s+".-" %></h5></td>
               <%@vexp= @vite.where(id:@var).

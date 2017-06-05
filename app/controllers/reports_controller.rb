@@ -121,6 +121,7 @@ def comment7
   @vite=Item.all
   @items=ActiveRecord::Base.connection.execute("SELECT items.periodo,items.id,items.obac,
   items.pac,items.certificado,items.expediente,
+    items.tipo,items.modalidad,
     MAX(formulas.cantidad) as acti
    FROM public.items, public.details,
   public.formulas WHERE items.id = details.item_id AND
@@ -132,7 +133,8 @@ def comment7
   IN(SELECT   details.item_id,   MAX(details.pfecha)
  FROM   public.details
  GROUP BY   details.item_id)) GROUP BY
- items.periodo,details.item_id, items.id,items.obac,items.pac,items.certificado,items.expediente").to_a
+ items.periodo,details.item_id, items.id,items.obac,items.pac,items.certificado,items.expediente,
+items.tipo,items.modalidad").to_a
 
 respond_to do |format|
 
