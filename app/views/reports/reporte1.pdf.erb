@@ -57,7 +57,7 @@
         <td ALIGN=center><%= item.pac %></td>
 
         <% if item.exped>0 then %>
-           <td ALIGN=center><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd.downcase %></td>
+           <td ALIGN=center><h5><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd.downcase %><h5></td>
           <% else %>
         <td ALIGN=center><%= " s/d"   %></td>
           <% end %>
