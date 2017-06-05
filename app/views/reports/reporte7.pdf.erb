@@ -11,6 +11,14 @@
 <% if @items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo}.count>0 then %>
 <%  @vtipo1=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1}.count %>
 <%  @vtipo2=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2}.count %>
+
+<%  @vmod1n=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==1}.count %>
+<%  @vmod2n=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==2}.count %>
+<%  @vmod1i=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==1}.count %>
+<%  @vmod2i=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==2}.count %>
+
+
+
   <table >
     <tr>
 
@@ -29,7 +37,7 @@
     <%  @conta=0 %>
 
     <% @items.select {|f| f["acti"]==@numproc and f["periodo"]==@vperiodo}.
-    sort_by { |k| [k["tipo"], k["modalidad"],k["obac"], k["pac"]] }.
+    sort_by { |k| [k["tipo"], k["modalidad"], k["exped"], k["obac"], k["pac"]] }.
     each do |variable| %>
 
 
@@ -38,16 +46,30 @@
             <tbody>
       <% @conta=@conta+1 %>
 
-      <%  if @vtipo1>0 and @conta==1 and  variable["tipo"]==1 then %>
-     <tr> <td> <h4>NACIONALES:</h4> </td> </tr>
+
+
+      <%  if @vmod1n>0 and @conta==1 and  variable["tipo"]==1 and  variable["modalidad"]==1 then %>
+
+     <tr> <td> <h4>NACIONALES CORPORATIVOS:</h4> </td> </tr>
 
       <% end %>
 
-      <%  if @vtipo2>0 and @conta==@vtipo1+1 and  variable["tipo"]==2 then %>
-     <tr> <td> <h4>INTERNACIONALES:</h4> </td> </tr>
+      <%  if @vmod2n>0 and @conta==@vmod1n+1 and  variable["tipo"]==1   and  variable["modalidad"]==2 then %>
+
+     <tr> <td> <h4>NACIONALES POR ENCARGO:</h4> </td> </tr>
+
+      <% end %>
+      <%  if @vmod1i>0 and @conta==@vmod1n+@vmod2n+1 and  variable["tipo"]==2  and  variable["modalidad"]==1 then %>
+
+     <tr> <td> <h4>INTERNACIONALES CORPORATIVOS:</h4> </td> </tr>
 
       <% end %>
 
+      <%  if @vmod2i>0 and @conta==@vmod1n+@vmod2n+@vmod1i+1 and  variable["tipo"]==2   and  variable["modalidad"]==2 then %>
+
+     <tr> <td> <h4>INTERNACIONALES POR ENCARGO:</h4> </td> </tr>
+
+      <% end %>
 
 
 
