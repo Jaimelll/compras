@@ -9,8 +9,6 @@
 <h4><%= @titproc %></h4>
 </head>
 <% if @items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo}.count>0 then %>
-<%  @vtipo1=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1}.count %>
-<%  @vtipo2=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2}.count %>
 
 <%  @vmod1n=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==1}.count %>
 <%  @vmod2n=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==2}.count %>

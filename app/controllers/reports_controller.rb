@@ -4,29 +4,38 @@ def comment
   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
   @tit1=params[:param3].to_s
 
-  @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
+
   @vopc=params[:param4].to_i
 
   case @vopc
 when 1
-
+  @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('obac,pac')
   .where(exped2:@vaf)
   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 when 2
-
+   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
   .where(exped2:@vaf)
   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 when 3
-
+  @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,lista:params[:param2]).order('obac,pac')
   .where(exped2:@vaf)
    .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+ when 4
+   @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
+   @items=Item.where(ejecucion:4,periodo:params[:param2]).order('modalidad,exped,obac,pac')
+       .where("modalidad<3").where(exped2:@vaf)
+       .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
 
 
+when 5
+  @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
+  @items=Item.where(ejecucion:4,periodo:params[:param2])
+  .where("modalidad<3").where(exped2:@vaf)
+  .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
 end
-
 
 
 

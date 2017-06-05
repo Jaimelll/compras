@@ -596,20 +596,42 @@ if @alabels.length <=29 and @alabels.length>0 then
                               end
 
                               column("EN ACFFAA 'PAC/(SOLES)'") do |formula|
-                              @vpcu1=   Item.where(ejecucion:4,periodo:formula.orden)
-                                  .where("modalidad<3").where(exped2:@vaf)
-                                  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                                @vpcu1.count.to_s+ "/("+
-                                   number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
+                              @auto=  formula.orden
+                              @tita1="Procesos ACFFAA - PERIODO"
+                              @vopc1=4
 
-                             column("Ejecucion Contractual") do |formula|
-                                 @vpcu2= Item.where(ejecucion:4,periodo:formula.orden)
-                                 .where("modalidad<3").where(exped2:@vaf)
-                                 .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                                  @vpcu2.count.to_s+ "/("+
-                                    number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                               end
+                            @le1=  Item.where(ejecucion:4,periodo:formula.orden)
+                                .where("modalidad<3").where(exped2:@vaf)
+                                .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                            @le= @le1.count.to_s+ "/("+
+                                   number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                            link_to "#{@le} ", reports_comment_path(format: :pdf,
+                            :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+
+                            end
+
+                            column("Ejecucion Contractual") do |formula|
+                            @auto=  formula.orden
+                            @tita1="Procesos en Ejecucion Contractual ACFFAA - PERIODO"
+                            @vopc1=5
+
+                            @le1=  Item.where(ejecucion:4,periodo:formula.orden)
+                            .where("modalidad<3").where(exped2:@vaf)
+                            .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                            @le= @le1.count.to_s+ "/("+
+                                 number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                            link_to "#{@le} ", reports_comment_path(format: :pdf,
+                            :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+
+                            end
+
+
 
                               column("EN OBAC 'PAC/(SOLES)'" ) do |formula|
                                 @vpcu2=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
@@ -749,7 +771,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               column("Encargo 'PAC/(SOLES)'") do |formula|
                                 @auto=  formula.orden
-                                @tita1="POR ENCARGO"
+                                @tita1="-"
                                 @vopc1=1
 
                               @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
@@ -766,7 +788,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                               end
                               column("Corporativos 'PAC/(SOLES)'") do |formula|
                                 @auto=  formula.orden
-                                @tita1="CORPORATIVOS"
+                                @tita1="-"
                                 @vopc1=2
 
                               @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden)

@@ -5,11 +5,12 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @lista.titleize %>- <%= @tit1 %> </h3>
+<h3><%= @tit1 %>-<%=   @lista.titleize %></h3>
 </head>
 
   <% if @items.where(tipo:1).count>0 then %>
-
+    <%  @vmod1n=@items.where(tipo:1,modalidad:1).count %>
+    <%  @vmod2n=@items.where(tipo:1,modalidad:2).count %>
 <table>
 
 
@@ -38,8 +39,22 @@
 
         <tr>
           <% @conta=@conta+1 %>
+          <%  if @vmod1n>0 and @conta==1 and  item.modalidad==1 then %>
+
+         <tr> <td> <h5> CORPORATIVOS:</h5> </td> </tr>
+
+          <% end %>
+
+          <%  if @vmod2n>0 and @conta==@vmod1n+1 and  item.modalidad==2  then %>
+
+         <tr> <td> <h5>POR ENCARGO:</h5> </td> </tr>
+
+          <% end %>
+
+
+
         <td ALIGN=center><%= @conta.to_s+".-" %></td>
-        <td ALIGN=center><%= item.pac.to_i %></td>
+        <td ALIGN=center><%= item.pac %></td>
 
         <% if item.exped>0 then %>
            <td ALIGN=center><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd.downcase %></td>
@@ -75,6 +90,12 @@
 <% end %>
   <% if @items.where(tipo:2).count>0 then %>
 
+  <%  @vmod1i=@items.where(tipo:2,modalidad:1).count %>
+  <%  @vmod2i=@items.where(tipo:2,modalidad:2).count %>
+
+
+
+
 <table>
 
 
@@ -104,6 +125,22 @@
     <% @items.where(tipo:2).each do |item| %>
         <tr>
           <% @conta=@conta+1 %>
+
+          <%  if @vmod1i>0 and @conta==1 and  item.modalidad==1 then %>
+
+          <tr> <td> <h5> CORPORATIVOS:</h5> </td> </tr>
+
+          <% end %>
+
+          <%  if @vmod2i>0 and @conta==@vmod1i+1 and  item.modalidad==2  then %>
+
+          <tr> <td> <h5>POR ENCARGO:</h5> </td> </tr>
+
+          <% end %>
+
+
+
+
         <td ALIGN=center><%= @conta.to_s+".-" %></td>
         <td ALIGN=center><%= item.pac.to_i %></td>
 
