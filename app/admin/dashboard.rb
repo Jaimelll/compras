@@ -785,12 +785,16 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                                      end # de table for Mercado
+                                   end # panel mercado
+
+                                     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                                     @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+                                     panel  "IV.- " +@vaf do
 
 
+                          table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
 
-                          table_for Formula.where(product_id:11).order('orden')  do
-
-                            @p=ActiveRecord::Base.connection.execute("SELECT items.periodo,
+                            @p=ActiveRecord::Base.connection.execute("SELECT items.exped2,
                             MAX(formulas.cantidad) as acti FROM public.items, public.details,
                             public.formulas WHERE items.id = details.item_id AND
                             details.actividad = formulas.orden AND
@@ -800,17 +804,17 @@ if @alabels.length <=29 and @alabels.length>0 then
                             IN(SELECT   details.item_id,   MAX(details.pfecha)
                            FROM   public.details
                            GROUP BY   details.item_id)) GROUP BY
-                           items.periodo,details.item_id").to_a
+                           items.exped2,details.item_id").to_a
 
-                                             column("Avance ACFFAA ") do |formula|
-                                               formula.nombre
+                                             column("Procesos") do |formula|
+                                               "PACs"
                                              end
                                              column("S/EXP") do |formula|
 
                                                @dpc=  formula.orden
                                               @vpas=1
                                               @titproc1="PAC SIN EXPEDIENTE DE INICIO"
-                                               @dpcl=   @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
+                                               @dpcl=   @p.select {|f| f["acti"]== 1 }.count
                                                      link_to "#{@dpcl} ",
                                                       reports_comment7_path(format: :pdf,
                                                       :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
@@ -821,7 +825,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                                     @dpc=  formula.orden
                                                    @vpas=2
                                                    @titproc1="PAC CON EXPEDIENTE DE INICIO"
-                                                    @dpcl=   @p.select {|f| f["acti"]== 2 and f["periodo"]==formula.orden}.count
+                                                    @dpcl=   @p.select {|f| f["acti"]== 2 }.count
                                                           link_to "#{@dpcl} ",
                                                            reports_comment7_path(format: :pdf,
                                                            :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
@@ -834,7 +838,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                                 @dpc=  formula.orden
                                                @vpas=3
                                                @titproc1="EXPEDIENTES EN CATALOGACION"
-                                                @dpcl=   @p.select {|f| f["acti"]== 3 and f["periodo"]==formula.orden}.count
+                                                @dpcl=   @p.select {|f| f["acti"]== 3 }.count
                                                       link_to "#{@dpcl} ",
                                                        reports_comment7_path(format: :pdf,
                                                        :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
@@ -846,7 +850,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                                @dpc=  formula.orden
                                               @vpas=4
                                               @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
-                                               @dpcl=   @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
+                                               @dpcl=   @p.select {|f| f["acti"]== 4 }.count
                                                      link_to "#{@dpcl} ",
                                                       reports_comment7_path(format: :pdf,
                                                       :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
@@ -855,31 +859,20 @@ if @alabels.length <=29 and @alabels.length>0 then
                                                 @dpc=  formula.orden
                                                @vpas=5
                                                @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
-                                                @dpcl=   @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
+                                                @dpcl=   @p.select {|f| f["acti"]== 5 }.count
                                                       link_to "#{@dpcl} ",
                                                        reports_comment7_path(format: :pdf,
                                                        :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
 
 
                                             end
-                                            column("FC") do |formula|
 
-                                            @dpc=  formula.orden
-                                           @vpas=6
-                                           @titproc1="EXPEDIENTES POR SUSCRIPCION DE CONTRATO"
-                                            @dpcl=   @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count
-                                                  link_to "#{@dpcl} ",
-                                                   reports_comment7_path(format: :pdf,
-                                                   :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-
-                                          end
                                           column("DEC") do |formula|
 
                                           @dpc=  formula.orden
-                                         @vpas=7
+                                         @vpas=6
                                          @titproc1="EXPEDIENTES EN DEC"
-                                          @dpcl=   @p.select {|f| f["acti"]== 7 and f["periodo"]==formula.orden}.count
+                                          @dpcl=   @p.select {|f| f["acti"]>6  }.count
                                                 link_to "#{@dpcl} ",
                                                  reports_comment7_path(format: :pdf,
                                                  :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
@@ -890,7 +883,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                                           column("TOTAL PAC") do |formula|
-                                            @p.select {|f|  f["periodo"]==formula.orden}.count
+                                            @p.select {|f|  f["exped2"]==@vaf1}.count
                                         end
 
 
@@ -898,7 +891,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                           end
 
-                        
+
 
 
 

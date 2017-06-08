@@ -8,12 +8,12 @@
 <h3>Periodo:<%=   @lista.titleize %> </h3>
 <h4><%= @titproc %></h4>
 </head>
-<% if @items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo}.count>0 then %>
+<% if @items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo}.count>0 then %>
 
-<%  @vmod1n=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==1}.count %>
-<%  @vmod2n=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==2}.count %>
-<%  @vmod1i=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==1}.count %>
-<%  @vmod2i=@items.select {|f| f["acti"]== @numproc and f["periodo"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==2}.count %>
+<%  @vmod1n=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==1}.count %>
+<%  @vmod2n=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==2}.count %>
+<%  @vmod1i=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==1}.count %>
+<%  @vmod2i=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==2}.count %>
 
 
 
@@ -34,7 +34,7 @@
 
     <%  @conta=0 %>
 
-    <% @items.select {|f| f["acti"]==@numproc and f["periodo"]==@vperiodo}.
+    <% @items.select {|f| f["acti"]==@numproc and f["exped2"]==@vperiodo}.
     sort_by { |k| [k["tipo"], k["modalidad"], k["exped"], k["obac"], k["pac"]] }.
     each do |variable| %>
 
@@ -113,7 +113,9 @@
       <% if @vdetalle.where(item_id:@var).where("details.actividad=18 or
         details.actividad=20 or details.actividad=56 or
         details.actividad=13 or details.actividad=58 or
-        details.actividad=61 or details.actividad=33 or
+        details.actividad=61 or details.actividad=62 or
+        details.actividad=63 or details.actividad=64 or
+        details.actividad=65 or
         details.actividad=300").count>0 then %>
       <table width="800" border="1">
 
@@ -130,7 +132,9 @@
           <% @vdetalle.where(item_id:@var).where("details.actividad=18 or
                details.actividad=20 or details.actividad=56 or
                 details.actividad=13 or details.actividad=58 or
-                details.actividad=61 or details.actividad=33 or
+                details.actividad=61 or details.actividad=62 or
+                details.actividad=63 or details.actividad=64 or
+                details.actividad=65 or
                 details.actividad=300").
           each do |deta| %>
 

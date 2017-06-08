@@ -411,13 +411,14 @@ form do |f|
 
 
 end
-   @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
 
-sidebar  @vaf1+" RESPONSABLE POR EJECUCION", only: :index do
+
+sidebar  " RESPONSABLE DE EJECUCION", only: :index do
   # prueba ini
-    table_for Formula.where(product_id:1)  do
+    table_for Formula.where(product_id:1).where.not(orden:5)    do
+   @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-         column("Institucion ") do |formula|
+         column("Institucion "+ @vaf1) do |formula|
            formula.nombre
          end
          column("pac") do |formula|
@@ -433,37 +434,32 @@ sidebar  @vaf1+" RESPONSABLE POR EJECUCION", only: :index do
 
   # prueba ini
   end
-  sidebar @vaf1+" EJECUCION ACFFAA", only: :index do
+
+  sidebar " RESPONSABILIDAD DE ACFFAA POR OBAC", only: :index do
     # prueba ini
 
 
 
-        table_for Formula.where(product_id:1,cantidad:1)  do
+        table_for Formula.where(product_id:1,cantidad:1).where.not(orden:5)  do
+          @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-             column("Institucion 'PAC/(SOLES)'" ) do |formula|
+             column("Institucion "+ @vaf1 ) do |formula|
                formula.nombre
              end
-             column("EN ACFFAA ") do |formula|
+             column("PAC ") do |formula|
              @vpcu1=   Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
                   .where(exped2:@vaf)
-                 .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-               @vpcu1.count.to_s+ "/("+
-                  number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+               @vpcu1.count
              end
 
+             column("MONTO ") do |formula|
+             @vpcu1=   Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
+                  .where(exped2:@vaf)
 
 
-
-            column("Ejecucion Contractual") do |formula|
-                @vpcu2= Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
-                .where(exped2:@vaf)
-                .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                 @vpcu2.count.to_s+ "/("+
-                   number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-              end
-
-
-
+                  number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",")
+             end
 
 
 
