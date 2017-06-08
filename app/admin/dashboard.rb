@@ -585,24 +585,24 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
               columns do
-                   @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+
                      column do
-                       panel  @vaf do
+                       panel  "I.- HISTORIAL PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).order('orden')  do
-                            @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
 
                               column("Periodos" ) do |formula|
                                 formula.nombre
                               end
 
-                              column("EN ACFFAA 'PAC/(SOLES)'") do |formula|
+                              column("EN ACFFAA ") do |formula|
                               @auto=  formula.orden
-                              @tita1="Procesos ACFFAA - PERIODO"
+                              @tita1="Procesos en ACFFAA - PERIODO"
                               @vopc1=4
 
-                            @le1=  Item.where(ejecucion:4,periodo:formula.orden)
-                                .where("modalidad<3").where(exped2:@vaf)
-                                .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                            @le1=  Item.where(ejecucion:4,exped2:formula.orden)
+                                .where("modalidad<3")
+
                             @le= @le1.count.to_s+ "/("+
                                    number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -613,37 +613,31 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                             end
 
-                            column("Ejecucion Contractual") do |formula|
-                            @auto=  formula.orden
-                            @tita1="Procesos en Ejecucion Contractual ACFFAA - PERIODO"
-                            @vopc1=5
-
-                            @le1=  Item.where(ejecucion:4,periodo:formula.orden)
-                            .where("modalidad<3").where(exped2:@vaf)
-                            .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
-                            @le= @le1.count.to_s+ "/("+
-                                 number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                            link_to "#{@le} ", reports_comment_path(format: :pdf,
-                            :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
 
 
-                            end
+
+                              column("EN OBAC " ) do |formula|
+
+                                @auto=  formula.orden
+                                @tita1="Procesos en OBAC - PERIODO"
+                                @vopc1=5
+
+                              @le1=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
+                              .where(exped2:formula.orden)
+
+                              @le= @le1.count.to_s+ "/("+
+                                     number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                              link_to "#{@le} ", reports_comment_path(format: :pdf,
+                              :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+                               end
 
 
+                              column("TOTAL  ") do |formula|
+                                @vtproc=Item.where(exped2:formula.orden).where.not(modalidad:4)
 
-                              column("EN OBAC 'PAC/(SOLES)'" ) do |formula|
-                                @vpcu2=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
-                                .where(periodo:formula.orden,exped2:@vaf)
-                                @vpcu2.count.to_s+ "/("+
-                               number_with_delimiter(@vpcu2.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
-
-
-                              column("TOTAL  'PAC/(SOLES)' ") do |formula|
-                                @vtproc=Item.where(periodo:formula.orden).where.not(modalidad:4)
-                                .where(exped2:@vaf)
 
                               @vtproc.count.to_s+ "/("+
                                    number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -652,131 +646,25 @@ if @alabels.length <=29 and @alabels.length>0 then
                           #     column("Culminados ACFFAA") do |formula|
                           #     Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
                           #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                          #    end
+                        end   #de table for
+                      end #de panel historial periodos
+               @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+               panel  "II.- LISTAS  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
-                 table_for Formula.where(product_id:11).order('orden')  do
-
-                   @p=ActiveRecord::Base.connection.execute("SELECT items.periodo,
-                   MAX(formulas.cantidad) as acti FROM public.items, public.details,
-                   public.formulas WHERE items.id = details.item_id AND
-                   details.actividad = formulas.orden AND
-                   formulas.product_id = 12 AND items.ejecucion=4 and
-                    items.modalidad<3  AND exped2=(SELECT max(orden) FROM  formulas where cantidad=1
-                     GROUP BY product_id HAVING product_id=11) AND ((details.item_id,details.pfecha)
-                   IN(SELECT   details.item_id,   MAX(details.pfecha)
-                  FROM   public.details
-                  GROUP BY   details.item_id)) GROUP BY
-                  items.periodo,details.item_id").to_a
-
-                                    column("Avance ACFFAA ") do |formula|
-                                      formula.nombre
-                                    end
-                                    column("S/EXP") do |formula|
-
-                                      @dpc=  formula.orden
-                                     @vpas=1
-                                     @titproc1="PAC SIN EXPEDIENTE DE INICIO"
-                                      @dpcl=   @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
-                                            link_to "#{@dpcl} ",
-                                             reports_comment7_path(format: :pdf,
-                                             :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-                                    end
-                                         column("C/EXP") do |formula|
-
-                                           @dpc=  formula.orden
-                                          @vpas=2
-                                          @titproc1="PAC CON EXPEDIENTE DE INICIO"
-                                           @dpcl=   @p.select {|f| f["acti"]== 2 and f["periodo"]==formula.orden}.count
-                                                 link_to "#{@dpcl} ",
-                                                  reports_comment7_path(format: :pdf,
-                                                  :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-                                    end
-
-                                    column("DC") do |formula|
-
-
-                                       @dpc=  formula.orden
-                                      @vpas=3
-                                      @titproc1="EXPEDIENTES EN CATALOGACION"
-                                       @dpcl=   @p.select {|f| f["acti"]== 3 and f["periodo"]==formula.orden}.count
-                                             link_to "#{@dpcl} ",
-                                              reports_comment7_path(format: :pdf,
-                                              :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-                                    end
-
-                                    column("DEM") do |formula|
-
-                                      @dpc=  formula.orden
-                                     @vpas=4
-                                     @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
-                                      @dpcl=   @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
-                                            link_to "#{@dpcl} ",
-                                             reports_comment7_path(format: :pdf,
-                                             :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-                                     end
-                                     column("DPC") do |formula|
-                                       @dpc=  formula.orden
-                                      @vpas=5
-                                      @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
-                                       @dpcl=   @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
-                                             link_to "#{@dpcl} ",
-                                              reports_comment7_path(format: :pdf,
-                                              :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-
-                                   end
-                                   column("FC") do |formula|
-
-                                   @dpc=  formula.orden
-                                  @vpas=6
-                                  @titproc1="EXPEDIENTES POR SUSCRIPCION DE CONTRATO"
-                                   @dpcl=   @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count
-                                         link_to "#{@dpcl} ",
-                                          reports_comment7_path(format: :pdf,
-                                          :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-
-                                 end
-                                 column("DEC") do |formula|
-
-                                 @dpc=  formula.orden
-                                @vpas=7
-                                @titproc1="EXPEDIENTES EN DEC"
-                                 @dpcl=   @p.select {|f| f["acti"]== 7 and f["periodo"]==formula.orden}.count
-                                       link_to "#{@dpcl} ",
-                                        reports_comment7_path(format: :pdf,
-                                        :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
-
-
-                                end
-
-
-
-                                 column("TOTAL PAC") do |formula|
-                                   @p.select {|f|  f["periodo"]==formula.orden}.count
-                               end
-
-
-
-
-                                 end
                          table_for Formula.where(product_id:3)  do
                            @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-                              column("Listas ACFFAA") do |formula|
+                              column("Listas ") do |formula|
                               formula.nombre
                               end
 
-                              column("Encargo 'PAC/(SOLES)'") do |formula|
+                              column("Por Encargo ") do |formula|
                                 @auto=  formula.orden
                                 @tita1="-"
                                 @vopc1=1
 
                               @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
                                    .where(exped2:@vaf)
-                                   .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -786,14 +674,14 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                               end
-                              column("Corporativos 'PAC/(SOLES)'") do |formula|
+                              column("Corporativos") do |formula|
                                 @auto=  formula.orden
                                 @tita1="-"
                                 @vopc1=2
 
                               @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
                                     .where(exped2:@vaf)
-                                    .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -803,15 +691,14 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               end
 
-                              column("Ejecucion Contractural 'PAC/(SOLES)'") do |formula|
+                              column("TOTAL") do |formula|
 
                                 @auto=  formula.orden
-                                @tita1="Ejecucion Contractural"
+                                @tita1="-"
                                 @vopc1=3
 
-                                @ls1=   Item.where(ejecucion:4,lista:formula.orden)
-                                         .where(exped2:@vaf)
-                                         .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+                                @ls1=   Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3")
+                                        .where(exped2:@vaf)
                                 @ls=   @ls1.count.to_s+ "/("+
                                      number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -827,148 +714,199 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
 
-                              column("TOTAL 'PAC/(SOLES)'") do |formula|
-
-                               @lt=Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3")
-                                       .where(exped2:@vaf)
-                                @lt.count.to_s+ "/("+
-                                   number_with_delimiter(@lt.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                              end
+                          end # de table for listas
+                        end # panel listas
 
 
+                          @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+                          panel  "III.- MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
-                          end
+                                    table_for Formula.where(product_id:6)  do
+                                      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                                         column("Mercado ") do |formula|
+                                         formula.nombre
+                                         end
 
-                           table_for Formula.where(product_id:1,cantidad:1)  do
-                             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-                                column("Autorizaciones y Exclusiones") do |formula|
-                                  formula.nombre
-                                end
+                                         column("Por Encargo ") do |formula|
+                                           @auto=  formula.orden
+                                           @tita1=" "
+                                           @vopc1=6
 
+                                         @le1=Item.where(ejecucion:4,modalidad:2,tipo:formula.orden)
+                                              .where(exped2:@vaf)
 
-                                column("Autorizados con RJ") do |formula|
-                                    @auto=  formula.orden
-                                    @tita1="PROCESOS AUTORIZADOS CON RJ:"
-                                    @piea1="No hay procesos Autorizados para esta Entidad "
-                                    @vopc1=1
-                                    @autol1=Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
-                                    .where(exped2:@vaf)
-                                    .where('id IN(?)',Detail.where(actividad:8).select("item_id"))
+                                         @le= @le1.count.to_s+ "/("+
+                                                number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                                  @autol= @autol1.count.to_s+ "/("+
-                                     number_with_delimiter(@autol1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,
-                                   :param2=>   @auto,:param3=>   @tita1,
-                                   :param4=>   @piea1,:param5=>   @vopc1)
-                                 end
+                                         link_to "#{@le} ", reports_comment_path(format: :pdf,
+                                         :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
 
-                                 column("Por Autorizar") do |formula|
 
-                                   @auto=  formula.orden
-                                   @tita1="PROCESOS POR AUTORIZAR:"
-                                   @piea1="No hay procesos Por Autorizar para esta Entidad "
-                                   @vopc1=2
-                                   @autol1=Item.where(ejecucion:4,modalidad:3,obac:formula.orden)
-                                   .where(exped2:@vaf)
-                                   .where.not('id IN(?)',Detail.where(actividad:8).select("item_id"))
+                                         end
+                                         column("Corporativos") do |formula|
+                                           @auto=  formula.orden
+                                           @tita1=" "
+                                           @vopc1=7
 
-                                   @autol=  @autol1.count.to_s+ "/("+
-                                      number_with_delimiter(@autol1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                         @le1=Item.where(ejecucion:4,modalidad:1,tipo:formula.orden)
+                                               .where(exped2:@vaf)
 
-                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,
-                                   :param2=>   @auto,:param3=>   @tita1,
-                                   :param4=>   @piea1,:param5=>   @vopc1)
+                                         @le= @le1.count.to_s+ "/("+
+                                                number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                                 end
-
-                                  column("Autorizaciones Rechazadas") do |formula|
+                                         link_to "#{@le} ", reports_comment_path(format: :pdf,
+                                         :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
 
-                                       @arec=  formula.orden
-                                       @tita1="AUTORIZACIONES RECHAZADAS :"
-                                       @piea1="No hay autorizaciones rechazadas para esta Entidad "
-                                       @vopc1=5
-                                        @autol1=Item.where(ejecucion:4,obac:formula.orden)
-                                        .where(exped2:@vaf)
-                                        .where("modalidad=1 or modalidad=2")
-                                        .where('id IN(?)',Detail.where(actividad:57).select("item_id"))
-                                       @arecl= @autol1.count.to_s+ "/("+
-                                          number_with_delimiter(@autol1
-                                          .sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                         end
 
-                                      link_to "#{@arecl} ", reports_comment3_path(format: :pdf,
-                                      :param2=>   @arec,:param3=>   @tita1,
-                                      :param4=>   @piea1,:param5=>   @vopc1)
+                                         column("TOTAL") do |formula|
+
+                                           @auto=  formula.orden
+                                           @tita1=" "
+                                           @vopc1=8
+
+                                           @ls1=   Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3")
+                                                   .where(exped2:@vaf)
+                                           @ls=   @ls1.count.to_s+ "/("+
+                                                number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                                                link_to "#{@ls} ", reports_comment_path(format: :pdf,
+                                                :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+
+                                         end
 
 
 
 
 
 
-
-                                   end
-
-                                 column("Excluidos con RJ") do |formula|
-                                   @auto=  formula.orden
-                                   @tita1="PROCESOS EXCLUIDOS CON RJ:"
-                                   @piea1="No hay procesos Excluidos con RJ para esta Entidad "
-                                   @vopc1=3
-                                     @autol1=Item.where(ejecucion:4,obac:formula.orden,modalidad:4)
-                                     .where(exped2:@vaf)
-                                     .where('id IN(?)',Detail.where(actividad:200).select("item_id"))
-                                   @autol=  @autol1
-                                   .count.to_s+ "/("+
-                                     number_with_delimiter(@autol1.
-                                     sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                                   link_to "#{@autol} ", reports_comment3_path(format: :pdf,
-                                   :param2=>   @auto,:param3=>   @tita1,
-                                   :param4=>   @piea1,:param5=>   @vopc1)
-
-                                  end
+                                     end # de table for Mercado
 
 
 
+                          table_for Formula.where(product_id:11).order('orden')  do
 
-                                  column("Por Excluir") do |formula|
-                                    @auto=  formula.orden
-                                    @tita1="PROCESOS POR EXCLUIR:"
-                                    @piea1="No hay procesos Por Excluir para esta Entidad "
-                                    @vopc1=4
-                                    @autol1=Item.where(ejecucion:4,obac:formula.orden,modalidad:4)
-                                    .where(exped2:@vaf)
-                                    .where.not('id IN(?)',Detail.where(actividad:200).select("item_id"))
-                                    @autol=   @autol1
-                                    .count.to_s+ "/("+
-                                       number_with_delimiter(@autol1.
-                                       sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                            @p=ActiveRecord::Base.connection.execute("SELECT items.periodo,
+                            MAX(formulas.cantidad) as acti FROM public.items, public.details,
+                            public.formulas WHERE items.id = details.item_id AND
+                            details.actividad = formulas.orden AND
+                            formulas.product_id = 12 AND items.ejecucion=4 and
+                             items.modalidad<3  AND exped2=(SELECT max(orden) FROM  formulas where cantidad=1
+                              GROUP BY product_id HAVING product_id=11) AND ((details.item_id,details.pfecha)
+                            IN(SELECT   details.item_id,   MAX(details.pfecha)
+                           FROM   public.details
+                           GROUP BY   details.item_id)) GROUP BY
+                           items.periodo,details.item_id").to_a
 
-                                    link_to "#{@autol} ", reports_comment3_path(format: :pdf,
-                                    :param2=>   @auto,:param3=>   @tita1,
-                                    :param4=>   @piea1,:param5=>   @vopc1)
+                                             column("Avance ACFFAA ") do |formula|
+                                               formula.nombre
+                                             end
+                                             column("S/EXP") do |formula|
 
-                                    end
+                                               @dpc=  formula.orden
+                                              @vpas=1
+                                              @titproc1="PAC SIN EXPEDIENTE DE INICIO"
+                                               @dpcl=   @p.select {|f| f["acti"]== 1 and f["periodo"]==formula.orden}.count
+                                                     link_to "#{@dpcl} ",
+                                                      reports_comment7_path(format: :pdf,
+                                                      :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+                                             end
+                                                  column("C/EXP") do |formula|
+
+                                                    @dpc=  formula.orden
+                                                   @vpas=2
+                                                   @titproc1="PAC CON EXPEDIENTE DE INICIO"
+                                                    @dpcl=   @p.select {|f| f["acti"]== 2 and f["periodo"]==formula.orden}.count
+                                                          link_to "#{@dpcl} ",
+                                                           reports_comment7_path(format: :pdf,
+                                                           :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+                                             end
+
+                                             column("DC") do |formula|
+
+
+                                                @dpc=  formula.orden
+                                               @vpas=3
+                                               @titproc1="EXPEDIENTES EN CATALOGACION"
+                                                @dpcl=   @p.select {|f| f["acti"]== 3 and f["periodo"]==formula.orden}.count
+                                                      link_to "#{@dpcl} ",
+                                                       reports_comment7_path(format: :pdf,
+                                                       :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+                                             end
+
+                                             column("DEM") do |formula|
+
+                                               @dpc=  formula.orden
+                                              @vpas=4
+                                              @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
+                                               @dpcl=   @p.select {|f| f["acti"]== 4 and f["periodo"]==formula.orden}.count
+                                                     link_to "#{@dpcl} ",
+                                                      reports_comment7_path(format: :pdf,
+                                                      :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+                                              end
+                                              column("DPC") do |formula|
+                                                @dpc=  formula.orden
+                                               @vpas=5
+                                               @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
+                                                @dpcl=   @p.select {|f| f["acti"]== 5 and f["periodo"]==formula.orden}.count
+                                                      link_to "#{@dpcl} ",
+                                                       reports_comment7_path(format: :pdf,
+                                                       :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+
+                                            end
+                                            column("FC") do |formula|
+
+                                            @dpc=  formula.orden
+                                           @vpas=6
+                                           @titproc1="EXPEDIENTES POR SUSCRIPCION DE CONTRATO"
+                                            @dpcl=   @p.select {|f| f["acti"]== 6 and f["periodo"]==formula.orden}.count
+                                                  link_to "#{@dpcl} ",
+                                                   reports_comment7_path(format: :pdf,
+                                                   :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+
+                                          end
+                                          column("DEC") do |formula|
+
+                                          @dpc=  formula.orden
+                                         @vpas=7
+                                         @titproc1="EXPEDIENTES EN DEC"
+                                          @dpcl=   @p.select {|f| f["acti"]== 7 and f["periodo"]==formula.orden}.count
+                                                link_to "#{@dpcl} ",
+                                                 reports_comment7_path(format: :pdf,
+                                                 :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
+
+
+                                         end
+
+
+
+                                          column("TOTAL PAC") do |formula|
+                                            @p.select {|f|  f["periodo"]==formula.orden}.count
+                                        end
+
+
+
+
+                                          end
+
+                        
 
 
 
 
 
 
-
-                            end
-
-                                   end
-
-
-
-
-
-
-
-                      end
-                    end
+                      end #end de panel
+                    end# de columns
 
                     column do
                     panel "Grafico del Estado de los Procesos PAC" do

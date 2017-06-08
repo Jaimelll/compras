@@ -12,31 +12,46 @@ when 1
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('obac,pac')
   .where(exped2:@vaf)
-  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+
 when 2
    @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
   .where(exped2:@vaf)
-  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+
 when 3
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,lista:params[:param2]).order('obac,pac')
-  .where(exped2:@vaf)
-   .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
+  @items=Item.where(ejecucion:4,lista:params[:param2]).where("modalidad<3")
+          .where(exped2:@vaf)
  when 4
    @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
-   @items=Item.where(ejecucion:4,periodo:params[:param2]).order('modalidad,exped,obac,pac')
-       .where("modalidad<3").where(exped2:@vaf)
-       .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
+   @items= Item.where(ejecucion:4,exped2:params[:param2])
+       .where("modalidad<3")
+  when 5
+       @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
+       @items= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
+       .where(exped2:params[:param2])
+
+ when 6
+   @lista=" "
+   @items=Item.where(ejecucion:4,modalidad:2,tipo:params[:param2]).order('obac,pac')
+   .where(exped2:@vaf)
+
+ when 7
+   @lista=" "
+   @items=Item.where(ejecucion:4,modalidad:1,tipo:params[:param2]).order('obac,pac')
+   .where(exped2:@vaf)
+
+ when 8
+   @lista=" "
+   @items= Item.where(ejecucion:4,tipo:params[:param2]).where("modalidad<3")
+           .where(exped2:@vaf)
 
 
-when 5
-  @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
-  @items=Item.where(ejecucion:4,periodo:params[:param2])
-  .where("modalidad<3").where(exped2:@vaf)
-  .where('id IN(?)',Detail.where(actividad:61).select("item_id"))
-end
 
+
+
+
+  end
 
 
 
