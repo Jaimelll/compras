@@ -649,7 +649,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                         end   #de table for
                       end #de panel historial periodos
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-               panel  "II.- LISTAS  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+               panel  "II.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                          table_for Formula.where(product_id:3)  do
                            @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -719,7 +719,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                           @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                          panel  "III.- MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+                          panel  "III.- TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                                     table_for Formula.where(product_id:6)  do
                                       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
