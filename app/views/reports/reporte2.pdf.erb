@@ -5,20 +5,28 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @lista.titleize %> </h3>
+<h3><%= @tit1 %>-<%=   @lista.titleize %></h3>
 </head>
 
-  <% if @items.where(tipo:1).count>0 then %>
+  <% if @items.count>0 then %>
+
+    <%  @vobac1=@items.where(obac:1).count %>
+    <%  @vobac2=@items.where(obac:2).count %>
+    <%  @vobac3=@items.where(obac:3).count %>
+    <%  @vobac4=@items.where(obac:6).count %>
+
+
+
 <table>
 
-  <thead>
-<h4>CORPORATIVOS-NACIONALES:</h4>
+
+
+
     <tr>
       <th>N°</th>
+      <th>Pac</th>
 
-       <th>Expediente</th>
-         <th>Pac</th>
-        <th>Obac</th>
+      <th>Obac</th>
 
       <th>Descripcion</th>
 
@@ -27,26 +35,49 @@
 
       <th colspan="3"></th>
     </tr>
-  </thead>
+
 
   <tbody>
+
     <%  @conta=0 %>
-    <% @items.where(tipo:1).each do |item| %>
+
+    <% @items.each do |item| %>
+
         <tr>
           <% @conta=@conta+1 %>
-        <td><%= @conta.to_s+".-" %></td>
-        <% if item.exped>0 then %>
-           <td><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd %></td>
-          <% else %>
-        <td><%= " s/d"   %></td>
+
+          <%  if @vobac1>0 and @conta==1 and  item.obac==1  then %>
+
+         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:1).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
+
+          <% end %>
+
+          <%  if @vobac2>0 and @conta==@vobac1+1 and  item.obac==2  then %>
+
+         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:2).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
+
+          <% end %>
+          <%  if @vobac3>0 and @conta==@vobac1+@vobac2+1 and  item.obac==3  then %>
+
+         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:3).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
+
+          <% end %>
+
+          <%  if @vobac4>0 and @conta==@vobac1+@vobac2+@vobac3+1 and  item.obac==6 then %>
+
+         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:6).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
+
           <% end %>
 
 
-        <td><%= item.pac.to_i %></td>
+
+
+        <td ALIGN=center><%= @conta.to_s+".-" %></td>
+        <td ALIGN=center><%= item.pac %></td>
 
 
 
-        <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
+        <td ALIGN=center><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
 
         <td><%= item.descripcion.underscore.capitalize %></td>
 
@@ -62,78 +93,13 @@
 
 </table>
 <h3>Procesos = <%=   @conta %></h3>
-<h3>Total(Soles) = <%=   number_with_delimiter(@items.where(tipo:1).sum(:certificado).to_i, delimiter: ",") %></h3>
+<h3>Total(Soles) = <%=   number_with_delimiter(@items.sum(:certificado).to_i, delimiter: ",") %></h3>
+
 <br>
 <% else %>
 <br>
 <br>
- <td> No hay procesos Corporativos-Nacionales en esta Lista  </td>
+ <td> No hay procesos Ingresados  </td>
  <br>
  <br>
 <% end %>
-  <% if @items.where(tipo:2).count>0 then %>
-
-  <table>
-
-
-    <thead>
-
-
-
-  <h3> CORPORATIVOS-INTERNACIONALES:  </h3>
-      <tr>
-        <th>N°</th>
-        <th>Expediente</th>
-        <th>Pac</th>
-
-        <th>Obac</th>
-
-        <th>Descripcion</th>
-
-        <th>Estimado</th>
-
-
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <%  @conta=0 %>
-
-      <% @items.where(tipo:2).each do |item| %>
-          <tr>
-            <% @conta=@conta+1 %>
-          <td><%= @conta.to_s+".-" %></td>
-          <% if item.exped>0 then %>
-             <td><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd %></td>
-            <% else %>
-          <td><%= " s/d"   %></td>
-            <% end %>
-          <td><%= item.pac.to_i %></td>
-
-          <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
-
-          <td><%= item.descripcion.underscore.capitalize %></td>
-
-          <td  ALIGN=right><%= number_with_delimiter(item.certificado.to_i, delimiter: ",") %></td>
-
-
-        </td>
-        </tr>
-
-      <% end %>
-
-    </tbody>
-
-  </table>
-  <h3>Procesos = <%=   @conta %></h3>
-  <h3>Total(Soles) = <%=   number_with_delimiter(@items.where(tipo:2).sum(:certificado).to_i, delimiter: ",") %></h3>
-  <br>
-  <br>
-  <% else %>
-  <br>
-  <br>
-   <td> No hay procesos Corporativos-Internacionales en esta Lista  </td>
-   <br>
-   <br>
-  <% end %>

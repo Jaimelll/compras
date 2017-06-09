@@ -629,7 +629,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                              link_to "#{@le} ", reports_comment_path(format: :pdf,
+                              link_to "#{@le} ", reports_comment2_path(format: :pdf,
                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
                                end
@@ -789,7 +789,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                      @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                      @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-                                     panel  "IV.- PROCESOS EN CURSO EN ACFFAA AF-" +@vaf do
+                                     panel  "IV.- PROCESOS EN CURSO ACFFAA AF-" +@vaf do
 
 
                           table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do

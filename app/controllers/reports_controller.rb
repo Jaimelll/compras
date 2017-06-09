@@ -25,7 +25,7 @@ when 3
  when 4
    @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
    @items= Item.where(ejecucion:4,exped2:params[:param2])
-       .where("modalidad<3")
+       .where("modalidad<3").order('tipo,modalidad,exped,obac,pac')
   when 5
        @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
        @items= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
@@ -34,17 +34,17 @@ when 3
  when 6
    @lista=" "
    @items=Item.where(ejecucion:4,modalidad:2,tipo:params[:param2]).order('obac,pac')
-   .where(exped2:@vaf)
+   .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac')
 
  when 7
    @lista=" "
    @items=Item.where(ejecucion:4,modalidad:1,tipo:params[:param2]).order('obac,pac')
-   .where(exped2:@vaf)
+   .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac')
 
  when 8
    @lista=" "
    @items= Item.where(ejecucion:4,tipo:params[:param2]).where("modalidad<3")
-           .where(exped2:@vaf)
+           .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac')
 
 
 
@@ -64,17 +64,37 @@ end
 end
 
 
-#def comment2
-#  @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
-#  @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
-#  .where.not('id IN(?)',Detail.where(actividad:61).select("item_id"))
-#respond_to do |format|
 
-#format.html
-#format.json
-#format.pdf{render template: 'reports/reporte2.pdf.erb', pdf:'detalle'}
-#end
-#end
+def comment2
+
+  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @tit1=params[:param3].to_s
+
+
+  @vopc=params[:param4].to_i
+
+  case @vopc
+
+  when 5
+       @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
+       @items= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
+       .where(exped2:params[:param2]).order('obac,certificado DESC')
+
+
+  end
+
+
+
+respond_to do |format|
+
+format.html
+format.json
+format.pdf{render template: 'reports/reporte2.pdf.erb', pdf:'detalle'}
+end
+end
+
+
+
 
 def comment3
   #autorizados con rj
