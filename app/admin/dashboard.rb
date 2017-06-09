@@ -788,13 +788,13 @@ if @alabels.length <=29 and @alabels.length>0 then
                                    end # panel mercado
 
                                      @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-                                     @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                                     panel  "IV.- " +@vaf do
+                                     @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                                     panel  "IV.- PROCESOS EN CURSO EN ACFFAA AF-" +@vaf do
 
 
                           table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
 
-                            @p=ActiveRecord::Base.connection.execute("SELECT items.exped2,
+                            @p=ActiveRecord::Base.connection.execute("SELECT items.exped2,items.certificado,
                             MAX(formulas.cantidad) as acti FROM public.items, public.details,
                             public.formulas WHERE items.id = details.item_id AND
                             details.actividad = formulas.orden AND
@@ -804,7 +804,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                             IN(SELECT   details.item_id,   MAX(details.pfecha)
                            FROM   public.details
                            GROUP BY   details.item_id)) GROUP BY
-                           items.exped2,details.item_id").to_a
+                           items.exped2,details.item_id,items.certificado").to_a
 
                                              column("Procesos") do |formula|
                                                "PACs"
@@ -867,12 +867,15 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                             end
 
-                                          column("DEC") do |formula|
+                                          column("DEC 'PAC/(SOLES)'") do |formula|
 
                                           @dpc=  formula.orden
                                          @vpas=6
                                          @titproc1="EXPEDIENTES EN DEC"
-                                          @dpcl=   @p.select {|f| f["acti"]==6  }.count
+                                          @dpcl=   @p.select {|f| f["acti"]==6  }.count.to_s+ "/("+
+                                  number_with_delimiter(  @p.select {|f| f["acti"]==6  }
+                                  .sum {|f|  f["certificado"]}.to_i, delimiter: ",").to_s+ ")"
+
                                                 link_to "#{@dpcl} ",
                                                  reports_comment7_path(format: :pdf,
                                                  :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
@@ -882,9 +885,16 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
 
-                                          column("TOTAL PAC") do |formula|
-                                            @p.select {|f|  f["exped2"]==@vaf1}.count
+                                          column("TOTAL 'PAC/(SOLES)'") do |formula|
+                                            @p.select {|f|  f["exped2"]==@vaf1}.count.to_s+ "/("+
+                                            number_with_delimiter(  @p.sum {|f|  f["certificado"]}.to_i, delimiter: ",").to_s+ ")"
                                         end
+
+
+
+
+
+
 
 
 
