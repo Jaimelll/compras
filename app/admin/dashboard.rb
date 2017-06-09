@@ -106,7 +106,7 @@ case @var
 #DEC proceso 6
   @vitem=Item.where(ejecucion:4).where("modalidad<3")
   .where(exped2:@vaf).order('periodo,exped,obac')
-   @iproce=7
+   @iproce=6
 
   when 5
   #excluidos
@@ -494,9 +494,9 @@ if @alabels.length <=29 and @alabels.length>0 then
   @bar =Gchart.bar(
               #  :size   => '570x500',
                  :size   => '570x500',
-                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
+                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                 :title  => @titulo+@titu1+@vtitun,
-                :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
+                :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
                 :orientation => 'horizontal',
                 :stacked => true,
 
@@ -524,9 +524,9 @@ if @alabels.length <=29 and @alabels.length>0 then
     @bar2 =Gchart.bar(
                 #  :size   => '570x500',
                    :size   => '570x500',
-                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
+                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                   :title  => @titulo+@titu2+@vtitun,
-                  :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
+                  :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
                   :orientation => 'horizontal',
                   :stacked => true,
 
@@ -554,9 +554,9 @@ if @alabels.length <=29 and @alabels.length>0 then
         @bar3 =Gchart.bar(
                     #  :size   => '570x500',
                        :size   => '570x500',
-                      :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B', '146614'],
+                      :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
                       :title  => @titulo+@titu3+@vtitun,
-                      :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','FC','DEC'],
+                      :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
                       :orientation => 'horizontal',
                       :stacked => true,
 
@@ -872,7 +872,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                           @dpc=  formula.orden
                                          @vpas=6
                                          @titproc1="EXPEDIENTES EN DEC"
-                                          @dpcl=   @p.select {|f| f["acti"]>6  }.count
+                                          @dpcl=   @p.select {|f| f["acti"]==6  }.count
                                                 link_to "#{@dpcl} ",
                                                  reports_comment7_path(format: :pdf,
                                                  :param2=> @dpc,:param3=> @vpas,:param4=> @titproc1)
