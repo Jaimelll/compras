@@ -325,6 +325,14 @@ form :title => 'Edicion PACs' do |f|
        end
        row "Expediente" do
           item.exped
+          if item.exped and item.exped>0 then
+
+             Formula.where(product_id:16, orden:item.exped).
+              select('nombre as dd').first.dd
+
+            else
+                "s/d"
+            end
       end
         row :periodo do |item|
             if item.periodo and item.periodo>0 then
@@ -464,9 +472,11 @@ form :title => 'Edicion PACs' do |f|
                           else
                               "s/d"
                           end
+
+
                       end
 
-
+                    row :observacion
 
 
 

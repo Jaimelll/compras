@@ -17,10 +17,10 @@ menu false
 
 permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :obs, :admin_user_id, :item_id,:moneda,
-              :created_at,:updated_at
+              :created_at,:updated_at,:plan
 
 
-  action_item :view, only:[:show,:new]do
+  action_item :view, only:[:show,:new,:index]do
     if params[:item_id] then
   nn=Item.where(id:params[:item_id]).
            select('pac as dd').first.dd.capitalize
@@ -40,7 +40,7 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
   scope :PAC, :default => true do |details|
 
-     details.where(item_id:params[:item_id])
+     details.where(item_id:params[:item_id]).order('pfecha')
 
   end
 
@@ -49,7 +49,18 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
 filter :pfecha
 
-index :title => 'Lista de Actividades' do
+
+index :title => "Lista de Actividades"  do
+
+
+
+
+
+
+
+
+
+
 
   column("Actividad", :sortable => :item_id) do   |detail|
 if params[:item_id] then
@@ -119,7 +130,18 @@ if params[:item_id] then
 end
 end
 column("pfecha") do |detail|
- detail.pfecha.strftime("%d-%m-%Y")
+  if detail.pfecha then
+    detail.pfecha.strftime("%d-%m-%Y")
+  else
+    "s/d"
+  end
+end
+column("plan") do |detail|
+  if detail.plan then
+     detail.plan.strftime("%d-%m-%Y")
+  else
+     "s/d"
+   end
 end
 column("tipo")
 column("numero")
@@ -193,6 +215,7 @@ end
                  f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
                  f.input :pfecha, :label => 'fecha de documento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
                           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -205,7 +228,7 @@ end
                 f.actions
           end
 
-#nuevo
+#nuevo YA NO FUNCIONA
             if params[:item_id] then
                nn=Item.where(id:  params[:item_id]).
                         select('pac as dd').first.dd.capitalize+"-"+
@@ -250,6 +273,7 @@ end
              f.input :tipo, :label => 'Documemto de recepcion', :input_html => { :style =>  'width:30%'}
              f.input :numero, :label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
              f.input :pfecha, :label => 'fecha de documento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :importe, :label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -288,6 +312,7 @@ end
                       row :tipo
                       row :numero
                       row :pfecha
+                      row :plan
                       row :importe
                       row :moneda
 
@@ -301,5 +326,32 @@ end
 
 
 
+sidebar "Datos del PAC" do
+  if params[:item_id] then
+     nn=Item.where(id:  params[:item_id]).
+              select('pac as dd').first.dd.capitalize
+      n1=Item.where(id:  params[:item_id]).
+               select('obac as dd').first.dd
+     n11=Item.where(id:  params[:item_id]).
+              select('exped as dd').first.dd
 
+      n2= Item.where(id:params[:item_id]).
+               select('descripcion as dd').first.dd.capitalize
+      n3=Formula.where(product:1,orden:n1).
+            select('descripcion as dd').first.dd.capitalize
+
+      n31=Formula.where(product:16,orden:n11).
+           select('nombre as dd').first.dd.capitalize
+
+
+  ul do
+    li "No de PAC:   "+nn
+    li "DESCRIPCION: "+n2
+    li "OBAC:  "+n3
+    li "EXPEDIENTE:  "+n31
+  end
+
+
+end
+end # de if
 end
