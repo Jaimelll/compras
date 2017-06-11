@@ -36,11 +36,7 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
 
 
-  action_item :view, only: [:show, :index] do
-    if params[:item_id] then
-          link_to 'Agregar actividad', new_admin_item_detail_path(params[:item_id])
-    end
-  end
+
 
   scope :PAC, :default => true do |details|
 
@@ -51,18 +47,17 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
 
 
 
-filter :actividad,  :as => :select, :collection =>
-      Formula.where(product_id:12).order('orden ASC').map{|u| ["#{u.cantidad}", u.orden]}
+filter :pfecha
 
-
-
-index do
+index :title => 'Lista de Actividades' do
 
   column("Actividad", :sortable => :item_id) do   |detail|
 if params[:item_id] then
 
 
     if detail.actividad then
+      n4=Formula.where(product_id:12,orden:detail.actividad).
+              select('orden as dd').first.dd
       n2=Formula.where(product_id:12,orden:detail.actividad).
               select('cantidad as dd').first.dd
 
@@ -71,8 +66,11 @@ if params[:item_id] then
                 "-----"+
                  "#{Formula.where(product_id:10,orden:n2).
                           select('nombre as dd').first.dd}"
-
-
+      if n4==25 or n4==15 or n4==17 or n4==26 then
+        n5=1
+      else
+        n5=0
+      end
 
    else
             n1="s/d"
@@ -80,8 +78,14 @@ if params[:item_id] then
 
     # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
     case current_admin_user.id # a_variable is the variable we want to compare
-    when 1,2,4,6,8,9 #gex
+        when 1,2,4 #gex
              n3=1
+         when 6,8,9 #gex
+           if n2==1 or n2==2 or n5==1 then
+                    n3=1
+          else
+             n3=2
+          end
        when 11 #estudio de mercado
             if n2==4
               n3=1
@@ -101,7 +105,7 @@ if params[:item_id] then
                     n3=2
                   end
         when 14 #ejecucion de contratos
-                     if n2==6
+                     if n2==6 or n2===7 then
                        n3=1
                      else
                        n3=2
@@ -111,13 +115,15 @@ if params[:item_id] then
              n3=2
       end
 
-  link_to_if @n3==1 ,"#{n1} ",  admin_item_detail_path(params[:item_id],detail)
+  link_to_if n3==1 ,"#{n1} ",  admin_item_detail_path(params[:item_id],detail)
 end
 end
-column("pfecha")
+column("pfecha") do |detail|
+ detail.pfecha.strftime("%d-%m-%Y")
+end
 column("tipo")
 column("numero")
-column("pfecha")
+column("obs")
 column("importe") do |detail|
  number_with_delimiter(detail.importe, delimiter: ",")
 end
@@ -134,7 +140,7 @@ end
 
 end
 
-    form  do |f|
+    form :title => 'Edicion Actividad'  do |f|
 
         if params[:id] then
 #edit
@@ -254,19 +260,13 @@ end
                 f.actions
 
 
-            strong { link_to  new_admin_item_detail_path(params[:item_id]) }
-
-                f.inputs "#{nn}" do
-                    f.input :tipo
-
-                end
 
 
             #    no tiene parametros y la ruta no pasa por item
               end
           end
 
-          show do
+          show :title => ' ACTIVIDAD ' do
 
 
                     attributes_table do
@@ -281,8 +281,8 @@ end
                              select('pac as dd').first.dd.capitalize
 
                   end
-                      row :item_id do |formula|
-                        link_to "PAC-#{nn}", admin_item_path(detail.item_id)
+                      row "Actividades" do |formula|
+                        link_to "PAC-#{nn}", admin_item_details_path(detail.item_id)
                       end
                       row :actividad
                       row :tipo

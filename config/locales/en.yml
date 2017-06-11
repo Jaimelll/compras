@@ -20,4 +20,22 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  active_admin:
+    dashboard: Inicio
+
+    edit: "Editar"
+    delete: "Eliminar"
+    delete_confirmation: "¿Está seguro de que quiere eliminar esto?"
+    new_model: "Añadir "
+    edit_model: "Editar "
+    delete_model: "Eliminar"
+    details: "Detalles "
+    cancel: "Cancelar"
+    view: "Ver"
+    logout: "Salir"
+
+
+    sidebars:
+      filters: "Filtros"
+
+      

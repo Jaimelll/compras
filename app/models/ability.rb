@@ -11,7 +11,7 @@ class Ability
           can :manage, :all
       when 3,10,5,16,18,19 #roy,asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
-        can [:read, :update], [Item, Detail]
+        can [:read], [Item, Detail]
     #   when 5 # ballesteros
     #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
     #    can [:read], [Item, Detail]
@@ -23,7 +23,7 @@ class Ability
 #    can [:read], [Item, Detail]
       when 7,11,12,13,14 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
-        can [:read,:update], Item
+        can [:read], Item
         can [:create,:read,:update,:destroy],  Detail
       else
           can :read, ActiveAdmin::Page, :name =>"Dashboard"

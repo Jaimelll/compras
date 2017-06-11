@@ -14,6 +14,11 @@ ActiveAdmin.register Product do
 
 #menu if: proc{ current_admin_user.id==2 }, priority: 3, label: "Productos"
 
+ActiveAdmin.register Formula do
+  belongs_to :product
+end
+
+
 menu  priority: 3, label: "Productos"
 
 permit_params :nombre, :descripcion, :orden,

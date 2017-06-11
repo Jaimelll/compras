@@ -10,45 +10,46 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
 action_item :only=> :index do
 
-    link_to   'Cambiar AF', af_admin_formula_path( :@num), method: :put
+    link_to   'Cambiar AF', af_admin_product_formula_path(1, :@num), method: :put
 end
 
 
 action_item :only=> :index do
-    link_to 'Encargo', encargo_admin_formula_path( :@num), method: :put
+    link_to 'Encargo', encargo_admin_product_formula_path(1, :@num), method: :put
+
 end
 #action_item :only=> :index do
 #    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
 #end
 action_item :only=> :index do
-    link_to 'Corporativos', corporativa_admin_formula_path( :@num), method: :put
+    link_to 'Corporativos', corporativa_admin_product_formula_path( 1,:@num), method: :put
 end
 
 
 
 action_item :only=> :index do
-    link_to 'Autorizaciones', autorizado_admin_formula_path( :@num), method: :put
+    link_to 'Autorizaciones', autorizado_admin_product_formula_path( 1,:@num), method: :put
 end
 
 action_item :only=> :index do
-    link_to 'Exclusiones', excluido_admin_formula_path( :@num), method: :put
+    link_to 'Exclusiones', excluido_admin_product_formula_path(1, :@num), method: :put
 end
 
 
 action_item :only=> :index do
-   link_to 'GEX', gex_admin_formula_path( :@num), method: :put
+   link_to 'GEX', gex_admin_product_formula_path( 1,:@num), method: :put
 end
 
 action_item :only=> :index do
-   link_to 'DEM', dem_admin_formula_path( :@num), method: :put
+   link_to 'DEM', dem_admin_product_formula_path( 1,:@num), method: :put
 end
 
 action_item :only=> :index do
-   link_to 'DPC', dpc_admin_formula_path( :@num), method: :put
+   link_to 'DPC', dpc_admin_product_formula_path( 1,:@num), method: :put
 end
 
 action_item :only=> :index do
-   link_to 'DEC', dec_admin_formula_path( :@num), method: :put
+   link_to 'DEC', dec_admin_product_formula_path(1, :@num), method: :put
 end
 
 
