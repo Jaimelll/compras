@@ -25,7 +25,7 @@ class Ability
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], Item
         can [:create,:read,:update,:destroy],  Detail
-      else
+      when 4,6,8,9 #sectoristas
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:create,:read,:update, :destroy], [Item, Detail]
   end

@@ -215,10 +215,10 @@ column("exped")do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 
-unless current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+#unless current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
 
   actions
-end
+#end
 
 end
 
