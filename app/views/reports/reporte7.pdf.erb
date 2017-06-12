@@ -121,7 +121,8 @@
 
           <tr>
 
-            <th>Fecha</th>
+            <th colspan="2">Fecha </th>
+            <th colspan="2">Programa</th>
             <th>Actividad</th>
             <th>Observacion</th>
          </tr>
@@ -144,7 +145,13 @@
 
 
 
-               <td ALIGN=center><%= deta.pfecha.strftime("%d-%m-%Y") %></td>
+               <td ALIGN=center colspan="2"><%= deta.pfecha.strftime("%d-%m") %></td>
+                 <%  if deta.plan then %>
+              <td ALIGN=center colspan="2"><%= deta.plan.strftime("%d-%m") %></td>
+                 <%  else %>
+               <td ALIGN=center colspan="2">s/d</td>
+                  <%  end %>
+
                <td ALIGN=center><%=Formula.where(product_id:12,orden:deta.actividad).
                            select('descripcion as dd').first.dd.capitalize  %></td>
                <td ALIGN=center><%= deta.obs.capitalize %></td>
