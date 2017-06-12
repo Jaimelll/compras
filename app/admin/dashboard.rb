@@ -627,17 +627,17 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               @le1=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
                               .where(exped2:formula.orden)
-
-                              @le= @le1.count.to_s+ "/("+
+                          
+                              @le= number_with_delimiter((@le1.count).to_i, delimiter: ",").to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                 case   formula.orden
                             when 3
                               link_to "#{@le} ", reports_comment2_path(format: :pdf,
                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
                             when 2
-                              "1711/(1,277,507,620)"
+                              "1,711/(1,277,507,620)"
                             when 1
-                                "3566/(1,295,058,915)"
+                                "3,566/(1,295,058,915)"
                             end
                                end
 
@@ -651,10 +651,12 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                     number_with_delimiter((@vtproc.sum(:certificado)+1295058915).to_i, delimiter: ",").to_s+ ")"
                              when 2
-                               (@vtproc.count+1711).to_s+ "/("+
+                               number_with_delimiter((@vtproc.count+1711).to_i, delimiter: ",").to_s+ "/("+
+
                                     number_with_delimiter((@vtproc.sum(:certificado)+1277507620).to_i, delimiter: ",").to_s+ ")"
                                when 3
-                              @vtproc.count.to_s+ "/("+
+                                  number_with_delimiter((@vtproc.count).to_i, delimiter: ",").to_s+ "/("+
+
                                    number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                               end
                               end
