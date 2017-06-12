@@ -620,6 +620,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               column("EN OBAC " ) do |formula|
 
+
                                 @auto=  formula.orden
                                 @tita1="Procesos en OBAC - PERIODO"
                                 @vopc1=5
@@ -629,19 +630,33 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
+                                case   formula.orden
+                            when 3
                               link_to "#{@le} ", reports_comment2_path(format: :pdf,
                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
-
+                            when 2
+                              "1711/(1,277,507,620)"
+                            when 1
+                                "3566/(1,295,058,915)"
+                            end
                                end
 
 
                               column("TOTAL  ") do |formula|
                                 @vtproc=Item.where(exped2:formula.orden).where.not(modalidad:4)
 
+                             case   formula.orden
+                             when 1
+                                 number_with_delimiter((@vtproc.count+3566).to_i, delimiter: ",").to_s+ "/("+
 
+                                    number_with_delimiter((@vtproc.sum(:certificado)+1295058915).to_i, delimiter: ",").to_s+ ")"
+                             when 2
+                               (@vtproc.count+1711).to_s+ "/("+
+                                    number_with_delimiter((@vtproc.sum(:certificado)+1277507620).to_i, delimiter: ",").to_s+ ")"
+                               when 3
                               @vtproc.count.to_s+ "/("+
                                    number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                              end
                               end
 
                           #     column("Culminados ACFFAA") do |formula|
@@ -790,7 +805,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                      @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                      @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-                                     panel  "IV.- PROCESOS EN CURSO ACFFAA AF-" +@vaf do
+                                     panel  "IV.- PROCESOS EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
 
 
                           table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -868,7 +883,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                             end
 
-                                          column("DEC 'PAC/(SOLES)'") do |formula|
+                                          column("DEC ") do |formula|
 
                                           @dpc=  formula.orden
                                          @vpas=6
@@ -886,7 +901,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
 
-                                          column("TOTAL 'PAC/(SOLES)'") do |formula|
+                                          column("TOTAL ") do |formula|
                                             @p.select {|f|  f["exped2"]==@vaf1}.count.to_s+ "/("+
                                             number_with_delimiter(  @p.sum {|f|  f["certificado"]}.to_i, delimiter: ",").to_s+ ")"
                                         end

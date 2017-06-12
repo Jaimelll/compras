@@ -28,6 +28,9 @@ class Ability
       when 4,6,8,9 #sectoristas
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:create,:read,:update, :destroy], [Item, Detail]
+  else
+
+      can :read, ActiveAdmin::Page, :name =>"Dashboard"    
   end
     #
     # The first argument to `can` is the action you are giving the user

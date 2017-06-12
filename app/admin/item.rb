@@ -500,7 +500,7 @@ form :title => 'Edicion PACs' do |f|
 
 sidebar  " RESPONSABLE DE EJECUCION", only: :index do
   # prueba ini
-    table_for Formula.where(product_id:1).where.not(orden:5)    do
+    table_for Formula.where(product_id:1).where.not(orden:5).order('numero')    do
    @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
          column("Institucion "+ @vaf1) do |formula|
@@ -525,7 +525,7 @@ sidebar  " RESPONSABLE DE EJECUCION", only: :index do
 
 
 
-        table_for Formula.where(product_id:1,cantidad:1).where.not(orden:5)  do
+        table_for Formula.where(product_id:1,cantidad:1).where.not(orden:5).order('numero')  do
           @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
              column("Institucion "+ @vaf1 ) do |formula|
