@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Actividad:</strong>
+  <%= @activity.actividad %>
+</p>
+
+<p>
+  <strong>Tipo:</strong>
+  <%= @activity.tipo %>
+</p>
+
+<p>
+  <strong>Numero:</strong>
+  <%= @activity.numero %>
+</p>
+
+<p>
+  <strong>Pfecha:</strong>
+  <%= @activity.pfecha %>
+</p>
+
+<p>
+  <strong>Plan:</strong>
+  <%= @activity.plan %>
+</p>
+
+<p>
+  <strong>Moneda:</strong>
+  <%= @activity.moneda %>
+</p>
+
+<p>
+  <strong>Importe:</strong>
+  <%= @activity.importe %>
+</p>
+
+<p>
+  <strong>Obs:</strong>
+  <%= @activity.obs %>
+</p>
+
+<p>
+  <strong>Phase:</strong>
+  <%= @activity.phase %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @activity.admin_user %>
+</p>
+
+<%= link_to 'Edit', edit_activity_path(@activity) %> |
+<%= link_to 'Back', activities_path %>

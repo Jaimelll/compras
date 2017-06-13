@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nomenclatura:</strong>
+  <%= @phase.nomenclatura %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @phase.descripcion %>
+</p>
+
+<p>
+  <strong>Moneda:</strong>
+  <%= @phase.moneda %>
+</p>
+
+<p>
+  <strong>Valor:</strong>
+  <%= @phase.valor %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @phase.admin_user %>
+</p>
+
+<%= link_to 'Edit', edit_phase_path(@phase) %> |
+<%= link_to 'Back', phases_path %>

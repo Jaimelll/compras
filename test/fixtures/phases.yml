@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nomenclatura: MyString
+  descripcion: MyString
+  moneda: 1
+  valor: 1.5
+  admin_user: one
+
+two:
+  nomenclatura: MyString
+  descripcion: MyString
+  moneda: 1
+  valor: 1.5
+  admin_user: two

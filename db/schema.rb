@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170611151923) do
+ActiveRecord::Schema.define(version: 20170612211804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,23 @@ ActiveRecord::Schema.define(version: 20170611151923) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.integer  "actividad"
+    t.string   "tipo"
+    t.string   "numero"
+    t.date     "pfecha"
+    t.date     "plan"
+    t.integer  "moneda"
+    t.float    "importe"
+    t.string   "obs"
+    t.integer  "phase_id"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_activities_on_admin_user_id", using: :btree
+    t.index ["phase_id"], name: "index_activities_on_phase_id", using: :btree
   end
 
   create_table "admin_users", force: :cascade do |t|
@@ -105,6 +122,18 @@ ActiveRecord::Schema.define(version: 20170611151923) do
     t.index ["admin_user_id"], name: "index_items_on_admin_user_id", using: :btree
   end
 
+  create_table "phases", force: :cascade do |t|
+    t.string   "nomenclatura"
+    t.string   "descripcion"
+    t.integer  "moneda"
+    t.float    "valor"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "expediente"
+    t.index ["admin_user_id"], name: "index_phases_on_admin_user_id", using: :btree
+  end
+
   create_table "products", force: :cascade do |t|
     t.string   "nombre"
     t.string   "descripcion"
@@ -116,10 +145,13 @@ ActiveRecord::Schema.define(version: 20170611151923) do
     t.index ["admin_user_id"], name: "index_products_on_admin_user_id", using: :btree
   end
 
+  add_foreign_key "activities", "admin_users"
+  add_foreign_key "activities", "phases"
   add_foreign_key "details", "admin_users"
   add_foreign_key "details", "items"
   add_foreign_key "formulas", "admin_users"
   add_foreign_key "formulas", "products"
   add_foreign_key "items", "admin_users"
+  add_foreign_key "phases", "admin_users"
   add_foreign_key "products", "admin_users"
 end

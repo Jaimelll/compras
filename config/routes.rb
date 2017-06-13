@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
 
 
+
   devise_for :admin_users, ActiveAdmin::Devise.config
 
     ActiveAdmin.routes(self)
@@ -17,6 +18,12 @@ end
 
 
 
+
+namespace :admin do
+  resources :phases do
+    resources :activities
+  end
+end
 
   namespace :admin do
     resources :products do
