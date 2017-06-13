@@ -145,6 +145,29 @@ end
 
 
 
+def comment4
+  @vopc=params[:param1].to_i
+  case @vopc
+   when 1
+     @tit1="Programa de Presentaciones de Propuestas"
+
+     @activities=Phase.joins(:activities).where(activities: {actividad: 19})
+       .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
+      phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
+      phases.moneda as moneda,phases.valor as valor ")
+       .order("pfecha")
+   end
+
+  respond_to do |format|
+
+  format.html
+  format.json
+  format.pdf{render template: 'reports/reporte4.pdf.erb', pdf:'detalle'}
+
+  end
+  end
+
+
 
 
 

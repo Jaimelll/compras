@@ -9,7 +9,11 @@ class Ability
   case user.id # a_variable is the variable we want to compare
       when 2
           can :manage, :all
-      when 3,10,5,16,18,19 #roy,asesor,ballesteros
+      when 3 #roy
+          can :read, ActiveAdmin::Page, :name =>"Dashboard"
+          can [:read], [Item, Detail]
+          can [:read], [Phase,Activity]
+      when 10,5,16,18,19 #roy,asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], [Item, Detail]
     #   when 5 # ballesteros
@@ -30,7 +34,7 @@ class Ability
           can [:create,:read,:update, :destroy], [Item, Detail]
   else
 
-      can :read, ActiveAdmin::Page, :name =>"Dashboard"    
+      can :read, ActiveAdmin::Page, :name =>"Dashboard"
   end
     #
     # The first argument to `can` is the action you are giving the user

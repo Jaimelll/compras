@@ -32,7 +32,10 @@ column("nomenclatura") do |phase|
    link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)
 end
 
- column("descripcion")
+ column("descripcion") do |phase|
+  phase.descripcion.capitalize
+
+ end
  column("moneda") do |phase|
      if phase.moneda then
         Formula.where(product_id:7,orden:phase.moneda).select('nombre as dd').first.dd.to_s
@@ -54,7 +57,17 @@ column("valor")  do |phase|
   actions
 end
 
+sidebar "Procesos Links" do
 
+
+  ul do
+    li link_to "Programa de presentaciones de propuestas ", reports_comment4_path(format: :pdf,  :param1=> 1)
+
+
+  end
+
+
+end
 
 
 
