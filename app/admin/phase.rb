@@ -78,7 +78,7 @@ form :title => 'Edicion Procesos' do |f|
     end #de inputs
 end #de form
 
-show :title => ' PAC'  do
+show :title => ' Proceso'  do
 
     attributes_table  do
 
@@ -131,7 +131,7 @@ sidebar "Procesos Links" , only: :index do
 
   ul do
     li link_to "Programa de presentaciones de propuestas ", reports_comment4_path(format: :pdf,  :param1=> 1)
-
+  li link_to "Historial Presentaciones de propuestas ", reports_comment4_path(format: :pdf,  :param1=> 2)
 
   end
 

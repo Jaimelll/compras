@@ -46,7 +46,7 @@ when 3
    @items= Item.where(ejecucion:4,tipo:params[:param2]).where("modalidad<3")
            .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac')
 
-  
+
 
   end
 
@@ -148,11 +148,19 @@ def comment4
    when 1
      @tit1="Programa de Presentaciones de Propuestas"
 
-     @activities=Phase.joins(:activities).where(activities: {actividad: 19})
+     @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha>=current_date" )
        .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
       phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
       phases.moneda as moneda,phases.valor as valor ")
        .order("pfecha")
+     when 2
+       @tit1="Programa de Presentaciones de Propuestas"
+
+       @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha<current_date" )
+         .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
+        phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
+        phases.moneda as moneda,phases.valor as valor ")
+         .order("pfecha")
    end
 
   respond_to do |format|
