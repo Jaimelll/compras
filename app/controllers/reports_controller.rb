@@ -46,10 +46,7 @@ when 3
    @items= Item.where(ejecucion:4,tipo:params[:param2]).where("modalidad<3")
            .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac')
 
-
-
-
-
+  
 
   end
 

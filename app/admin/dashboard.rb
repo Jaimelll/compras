@@ -627,7 +627,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               @le1=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
                               .where(exped2:formula.orden)
-                          
+
                               @le= number_with_delimiter((@le1.count).to_i, delimiter: ",").to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                 case   formula.orden
@@ -904,16 +904,23 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                                           column("TOTAL ") do |formula|
-                                            @p.select {|f|  f["exped2"]==@vaf1}.count.to_s+ "/("+
-                                            number_with_delimiter(  @p.sum {|f|  f["certificado"]}.to_i, delimiter: ",").to_s+ ")"
-                                        end
+                                  #      @vtproc=
+
+                                        @auto=  @vaf1
+                                        @tita1="Total Procesos en Curso ACFFAA - PERIODO"
+                                        @vopc1=4
 
 
 
+                                      @le=  @p.select {|f|  f["exped2"]==@vaf1}.count.to_s+ "/("+
+                                              number_with_delimiter(  @p.sum {|f|  f["certificado"]}.to_i, delimiter: ",").to_s+ ")"
 
 
+                                      link_to "#{@le} ", reports_comment_path(format: :pdf,
+                                      :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
 
+                                      end
 
 
 

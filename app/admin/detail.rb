@@ -166,8 +166,7 @@ end
 
 
           f.inputs  do
-                 f.input :item_id, :label => 'PAC', :as => :select, :collection =>
-                      Item.all.order('pac ASC').map{|u| [u.pac, u.id]}
+
 
                  f.input :actividad, :as => :select, :collection =>
 
@@ -223,7 +222,7 @@ end
 
 
             #    no tiene parametros y la ruta no pasa por item
-            
+
           end
 
           show :title => ' ACTIVIDAD ' do
@@ -241,16 +240,38 @@ end
                              select('pac as dd').first.dd.capitalize
 
                   end
-                      row "Actividades" do |formula|
-                        link_to "PAC-#{nn}", admin_item_details_path(detail.item_id)
+                      row "PAC" do |formula|
+                        link_to "#{nn}", admin_item_details_path(detail.item_id)
                       end
-                      row :actividad
+                      row :actividad do |detail|
+                          if detail.actividad and detail.actividad>0 then
+
+                             Formula.where(product_id:12, orden:detail.actividad).
+                              select('descripcion as dd').first.dd
+
+                            else
+                                "s/d"
+                            end
+                        end
                       row :tipo
                       row :numero
                       row :pfecha
                       row :plan
-                      row :importe
-                      row :moneda
+                      row :importe do |detail|
+
+                         number_with_delimiter(detail.importe, delimiter: ",")
+
+                        end
+                      row :moneda do |detail|
+                          if detail.moneda and detail.moneda>0 then
+
+                             Formula.where(product_id:7, orden:detail.moneda).
+                              select('nombre as dd').first.dd
+
+                            else
+                                "s/d"
+                            end
+                        end
 
                       row :obs
                       row :admin_user_id
@@ -288,6 +309,6 @@ sidebar "Datos del PAC" do
   end
 
 
-end
-end # de if
-end
+end# de if
+end # de sider
+end# de registro
