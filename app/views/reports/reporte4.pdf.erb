@@ -55,7 +55,7 @@
         <% @vobac=" " %>
         <% if activity.expediente>0 then %>
        <% Item.where(exped:activity.expediente).each do |nobac| %>
-       <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd+nobac.pac %>
+       <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
        <% @vobac=@vobac+"-"+ @sobac %>
        <% end %>
        <% end %>
