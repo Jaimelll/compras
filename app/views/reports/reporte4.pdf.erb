@@ -19,6 +19,7 @@
        <th>Fecha</th>
 
        <th>Nomenclatura</th>
+       <th>OBAC</th>
        <th>Descripcion</th>
        <th>Moneda</th>
        <th>Estimado</th>
@@ -51,7 +52,14 @@
 
         <td><h5><%= activity.nomenclatura[0,@an] %></h5></td>
 
-
+        <% @vobac=" " %>
+        <% if activity.expediente>0 then %>
+       <% Item.where(exped:activity.expediente).each do |nobac| %>
+       <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd+nobac.pac %>
+       <% @vobac=@vobac+"-"+ @sobac %>
+       <% end %>
+       <% end %>
+       <td><h5><%= @vobac %></h5></td>
 
 
 
