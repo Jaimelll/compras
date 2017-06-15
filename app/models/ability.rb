@@ -25,10 +25,15 @@ class Ability
 #   when 5 # ballesteros
 #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
 #    can [:read], [Item, Detail]
-      when 7,11,12,13,14 #DEM castaneda
+      when 7,11,12,14 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], Item
         can [:create,:read,:update,:destroy],  Detail
+      when 13 #DPC
+        can :read, ActiveAdmin::Page, :name =>"Dashboard"
+        can [:read], Item
+        can [:create,:read,:update,:destroy],  [Detail,Phase,Activity]
+
       when 4,6,8,9 #sectoristas
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:create,:read,:update, :destroy], [Item, Detail]
