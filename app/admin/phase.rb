@@ -41,8 +41,10 @@ end
         Formula.where(product_id:7,orden:phase.moneda).select('nombre as dd').first.dd.to_s
       end
   end
-column("valor")  do |phase|
+column("Referencial")  do |phase|
+   if phase.valor then
    number_with_delimiter(phase.valor.to_int, delimiter: ",")
+   end
  end
  column("expediente")do |phase|
      if phase.expediente and phase.expediente>0 then
