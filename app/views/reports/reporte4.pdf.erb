@@ -21,10 +21,12 @@
        <th>Nomenclatura</th>
        <th>OBAC</th>
        <th>Descripcion</th>
-        <th>Estimado</th>
        <th>Moneda</th>
-       <th>Buena Pro</th>
+        <th>Referencial</th>
 
+      <%  if @vopc==2 then %>
+       <th>Adjudicado</th>
+       <%  end%>
 
       <th colspan="3"></th>
     </tr>
@@ -76,25 +78,28 @@
 
         <td><%= activity.descripcion.underscore.capitalize %></td>
 
-
+        <% if activity.moneda>0 and activity.moneda then %>
+      <td ALIGN=right><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
+      <% else %>
+      <td ALIGN=right><%= "s/d "   %></td>
+      <% end %>
 
 
         <td ALIGN=right><%= number_with_delimiter(activity.valor.to_i, delimiter: ",") %></td>
 
-        <% if activity.moneda>0 and activity.moneda then %>
-      <td ALIGN=right><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
-      <% else %>
-      <td ALIGN=right><%= " s/d"   %></td>
-      <% end %>
 
 
+      <%  if @vopc==2 then %>
 
-        <% @vbpro=Activity.where(actividad:20,phase_id:activity.id.to_s).sum(:importe)%>
+          <% @vbpro=Activity.where(actividad:20,phase_id:activity.id.to_s).sum(:importe)%>
         <% if @vbpro >0 then %>
         <td ALIGN=right><%= @vbpro %></td>
              <% else %>
-        <td> s/d </td>
+        <td>  </td>
               <% end %>
+
+          <% end %>
+
       </tr>
 
     <% end %>

@@ -824,7 +824,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                            GROUP BY   details.item_id)) GROUP BY
                            items.exped2,details.item_id,items.certificado").to_a
 
-                                             column("Procesos") do |formula|
+                                             column("Avance") do |formula|
                                                "PAC"
                                              end
                                              column("S/EXP") do |formula|
