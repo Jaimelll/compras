@@ -935,7 +935,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                       end #end de panel
 
-  panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf  do
+  panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf + " - 'Procesos/(PACs)'" do
   #  ul do
 
   #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
@@ -949,16 +949,51 @@ if @alabels.length <=29 and @alabels.length>0 then
             "Procesos"
          end
          column("Historial") do
-           @le=@activities.where("pfecha<current_date").count.to_s
-            link_to "#{@le} ", reports_comment4_path(format: :pdf,  :param1=> 2)
+
+           @conta=0
+           @activities.where("pfecha<current_date").each do |activ|
+             if activ.expediente>0 then
+             Item.where(exped:activ.expediente).each do
+                @conta=  @conta+1
+              end #item
+            end #if
+          end #activ
+         @le=@activities.where("pfecha<current_date").count.to_s
+
+            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
+
          column("Programados") do
-            @le=@activities.where("pfecha>=current_date").count.to_s
-            link_to "#{@le} ", reports_comment4_path(format: :pdf,  :param1=> 1)
+           @conta=0
+           @activities.where("pfecha>=current_date").each do |activ|
+             if activ.expediente>0 then
+             Item.where(exped:activ.expediente).each do
+                @conta=  @conta+1
+              end #item
+            end #if
+          end #activ
+          @le=@activities.where("pfecha>=current_date").count.to_s
+
+            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
+
+
+
          end
+
          column("Total") do
-             @le=@activities.count.to_s
-            link_to "#{@le} ", reports_comment4_path(format: :pdf,  :param1=> 3)
+           @conta=0
+           @activities.each do |activ|
+             if activ.expediente>0 then
+             Item.where(exped:activ.expediente).each do
+                @conta=  @conta+1
+              end #item
+            end #if
+          end #activ
+          @le=@activities.count.to_s
+
+            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 3)
+
+
          end
       end
   end
