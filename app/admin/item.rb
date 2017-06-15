@@ -498,21 +498,22 @@ form :title => 'Edicion PACs' do |f|
 
 
 
-sidebar  " RESPONSABLE DE EJECUCION", only: :index do
+sidebar  " RESPONSABILIDAD Obac ", only: :index do
   # prueba ini
-    table_for Formula.where(product_id:1).where.not(orden:5).order('numero')    do
+    table_for Formula.where(product_id:1).where.not(orden:4).where.not(orden:5).order('numero')    do
    @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      @ite= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)").where(exped2:@vaf)
          column("Institucion "+ @vaf1) do |formula|
            formula.nombre
          end
          column("pac") do |formula|
-           Item.where(ejecucion:formula.orden).where(exped2:@vaf).count
+        #   Item.where(ejecucion:formula.orden).where(exped2:@vaf).count
+          @ite.where(obac:formula.orden).count
          end
          column("monto") do |formula|
 
-              number_with_delimiter(Item.where(ejecucion:formula.orden)
-              .where(exped2:@vaf)
+              number_with_delimiter(  @ite.where(obac:formula.orden)
               .sum(:certificado).to_i, delimiter: ",")
          end
       end
@@ -520,7 +521,7 @@ sidebar  " RESPONSABLE DE EJECUCION", only: :index do
   # prueba ini
   end
 
-  sidebar " RESPONSABILIDAD DE ACFFAA POR OBAC", only: :index do
+  sidebar " RESPONSABILIDAD ACFFAA", only: :index do
     # prueba ini
 
 

@@ -21,7 +21,7 @@
 
 en:
   active_admin:
-    dashboard: Inicio
+    dashboard: Tablero
 
     edit: "Editar"
     delete: "Eliminar"
@@ -37,5 +37,3 @@ en:
 
     sidebars:
       filters: "Filtros"
-
-      

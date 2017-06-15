@@ -807,7 +807,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                      @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                      @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-                                     panel  "IV.- PROCESOS EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
+                                     panel  "IV.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
 
 
                           table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -825,7 +825,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                            items.exped2,details.item_id,items.certificado").to_a
 
                                              column("Procesos") do |formula|
-                                               "PACs"
+                                               "PAC"
                                              end
                                              column("S/EXP") do |formula|
 
@@ -934,6 +934,20 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                       end #end de panel
+
+  panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf  do
+    ul do
+
+    li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
+        li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
+
+    end
+  end
+
+
+
+
+
                     end# de columns
 
                     column do

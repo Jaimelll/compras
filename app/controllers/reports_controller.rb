@@ -157,7 +157,7 @@ def comment4
        @tit1="Programa de Presentaciones de Propuestas"
 
        @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha<current_date" )
-         .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
+         .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
         phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
         phases.moneda as moneda,phases.valor as valor ")
          .order("pfecha")
