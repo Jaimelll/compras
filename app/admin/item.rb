@@ -517,36 +517,65 @@ sidebar  " RESPONSABILIDAD Obac ", only: :index do
               .sum(:certificado).to_i, delimiter: ",")
          end
       end
+       table_for "A"  do
 
+         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+       @ite= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)").where(exped2:@vaf)
+       @vpac=  @ite.count
+       @vmonto=  number_with_delimiter(  @ite
+         .sum(:certificado).to_i, delimiter: ",").to_s
+
+         column("Total PAC  =")
+         column("#{@vpac} ")
+         column("#{@vmonto} ")
+       end#table
   # prueba ini
   end
 
   sidebar " RESPONSABILIDAD ACFFAA", only: :index do
-    # prueba ini
+
 
 
 
         table_for Formula.where(product_id:1,cantidad:1).where.not(orden:5).order('numero')  do
           @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+               @vpcu1=   Item.where(ejecucion:4).where("modalidad<3")
+               .where(exped2:@vaf)
+
+
              column("Institucion "+ @vaf1 ) do |formula|
                formula.nombre
              end
              column("PAC ") do |formula|
-             @vpcu1=   Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
-                  .where(exped2:@vaf)
 
-               @vpcu1.count
+
+
+               @vpcu1.where(obac:formula.orden).count
              end
 
              column("MONTO ") do |formula|
-             @vpcu1=   Item.where(ejecucion:4,obac:formula.orden).where("modalidad<3")
-                  .where(exped2:@vaf)
 
 
-                  number_with_delimiter(@vpcu1.sum(:certificado).to_i, delimiter: ",")
+
+
+                  number_with_delimiter(@vpcu1.where(obac:formula.orden).sum(:certificado).to_i, delimiter: ",")
              end
 
+        end#table_for
+        table_for "A"  do
+
+          @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+        @ite=  Item.where(ejecucion:4).where("modalidad<3")
+        .where(exped2:@vaf)
+        @vpac=  @ite.count
+        @vmonto=  number_with_delimiter(  @ite
+          .sum(:certificado).to_i, delimiter: ",").to_s
+
+          column("Total PAC  =")
+          column("#{@vpac} ")
+          column("#{@vmonto} ")
+        end#table
 
 
 
@@ -561,8 +590,6 @@ sidebar  " RESPONSABILIDAD Obac ", only: :index do
 
 
 
-end
 
-    # prueba ini
-end
-end
+end #de sidebar
+end#de item

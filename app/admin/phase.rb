@@ -20,7 +20,7 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente
 
 
 menu priority: 5, label: "Procesos"
-
+filter :nomenclatura
 filter :expediente, :as => :select, :collection =>
      Formula.where(product_id:16).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 
@@ -126,17 +126,6 @@ end # de show
 
 
 
-sidebar "Procesos Links" , only: :index do
-
-
-  ul do
-    li link_to "Programa de presentaciones de propuestas ", reports_comment4_path(format: :pdf,  :param1=> 1)
-  li link_to "Historial Presentaciones de propuestas ", reports_comment4_path(format: :pdf,  :param1=> 2)
-
-  end
-
-
-end
 
 
 

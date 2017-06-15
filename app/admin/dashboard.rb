@@ -936,12 +936,31 @@ if @alabels.length <=29 and @alabels.length>0 then
                       end #end de panel
 
   panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf  do
-    ul do
+  #  ul do
 
-    li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
-        li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
+  #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
+    #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
 
-    end
+  #  end
+      table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
+        @activities=Phase.joins(:activities).where("activities.actividad=19 " )
+
+         column("Avance") do
+            "Procesos"
+         end
+         column("Historial") do
+           @le=@activities.where("pfecha<current_date").count.to_s
+            link_to "#{@le} ", reports_comment4_path(format: :pdf,  :param1=> 2)
+         end
+         column("Programados") do
+            @le=@activities.where("pfecha>=current_date").count.to_s
+            link_to "#{@le} ", reports_comment4_path(format: :pdf,  :param1=> 1)
+         end
+         column("Total") do
+             @le=@activities.count.to_s
+            link_to "#{@le} ", reports_comment4_path(format: :pdf,  :param1=> 3)
+         end
+      end
   end
 
 

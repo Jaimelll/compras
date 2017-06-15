@@ -161,6 +161,15 @@ def comment4
         phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
         phases.moneda as moneda,phases.valor as valor ")
          .order("pfecha")
+       when 3
+         @tit1="Relacion de Convocatorias"
+
+         @activities=Phase.joins(:activities).where("activities.actividad=19 " )
+           .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
+          phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
+          phases.moneda as moneda,phases.valor as valor ")
+           .order("pfecha")
+
    end
 
   respond_to do |format|
