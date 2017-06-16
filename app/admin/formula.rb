@@ -20,7 +20,14 @@ permit_params  :nombre, :descripcion,  :orden,
                 select('id as dd').first.dd
         Formula.where( product_id:11 ).update_all( cantidad:0 )
         Formula.where( product_id:11 ,orden:@vaf).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
+
+    #cambiar a encargo
+    @num=Formula.where(product_id: 15, orden:1).
+           select('id as dd').first.dd
+    Formula.where( product_id:15 ).update_all( cantidad:0 )
+    Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
+    redirect_to admin_dashboard_path
+
 
         end
       end
