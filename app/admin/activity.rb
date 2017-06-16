@@ -110,7 +110,7 @@ form :title => 'Edicion Actividad'  do |f|
 
              f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
              f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
-             f.input :pfecha, :label => 'fecha de documento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :pfecha, :label => 'fecha ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :importe,:label => 'Importe ',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
@@ -154,9 +154,21 @@ form :title => 'Edicion Actividad'  do |f|
                     end
                   row :tipo
                   row :numero
-                  row :pfecha
-                  row :plan
-                  
+
+
+
+                  row "Fecha " do |activity|
+                     activity.pfecha.strftime("%d-%m-%Y")
+                   end
+
+                  row "Programada " do |activity|
+                    if activity.plan then
+                       activity.plan.strftime("%d-%m-%Y")
+                    else
+                       "s/d"
+                     end
+                   end
+
                   row :importe do |activity|
 
                      number_with_delimiter(activity.importe, delimiter: ",")
