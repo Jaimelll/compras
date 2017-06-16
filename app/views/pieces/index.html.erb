@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Pieces</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Descripcion</th>
+      <th>Estado</th>
+      <th>Moneda</th>
+      <th>Presupuestado</th>
+      <th>Referencial</th>
+      <th>Adjudicado</th>
+      <th>Postor</th>
+      <th>Phase</th>
+      <th>Admin user</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @pieces.each do |piece| %>
+      <tr>
+        <td><%= piece.codigo %></td>
+        <td><%= piece.descripcion %></td>
+        <td><%= piece.estado %></td>
+        <td><%= piece.moneda %></td>
+        <td><%= piece.presupuestado %></td>
+        <td><%= piece.referencial %></td>
+        <td><%= piece.adjudicado %></td>
+        <td><%= piece.postor %></td>
+        <td><%= piece.phase %></td>
+        <td><%= piece.admin_user %></td>
+        <td><%= link_to 'Show', piece %></td>
+        <td><%= link_to 'Edit', edit_piece_path(piece) %></td>
+        <td><%= link_to 'Destroy', piece, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Piece', new_piece_path %>

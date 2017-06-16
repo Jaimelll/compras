@@ -4,6 +4,10 @@ ActiveAdmin.register Phase do
   belongs_to :phase
   end
 
+  ActiveAdmin.register Piece do
+  belongs_to :phase
+  end
+
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
@@ -27,7 +31,9 @@ filter :expediente, :as => :select, :collection =>
 
 
 index :title => 'Lista de Procesos' do
-
+column("id") do |phase|
+   link_to "#{phase.id} ", admin_phase_pieces_path(phase)
+end
 column("nomenclatura") do |phase|
 
    link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)

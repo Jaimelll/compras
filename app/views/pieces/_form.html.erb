@@ -1,0 +1,67 @@
+<%= form_for(piece) do |f| %>
+  <% if piece.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(piece.errors.count, "error") %> prohibited this piece from being saved:</h2>
+
+      <ul>
+      <% piece.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :codigo %>
+    <%= f.text_field :codigo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :descripcion %>
+    <%= f.text_field :descripcion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :estado %>
+    <%= f.number_field :estado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :moneda %>
+    <%= f.number_field :moneda %>
+  </div>
+
+  <div class="field">
+    <%= f.label :presupuestado %>
+    <%= f.text_field :presupuestado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :referencial %>
+    <%= f.text_field :referencial %>
+  </div>
+
+  <div class="field">
+    <%= f.label :adjudicado %>
+    <%= f.text_field :adjudicado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :postor %>
+    <%= f.text_field :postor %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phase_id %>
+    <%= f.text_field :phase_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin_user_id %>
+    <%= f.text_field :admin_user_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

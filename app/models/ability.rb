@@ -12,7 +12,7 @@ class Ability
       when 3 #roy
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:read], [Item, Detail]
-          can [:read], [Phase,Activity]
+          can [:read], [Phase,Activity,Piece]
       when 10,5,16,18,19 #roy,asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], [Item, Detail]
@@ -32,7 +32,7 @@ class Ability
       when 13 #DPC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], Item
-        can [:create,:read,:update,:destroy],  [Detail,Phase,Activity]
+        can [:create,:read,:update,:destroy],  [Detail,Phase,Activity,Piece]
 
       when 4,6,8,9 #sectoristas
           can :read, ActiveAdmin::Page, :name =>"Dashboard"

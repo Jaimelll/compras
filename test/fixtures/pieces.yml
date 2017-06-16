@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  codigo: MyString
+  descripcion: MyString
+  estado: 1
+  moneda: 1
+  presupuestado: 1.5
+  referencial: 1.5
+  adjudicado: 1.5
+  postor: MyString
+  phase: one
+  admin_user: one
+
+two:
+  codigo: MyString
+  descripcion: MyString
+  estado: 1
+  moneda: 1
+  presupuestado: 1.5
+  referencial: 1.5
+  adjudicado: 1.5
+  postor: MyString
+  phase: two
+  admin_user: two

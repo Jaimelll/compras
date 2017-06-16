@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Codigo:</strong>
+  <%= @piece.codigo %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @piece.descripcion %>
+</p>
+
+<p>
+  <strong>Estado:</strong>
+  <%= @piece.estado %>
+</p>
+
+<p>
+  <strong>Moneda:</strong>
+  <%= @piece.moneda %>
+</p>
+
+<p>
+  <strong>Presupuestado:</strong>
+  <%= @piece.presupuestado %>
+</p>
+
+<p>
+  <strong>Referencial:</strong>
+  <%= @piece.referencial %>
+</p>
+
+<p>
+  <strong>Adjudicado:</strong>
+  <%= @piece.adjudicado %>
+</p>
+
+<p>
+  <strong>Postor:</strong>
+  <%= @piece.postor %>
+</p>
+
+<p>
+  <strong>Phase:</strong>
+  <%= @piece.phase %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @piece.admin_user %>
+</p>
+
+<%= link_to 'Edit', edit_piece_path(@piece) %> |
+<%= link_to 'Back', pieces_path %>

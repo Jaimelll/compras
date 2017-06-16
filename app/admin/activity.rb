@@ -138,7 +138,7 @@ form :title => 'Edicion Actividad'  do |f|
                          select('nomenclatura as dd').first.dd.capitalize
 
 
-                  row "Proceso" do |activity|
+                  row "Ir Lista Actividades Procesos" do |activity|
                     link_to "#{nn}", admin_phase_activities_path(activity.phase_id)
                   end
 
