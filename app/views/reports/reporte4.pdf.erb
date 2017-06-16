@@ -92,8 +92,10 @@
       <%  if @vopc==2 then %>
 
           <% @vbpro=Activity.where(actividad:20,phase_id:activity.id.to_s).sum(:importe)%>
+
         <% if @vbpro >0 then %>
-        <td ALIGN=right><%= @vbpro %></td>
+      
+        <td ALIGN=right><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></td>
              <% else %>
         <td>  </td>
               <% end %>
