@@ -5,15 +5,18 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3>Periodo:<%=   @lista.titleize %> </h3>
+<h3>Periodo:<%=   @vper %> </h3>
 <h4><%= @titproc %></h4>
-</head>
-<% if @items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo}.count>0 then %>
 
-<%  @vmod1n=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==1}.count %>
-<%  @vmod2n=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==1 and f["modalidad"]==2}.count %>
-<%  @vmod1i=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==1}.count %>
-<%  @vmod2i=@items.select {|f| f["acti"]== @numproc and f["exped2"]==@vperiodo and f["tipo"]==2 and f["modalidad"]==2}.count %>
+</head>
+<% if @items.count>0 then %>
+
+<%  @vmod1n=@items.where(tipo:1,modalidad:1).count %>
+<%  @vmod2n=@items.where(tipo:1,modalidad:2).count %>
+<%  @vmod1i=@items.where(tipo:2,modalidad:1).count %>
+<%  @vmod2i=@items.where(tipo:2,modalidad:2).count %>
+
+
 
 
 
@@ -34,36 +37,34 @@
 
     <%  @conta=0 %>
 
-    <% @items.select {|f| f["acti"]==@numproc and f["exped2"]==@vperiodo}.
-    sort_by { |k| [k["tipo"], k["modalidad"], k["exped"], k["obac"], k["pac"]] }.
-    each do |variable| %>
+    <% @items.each do |variable| %>
 
 
-    <% @var= variable["id"] %>
+
         <tr>
             <tbody>
       <% @conta=@conta+1 %>
 
 
 
-      <%  if @vmod1n>0 and @conta==1 and  variable["tipo"]==1 and  variable["modalidad"]==1 then %>
+      <%  if @vmod1n>0 and @conta==1 and  variable.tipo==1 and  variable.modalidad==1 then %>
 
      <tr> <td> <h4>NACIONALES CORPORATIVOS:</h4> </td> </tr>
 
       <% end %>
 
-      <%  if @vmod2n>0 and @conta==@vmod1n+1 and  variable["tipo"]==1   and  variable["modalidad"]==2 then %>
+      <%  if @vmod2n>0 and @conta==@vmod1n+1 and  variable.tipo==1   and  variable.modalidad==2 then %>
 
      <tr> <td> <h4>NACIONALES POR ENCARGO:</h4> </td> </tr>
 
       <% end %>
-      <%  if @vmod1i>0 and @conta==@vmod1n+@vmod2n+1 and  variable["tipo"]==2  and  variable["modalidad"]==1 then %>
+      <%  if @vmod1i>0 and @conta==@vmod1n+@vmod2n+1 and  variable.==2  and  variable.modalidad==1 then %>
 
      <tr> <td> <h4>INTERNACIONALES CORPORATIVOS:</h4> </td> </tr>
 
       <% end %>
 
-      <%  if @vmod2i>0 and @conta==@vmod1n+@vmod2n+@vmod1i+1 and  variable["tipo"]==2   and  variable["modalidad"]==2 then %>
+      <%  if @vmod2i>0 and @conta==@vmod1n+@vmod2n+@vmod1i+1 and  variable.tipo==2  and variable.modalidad==2 then %>
 
      <tr> <td> <h4>INTERNACIONALES POR ENCARGO:</h4> </td> </tr>
 
@@ -73,44 +74,35 @@
 
 
         <td VALIGN=top ALIGN=center><h5><%= @conta.to_s+".-" %></h5></td>
-              <%@vexp= @vite.where(id:@var).
-              select('exped as dd').first.dd %>
-            <% if @vexp>0 then %>
 
-         <td VALIGN=top ALIGN=center><h5><%= Formula.where(product_id:16,orden:@vexp.to_i).select('nombre as dd').first.dd %></h5></td>
+            <% if variable.exped>0 then %>
+
+         <td VALIGN=top ALIGN=center><h5><%= Formula.where(product_id:16,orden:variable.exped).select('nombre as dd').first.dd %></h5></td>
              <% else %>
         <td VALIGN=top ALIGN=center><h5><%= " s/d"   %></h5></td>
              <% end %>
 
 
-        <td  VALIGN=top ALIGN=center><h5><%= @vite.where(id:@var).
-         select('pac as dd').first.dd %></h5></td>
-
-
-         <%@vobac= @vite.where(id:@var).
-          select('obac as dd').first.dd%>
-
-
-        <td  VALIGN=top ALIGN=center><h5><%= Formula.where(product_id:1,orden:@vobac).select('nombre as dd').first.dd %></h5></td>
-
-
-         <%@vlist= @vite.where(id:@var).
-          select('lista as dd').first.dd%>
-        <td  VALIGN=top ALIGN=center><h5><%= Formula.where(product_id:3,orden:@vlist).select('nombre as dd').first.dd %></h5></td>
-
-
-        <%@vdesc= @vite.where(id:@var).
-         select('descripcion as dd').first.dd%>
+        <td  VALIGN=top ALIGN=center><h5><%= variable.pac %></h5></td>
 
 
 
-        <td  VALIGN=top ALIGN=center ><h5><%= @vdesc.capitalize %></h5>
+        <td  VALIGN=top ALIGN=center><h5><%= Formula.where(product_id:1,orden:variable.obac).select('nombre as dd').first.dd %></h5></td>
+
+
+
+        <td  VALIGN=top ALIGN=center><h5><%= Formula.where(product_id:3,orden:variable.lista).select('nombre as dd').first.dd %></h5></td>
+
+
+
+
+        <td  VALIGN=top ALIGN=center ><h5><%= variable.descripcion.capitalize %></h5>
 
 
 
 
 
-      <% if @vdetalle.where(item_id:@var).where("details.actividad=18 or
+      <% if @vdetalle.where(item_id:variable.id).where("details.actividad=18 or
         details.actividad=20 or details.actividad=56 or
         details.actividad=13 or details.actividad=58 or
         details.actividad=61 or details.actividad=62 or
@@ -130,7 +122,7 @@
         <tbody>
 
 
-          <% @vdetalle.where(item_id:@var).where("details.actividad=18 or
+          <% @vdetalle.where(item_id:variable.id).where("details.actividad=18 or
                details.actividad=20 or details.actividad=56 or
                 details.actividad=13 or details.actividad=58 or
                 details.actividad=61 or details.actividad=62 or
@@ -173,10 +165,9 @@
 
 
     </td>
-    <%@vval= @vite.where(id:@var).
-     select('certificado as dd').first.dd%>
 
-   <td  VALIGN=top ALIGN=right><h5><%= number_with_delimiter(@vval.to_i, delimiter: ",") %></h5></td>
+
+   <td  VALIGN=top ALIGN=right><h5><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></h5></td>
     </tr>
 
 

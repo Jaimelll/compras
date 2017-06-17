@@ -25,7 +25,7 @@ when 3
  when 4
    @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
    @items= Item.where(ejecucion:4,exped2:params[:param2])
-       .where("modalidad<3").order('tipo,modalidad,exped,obac,pac')
+        .order('tipo,modalidad,exped,obac,pac')
   when 5
        @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
        @items= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
@@ -186,35 +186,17 @@ def comment4
 
 
 def comment7
+  @vpacv=params[:param5]
   @titproc=params[:param4].to_s
-  @numproc=params[:param3].to_i
-  @lista=Formula.where(product_id:11,orden:params[:param2]).
-  select('nombre as dd').first.dd
-  @vperiodo=Formula.where(product_id:11,orden:params[:param2]).
-  select('orden as dd').first.dd
-  @vperiodo2=Formula.where(product_id:11,orden:params[:param2]).
-  select('nombre as dd').first.dd
-#@vdetalle=Detail.order('pfecha')
+  #@numproc=params[:param3].to_i
+  @vper=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+
 @vdetalle= Detail.where(actividad: Formula
 .where(product_id:12,cantidad:params[:param3]).select('orden'))
 .order('pfecha')
 
-  @vite=Item.all
-  @items=ActiveRecord::Base.connection.execute("SELECT items.exped2,items.id,items.obac,
-  items.pac,items.certificado,items.exped,
-    items.tipo,items.modalidad,
-    MAX(formulas.cantidad) as acti
-   FROM public.items, public.details,
-  public.formulas WHERE items.id = details.item_id AND
-  details.actividad = formulas.orden AND
-  formulas.product_id = 12 AND items.ejecucion=4 and
-   items.modalidad<3  AND exped2=(SELECT max(orden) FROM  formulas where cantidad=1
-    GROUP BY product_id HAVING product_id=11) AND ((details.item_id,details.pfecha)
-  IN(SELECT   details.item_id,   MAX(details.pfecha)
- FROM   public.details
- GROUP BY   details.item_id)) GROUP BY
- items.exped2,details.item_id, items.id,items.obac,items.pac,items.certificado,items.exped,
-items.tipo,items.modalidad").to_a
+
+  @items=Item.where(id:@vpacv).order('tipo,modalidad,exped,obac,pac')
 
 respond_to do |format|
 
