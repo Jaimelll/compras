@@ -957,7 +957,7 @@ if @alabels.length <=29 and @alabels.length>0 then
         @activities=Phase.joins(:activities).where("activities.actividad=19 " )
 
          column("Avance") do
-            "Procesos"
+            "Procesos/(PACs)"
          end
          column("Historial") do
 
