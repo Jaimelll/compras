@@ -34,14 +34,14 @@ column("Actividad", :sortable => :phase_id) do |activity|
 
                     link_to "#{n1} ",  admin_phase_activity_path(params[:phase_id],activity)
 end
-column("pfecha") do |activity|
+column("Fecha Modificada") do |activity|
   if activity.pfecha then
     activity.pfecha.strftime("%d-%m-%Y")
   else
     "s/d"
   end
 end
-column("plan") do |activity|
+column("Fecha Programada") do |activity|
   if activity.plan then
      activity.plan.strftime("%d-%m-%Y")
   else
@@ -110,7 +110,7 @@ form :title => 'Edicion Actividad'  do |f|
 
              f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
              f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
-             f.input :pfecha, :label => 'fecha ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :pfecha, :label => 'fecha modificada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :importe,:label => 'Importe ',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
@@ -157,11 +157,11 @@ form :title => 'Edicion Actividad'  do |f|
 
 
 
-                  row "Fecha " do |activity|
+                  row "Fecha Modificada" do |activity|
                      activity.pfecha.strftime("%d-%m-%Y")
                    end
 
-                  row "Programada " do |activity|
+                  row "Fecha Programada " do |activity|
                     if activity.plan then
                        activity.plan.strftime("%d-%m-%Y")
                     else
