@@ -34,10 +34,10 @@ column("presupuestado") do |piece|
  number_with_delimiter(piece.presupuestado, delimiter: ",")
 end
 column("referencial") do |piece|
- number_with_delimiter(piece.presupuestado, delimiter: ",")
+ number_with_delimiter(piece.referencial, delimiter: ",")
 end
 column("adjudicado") do |piece|
- number_with_delimiter(piece.presupuestado, delimiter: ",")
+ number_with_delimiter(piece.adjudicado, delimiter: ",")
 end
 column("estado") do |activity|
   if activity.estado and activity.estado>0 then
