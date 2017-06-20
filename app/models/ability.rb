@@ -13,13 +13,13 @@ class Ability
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:read], [Item, Detail]
           can [:read], [Phase,Activity,Piece]
-      when 10,5,16,18,19,20 #roy,asesor,ballesteros
+      when 10,5,16,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], [Item, Detail]
     #   when 5 # ballesteros
     #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
     #    can [:read], [Item, Detail]
-  when 15,17 #roy,asesor,ballesteros
+  when 15,17,20 #administrativo,alfaro
     can :read, ActiveAdmin::Page, :name =>"Dashboard"
     can [:read], [Item, Detail]
 #   when 5 # ballesteros
