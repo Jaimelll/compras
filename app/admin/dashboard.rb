@@ -255,7 +255,7 @@ case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.
 
 
 
-
+  @vlog=false
 
 
 
@@ -272,14 +272,127 @@ if detail.pfecha and detail.actividad  then
 @vproc=Formula.where(product_id:12,orden:detail.actividad).
                      select('cantidad as dd').first.dd
 #proceso
-@vprord=Formula.where(product_id:12,orden:detail.actividad).
-            select('orden as dd').first.dd
+@vprord=detail.actividad
+#actividad
+@nconta2=0
+@ulvproc2=0
+
+
+
+#inicio de phase if 280 al 392*************************************************************
+if Phase.where(expediente:item.exped).count>0 and item.exped>0 then
+
+
+case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+   when 1
+
+
+        @phase1=Phase.find_by(expediente:item.exped).activities
+          .where("activities.pfecha>='2015/01/01' and
+           activities.pfecha<='2015/12/31' and activities.pfecha<=current_date").
+          order('activities.pfecha DESC,activities.id DESC')
+
+
+    when 2
+
+          @phase1=Phase.find_by(expediente:item.exped).activities
+              .where("activities.pfecha>='2016/01/01' and
+               activities.pfecha<='2016/12/31' and activities.pfecha<=current_date").
+              order('activities.pfecha DESC,activities.id DESC')
+
+
+
+     when 3
+
+
+
+        @phase1=Phase.find_by(expediente:item.exped).activities
+         .where("activities.pfecha>='2017/01/01' and activities.pfecha<=current_date")
+         .order('activities.pfecha DESC,activities.id DESC')
+
+  end #termina case
+
+
+#inicia cadena
+
+@phase1.each do |phase|
+
+if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
+
+@vproc2=Formula.where(product_id:12,orden:phase.actividad).
+                     select('cantidad as dd').first.dd
+#proceso
+@vprord2=phase.actividad
 #actividad
 
+@vdetfec2=phase.pfecha
 
-if  @nconta1==1 then
+
+  @nconta2=@nconta2+1
+
+
+
+
+
+
+if  @nconta2==1 and @nconta1==1  then
       @vlog=false
-   if @vproc==@iproce or @iproce==100 then
+      @ulvproc2=@vproc2  #guarda el primer proceso
+   if (@vproc2==@iproce or @iproce==100)  then
+    @vlog=true
+   end
+end
+
+
+if @vlog  then
+# empieza @vlog
+
+
+   unless @vprord2==200 or @vprord2==300 or ( @vprord2==8 and item.modalidad==3)
+     if  @uproc>=@vproc2 then
+
+            @vproceso[@vproc2]=@vproceso[@vproc2]+
+            ( @vfec1-@vdetfec2.to_time).to_i/86400
+
+            if @nconta1==1 then
+               @vproceso[@vproc2]=@vproceso[@vproc2]+2
+            end
+
+            @uproc=@vproc2
+      else
+            @vproceso[@uproc]=@vproceso[@uproc]+
+            ( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+       end
+    else
+       @corta=( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+    end #de unless
+
+
+
+
+  @vfec1=@vdetfec2.to_time
+
+end # termina @vlog
+
+
+end #de if de phase mayor
+
+end  #terminar ecah de phase
+
+end #terminar el if de  la cadena phase
+
+
+
+
+
+# fin phase del 280 al 392************************************************************
+if  @nconta1==1 and   @vlog==false then
+      @vlog=false
+   if (@vproc==@iproce or @iproce==100) and  @vproc>@ulvproc2 then
     @vlog=true
    end
 end

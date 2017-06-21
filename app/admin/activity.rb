@@ -34,14 +34,14 @@ column("Actividad", :sortable => :phase_id) do |activity|
 
                     link_to "#{n1} ",  admin_phase_activity_path(params[:phase_id],activity)
 end
-column("Fecha Modificada") do |activity|
+column("Fecha Modificada", :sortable => :pfecha) do |activity|
   if activity.pfecha then
     activity.pfecha.strftime("%d-%m-%Y")
   else
     "s/d"
   end
 end
-column("Fecha Programada") do |activity|
+column("Fecha Programada", :sortable => :plan) do |activity|
   if activity.plan then
      activity.plan.strftime("%d-%m-%Y")
   else
