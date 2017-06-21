@@ -90,7 +90,7 @@ filter :certificado
 
 
 filter :exped, label:'Expediente', :as => :select, :collection =>
-     Formula.where(product_id:16).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+     Formula.where(product_id:16).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :periodo , :as => :select, :collection =>
      Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :modalidad , :as => :select, :collection =>

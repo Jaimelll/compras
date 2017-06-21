@@ -833,7 +833,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                         @vxper[@vdir]=@vxper[@vdir]+ 1
                                         @vpresu[@vdir]=@vpresu[@vdir]+ ite.certificado
                                          case @vdir
-                                           when 1
+                                         when 1,2
                                              @vpac1.push(ite.id)
                                            when 2
                                              @vpac2.push(ite.id)
@@ -857,27 +857,27 @@ if @alabels.length <=29 and @alabels.length>0 then
                        column("Avance") do |formula|
                                "PAC"
                        end
-                       column("S/EXP") do |formula|
+                       column("GEX") do |formula|
 
-                         @titproc1="PAC SIN EXPEDIENTE DE INICIO"
+                         @titproc1="GESTION DE EXPEDIENTES"
                          @vpas=1
-                         @dpcl=   @vxper[0]+ @vxper[1]
+                         @dpcl=   @vxper[0]+ @vxper[1]+ @vxper[2]
                                link_to "#{@dpcl} ",
                                 reports_comment7_path(format: :pdf,
                                 :param3=> @vpas,
                                 :param4=> @titproc1,:param5=> @vpac1)
                         end
 
-                       column("C/EXP") do |formula|
-                        @dpc=  formula.orden
-                        @vpas=2
-                        @titproc1="PAC CON EXPEDIENTE DE INICIO"
-                        @dpcl=      @vxper[2]
-                             link_to "#{@dpcl} ",
-                             reports_comment7_path(format: :pdf,
-                             :param3=> @vpas,
-                             :param4=> @titproc1,:param5=> @vpac2)
-                        end
+                  #     column("C/EXP") do |formula|
+                  #      @dpc=  formula.orden
+                  #      @vpas=2
+                  #      @titproc1="PAC CON EXPEDIENTE DE INICIO"
+                  #      @dpcl=      @vxper[2]
+                  #           link_to "#{@dpcl} ",
+                  #           reports_comment7_path(format: :pdf,
+                    #         :param3=> @vpas,
+                    #         :param4=> @titproc1,:param5=> @vpac2)
+                    #    end
 
                        column("DC") do |formula|
 

@@ -27,7 +27,7 @@ menu priority: 5, label: "Procesos"
 filter :nomenclatura
 filter :descripcion
 filter :expediente, :as => :select, :collection =>
-     Formula.where(product_id:16).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+     Formula.where(product_id:16).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
 
 
 index :title => 'Lista de Procesos' do
