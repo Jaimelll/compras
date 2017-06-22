@@ -99,6 +99,32 @@
         <td  VALIGN=top ALIGN=center ><h5><%= variable.descripcion.capitalize %></h5>
 
 
+  <% if Phase.where(expediente:variable.exped).count>0 then %>
+
+          <% @vdetact2=Phase.find_by(expediente:variable.exped).activities
+                    .order('activities.pfecha ')
+          .where("activities.actividad=18 or
+            activities.actividad=20 or activities.actividad=56 or
+            activities.actividad=13 or activities.actividad=58 or
+            activities.actividad=61 or activities.actividad=62 or
+            activities.actividad=63 or activities.actividad=64 or
+            activities.actividad=65 or activities.actividad=66 or
+            activities.actividad=300")%>
+
+              <% if @vdetact2.count>0 %>
+                   <% @vdetact21=1 %>
+              <% else %>
+                  <% @vdetact21=0 %>
+              <% end %>
+
+ <% else %>
+
+             <% @vdetact21=0 %>
+
+ <% end %>
+
+
+
 
 
 
@@ -109,6 +135,15 @@
         details.actividad=63 or details.actividad=64 or
         details.actividad=65 or details.actividad=66 or
         details.actividad=300").count>0 then %>
+
+        <% @vdetact= @vdetalle.where(item_id:variable.id).where("details.actividad=18 or
+          details.actividad=20 or details.actividad=56 or
+          details.actividad=13 or details.actividad=58 or
+          details.actividad=61 or details.actividad=62 or
+          details.actividad=63 or details.actividad=64 or
+          details.actividad=65 or details.actividad=66 or
+          details.actividad=300")%>
+
       <table width="800" border="1">
 
           <tr>
@@ -122,14 +157,7 @@
         <tbody>
 
 
-          <% @vdetalle.where(item_id:variable.id).where("details.actividad=18 or
-               details.actividad=20 or details.actividad=56 or
-                details.actividad=13 or details.actividad=58 or
-                details.actividad=61 or details.actividad=62 or
-                details.actividad=63 or details.actividad=64 or
-                details.actividad=65 or details.actividad=66 or
-                details.actividad=300").
-          each do |deta| %>
+          <% @vdetact.each do |deta| %>
 
 
        <tr>
@@ -149,9 +177,38 @@
                <td ALIGN=center><%= deta.obs.capitalize %></td>
 
        </tr>
+        <% end %>
+ <% if @vdetact21=1 then %>
+       <% @vdetact2.each do |deta2| %>
+
+
+    <tr>
+
+
+
+
+            <td ALIGN=center colspan="2"><%= deta2.pfecha.strftime("%d-%m") %></td>
+              <%  if deta2.plan then %>
+           <td ALIGN=center colspan="2"><%= deta2.plan.strftime("%d-%m") %></td>
+              <%  else %>
+            <td ALIGN=center colspan="2">s/d</td>
+               <%  end %>
+
+            <td ALIGN=center><%=Formula.where(product_id:12,orden:deta2.actividad).
+                        select('descripcion as dd').first.dd.capitalize  %></td>
+            <td ALIGN=center><%= deta2.obs.capitalize %></td>
+
+    </tr>
+
+
+
+
+
+<% end %>
 
 
        <% end %>
+
 
      </tbody>
 

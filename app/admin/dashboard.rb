@@ -937,9 +937,29 @@ if @alabels.length <=29 and @alabels.length>0 then
                             @vpac6=[]
                             @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3")
                             @itep.each do |ite|
-                                      if @deta2.where(item_id:ite.id).count>0 then
-                                        @vactiv=@deta2.where(item_id:ite.id).
-                                           select('actividad as dd').first.dd     #linea 209
+                                      if Detail
+                                        .order('pfecha DESC,id DESC')
+                                        .where(item_id:ite.id).count>0 then
+                                        @vactiv= Detail
+                                          .order('pfecha DESC,id DESC')
+                                         .where(item_id:ite.id).
+                                           select('actividad as dd').first.dd
+
+
+                                          if  Phase.where(expediente:ite.exped).count>0 and Phase.find_by(expediente:ite.exped).activities.count>0 then
+                                           @vactiv2=Phase.find_by(expediente:ite.exped).activities
+                                                     .order('activities.pfecha DESC,activities.id DESC').
+                                                     select('activities.actividad as dd').first.dd
+                                                if    @vactiv2>  @vactiv then
+                                                   @vactiv=@vactiv2
+                                                end
+                                          end
+
+
+
+
+
+                                              #linea 209
                                       @vdir=Formula.where(product_id:12,orden:@vactiv).
                                             select('cantidad as dd').first.dd
                         #                @vdir=2
@@ -965,7 +985,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                          @vxper[0]=@vxper[0]+ 1
                                          @vpresu[0]=@vpresu[0]+ ite.certificado
                                          @vpac1.push(ite.id)
-                                      end
+                                      end# de if 1
                                end
                        column("Avance") do |formula|
                                "PAC"
