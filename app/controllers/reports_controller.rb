@@ -146,7 +146,7 @@ def comment4
   @vopc=params[:param1].to_i
   case @vopc
    when 1
-     @tit1="Programa de Convocatorias"
+     @tit1="Calendario de Presentacion de Propuestas"
 
      @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha>=current_date" )
        .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
@@ -154,7 +154,7 @@ def comment4
       phases.moneda as moneda,phases.valor as valor ")
        .order("pfecha")
      when 2
-       @tit1="Historial de Convocatorias"
+       @tit1="Historial de Presentacion de Propuestas"
 
        @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha<current_date" )
          .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
@@ -162,7 +162,7 @@ def comment4
         phases.moneda as moneda,phases.valor as valor ")
          .order("pfecha")
        when 3
-         @tit1="Relacion de Convocatorias"
+         @tit1="Relacion de Procesos "
 
          @activities=Phase.joins(:activities).where("activities.actividad=19 " )
            .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
