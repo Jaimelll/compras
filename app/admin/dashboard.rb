@@ -1107,7 +1107,7 @@ if @alabels.length <=29 and @alabels.length>0 then
             link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
 
-         column("Programados") do
+         column("Procesos en Curso") do
            @conta=0
            @activities.where("pfecha>=current_date").each do |activ|
              if activ.expediente>0 then
