@@ -43,7 +43,7 @@
 
 
 
-        <td><%= @conta.to_s+".-" %></td>
+        <td VALIGN=top ALIGN=center><%= @conta.to_s+".-" %></td>
 
 
 
@@ -52,9 +52,9 @@
 
 <%  @vaconv=Activity.where(actividad:19,phase_id:activity.id.to_s)
              .select('pfecha as dd').first.dd%>
-             <td ALIGN=center ><%=  @vaconv.strftime("%d-%m") %></td>
+             <td VALIGN=top ALIGN=center ><%=  @vaconv.strftime("%d-%m") %></td>
              <%  else %>
-             <td ALIGN=center >s/d</td>
+             <td VALIGN=top ALIGN=center >s/d</td>
               <%  end %>
 
 
@@ -64,14 +64,14 @@
 
 
         <%  if activity.pfecha then %>
-        <td ALIGN=center ><%= activity.pfecha.strftime("%d-%m") %></td>
+        <td VALIGN=top ALIGN=center ><%= activity.pfecha.strftime("%d-%m") %></td>
         <%  else %>
-        <td ALIGN=center >s/d</td>
+        <td VALIGN=top ALIGN=center >s/d</td>
          <%  end %>
 
          <%  @an=activity.nomenclatura.length %>
 
-        <td><h5><%= activity.nomenclatura[0,@an] %></h5></td>
+        <td VALIGN=top ALIGN=center><%= activity.nomenclatura[0,@an] %></td>
 
         <% @vobac=" " %>
         <% if activity.expediente>0 then %>
@@ -80,23 +80,92 @@
        <% @vobac=@vobac+"-"+ @sobac %>
        <% end %>
        <% end %>
-       <td><h5><%= @vobac %></h5></td>
+       <td VALIGN=top ALIGN=center><%= @vobac %></td>
 
 
 
 
 
 
-        <td><%= activity.descripcion.underscore.capitalize %></td>
+        <td VALIGN=top ALIGN=center><%= activity.descripcion.underscore.capitalize %>
 
-        <% if activity.moneda>0 and activity.moneda then %>
-      <td ALIGN=right><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
-      <% else %>
-      <td ALIGN=right><%= "s/d "   %></td>
+
+
+
+
+<% if Piece.where(phase:activity.id.to_s).count>0 then %>
+<table width="800" border="1">
+
+    <tr>
+
+      <th >Item </th>
+      <th >Estado</th>
+
+   </tr>
+
+  <tbody>
+
+
+    <% Piece.where(phase:activity.id.to_s).each do |pite| %>
+
+
+ <tr>
+
+
+
+
+
+
+
+         <td VALIGN=top ALIGN=left><%= pite.descripcion %></td>
+           <% if pite.estado and pite.estado>0 then %>
+
+            <td VALIGN=top ALIGN=center><%= Formula.where(product_id:17, orden:pite.estado).
+             select('nombre as dd').first.dd %></td>
+
+
+       <% else %>
+
+
+          <td VALIGN=top ALIGN=center> s/d </td>
       <% end %>
 
 
-        <td ALIGN=right><%= number_with_delimiter(activity.valor.to_i, delimiter: ",") %></td>
+
+
+
+ </tr>
+
+
+
+  <% end %>
+</tbody>
+
+ </table>
+
+<% end %>
+
+
+
+
+
+
+
+</td>
+
+
+
+
+
+
+        <% if activity.moneda>0 and activity.moneda then %>
+      <td VALIGN=top   ALIGN=right><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
+      <% else %>
+      <td VALIGN=top ALIGN=right><%= "s/d "   %></td>
+      <% end %>
+
+
+        <td VALIGN=top  ALIGN=right><%= number_with_delimiter(activity.valor.to_i, delimiter: ",") %></td>
 
 
 
@@ -106,7 +175,7 @@
 
         <% if @vbpro >0 then %>
 
-        <td ALIGN=right><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></td>
+        <td VALIGN=top  ALIGN=right><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></td>
              <% else %>
         <td>  </td>
               <% end %>

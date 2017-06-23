@@ -139,9 +139,9 @@ form :title => 'Edicion Item'  do |f|
 
                         end
                         row :estado do |detail|
-                            if detail.moneda and detail.moneda>0 then
+                            if detail.estado and detail.estado>0 then
 
-                               Formula.where(product_id:17, orden:detail.moneda).
+                               Formula.where(product_id:17, orden:detail.estado).
                                 select('nombre as dd').first.dd
 
                               else
