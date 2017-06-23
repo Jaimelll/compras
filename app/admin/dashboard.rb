@@ -1092,7 +1092,7 @@ if @alabels.length <=29 and @alabels.length>0 then
          column("Avance") do
             "Procesos/(PACs)"
          end
-         column("Procesos en Curso") do
+         column("Procesos en Adjudicados") do
 
            @conta=0
            @activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
