@@ -16,8 +16,8 @@
     <tr>
       <th>N°</th>
 
-       <th>Fecha</th>
-
+       <th>Fecha Conv</th>
+       <th>Fecha BP</th>
        <th>Nomenclatura</th>
        <th>OBAC</th>
        <th>Descripcion</th>
@@ -45,6 +45,17 @@
 
         <td><%= @conta.to_s+".-" %></td>
 
+
+
+  <% if Activity.where(actividad:19,phase_id:activity.id.to_s)
+    .count>0 then %>
+
+<%  @vaconv=Activity.where(actividad:19,phase_id:activity.id.to_s)
+             .select('pfecha as dd').first.dd%>
+             <td ALIGN=center ><%=  @vaconv.strftime("%d-%m") %></td>
+             <%  else %>
+             <td ALIGN=center >s/d</td>
+              <%  end %>
 
 
 

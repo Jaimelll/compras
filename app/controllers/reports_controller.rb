@@ -149,15 +149,16 @@ def comment4
      @tit1="Calendario de Procesos Convocados"
      "Procesos Adjudicados con Buena Pro Consentida"
 
-     @activities=Phase.joins(:activities).where("activities.actividad=20 and activities.pfecha>=current_date " )
-       .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
+     @activities=Phase.joins(:activities).where("activities.actividad=20
+     and (importe IS  NULL or importe=0)" )
+       .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
       phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
       phases.moneda as moneda,phases.valor as valor ")
        .order("pfecha")
      when 2
        @tit1= "Procesos Adjudicados con Buena Pro Consentida"
 
-       @activities=Phase.joins(:activities).where("activities.actividad=20 and activities.pfecha<current_date
+       @activities=Phase.joins(:activities).where("activities.actividad=20
        and importe IS NOT NULL and importe>0" )
          .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
         phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
@@ -166,7 +167,7 @@ def comment4
        when 3
          @tit1="Relacion de Procesos "
 
-         @activities=Phase.joins(:activities).where("activities.actividad=19 " )
+         @activities=Phase.joins(:activities).where("activities.actividad=20 " )
            .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
           phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
           phases.moneda as moneda,phases.valor as valor ")
