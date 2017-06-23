@@ -148,15 +148,16 @@ def comment4
    when 1
      @tit1="Calendario de Presentacion de Propuestas"
 
-     @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha>=current_date" )
+     @activities=Phase.joins(:activities).where("activities.actividad=20 and activities.pfecha>=current_date " )
        .select(" activities.pfecha as pfecha,phases.expediente  as expediente,
       phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
       phases.moneda as moneda,phases.valor as valor ")
        .order("pfecha")
      when 2
-       @tit1="Historial de Presentacion de Propuestas"
+       @tit1="Calendario de Convocatorias con Buena Pro Consentida"
 
-       @activities=Phase.joins(:activities).where("activities.actividad=19 and activities.pfecha<current_date" )
+       @activities=Phase.joins(:activities).where("activities.actividad=20 and activities.pfecha<current_date
+       and importe IS NOT NULL and importe>0" )
          .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
         phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
         phases.moneda as moneda,phases.valor as valor ")

@@ -1087,22 +1087,22 @@ if @alabels.length <=29 and @alabels.length>0 then
 
   #  end
       table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
-        @activities=Phase.joins(:activities).where("activities.actividad=19 " )
+        @activities=Phase.joins(:activities).where("activities.actividad=20" )
 
          column("Avance") do
             "Procesos/(PACs)"
          end
-         column("Historial") do
+         column("Procesos en Curso") do
 
            @conta=0
-           @activities.where("pfecha<current_date").each do |activ|
+           @activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
                 @conta=  @conta+1
               end #item
             end #if
           end #activ
-         @le=@activities.where("pfecha<current_date").count.to_s
+         @le=@activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").count.to_s
 
             link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
