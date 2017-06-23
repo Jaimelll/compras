@@ -147,7 +147,7 @@ def comment4
   @vopc=params[:param1].to_i
   case @vopc
    when 1
-     @tit1="Calendario de Procesos Convocados"
+     @tit1="Calendario de Procesos Convocados y Buena Pro (BP)"
      "Procesos Adjudicados con Buena Pro Consentida"
 
      @activities=Phase.joins(:activities).where("activities.actividad=20
@@ -157,7 +157,7 @@ def comment4
       phases.moneda as moneda,phases.valor as valor ")
        .order("pfecha")
      when 2
-       @tit1= "Procesos Adjudicados con Buena Pro Consentida"
+       @tit1= "Procesos Adjudicados y Desiertos"
 
        @activities=Phase.joins(:activities).where("activities.actividad=20
        and importe IS NOT NULL and importe>0" )

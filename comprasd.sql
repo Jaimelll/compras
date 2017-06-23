@@ -1,0 +1,5216 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.5.6
+-- Dumped by pg_dump version 9.5.6
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE active_admin_comments (
+    id integer NOT NULL,
+    namespace character varying,
+    body text,
+    resource_id character varying NOT NULL,
+    resource_type character varying NOT NULL,
+    author_type character varying,
+    author_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE active_admin_comments OWNER TO postgres;
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE active_admin_comments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE active_admin_comments_id_seq OWNER TO postgres;
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
+
+
+--
+-- Name: activities; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE activities (
+    id integer NOT NULL,
+    actividad integer,
+    tipo character varying,
+    numero character varying,
+    pfecha date,
+    plan date,
+    moneda integer,
+    importe double precision,
+    obs character varying,
+    phase_id integer,
+    admin_user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE activities OWNER TO postgres;
+
+--
+-- Name: activities_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE activities_id_seq OWNER TO postgres;
+
+--
+-- Name: activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE activities_id_seq OWNED BY activities.id;
+
+
+--
+-- Name: admin_users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE admin_users (
+    id integer NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip character varying,
+    last_sign_in_ip character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE admin_users OWNER TO postgres;
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE admin_users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE admin_users_id_seq OWNER TO postgres;
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
+
+
+--
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE ar_internal_metadata (
+    key character varying NOT NULL,
+    value character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE ar_internal_metadata OWNER TO postgres;
+
+--
+-- Name: details; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE details (
+    id integer NOT NULL,
+    actividad integer,
+    tipo character varying,
+    numero character varying,
+    pfecha date,
+    importe double precision,
+    obs character varying,
+    admin_user_id integer,
+    item_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    moneda integer,
+    plan date
+);
+
+
+ALTER TABLE details OWNER TO postgres;
+
+--
+-- Name: details_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE details_id_seq OWNER TO postgres;
+
+--
+-- Name: details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE details_id_seq OWNED BY details.id;
+
+
+--
+-- Name: formulas; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE formulas (
+    id integer NOT NULL,
+    nombre character varying,
+    descripcion character varying,
+    orden integer,
+    obs character varying,
+    cantidad integer,
+    admin_user_id integer,
+    product_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    numero integer
+);
+
+
+ALTER TABLE formulas OWNER TO postgres;
+
+--
+-- Name: formulas_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE formulas_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE formulas_id_seq OWNER TO postgres;
+
+--
+-- Name: formulas_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE formulas_id_seq OWNED BY formulas.id;
+
+
+--
+-- Name: items; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE items (
+    id integer NOT NULL,
+    pac character varying,
+    obac integer,
+    lista integer,
+    ejecucion integer,
+    modalidad integer,
+    dependencia integer,
+    tipo integer,
+    descripcion character varying,
+    cantidad integer,
+    certificado double precision,
+    fuente integer,
+    admin_user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    rubro integer,
+    seleccion integer,
+    mesconvoca date,
+    cuadrante integer,
+    periodo integer,
+    expediente character varying,
+    observacion character varying,
+    exped integer DEFAULT 0,
+    exped2 integer
+);
+
+
+ALTER TABLE items OWNER TO postgres;
+
+--
+-- Name: items_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE items_id_seq OWNER TO postgres;
+
+--
+-- Name: items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE items_id_seq OWNED BY items.id;
+
+
+--
+-- Name: phases; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE phases (
+    id integer NOT NULL,
+    nomenclatura character varying,
+    descripcion character varying,
+    moneda integer,
+    valor double precision,
+    admin_user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    expediente integer
+);
+
+
+ALTER TABLE phases OWNER TO postgres;
+
+--
+-- Name: phases_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE phases_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE phases_id_seq OWNER TO postgres;
+
+--
+-- Name: phases_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE phases_id_seq OWNED BY phases.id;
+
+
+--
+-- Name: pieces; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE pieces (
+    id integer NOT NULL,
+    codigo character varying,
+    descripcion character varying,
+    estado integer,
+    moneda integer,
+    presupuestado double precision,
+    referencial double precision,
+    adjudicado double precision,
+    postor character varying,
+    phase_id integer,
+    admin_user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    cantidad integer
+);
+
+
+ALTER TABLE pieces OWNER TO postgres;
+
+--
+-- Name: pieces_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pieces_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pieces_id_seq OWNER TO postgres;
+
+--
+-- Name: pieces_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pieces_id_seq OWNED BY pieces.id;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE products (
+    id integer NOT NULL,
+    nombre character varying,
+    descripcion character varying,
+    orden integer,
+    obs character varying,
+    admin_user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE products OWNER TO postgres;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE products_id_seq OWNER TO postgres;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE products_id_seq OWNED BY products.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE schema_migrations (
+    version character varying NOT NULL
+);
+
+
+ALTER TABLE schema_migrations OWNER TO postgres;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY activities ALTER COLUMN id SET DEFAULT nextval('activities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY details ALTER COLUMN id SET DEFAULT nextval('details_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY formulas ALTER COLUMN id SET DEFAULT nextval('formulas_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items ALTER COLUMN id SET DEFAULT nextval('items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY phases ALTER COLUMN id SET DEFAULT nextval('phases_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pieces ALTER COLUMN id SET DEFAULT nextval('pieces_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
+
+
+--
+-- Data for Name: active_admin_comments; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY active_admin_comments (id, namespace, body, resource_id, resource_type, author_type, author_id, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- Name: active_admin_comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('active_admin_comments_id_seq', 1, false);
+
+
+--
+-- Data for Name: activities; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY activities (id, actividad, tipo, numero, pfecha, plan, moneda, importe, obs, phase_id, admin_user_id, created_at, updated_at) FROM stdin;
+1	18			2017-06-06	2017-06-06	0	0		1	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+2	43			2017-06-07	2017-06-08	0	0		1	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+3	44			2017-06-09	2017-06-09	0	0		1	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+4	45			2017-06-12	2017-06-12	0	0		1	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+5	19			2017-06-15	2017-06-15	0	0		1	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+6	20			2017-06-19	2017-06-19	0	0		1	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+8	43			2017-06-05	2017-06-16	0	0		2	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+9	44			2017-06-20	2017-06-20	0	0		2	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+10	45			2017-06-21	2017-06-21	0	0		2	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+11	19			2017-07-07	2017-07-07	0	0		2	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+26	20			2017-06-08	2017-06-08	1	190496		5	13	2017-04-20 00:00:00	2017-06-19 15:21:23.690043
+14	43			2017-06-02	2017-06-15	0	0		3	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+15	44			2017-06-20	2017-06-20	0	0		3	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+16	45			2017-06-21	2017-06-21	0	0		3	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+17	19			2017-07-05	2017-07-05	0	0		3	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+18	20			2017-07-13	2017-07-13	0	0		3	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+13	18			2017-06-01	2017-06-01	1	4833164.66999999993		3	13	2017-04-20 00:00:00	2017-06-22 14:16:53.280213
+20	43			2017-06-01	2017-06-02	0	0		4	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+21	44			2017-06-05	2017-06-05	0	0		4	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+22	45			2017-06-13	2017-06-13	0	0		4	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+23	19			2017-06-13	2017-06-13	0	0		4	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+25	19			2017-06-08	2017-06-08	0	0		5	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+27	18			2017-05-25	2017-05-25	0	0		6	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+28	43			2017-05-26	2017-06-08	0	0		6	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+86	18			2017-04-10	2017-04-10	1	505814.400000000023		16	13	2017-04-20 00:00:00	2017-06-22 16:43:33.070419
+33	18			2017-05-09	2017-05-09	0	0		7	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+34	43			2017-05-10	2017-05-24	0	0		7	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+35	44			2017-06-01	2017-06-01	0	0		7	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+39	18			2017-05-04	2017-05-04	0	0		8	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+40	43			2017-05-05	2017-05-08	0	0		8	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+41	44			2017-05-10	2017-05-10	0	0		8	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+42	45			2017-05-11	2017-05-11	0	0		8	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+43	19			2017-05-16	2017-05-16	0	0		8	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+45	18			2017-05-02	2017-05-02	0	0		9	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+46	43			2017-05-03	2017-05-16	0	0		9	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+47	44			2017-05-23	2017-05-23	0	0		9	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+48	45			2017-05-29	2017-05-29	0	0		9	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+49	19			2017-06-08	2017-06-08	0	0		9	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+50	20			2017-06-21	2017-06-21	0	0		9	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+52	43			2017-05-03	2017-05-16	0	0		10	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+53	44			2017-05-22	2017-05-22	0	0		10	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+58	43			2017-05-03	2017-05-16	0	0		11	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+59	44			2017-05-25	2017-05-25	0	0		11	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+60	45			2017-05-31	2017-05-31	0	0		11	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+61	19			2017-06-09	2017-06-09	0	0		11	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+62	20			2017-06-19	2017-06-19	0	0		11	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+64	43			2017-04-28	2017-05-12	0	0		12	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+65	44			2017-05-16	2017-05-16	0	0		12	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+66	45			2017-05-22	2017-05-22	0	0		12	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+70	43			2017-04-27	2017-04-28	0	0		13	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+71	44			2017-05-02	2017-05-02	0	0		13	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+72	19			2017-05-10	2017-05-10	0	0		13	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+75	43			2017-04-24	2017-05-08	0	0		14	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+76	44			2017-05-15	2017-05-15	0	0		14	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+77	45			2017-05-19	2017-05-19	0	0		14	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+78	19			2017-06-01	2017-06-01	0	0		14	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+79	20			2017-06-19	2017-06-19	0	0		14	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+80	18			2017-04-18	2017-04-18	0	0		15	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+81	43			2017-04-19	2017-04-20	0	0		15	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+82	44			2017-04-24	2017-04-24	0	0		15	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+83	45			2017-04-25	2017-04-25	0	0		15	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+84	19			2017-04-28	2017-04-28	0	0		15	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+85	20			2017-05-16	2017-05-16	0	0		15	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+87	43			2017-04-11	2017-04-26	0	0		16	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+88	44			2017-05-03	2017-05-03	0	0		16	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+74	18			2017-04-21	2017-04-21	1	495177.150000000023		14	13	2017-04-20 00:00:00	2017-06-15 22:34:46.329384
+7	18			2017-06-02	2017-06-02	1	1499500		2	13	2017-04-20 00:00:00	2017-06-16 00:11:22.736697
+73	20			2017-05-10	2017-05-10	2	230000	Ganador de Buena Pro OWL AEROSPACE INC	13	13	2017-04-20 00:00:00	2017-06-15 22:39:12.810595
+63	18			2017-04-27	2017-04-27	1	689074.869999999995	11 ITEMS	12	13	2017-04-20 00:00:00	2017-06-15 22:44:38.386644
+67	19			2017-05-31	2017-05-31	\N	0	ITEM 3 y 7 DESIERTOS	12	13	2017-04-20 00:00:00	2017-06-15 22:47:17.845935
+57	18			2017-05-02	2017-05-02	1	787252.5		11	13	2017-04-20 00:00:00	2017-06-15 22:54:18.99939
+54	45			2017-06-15	2017-05-26	\N	0		10	13	2017-04-20 00:00:00	2017-06-15 23:06:03.083127
+55	19			2017-06-26	2017-06-06	\N	0		10	13	2017-04-20 00:00:00	2017-06-15 23:11:48.482825
+56	20			2017-07-05	2017-06-14	\N	0		10	13	2017-04-20 00:00:00	2017-06-15 23:13:36.616439
+36	45			2017-06-22	2017-06-07	\N	0	Elevado al OSCE/fecha estimada pronunciamiento: 20/06/17	7	13	2017-04-20 00:00:00	2017-06-15 23:48:35.35913
+37	19			2017-07-06	2017-06-19	\N	0		7	13	2017-04-20 00:00:00	2017-06-15 23:49:25.755993
+38	20			2017-07-13	2017-07-05	\N	0		7	13	2017-04-20 00:00:00	2017-06-15 23:50:02.718285
+29	44			2017-06-19	2017-06-13	\N	0		6	13	2017-04-20 00:00:00	2017-06-15 23:59:33.93383
+31	19			2017-07-06	2017-06-26	\N	0		6	13	2017-04-20 00:00:00	2017-06-16 00:00:20.624384
+32	20			2017-07-07	2017-06-28	\N	0		6	13	2017-04-20 00:00:00	2017-06-16 00:00:42.651429
+24	18			2017-05-26	2017-05-26	1	820731.739999999991		5	13	2017-04-20 00:00:00	2017-06-16 00:02:06.824071
+19	18			2017-05-31	2017-05-31	2	388776.239999999991		4	13	2017-04-20 00:00:00	2017-06-16 00:04:29.608704
+12	20			2017-07-12	2017-07-12	\N	0		2	13	2017-04-20 00:00:00	2017-06-16 00:10:51.833748
+89	45			2017-05-09	2017-05-09	0	0		16	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+90	19			2017-05-26	2017-05-26	0	0		16	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+93	43			2017-03-13	2017-03-14	0	0		17	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+94	44			2017-03-20	2017-03-20	0	0		17	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+95	45			2017-03-21	2017-03-21	0	0		17	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+96	19			2017-03-31	2017-03-31	0	0		17	2	2017-04-20 00:00:00	2017-04-20 00:00:00
+91	20			2017-06-15	2017-06-12	1	112860	Buena Pro por el Item 1 casaca para uniforme EP	16	13	2017-04-20 00:00:00	2017-06-15 22:30:50.843287
+68	20			2017-06-12	2017-06-16	\N	0		12	13	2017-04-20 00:00:00	2017-06-15 22:49:52.604798
+51	18			2017-05-02	2017-05-02	1	1824720		10	13	2017-04-20 00:00:00	2017-06-15 22:56:41.84832
+44	20			2017-06-06	2017-06-06	1	864000	Buena Pro por el Item 1 - BOTAS / VR 864,039.00	8	13	2017-04-20 00:00:00	2017-06-15 23:40:01.526997
+30	45			2017-06-23	2017-06-14	\N	0		6	13	2017-04-20 00:00:00	2017-06-15 23:59:56.279426
+98	1	\N	\N	\N	\N	\N	\N	\N	\N	\N	2017-06-01 00:00:00	2017-06-01 00:00:00
+99	1	\N	\N	\N	\N	\N	\N	\N	\N	\N	2017-06-01 00:00:00	2017-06-01 00:00:00
+69	18			2017-04-26	2017-04-26	2	230252		13	13	2017-04-20 00:00:00	2017-06-19 15:12:46.847568
+102	20			2017-06-13	2017-06-13	2	388000	Adquirió Buena Pro: Atlantic Diving Supply Inc	4	13	2017-06-19 15:34:09.008903	2017-06-19 15:34:09.008903
+104	43			2017-01-02	2017-01-13	\N	\N		19	13	2017-06-19 15:53:08.825673	2017-06-19 15:53:08.825673
+105	44			2017-01-24	2017-01-24	\N	\N		19	13	2017-06-19 15:56:03.267569	2017-06-19 15:56:03.267569
+106	45			2017-02-24	2017-02-24	\N	\N		19	13	2017-06-19 15:57:18.328205	2017-06-19 15:57:18.328205
+107	19			0217-03-08	2017-03-08	\N	\N		19	13	2017-06-19 15:57:59.774217	2017-06-19 15:57:59.774217
+97	20			2017-04-19	2017-04-19	1	20029052.5	Buena Pro: Consorcio: Corp. Industrial Independencia/Creatividad textil	17	13	2017-04-20 00:00:00	2017-06-19 16:01:54.071352
+101	18			2016-12-30	2016-12-30	\N	\N	La fecha real es 30/12/2016	19	13	2017-06-16 19:05:48.023714	2017-06-19 16:21:49.133576
+103	20			2017-05-24	2017-05-24	1	7725451	Buena Pro : Telefónica del Perú SAA	19	13	2017-06-19 15:40:58.131488	2017-06-20 14:34:04.163569
+92	18			2017-03-10	2017-03-10	1	24442941.0599999987		17	13	2017-04-20 00:00:00	2017-06-20 16:59:43.430213
+108	35			2017-06-21	\N	\N	\N		5	13	2017-06-22 14:11:48.579362	2017-06-22 14:11:48.579362
+109	35			2017-05-25	\N	\N	\N		19	13	2017-06-22 16:33:47.499215	2017-06-22 16:33:47.499215
+110	35			2017-06-16	\N	\N	\N		16	13	2017-06-22 16:44:19.365134	2017-06-22 16:44:19.365134
+111	35			2017-06-14	\N	\N	\N		8	13	2017-06-22 16:49:31.062389	2017-06-22 16:49:31.062389
+112	35			2017-05-23	\N	\N	\N		13	13	2017-06-22 16:51:44.791949	2017-06-22 16:51:44.791949
+113	35			2017-06-13	\N	\N	\N		4	13	2017-06-22 16:57:05.185571	2017-06-22 16:57:05.185571
+114	35			2017-05-05	\N	\N	\N		17	13	2017-06-22 17:08:49.666705	2017-06-22 17:08:49.666705
+\.
+
+
+--
+-- Name: activities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('activities_id_seq', 114, true);
+
+
+--
+-- Data for Name: admin_users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY admin_users (id, email, encrypted_password, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at) FROM stdin;
+5	vballesteros@acffaa.gob.pe	$2a$11$51mESc73jKMiSErQcTjnnuw3b.4R0Dfp4gt0zqjg.gzREQ/LlaOKm	\N	\N	2017-04-28 13:06:56.916903	25	2017-06-22 13:43:18.659068	2017-06-21 15:19:09.096464	167.249.10.179	167.249.10.179	2017-04-12 22:58:18.666648	2017-06-22 13:43:18.661898
+18	vtapia@acffaa.gob.pe	$2a$11$0qrcNPimk2qZMVJ8nWOTluPrMXsU3KDBu1MOqz2tBacATg8z52pwq	\N	\N	\N	7	2017-06-20 16:24:16.970155	2017-06-20 11:23:17.083924	167.249.10.179	179.7.68.133	2017-06-01 14:37:26.029864	2017-06-20 16:24:16.972156
+11	mcarbajal@acffaa.gob.pe	$2a$11$VcWJ1oMGTX6EDbyyuy.tGe0exUhne6IxjNF2JCL42b7uB0Qnmz/oO	8d93999b6f62d98d1e675ff869cd61c8d1f1dfab7ef9f53a98ec731a53803cec	2017-05-09 17:18:11.502921	2017-06-13 18:34:54.73473	83	2017-06-22 13:49:23.656001	2017-06-21 16:26:30.859458	167.249.10.179	167.249.10.179	2017-04-24 13:53:16.432113	2017-06-22 13:49:23.659084
+1	jaimeduranvi@gmail.com	$2a$11$77hDPjRHiSLqKrce9R4NMuZoRnoa9uB4OHJBciHK.zVvSm01Wu91e	\N	\N	\N	1	2017-06-06 17:59:28.536887	2017-03-19 18:46:56.967179	167.249.10.179	190.42.54.213	2017-03-18 18:43:22.958249	2017-06-06 17:59:28.54936
+7	ycastaneda@acffaa.gob.pe	$2a$11$ABMIy343eXZzx2ljR/ZV6O9MXm6u/0E/RgZ3yvXu/D.OWu08xMg2O	\N	\N	2017-06-02 15:35:57.65048	8	2017-06-14 20:01:14.105945	2017-06-12 19:34:33.674387	167.249.10.179	167.249.10.179	2017-04-19 16:56:43.315464	2017-06-14 20:01:14.107894
+15	administrativogexp@acffaa.gob.pe	$2a$11$J.B.NFwk9qEhgU7EJhUVheb8XpOcMQD32IPs.6f6UcRnlpVb8BP7q	\N	\N	\N	3	2017-05-22 22:26:25.433592	2017-04-28 15:38:47.634748	167.249.10.178	167.249.10.178	2017-04-28 15:12:15.155909	2017-05-22 22:26:25.435453
+14	mcardenas@acffaa.gob.pe	$2a$11$jvNpjktoQAEeZoNoh7uy7.NswMhSQYIhWESDYwEl.FsyqQLwGD3We	\N	\N	\N	65	2017-06-20 22:23:51.502595	2017-06-20 22:00:26.127509	167.249.10.179	167.249.10.179	2017-04-24 16:49:41.612702	2017-06-20 22:23:51.50532
+12	vminaya@acffaa.gob.pe	$2a$11$rKpiXxDquRd/1KZbOUVu/e2m1R5pJxF4mS7DCbQFdvsWJXj5I87sW	\N	\N	\N	8	2017-06-01 20:18:20.45994	2017-05-29 14:16:23.939959	167.249.10.178	167.249.10.178	2017-04-24 16:48:12.565335	2017-06-01 20:18:20.462903
+16	mcanevaro@mindef.gob.pe	$2a$11$t/7uRt4E47rlAxbceTtUPOo8//xO80iHK//GiGXUnVAABnP8RrjNq	\N	\N	\N	6	2017-05-12 14:23:46.678464	2017-05-12 14:22:09.621517	200.37.34.88	200.37.34.88	2017-05-10 16:51:30.97605	2017-05-12 14:23:46.680424
+3	roycarbajalt@hotmail.com	$2a$11$OyIORraslYNQk7uNZZxVNurvSyL0niKT/RMVydXvFiePI/QqbEGeq	\N	\N	2017-06-20 13:29:15.088039	110	2017-06-22 17:17:56.497997	2017-06-21 19:28:36.105195	167.249.10.179	167.249.10.179	2017-03-19 13:17:44.516977	2017-06-22 17:17:56.50083
+8	sectoristafap@acffaa.gob.pe	$2a$11$zdD3u961NU2uxbPrG1L35uWyR2Zxqk46B5w9d9ASX2lXbWMLKEqfO	\N	\N	\N	84	2017-06-22 19:57:37.744401	2017-06-22 17:09:43.912833	167.249.10.179	167.249.10.179	2017-04-20 15:29:31.789746	2017-06-22 19:57:37.749222
+17	ralfaro@acffaa.gob.pe	$2a$11$FHSepYFF3TPHJLKVDnTduOOKUO6wAf1hg1wBZCyCTSRmTRcasO6.y	\N	\N	\N	10	2017-06-20 17:09:39.858637	2017-06-20 16:24:08.220654	167.249.10.179	167.249.10.179	2017-05-19 13:40:12.60223	2017-06-20 17:09:39.860892
+20	consulta@acffaa.gob.pe	$2a$11$vAOEAWh4wln134VLsvUiIeRHrmS.RyZJQsTx4llw7L2XjPx3Vu8i.	\N	\N	\N	6	2017-06-23 12:50:06.535324	2017-06-20 17:18:40.710474	127.0.0.1	167.249.10.179	2017-06-20 16:21:00.915068	2017-06-23 12:50:06.536387
+13	aalvarez@acffaa.gob.pe	$2a$11$DWYrnsncQjVAGTInVG9HKeW7kgvf7cz7k5DNZDdibn6tUbA5HOFg2	\N	\N	\N	44	2017-06-23 12:50:15.48589	2017-06-22 14:10:31.922716	127.0.0.1	167.249.10.179	2017-04-24 16:48:56.402667	2017-06-23 12:50:15.487027
+4	ibertolotti@acffaa.gob.pe	$2a$11$nlcIQRKQBt6cu4.asA5c1uh4R98qcbIh55I37tsD2YHC/ssSfEFgS	a1a0cb665fe15aeda10fa2646cac76f3df2316542bd22d1c9bae9502b7fa5814	2017-03-21 16:56:11.807787	\N	62	2017-06-23 12:50:26.649548	2017-06-20 13:42:39.859594	127.0.0.1	167.249.10.179	2017-03-19 13:18:55.788456	2017-06-23 12:50:40.551536
+19	jnieto@mindef.gob.pe	$2a$11$lEtL10yUnDzCFd.oGqBHJevPYJsv57sy3kS.1Hu.fY0C/n4jtu49a	\N	\N	\N	6	2017-06-23 12:50:44.996453	2017-06-20 17:12:59.408523	127.0.0.1	167.249.10.179	2017-06-06 20:44:51.861434	2017-06-23 12:50:44.997948
+6	jsantamaria@acffaa.gob.pe	$2a$11$QVLDhrbJ4mlDmpruyh9hkeXjpVOe.6cvYgiHiH8NjwRfhj8l5WREe	\N	\N	\N	74	2017-06-23 12:50:57.968221	2017-06-20 15:38:44.848545	127.0.0.1	167.249.10.179	2017-04-17 15:38:30.897985	2017-06-23 12:51:13.095417
+10	pedro07_1980@hotmail.com	$2a$11$HqVrVhP85CrRHbOMGQljQ.JCv5CpzGAsX4VeJFIhhHHdE1gw/q.NG	\N	\N	\N	9	2017-06-23 12:51:28.366565	2017-06-09 17:50:37.790405	127.0.0.1	167.249.10.179	2017-04-21 20:56:23.392423	2017-06-23 12:51:38.333796
+9	rsalas@acffaa.gob.pe	$2a$11$ZM2IchsatMs6jfQwq2r01.GhsERZpw2ORMWtHtrk4eWSum9VUPgUS	\N	\N	\N	60	2017-06-23 12:51:45.356389	2017-06-19 22:03:35.81713	127.0.0.1	167.249.10.179	2017-04-20 15:31:01.282565	2017-06-23 12:51:45.357431
+2	jaduran0102@gmail.com	$2a$11$rRMBQ/11WSlOGCvxUXGUlulQzXRliDHM.GBpkEVCGcS/b6PuCKyka	\N	\N	\N	162	2017-06-23 12:57:07.237491	2017-06-22 15:34:48.802815	127.0.0.1	167.249.10.179	2017-03-18 22:08:33.683929	2017-06-23 12:57:07.238553
+\.
+
+
+--
+-- Name: admin_users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('admin_users_id_seq', 20, true);
+
+
+--
+-- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
+environment	production	2017-03-18 18:41:44.744316	2017-04-16 17:43:38.27633
+\.
+
+
+--
+-- Data for Name: details; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY details (id, actividad, tipo, numero, pfecha, importe, obs, admin_user_id, item_id, created_at, updated_at, moneda, plan) FROM stdin;
+2310	8		052-2017-ACFFAA	\N	\N		8	702	2017-05-02 10:39:24.07572	2017-05-02 10:39:44.97081	\N	\N
+2411	42	FORMATO N° 008 DEL 04-05-2017	008	2017-05-04	\N	BASES APROBADAS	13	828	2017-05-05 14:28:09.742935	2017-05-05 14:28:19.370096	\N	\N
+2510	200		OFIC NC-70-EMPL-PC N° 0552	2017-02-28	\N		8	527	2017-05-09 19:59:11.618919	2017-05-09 19:59:11.618919	\N	\N
+2514	22	Memorandum	N ° 063-2017/DPC/ACFFAA	2017-05-05	18	Recepción de DIEZ (10)  archivadores con todo el actuado 	14	121	2017-05-09 20:45:09.520187	2017-05-23 17:29:30.954208	1	\N
+2671	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	13972903.2300000004		8	1413	2017-04-20 00:00:00	2017-06-08 16:24:44.242045	1	\N
+2521	22		N° 063-2017/DPC/ACFFAA	2017-05-04	0	EP Ítem 3 S/ 1’039,986.86 Item 4 S/ 2’092,724.40 Item 5 S/ 1’985,874.68 Item 6 S/. 13’697,752.70 MGP Ítem 3 S/ 160,003.14 Ítem 4 S/ 101,663.10 Ítem 5 S/ 124,115.32 Ítem 6 S/ 826,932.30	14	830	2017-05-09 21:07:36.930502	2017-05-09 21:07:36.930502	1	\N
+2522	50	Oficios	N°  473-2017/SG/DEC/ACFFAA  N° 474-2017/SG/DEC/ACFFAA	2017-05-09	0	Remisión de documentación para la suscripción del contrato al EP  y MGP 	2	830	2017-05-09 21:33:19.931179	2017-05-29 17:06:55.637576	1	\N
+2520	15		9999	2015-04-03	4018447		9	1379	2017-05-09 21:03:02.095598	2017-05-09 21:13:33.139115	1	\N
+2527	12		NC-70-SGFA-LOCN-PS-N° 1620	2017-05-02	1236010.19999999995		8	1377	2017-05-09 22:20:05.70059	2017-05-09 22:20:05.70059	1	\N
+2530	12		NC-70-SGFA-LOCN-PS-N° 1650	2017-05-03	2697774.91999999993		8	1380	2017-05-09 22:31:43.658739	2017-05-09 22:31:43.658739	1	\N
+2531	13		NC-70-SGFA-LOCN-PS-N° 1650	2017-05-04	2697774.91999999993	REVISION	8	1380	2017-05-09 22:33:07.109713	2017-05-09 22:33:24.182244	1	\N
+2529	4		NC-70-SGFA-LOCN-PS-N° 1650	2017-05-03	2697774.91999999993		8	1380	2017-05-09 22:30:13.69293	2017-05-09 22:34:02.180017	1	\N
+2700	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	6168724.09999999963		8	1445	2017-04-20 00:00:00	2017-06-08 16:25:32.687588	1	\N
+2565	36			\N	\N		9	1408	2017-05-10 21:26:19.682717	2017-05-10 21:26:19.682717	1	\N
+2509	200	CARTA	NC-70-EMPL-PC-N°0809	2017-05-03	1429063.30000000005	EXCLUIDO EN LA VERSIÓN 9 DEL PAC-2017	8	517	2017-05-09 19:48:49.893635	2017-05-11 03:27:48.865015	1	\N
+2567	36	RCGFAP-VERSIÓN 4	0183-2017	2017-04-18	1811094		8	1337	2017-05-10 21:39:38.079142	2017-06-08 15:10:22.28942	1	\N
+2564	13		G.500-2053	2017-05-09	\N		2	955	2017-05-10 21:24:27.407283	2017-05-11 16:37:53.934295	\N	\N
+2603	34	OFICIO	057	2017-05-11	\N		11	977	2017-05-15 13:46:04.350793	2017-05-15 13:46:15.84812	\N	\N
+2604	34	OFICIO	057	2017-05-11	\N		11	750	2017-05-15 13:46:50.743475	2017-05-15 13:47:02.58454	\N	\N
+2669	36	pac	\N	2017-05-01	95758.7599999999948	\N	2	1411	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2673	36	pac	\N	2017-05-01	48000	\N	2	1415	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2674	36	pac	\N	2017-05-01	64372.5	\N	2	1416	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2675	36	pac	\N	2017-05-01	120000	\N	2	1417	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2677	36	pac	\N	2017-05-01	251430	\N	2	1419	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2679	36	pac	\N	2017-05-01	37000	\N	2	1421	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2681	36	pac	\N	2017-05-01	120000	\N	2	1423	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2682	36	pac	\N	2017-05-01	38000	\N	2	1424	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2685	36	pac	\N	2017-05-01	51642.9000000000015	\N	2	1427	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2686	36	pac	\N	2017-05-01	59800	\N	2	1428	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2687	36	pac	\N	2017-05-01	814859.400000000023	\N	2	1429	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2688	36	pac	\N	2017-05-01	174751.299999999988	\N	2	1430	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2690	36	pac	\N	2017-05-01	61400	\N	2	1435	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2692	36	pac	\N	2017-05-01	45000	\N	2	1437	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2694	36	pac	\N	2017-05-01	389850	\N	2	1439	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2695	36	pac	\N	2017-05-01	221500.200000000012	\N	2	1440	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2696	36	pac	\N	2017-05-01	126000	\N	2	1441	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2697	36	pac	\N	2017-05-01	303798	\N	2	1442	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2698	36	pac	\N	2017-05-01	144000	\N	2	1443	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2680	36	RCGFAP-VERSIÓN 10	0228-2017	2017-05-15	37700		8	1422	2017-04-20 00:00:00	2017-06-08 15:23:05.838706	1	\N
+2573	14	OFICIO	NC-70-SGFA-LOCN-PS-N° 1392	2017-04-18	161957.899999999994		8	1331	2017-05-10 22:24:06.704731	2017-06-08 16:11:44.893657	1	\N
+2693	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	300394.780000000028		8	1438	2017-04-20 00:00:00	2017-06-08 16:22:55.791667	1	\N
+2670	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	191750		8	1412	2017-04-20 00:00:00	2017-06-08 16:23:36.036121	1	\N
+2701	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	86946.929999999993		8	1446	2017-04-20 00:00:00	2017-06-08 16:27:44.340364	1	\N
+2683	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	95199.5099999999948		8	1425	2017-04-20 00:00:00	2017-06-08 16:28:15.542886	1	\N
+2684	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	140700		8	1426	2017-04-20 00:00:00	2017-06-08 16:28:47.564588	1	\N
+2678	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	532000		8	1420	2017-04-20 00:00:00	2017-06-08 16:29:16.223453	1	\N
+2672	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	151627.5		8	1414	2017-04-20 00:00:00	2017-06-08 16:29:56.032815	1	\N
+2699	36	RCGFAP-VERSIÓN 9		2017-05-10	1152403.5		8	1444	2017-04-20 00:00:00	2017-06-08 16:34:29.338542	1	\N
+2676	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	2361076.5		8	1418	2017-04-20 00:00:00	2017-06-08 16:35:05.191577	1	\N
+2689	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	109904.059999999998		8	1434	2017-04-20 00:00:00	2017-06-08 16:35:39.926853	1	\N
+2691	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	27945		8	1436	2017-04-20 00:00:00	2017-06-08 16:36:20.843611	1	\N
+2312	17	H.T. Nº 055 	046-2017-DEM-ACFFAA	2017-04-18	1		13	574	2017-05-03 14:57:51.516635	2017-05-03 16:38:22.17559	1	\N
+2418	4	OFCIO	1404	2017-03-03	16300	ADJUNTA CONSTANCIA DE PREVISION DE RECURSOS AF 2018, POR 16300.00	9	706	2017-05-05 15:45:06.068511	2017-05-05 15:56:47.388854	1	\N
+2420	15		443	2017-03-07	16300	ADJUNTA CONSTANCIA DE PREVISION DE RECURSOS AF 2018, POR 16300.00	9	706	2017-05-05 15:58:05.261192	2017-05-05 15:58:05.261192	1	\N
+2518	59	HOJA TRAMITE 	9999	2017-01-01	96985153		2	1378	2017-05-09 20:58:42.154334	2017-05-31 15:43:47.436059	1	\N
+2843	15		1072	2017-05-23	\N		6	912	2017-05-23 15:12:38.224827	2017-05-23 15:12:38.224827	\N	\N
+2845	54	ORDEN DE COMPRA	N° 044-000018	2016-11-14	111	ADJUDICADO ITEM 3	14	1374	2017-05-23 15:14:40.362037	2017-05-23 15:14:50.432105	2	\N
+2516	5			2017-04-25	\N		2	769	2017-05-09 20:57:01.604732	2017-05-09 20:57:01.604732	\N	\N
+2517	22		N° 063-2017/DPC/ACFFAA	2017-05-04	\N	EP Ítem  N° 3  S/ 1’039,986.86	14	830	2017-05-09 20:58:07.930647	2017-05-09 20:58:07.930647	1	\N
+2519	13		9999	2015-04-01	4018447		9	1379	2017-05-09 21:00:18.33631	2017-05-09 21:00:18.33631	1	\N
+2846	22	MEMORANDUM	N° 031-2017/DPC/ACFFAA	2017-02-14	198.400000000000006	ITEM 1,2,4: US$ 198,460.00	14	1371	2017-05-23 15:29:04.854342	2017-05-23 15:29:19.697998	2	\N
+2864	44	Bases 003 LP 3	003	2017-05-15	\N	ABSOLUCION DE CONSULTAS Y OBSERVACIONES LP-Nº 3	13	980	2017-05-23 16:16:35.429824	2017-05-23 16:17:44.152089	1	\N
+2526	4		NC-70-SGFA-LOCN-PS-N°1620	2017-04-28	1236010.19999999995		8	1377	2017-05-09 22:17:54.40814	2017-05-09 22:17:54.40814	1	\N
+2528	13		NC-70-SGFA-LOCN-PS-N° 1620	2017-05-04	1236010.19999999995	EN REVISION	8	1377	2017-05-09 22:21:48.349644	2017-05-09 22:21:48.349644	1	\N
+2566	13		G.500-2109	2017-05-04	\N		6	954	2017-05-10 21:27:40.23826	2017-05-10 21:27:40.23826	\N	\N
+2605	48	HOJA DE TRAMITE	003	2017-05-15	\N		11	1244	2017-05-15 21:32:37.677926	2017-05-15 21:32:44.833821	\N	\N
+2703	36	pac	\N	2017-05-01	232806	\N	2	1448	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2704	36	pac	\N	2017-05-01	37307.5	\N	2	1449	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2705	36	pac	\N	2017-05-01	1000000	\N	2	1450	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2706	36	pac	\N	2017-05-01	70000	\N	2	1451	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2707	36	pac	\N	2017-05-01	34000	\N	2	1452	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2708	36	pac	\N	2017-05-01	65000	\N	2	1431	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2709	36	pac	\N	2017-05-01	368934	\N	2	1432	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2839	50	OFICIO	N° 869-2016/SG/DEC/ACFFAA	2016-10-25	111	MONTO: US$ 111,000.00	2	1374	2017-05-23 15:02:16.010997	2017-05-29 17:08:55.435933	2	\N
+2765	15		0281	2017-05-17	805605.040000000037	RESERVADO / REVISADO POR ALBERTO VALERIO	8	1061	2017-05-19 23:46:24.787638	2017-05-19 23:46:24.787638	1	\N
+2570	26			2017-01-01	\N		2	1374	2017-05-10 22:16:41.363125	2017-05-22 14:11:46.219457	\N	\N
+2872	20	OFERTAS AS-3		2017-06-06	\N	OTORGAMENTO DE BUENA PRO	13	978	2017-05-23 17:06:46.623705	2017-06-08 14:33:21.031248	1	\N
+2830	34	Oficio 	059	2017-05-22	\N		11	706	2017-05-23 13:45:26.922869	2017-05-23 13:45:32.640834	\N	\N
+2832	21	OFERTAS	001	2017-05-22	\N	CONSENTIMIENTO DE LA BUENA PRO	13	700	2017-05-23 14:14:18.23055	2017-05-23 14:14:28.236331	1	\N
+2833	44	OFERTAS	004	2017-05-23	\N	ABSOLUCION DE CONSULTAS Y OBSERVACIONES	13	573	2017-05-23 14:20:21.12991	2017-05-23 14:20:35.743714	1	\N
+2827	21	OFERTAS	006	2017-07-13	\N	CONSENTIMIENTO DE LA BUENA PRO	13	574	2017-05-23 13:43:15.174006	2017-06-08 14:29:47.183192	1	\N
+2837	21	OFERTAS	004	2017-07-03	\N	CONSENTIMIENTO DE LA BUENA PRO	13	573	2017-05-23 14:26:57.063462	2017-05-23 14:27:04.888544	1	\N
+2838	50	OFICIO	ITEM 2:  N° 910-2016/SG/DEC/ACFFAA	2016-11-08	40	ITEM 2: US$ 40,000.00	2	1460	2017-05-23 14:30:26.971721	2017-05-29 17:35:11.846546	2	\N
+2835	19	OFERTAS	004	2017-06-09	\N	PRESENTACION DE PROPUESTAS	13	573	2017-05-23 14:23:26.217511	2017-06-08 14:25:49.99453	1	\N
+2877	21	OFERTAS AS-3		2017-06-13	\N	CONSENTIMIENTO DE LA BUENA PRO	13	828	2017-05-23 17:12:02.605427	2017-06-08 14:34:33.1447	1	\N
+2856	44	Bases 002 LP 2	002	2017-05-16	\N	ABSOLUCION DE CONSULTAS Y OBSERVACIONES LP-Nº 2	13	980	2017-05-23 16:07:17.585687	2017-05-23 16:07:26.754883	1	\N
+2858	19	OFERTAS LP-2	002	2017-05-31	\N	PRESENTACION DE PROPUESTAS	13	980	2017-05-23 16:09:05.93997	2017-05-23 16:09:14.915181	1	\N
+2860	21	OFERTAS LP-2	002	2017-06-22	\N	CONSENTIMIENTO DE LA BUENA PRO	13	980	2017-05-23 16:11:20.803868	2017-05-23 16:11:31.009801	1	\N
+2865	45	Bases 003 LP 3	003	2017-05-19	\N	INTEGRACION DE BASES	13	980	2017-05-23 16:18:34.432327	2017-05-23 16:18:48.160068	1	\N
+2572	12	CARTA	NC-70-SGFA-LOCN-PS-N° 1392	2017-04-18	161957.899999999994		8	1331	2017-05-10 22:23:22.150054	2017-06-08 16:10:06.655252	1	\N
+2711	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	399401		8	1410	2017-04-20 00:00:00	2017-06-08 16:24:08.270069	1	\N
+2571	4	CARTA	NC-70-SGFA-LOCN-PS-N° 1392	2017-04-18	161957.899999999994		8	1331	2017-05-10 22:22:22.466388	2017-06-08 16:10:52.648355	1	\N
+2869	17	H-T. Nº 078 del 19-05-2017	078	2017-05-19	\N	RECEPCION DE EXPEDIENTE CORREGIDO 	13	983	2017-05-23 16:34:19.485888	2017-05-23 16:34:32.800931	1	\N
+2870	45	Bases		2017-05-11	\N	INTEGRACION DE BASES	13	978	2017-05-23 17:04:18.203483	2017-05-23 17:04:42.040973	1	\N
+2867	20	OFERTAS LP-3	003	2017-06-19	\N	OTORGAMENTO DE BUENA PRO	13	980	2017-05-23 16:20:58.29937	2017-05-23 21:07:23.771866	1	\N
+2868	21	OFERTAS LP-3	003	2017-07-03	\N	CONSENTIMIENTO DE LA BUENA PRO	13	980	2017-05-23 16:22:32.377092	2017-05-23 21:10:36.074323	1	\N
+2895	15		729	2017-05-24	\N		6	884	2017-05-24 20:17:38.32912	2017-05-24 20:17:38.32912	\N	\N
+2896	15		728	2017-05-24	\N		6	893	2017-05-24 20:23:48.500044	2017-05-24 20:23:48.500044	\N	\N
+2913	36	modif 4	\N	2017-05-12	38233	\N	2	1475	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2914	36	modif 4	\N	2017-05-12	286813.440000000002	\N	2	1476	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2915	36	modif 4	\N	2017-05-12	482011.280000000028	\N	2	1477	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2916	36	modif 4	\N	2017-05-12	600000	\N	2	1478	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2917	36	modif 4	\N	2017-05-12	64652	\N	2	1479	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2918	36	modif 4	\N	2017-05-12	190000	\N	2	1480	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2919	36	modif 4	\N	2017-05-12	75600	\N	2	1481	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2920	36	modif 4	\N	2017-05-12	52049.4000000000015	\N	2	1482	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2921	36	modif 4	\N	2017-05-12	146566	\N	2	1483	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2922	36	modif 4	\N	2017-05-12	133955.959999999992	\N	2	1484	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2923	36	modif 4	\N	2017-05-12	50000	\N	2	1485	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2841	61	CONTRATO	N° 0462-2016-FAP-SEMAG	2016-11-23	111	US$ 111,000.00	14	1374	2017-05-23 15:07:47.797415	2017-05-23 15:08:00.655347	2	\N
+2710	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	476608.159999999974		8	1433	2017-04-20 00:00:00	2017-06-08 16:26:22.375816	1	\N
+2848	61	CONTRATO DIRCOMAT	(ITEM 1)  N° 025-2017-MGP/DIRCOMAT	2017-03-21	82.5	ITEM 1:  US$ 82,550.00	14	1371	2017-05-23 15:34:35.938856	2017-05-23 15:39:05.981253	2	\N
+2850	61	CONTRATO DIRCOMAT	(ITEM 4)  N° 027-2017-MGP/DIRCOMAT	2017-03-21	46.2999999999999972	(ITEM 4)  US$ 46,350.00	14	1371	2017-05-23 15:41:46.229861	2017-05-23 15:41:54.46317	2	\N
+2702	36	RCGFAP-VERSIÓN 9	0216-2017	2017-05-10	1349053.55000000005		8	1447	2017-04-20 00:00:00	2017-06-08 16:26:58.009498	1	\N
+2853	20	OFERTAS LP-1	001	2017-06-12	\N	OTORGAMENTO DE BUENA PRO	13	980	2017-05-23 15:53:57.161008	2017-06-09 16:32:03.715565	1	\N
+2780	43	Bases	005	2017-05-24	\N	FORMULACION DE CONSULTAS Y OBSERVACIONES	13	979	2017-05-22 16:22:39.855638	2017-05-22 16:22:47.940828	1	\N
+2315	40	RESOLUCION Nº 065-2017-ACFFAA	065	2017-04-26	1		13	574	2017-05-03 16:52:58.436014	2017-05-03 16:53:20.060684	1	\N
+2317	42	FORMATO Nº 006-2017 DEL 28-04-2017	055	2017-05-02	1	FORMATO APROBACION DE BASES 	13	574	2017-05-03 16:58:10.265542	2017-05-03 16:58:32.075887	1	\N
+2574	13	CARTA	NC-70-SGFA-LOCN-N°1392	2017-04-19	161957.899999999994		8	1331	2017-05-10 22:24:47.394237	2017-05-26 19:51:46.545702	1	\N
+2318	18	Bases	006	2017-05-02	1	CONVOCATORIA EN EL SEACE	13	574	2017-05-03 16:59:14.099262	2017-05-03 16:59:56.679379	1	\N
+2789	44	Bases	007	2017-05-22	\N	ABSOLUCION DE CONSULTAS Y OBSERVACIONES	13	518	2017-05-22 16:51:01.377437	2017-05-22 16:51:08.556484	1	\N
+2314	46	H.T. Nº 092	092	2017-04-19	1	INFORME SOLICITUD DE COMITE	13	574	2017-05-03 16:49:42.777421	2017-05-05 14:01:32.365665	1	\N
+2316	47	H.T. Nº 055 	055	2017-04-28	1	SOLICITUD DE APROBACION DE BASES	13	574	2017-05-03 16:55:18.361067	2017-05-05 14:02:11.899856	1	\N
+2568	36			\N	1978758		9	1409	2017-05-10 21:55:59.719819	2017-05-10 21:55:59.719819	1	\N
+2606	13		991	2017-05-11	\N		6	961	2017-05-16 13:33:16.41975	2017-05-16 13:33:16.41975	\N	\N
+2712	34	HDT	132	2015-10-16	\N		11	1381	2017-05-17 16:53:28.822042	2017-05-17 16:53:37.104571	\N	\N
+2767	15		029-2017/OPP/UPP/ACFFAA	2017-02-27	1000000		8	575	2017-05-22 13:53:38.205095	2017-05-22 13:53:38.205095	1	\N
+2771	13		R-70-SGFA-LOCN-PS-N° 0109	2017-02-23	100000		8	575	2017-05-22 14:03:40.675371	2017-05-22 14:03:40.675371	1	\N
+2569	36	RCGE version 4	385	2017-05-12	1978758		9	1409	2017-05-10 21:56:22.670691	2017-05-26 23:58:40.163259	1	\N
+2802	53	ACTA DE CONFORMIDAD	N° 015-2016	2016-11-28	2.57600000000000007	MONTO: 2'575,526.41	14	1381	2017-05-22 17:41:02.72702	2017-05-22 17:41:15.817049	2	\N
+2880	40	RESOLUCION Nº 079-2017-ACFFAA	079	2017-05-23	\N	APROBACION DE COMITE	13	983	2017-05-23 21:02:51.473183	2017-05-23 21:03:03.926165	1	\N
+2897	48	Oficio 	1033	2017-05-24	\N		11	1060	2017-05-25 14:11:42.148597	2017-05-25 14:11:48.918566	\N	\N
+2900	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	728	2017-05-25 16:18:54.413641	2017-05-25 16:20:32.051887	\N	\N
+2924	36	modif 4	\N	2017-05-12	1411068.65999999992	\N	2	1486	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2925	36	modif 4	\N	2017-05-12	75600	\N	2	1487	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2926	36	modif 4	\N	2017-05-12	90450	\N	2	1488	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2927	36	modif 4	\N	2017-05-12	73459.0800000000017	\N	2	1489	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2928	36	modif 4	\N	2017-05-12	46200	\N	2	1490	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2929	36	modif 4	\N	2017-05-12	87000	\N	2	1491	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2930	36	modif 4	\N	2017-05-12	157965.600000000006	\N	2	1492	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2931	36	modif 4	\N	2017-05-12	100490.919999999998	\N	2	1493	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2932	36	modif 4	\N	2017-05-12	145931.940000000002	\N	2	1494	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2933	36	modif 4	\N	2017-05-12	441933	\N	2	1495	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2934	36	modif 4	\N	2017-05-12	64100	\N	2	1496	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2935	36	modif 4	\N	2017-05-12	46716.9599999999991	\N	2	1497	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2936	36	modif 4	\N	2017-05-12	50000	\N	2	1498	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2937	36	modif 4	\N	2017-05-12	38400	\N	2	1499	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2938	36	modif 4	\N	2017-05-12	75400	\N	2	1500	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+1040	14			2017-03-07	\N		4	568	2017-04-06 20:58:47.521007	2017-04-06 20:58:47.521007	\N	\N
+1038	13			2017-03-03	\N		4	568	2017-04-06 20:49:04.25654	2017-04-06 20:49:04.25654	\N	\N
+1046	15	MEMORANDÚM N° 024-2017/OPP/ACFFAA		2017-02-17	\N		4	527	2017-04-06 21:05:52.452673	2017-04-13 18:05:26.240772	\N	\N
+1042	12	OFICIO NC-70-SGFA-LOCN-PS-N° 0555 DEL 13-02-2017		2017-02-16	\N		4	527	2017-04-06 21:01:52.300757	2017-04-06 21:01:52.300757	\N	\N
+1043	14			2017-02-16	\N		4	527	2017-04-06 21:02:35.399499	2017-04-06 21:02:35.399499	1	\N
+1044	13			2017-02-17	\N		4	527	2017-04-06 21:03:15.464555	2017-04-06 21:03:15.464555	\N	\N
+1045	14			2017-02-17	\N		4	527	2017-04-06 21:05:03.524542	2017-04-06 21:05:03.524542	\N	\N
+1050	12	OFICIO NC-70-DECS-N° 0316 DEL 10-02-2017		2017-02-27	\N		4	591	2017-04-06 21:15:42.898243	2017-04-06 21:15:42.898243	1	\N
+1051	14			2017-02-28	\N		4	591	2017-04-06 21:16:18.646348	2017-04-06 21:16:18.646348	\N	\N
+1054	14			2017-03-01	\N		4	591	2017-04-06 21:18:37.712544	2017-04-06 21:18:37.712544	\N	\N
+2939	36	modif 4	\N	2017-05-12	384412	\N	2	1501	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2940	36	modif 4	\N	2017-05-12	39400	\N	2	1502	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2941	36	modif 4	\N	2017-05-12	70035	\N	2	1503	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2942	36	modif 4	\N	2017-05-12	550476	\N	2	1504	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2943	36	modif 4	\N	2017-05-12	40000	\N	2	1505	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2944	36	modif 4	\N	2017-05-12	144785	\N	2	1506	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2945	36	modif 4	\N	2017-05-12	94265	\N	2	1507	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2946	36	modif 4	\N	2017-05-12	390000	\N	2	1508	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2947	36	modif 4	\N	2017-05-12	107555.039999999994	\N	2	1509	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2797	61	CONTRATO	N° 010-2016-MGP/DIRCOMAT	2016-02-22	1.74199999999999999	MONTO: 1'742,300.00	14	1383	2017-05-22 17:22:16.610015	2017-05-22 17:22:25.248812	2	\N
+2773	61	CONTRATO DIRCOMAT	N° 235-2016-MGP/DIRCOMAT	2016-11-09	87.5999999999999943		14	1385	2017-05-22 15:30:19.752912	2017-05-22 15:41:23.668311	2	\N
+2783	45	Bases	005	2017-06-07	\N	INTEGRACION DE BASES	13	979	2017-05-22 16:24:16.040699	2017-06-08 14:14:18.991415	1	\N
+2791	45	Bases	007	2017-05-29	\N	INTEGRACION DE BASES	13	518	2017-05-22 16:51:35.314449	2017-06-08 14:17:27.283866	1	\N
+2793	20	OFERTAS	007	2017-06-21	\N	OTORGAMENTO DE BUENA PRO	13	518	2017-05-22 16:55:23.504275	2017-06-08 14:20:54.145099	1	\N
+1039	12	OFICIO 684 S-CGE	051	2017-02-22	900000		4	119	2017-04-06 20:54:02.912881	2017-04-12 22:39:13.931549	1	\N
+1041	15			2017-03-08	\N	12.04.2017 - SITUACIÓN : ESTUDIO DE POSIBILIDADES QUE OFRECE EL MERCADO	4	568	2017-04-06 20:59:41.082217	2017-04-13 18:20:53.768279	\N	\N
+994	24	OFICIO	G.500-1053	2017-03-01	\N		4	806	2017-03-28 18:57:45.637726	2017-03-28 19:01:18.378177	\N	\N
+993	24	OFICIO	G.500-1053	2017-03-01	\N		4	800	2017-03-28 18:56:42.667474	2017-03-28 19:02:11.249872	\N	\N
+992	24	oficio	G.500-1053	2017-03-01	\N		4	788	2017-03-28 18:49:56.259457	2017-03-28 19:02:44.554566	\N	\N
+995	24	OFICIO	G.500-1281	2017-03-16	\N		4	905	2017-03-28 19:04:04.845629	2017-03-28 19:04:04.845629	\N	\N
+2326	34	HDT	031	2017-02-21	\N		11	121	2017-05-03 19:34:18.071471	2017-05-03 19:34:28.642231	\N	\N
+2336	18	Bases	007	2017-05-02	876	CONVOCATORIA EN EL SEACE	13	518	2017-05-03 20:40:14.884035	2017-05-03 20:40:24.803053	1	\N
+2779	18	Bases	005	2017-05-09	\N	CONVOCATORIA EN EL SEACE	13	979	2017-05-22 16:21:52.614865	2017-05-22 16:22:01.303219	1	\N
+2788	43	Bases	007	2017-05-16	\N	FORMULACION DE CONSULTAS Y OBSERVACIONES	13	518	2017-05-22 16:50:23.394047	2017-05-22 16:50:30.146106	1	\N
+2342	40	RESOLUCION Nº 047-2017-ACFFAA LP 1	047	2017-03-29	1	RESOLUCION DE NOMBRAMIENTO LP-Nº 1	13	980	2017-05-03 21:02:34.767473	2017-05-03 21:34:46.9721	1	\N
+2347	43	Bases LP 1	001	2017-04-11	1690166.6399999999	FORMULACION DE CONSULTAS Y OBSERVACIONES LP-Nº 1	13	980	2017-05-03 21:13:22.53592	2017-05-03 21:35:45.707876	1	\N
+2332	46	H.T. Nº 095	095	2017-04-24	876	INFORME Nº 028 SOLICITUD DE COMITE	13	518	2017-05-03 20:35:32.624689	2017-05-05 14:07:44.47399	1	\N
+2429	36			2017-01-01	\N		2	1362	2017-05-08 13:26:57.613413	2017-05-08 13:26:57.613413	\N	\N
+2431	36			2017-01-01	\N		2	1364	2017-05-08 13:27:44.301873	2017-05-08 13:27:44.301873	\N	\N
+2532	15			2015-10-30	\N		6	1381	2017-05-10 13:12:28.327795	2017-05-10 13:44:35.392863	\N	\N
+2533	15			2015-10-30	\N		6	1382	2017-05-10 13:15:40.642318	2017-05-10 13:45:09.641979	\N	\N
+2534	15			2015-10-30	\N		6	1383	2017-05-10 13:18:53.677607	2017-05-10 13:45:38.554869	\N	\N
+2536	15			2015-10-30	\N		6	1385	2017-05-10 13:29:43.477324	2017-05-10 13:46:14.878679	\N	\N
+2576	16			2017-01-01	\N		2	1337	2017-05-11 13:06:01.99772	2017-05-11 13:06:01.99772	\N	\N
+2578	13		831	2017-05-02	\N		6	1244	2017-05-11 13:54:40.171194	2017-05-11 13:54:40.171194	\N	\N
+2579	15	hoja de tramite	N° 003	2017-05-09	\N		6	1244	2017-05-11 13:56:21.478545	2017-05-11 14:15:02.085314	\N	\N
+2580	25		831	2017-05-04	\N		6	1244	2017-05-11 14:18:43.367608	2017-05-11 14:18:43.367608	\N	\N
+2607	4		1325 S-CGE/N-01.4/11.00	2017-03-29	2475000		9	1184	2017-05-16 14:23:13.06101	2017-05-16 14:23:13.06101	1	\N
+2609	57		G.500-2054	2017-04-27	\N		6	1247	2017-05-16 14:50:50.193996	2017-05-16 14:50:50.193996	\N	\N
+2610	57		G.500-2054	2017-04-27	\N		6	949	2017-05-16 14:51:43.925972	2017-05-16 14:51:43.925972	\N	\N
+2611	13		1001	2017-05-10	2475000		9	1184	2017-05-16 14:52:05.056242	2017-05-16 14:52:05.056242	1	\N
+2612	57		G.500-2054	2017-04-27	\N		6	941	2017-05-16 14:52:26.832898	2017-05-16 14:52:26.832898	\N	\N
+2614	25		1001	2017-05-10	2475000	PARA REVISION Y REFORMULACION DE FICHA TECNICA HOMOGENEIZADA	9	1184	2017-05-16 14:53:36.551954	2017-05-16 14:53:36.551954	1	\N
+2615	57		G.500-2054	2017-04-27	\N		6	929	2017-05-16 14:53:48.830183	2017-05-16 14:53:48.830183	\N	\N
+2618	57		G.500-2054	2017-04-27	\N		6	1243	2017-05-16 14:56:07.553282	2017-05-16 14:56:07.553282	\N	\N
+2713	48	OFICIO	476	2017-05-09	\N		11	555	2017-05-17 19:28:26.624154	2017-05-17 19:28:33.952561	\N	\N
+2714	48	OFICIO	476	2017-05-09	\N		11	556	2017-05-17 19:29:09.90491	2017-05-17 19:29:16.376793	\N	\N
+2715	48	OFICIO	476	2017-05-09	\N		11	568	2017-05-17 19:31:35.53611	2017-05-17 19:31:43.04792	\N	\N
+2769	4		R-70-SGFA-LOCN-PS-N° 0109	2017-02-17	1000000		8	575	2017-05-22 14:00:01.061847	2017-05-22 14:00:01.061847	1	\N
+2770	12		R-70-SGFA-LOCN-N° 0109	2017-02-20	1000000		8	575	2017-05-22 14:01:05.028425	2017-05-22 14:01:05.028425	1	\N
+2785	20	OFERTAS	005	2017-06-26	\N	OTORGAMENTO DE BUENA PRO	13	979	2017-05-22 16:26:47.009001	2017-06-08 14:15:09.395426	1	\N
+2775	53	ACTA DE CONFORMIDAD	N° 01-2017	2017-03-02	87.5999999999999943		14	1385	2017-05-22 15:38:52.905711	2017-05-22 15:42:31.095809	2	\N
+2795	53	ACTA DE CONFORMIDAD	N° 001-2017	2017-01-30	5.20199999999999996	5'201,990.90 EUROS	14	1382	2017-05-22 16:58:16.762294	2017-05-22 16:58:54.318645	\N	\N
+2792	19	OFERTAS	007	2017-06-08	\N	PRESENTACION DE PROPUESTAS	13	518	2017-05-22 16:54:19.805138	2017-06-08 14:20:11.029226	1	\N
+2799	54	OFICIO	L.700-114	2016-03-04	\N	1'742,300.00	14	1383	2017-05-22 17:29:42.878344	2017-05-22 17:29:51.984638	2	\N
+2428	36	HOJA DE TRAMITE	1847	2017-01-01	1140894	PROCESO QUE VIENE DEL AF 2016	9	1361	2017-05-08 13:26:24.724238	2017-06-15 20:04:09.558963	1	\N
+2804	55	COMPROMISO DE PAGO	004258	2017-01-23	2.57600000000000007	MONTO: 2'575,526.41	14	1381	2017-05-22 17:46:12.687339	2017-05-22 17:46:22.084022	2	\N
+2881	22		N° 063-2017/DPC/ACFFAA	2017-05-04	1		14	830	2017-05-23 21:41:36.81202	2017-05-23 21:41:36.81202	1	\N
+2898	48	Oficio 	1034	2017-05-24	\N		11	1061	2017-05-25 14:12:35.794211	2017-05-25 14:12:43.653471	\N	\N
+2948	36	modif 4	\N	2017-05-12	66200	\N	2	1510	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2949	36	modif 4	\N	2017-05-12	1069652.98999999999	\N	2	1511	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2950	36	modif 4	\N	2017-05-12	60000	\N	2	1512	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2951	36	modif 4	\N	2017-05-12	138321	\N	2	1513	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2952	36	modif 4	\N	2017-05-12	399999	\N	2	1514	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2953	36	modif 4	\N	2017-05-12	157300	\N	2	1515	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2954	36	modif 4	\N	2017-05-12	177126	\N	2	1516	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2955	36	modif 4	\N	2017-05-12	399999	\N	2	1517	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2956	36	modif 4	\N	2017-05-12	1485554	\N	2	1518	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2884	50		  N° 474-2017/SG/DEC/ACFFAA	2017-05-09	1	En  suscripción de contrato 	2	830	2017-05-23 22:03:01.801371	2017-05-29 17:33:55.942792	1	\N
+2772	50	OFICIO	N° 154-2016-ACFFAA-SG-DEC	2016-03-09	87.5999999999999943		2	1385	2017-05-22 15:18:19.414388	2017-05-29 17:10:07.010598	2	\N
+2796	50	OFICIO	N° 050-2016-ACFFAA-SG-DEC	2016-02-01	1.74199999999999999	MONTO:  1'742,300.00	2	1383	2017-05-22 17:18:34.977599	2017-05-29 17:10:34.739673	2	\N
+2801	61	CONTRATO DIRCOMAT	450-2015-MGP/DIRCOMAT	2015-12-18	2.57600000000000007	MONTO: 2'575,526.41	14	1381	2017-05-22 17:37:39.084049	2017-05-22 17:37:48.902662	2	\N
+1147	17			2017-01-05	\N		2	828	2017-04-18 21:32:30.586535	2017-05-02 17:12:10.639231	\N	\N
+1145	17			2017-01-05	\N		2	830	2017-04-18 21:27:02.769699	2017-05-02 17:13:26.281158	\N	\N
+2328	34	HDT	70	2017-04-28	\N		11	978	2017-05-03 20:01:15.717805	2017-05-03 20:01:27.209394	\N	\N
+2327	17	OFICIO 044	044	2017-04-17	9		13	979	2017-05-03 19:54:00.363771	2017-05-03 20:24:23.667544	1	\N
+2333	40	H.T. Nº 095	068	2017-04-28	876	RESOLUCION DE NOMBRAMIENTO 	13	518	2017-05-03 20:36:45.725097	2017-05-03 20:37:15.327403	1	\N
+1052	13			2017-02-28	\N		4	591	2017-04-06 21:17:26.192788	2017-04-06 21:17:26.192788	\N	\N
+1059	13			2017-02-28	\N		4	590	2017-04-06 21:31:21.629032	2017-04-06 21:31:21.629032	\N	\N
+1060	14			2017-02-28	\N		4	590	2017-04-06 21:31:46.942361	2017-04-06 21:31:46.942361	\N	\N
+1061	14			2017-03-01	\N		4	590	2017-04-06 21:32:42.329765	2017-04-06 21:32:42.329765	\N	\N
+1072	12	OFICIO NC-70-SGFA-LOCN-PS-N° 0504 DEL 10-02-2017		2017-02-10	\N		4	516	2017-04-06 21:53:18.902039	2017-04-06 21:53:18.902039	\N	\N
+1073	14			2017-02-13	\N		4	516	2017-04-06 21:53:41.914276	2017-04-06 21:53:41.914276	\N	\N
+1075	14			2017-02-20	\N		4	516	2017-04-06 21:54:59.793327	2017-04-06 21:54:59.793327	\N	\N
+1076	15			2017-02-20	\N		4	516	2017-04-06 21:55:28.035215	2017-04-06 21:55:28.035215	\N	\N
+1079	13	HOJA TRAMITE 	375	2017-02-23	\N		4	980	2017-04-06 22:00:28.72402	2017-04-06 22:00:28.72402	\N	\N
+1080	25	OFICIO N° 025-2017-ACFFAA-DEM		2017-02-20	\N		4	516	2017-04-06 22:00:57.019459	2017-04-06 22:00:57.019459	\N	\N
+1085	12	OFICIO NC-70-SGFA-LOCN-PS-N° 0505 DEL 10-02-2017		2017-02-10	\N		4	517	2017-04-06 22:32:57.317669	2017-04-06 22:32:57.317669	\N	\N
+1089	14			2017-02-20	\N		4	517	2017-04-06 22:35:05.475057	2017-04-06 22:35:05.475057	\N	\N
+1082	13	HOJA TRAMITE 	523	2017-02-16	5642844.33999999985	CON PPTO "LUCHA CONTRA TERRORISMO"	4	983	2017-04-06 22:07:43.520179	2017-04-12 21:29:57.442561	1	\N
+1081	12	OFICIO  678 S-SGE	678	2017-03-16	5642844.33999999985		4	983	2017-04-06 22:06:45.812959	2017-04-12 21:36:16.070512	1	\N
+1070	12	OF. 679 S-CGE/N-01.4/11.00	679	2017-03-16	9795538.09999999963		4	979	2017-04-06 21:50:03.380775	2017-04-12 21:47:53.173962	1	\N
+1049	12	OFICIO 	92	2017-02-09	22972141.6400000006		4	121	2017-04-06 21:12:21.556104	2017-04-12 22:31:20.266912	1	\N
+1053	13	HOJA TRAMITE 	230	2017-02-10	22972141.6400000006		4	121	2017-04-06 21:18:07.676807	2017-04-12 22:31:56.173572	1	\N
+1056	13	HOJA TRAMITE 	369	2017-02-22	900000		4	119	2017-04-06 21:19:58.389386	2017-04-12 22:39:59.608896	1	\N
+2539	12		NC-70-SGFA-LOCN-PS-N° 1391	2017-04-11	58991		8	529	2017-05-10 17:27:32.278037	2017-05-10 17:27:32.278037	1	\N
+1047	30	OFICIO N° 0223-2017-SG/DEM/ ACFFAADEL 01-03-2017		2017-03-02	\N	MOFICAR EL PAC DICE: CONTRATACIÓN INTERNACIONAL / DEBE DECIR : RÉGIMEN ESPECIAL  / ASIMISMO, MODIFICAR REQUERIMIENTOS POR HABER INCLUIDO MARCAS DE LOS PRODUCTOS (ESTA PROHIBIDO)	4	527	2017-04-06 21:11:13.776871	2017-04-13 18:10:03.848181	\N	\N
+1062	15	MEMORANDÚN N° 036-2017/OPP/UPP/ACFFAA DEL 01-03-2017		2017-03-01	\N	12.04.2017 - SITUACIÓN : EN ESTUDIO DE POSIBILIDADES QUE OFRECE EL MERCADO	4	590	2017-04-06 21:33:03.01638	2017-04-13 18:26:55.660837	\N	\N
+1055	15	MEMORANDÚM N° 036-2017/OPP/UPP/ACFFAA DEL 01.03.2017		2017-03-01	\N	12.04.2017-SITUACIÓN : EN ESTUDIO DE POSIBILIDADES QUE OFRECE EL MERCADO	4	591	2017-04-06 21:19:25.63404	2017-04-13 18:29:36.934713	\N	\N
+1083	8	RERSOLUCION JEFATURAL 	23	2017-02-16	200000	adjudicado	4	985	2017-04-06 22:17:44.855633	2017-04-28 22:05:08.608427	2	\N
+1182	3		018-2017-ACFFAA	2017-04-24	\N		4	1159	2017-04-28 22:48:03.889113	2017-04-28 22:48:03.889113	\N	\N
+1624	36	version	\N	2017-01-05	\N	\N	2	113	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1625	36	version	\N	2017-01-05	\N	\N	2	114	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1626	36	version	\N	2017-01-05	\N	\N	2	115	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1627	36	version	\N	2017-01-05	\N	\N	2	116	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1628	36	version	\N	2017-01-05	\N	\N	2	117	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1629	36	version	\N	2017-01-05	\N	\N	2	840	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1630	36	version	\N	2017-01-05	\N	\N	2	122	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1631	36	version	\N	2017-01-05	\N	\N	2	123	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1632	36	version	\N	2017-01-05	\N	\N	2	124	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1633	36	version	\N	2017-01-05	\N	\N	2	839	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1634	36	version	\N	2017-01-05	\N	\N	2	821	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1635	36	version	\N	2017-01-05	\N	\N	2	838	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1636	36	version	\N	2017-01-05	\N	\N	2	837	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1637	36	version	\N	2017-01-05	\N	\N	2	836	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1638	36	version	\N	2017-01-05	\N	\N	2	835	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1639	36	version	\N	2017-01-05	\N	\N	2	834	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1640	36	version	\N	2017-01-05	\N	\N	2	833	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1641	36	version	\N	2017-01-05	\N	\N	2	832	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1642	36	version	\N	2017-01-05	\N	\N	2	831	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1643	36	version	\N	2017-01-05	\N	\N	2	829	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1644	36	version	\N	2017-01-05	\N	\N	2	827	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1645	36	version	\N	2017-01-05	\N	\N	2	826	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1646	36	version	\N	2017-01-05	\N	\N	2	824	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1647	36	version	\N	2017-01-05	\N	\N	2	823	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1648	36	version	\N	2017-01-05	\N	\N	2	822	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1649	36	version	\N	2017-01-05	\N	\N	2	820	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1650	36	version	\N	2017-01-05	\N	\N	2	819	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1651	36	version	\N	2017-01-05	\N	\N	2	817	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1652	36	version	\N	2017-01-05	\N	\N	2	816	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1653	36	version	\N	2017-01-05	\N	\N	2	118	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1654	36	version	\N	2017-01-05	\N	\N	2	120	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2540	14		NC-70-SGFA-LOCN-PS-N° 1391	2017-04-18	58991		8	529	2017-05-10 17:29:05.10746	2017-05-10 17:29:05.10746	1	\N
+2343	47	FORMATO Nº 002-2017 DEL 04-04-2017 LP 1	002	2017-04-04	1690166.6399999999	FORMATO APROBACION DE BASES LP-Nº 1	13	980	2017-05-03 21:04:00.737664	2017-05-05 14:11:31.786668	1	\N
+2432	16			2017-01-01	\N	viene del 2016	2	1367	2017-05-08 15:17:58.957376	2017-05-08 15:17:58.957376	\N	\N
+2433	15			2017-01-01	\N	PROCESO QUE VIENE  DEL AÑO 2016	9	1361	2017-05-08 15:20:09.896738	2017-05-08 15:20:09.896738	\N	\N
+2434	15			2017-01-01	\N	proceso viene del 2016	6	1366	2017-05-08 15:21:34.194433	2017-05-08 15:21:34.194433	\N	\N
+2435	15			2017-01-01	\N	PROCESO QUE VIENE  DEL AÑO 2016	9	1362	2017-05-08 15:21:34.86994	2017-05-08 15:21:34.86994	\N	\N
+2537	4		NC-70-SGFA-LOCN-PS-N° 1391	2017-04-11	58991	EXPEDIENTE NO FUE REVISADO PREVIAMENTE Y LLEGO SIN FFTT / ASIMISMO SE ENCUENTRA A LA ESPERA LA LLEGADA DE LOS EXPEDIENTES DEL EP Y MGP	8	529	2017-05-10 17:26:07.562291	2017-05-10 17:26:07.562291	1	\N
+2541	13		NC-70-SGFA-LOCN-PS-N° 1391	2017-04-19	58991	SE RECEPCIONO SIN FICHAS TÉCNICAS HOMOGENEIZADAS COORDINANDO CON EL AREA USUARIA CON LA FINALIDAD QUE REMITA LAS FICHAS MENCIONADAS	8	529	2017-05-10 17:31:41.876032	2017-05-10 17:31:41.876032	1	\N
+2608	57		G.500-2054	2017-04-27	\N		6	1249	2017-05-16 14:47:25.566908	2017-05-16 14:47:25.566908	\N	\N
+2613	57		G.500-2054	2017-04-27	\N		6	935	2017-05-16 14:53:04.983449	2017-05-16 14:53:04.983449	\N	\N
+2621	25		991	2017-05-16	\N		6	961	2017-05-16 16:00:38.67984	2017-05-16 16:00:38.67984	\N	\N
+2716	26			2017-01-01	\N		6	1385	2017-05-18 13:44:46.911269	2017-05-18 13:44:46.911269	\N	\N
+2717	26			2017-01-01	\N		6	1383	2017-05-18 13:45:34.181524	2017-05-18 13:45:34.181524	\N	\N
+2718	26			2017-01-01	\N		6	1382	2017-05-18 13:46:26.771435	2017-05-18 13:46:26.771435	\N	\N
+2719	26			2017-01-01	\N		6	1381	2017-05-18 13:47:18.046215	2017-05-18 13:47:18.046215	\N	\N
+1655	36	version		2017-01-05	\N		9	121	2017-04-30 00:00:00	2017-05-26 23:54:21.205898	\N	\N
+2335	42	FORMATO Nº 007-2017 DEL 28-04-2017	007	2017-04-28	876	FORMATO APROBACION DE BASES 	13	518	2017-05-03 20:39:40.385397	2017-05-03 20:39:47.916061	1	\N
+2803	54	FACTURA	068-20170050	2017-01-23	2.57600000000000007	MONTO: 2'575,526.41	14	1381	2017-05-22 17:44:28.725944	2017-05-22 17:44:36.237839	2	\N
+2882	22		N° 063-2017/DPC/ACFFAA	2017-05-04	1	Recepción de DIEZ (10)  archivadores con todo el actuado 	14	830	2017-05-23 21:57:43.44239	2017-05-23 21:57:43.44239	1	\N
+3024	17			2017-05-22	\N		2	742	2017-05-29 14:30:05.700427	2017-05-29 14:30:05.700427	\N	\N
+2329	46	H.T. Nº 090	090	2017-04-18	9	INFORME Nº 026 SOLICITUD DE COMITE	13	979	2017-05-03 20:26:13.67806	2017-05-05 14:08:46.692852	1	\N
+2331	47	H.T. Nº 104	104	2017-05-03	9	SOLICITUD DE APROBACION DE BASES	13	979	2017-05-03 20:30:34.323895	2017-05-05 14:09:04.553857	1	\N
+2341	46	H.T. Nº 063 LP 1	063	2017-03-21	1690166.6399999999	INFORME Nº 014 SOLICITUD DE COMITE LP-Nº 1	13	980	2017-05-03 21:01:14.505792	2017-05-05 14:10:18.262788	1	\N
+2582	200		NC-70-EMPL-PC N° 0429 	2017-03-13	915000	Solicita la exclusión en la Versión N° 3 del PAC de la FAP	8	559	2017-05-11 17:45:10.015082	2017-05-11 17:45:10.015082	1	\N
+2616	57		G.500-2054	2017-04-27	\N		6	924	2017-05-16 14:54:46.333952	2017-05-16 14:54:46.333952	\N	\N
+2617	57		G.500-2054	2017-04-27	\N		6	945	2017-05-16 14:55:26.051859	2017-05-16 14:55:26.051859	\N	\N
+2619	57		G.500-2054	2017-04-27	\N		6	1248	2017-05-16 14:56:49.184648	2017-05-16 14:56:49.184648	\N	\N
+2620	15		008	2017-05-12	\N		6	955	2017-05-16 15:58:43.947811	2017-05-16 15:58:43.947811	\N	\N
+2720	13		1069	2017-05-18	\N		6	1013	2017-05-18 17:52:08.774885	2017-05-18 17:52:08.774885	\N	\N
+2721	15		1069	2017-05-18	\N		6	1013	2017-05-18 17:52:46.846034	2017-05-18 17:52:46.846034	\N	\N
+2722	34	Oficio 	119	2016-12-23	\N		11	1407	2017-05-18 18:18:30.971142	2017-05-18 18:18:39.256213	\N	\N
+2723	34	119	119	2016-12-23	\N		11	1407	2017-05-18 18:25:56.89683	2017-05-18 18:26:05.857314	\N	\N
+2724	34	Oficio 	118	2016-12-26	\N		11	1371	2017-05-18 18:30:18.598695	2017-05-18 18:30:24.725887	\N	\N
+2731	26			2017-01-01	\N		6	1460	2017-05-18 19:45:36.32783	2017-05-18 19:45:36.32783	\N	\N
+3028	13			2017-05-25	\N		8	1060	2017-05-29 16:30:05.662538	2017-05-29 16:30:05.662538	\N	\N
+2781	44	Bases	005	2017-05-31	\N	ABSOLUCION DE CONSULTAS Y OBSERVACIONES	13	979	2017-05-22 16:23:30.53065	2017-05-22 16:23:40.882151	1	\N
+2786	21	OFERTAS	005	2017-08-09	\N	CONSENTIMIENTO DE LA BUENA PRO	13	979	2017-05-22 16:29:22.976582	2017-06-08 14:16:15.321366	1	\N
+2794	21	OFERTAS	007	2017-07-05	\N	CONSENTIMIENTO DE LA BUENA PRO	13	518	2017-05-22 16:56:36.723525	2017-06-08 14:22:33.40671	1	\N
+3046	15		1174	2017-05-30	\N		6	1243	2017-05-31 17:40:45.875478	2017-05-31 17:40:45.875478	\N	\N
+2798	53	ACTA DE CONFORMIDAD	N° 001-2017	2017-03-01	\N	MONTO: 1'742,300.00	14	1383	2017-05-22 17:24:35.725752	2017-05-22 17:24:44.03733	2	\N
+2957	36	modif 4	\N	2017-05-12	56650	\N	2	1519	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2958	36	modif 4	\N	2017-05-12	914490.800000000047	\N	2	1520	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2959	36	modif 4	\N	2017-05-12	333113.719999999972	\N	2	1521	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2960	36	modif 4	\N	2017-05-12	2100000	\N	2	1522	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2961	36	modif 4	\N	2017-05-12	4550000	\N	2	1523	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2962	36	modif 4	\N	2017-05-12	327667.679999999993	\N	2	1524	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2963	36	modif 4	\N	2017-05-12	80580	\N	2	1525	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3002	36	RCGM	RCG   0274-2017	2017-05-12	290000	\N	2	1563	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3003	36	RCGM	RCG   0274-2017	2017-05-12	255600	\N	2	1564	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3004	36	RCGM	RCG   0274-2017	2017-05-12	199496.600000000006	\N	2	1565	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3005	36	RCGM	RCG   0274-2017	2017-05-12	59700	\N	2	1566	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3006	36	RCGM	RCG   0274-2017	2017-05-12	86800	\N	2	1567	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3007	36	RCGM	RCG   0274-2017	2017-05-12	47145.7200000000012	\N	2	1568	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3008	36	RCGM	RCG   0274-2017	2017-05-12	399000	\N	2	1569	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3009	36	RCGM	RCG   0274-2017	2017-05-12	54462.6800000000003	\N	2	1570	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3014	4		0289	2017-05-19	1349053.55000000005		8	1447	2017-05-26 19:39:10.374153	2017-05-26 19:39:10.374153	1	\N
+3015	12		0289	2017-05-19	1349053.55000000005		8	1447	2017-05-26 19:40:04.19952	2017-05-26 19:40:04.19952	1	\N
+3016	13		0289	2017-05-22	1349053.55000000005		8	1447	2017-05-26 19:41:23.353093	2017-05-26 19:41:23.353093	1	\N
+3017	15		0289	2017-05-24	1349053.55000000005		8	1447	2017-05-26 19:43:56.912459	2017-05-26 19:43:56.912459	1	\N
+3012	15	CARTA	NC-70-SGFA-LOCN-N° 1392	2017-05-24	\N		8	1331	2017-05-26 19:16:46.178244	2017-05-26 19:52:28.211664	1	\N
+3018	15			2017-02-03	\N		4	825	2017-05-26 20:57:25.277802	2017-05-26 21:03:14.877877	\N	\N
+3020	15			2017-04-06	\N		6	1018	2017-05-26 20:59:38.252683	2017-05-26 21:04:24.390647	\N	\N
+3021	34	Oficio 	062	2017-05-26	\N		11	728	2017-05-26 22:45:50.518897	2017-05-26 22:45:56.882658	\N	\N
+1253	36	RCGE version 2	104	2017-04-12	\N		9	980	2017-04-30 00:00:00	2017-05-26 23:47:02.635384	\N	\N
+2790	61	CONTRATO	N° 426-2015-MGP/DIRCOMAT	2015-11-30	5.20199999999999996	5'201,990.90 EUROS	14	1382	2017-05-22 16:51:20.77502	2017-05-22 16:51:32.055837	\N	\N
+2751	50			2017-01-01	\N		2	1368	2017-05-19 21:56:12.075458	2017-05-29 17:47:21.603168	\N	\N
+2800	50	OFICIO	N° 337-2015-ACFFAA-SG-DEC	2015-11-18	2.57600000000000007	MONTO: 2'575,526.41	2	1381	2017-05-22 17:34:48.866205	2017-05-29 17:11:07.812068	2	\N
+3048	15		1174	2017-05-30	\N		6	1248	2017-05-31 17:42:58.692247	2017-05-31 17:42:58.692247	\N	\N
+2787	50	OFICIO	N° 325-2015-ACFFA-SG-DEC	2015-11-11	5.20199999999999996	5'201,990.90 EUROS	2	1382	2017-05-22 16:45:54.64754	2017-05-29 17:11:35.767866	\N	\N
+3049	13		1174	2017-05-26	\N		6	1245	2017-05-31 17:43:36.19483	2017-05-31 17:43:36.19483	\N	\N
+2726	26			2017-01-01	\N		2	1456	2017-05-18 19:30:55.408089	2017-06-05 14:33:51.465524	\N	\N
+3050	13		1174	2017-05-26	\N		6	1246	2017-05-31 17:44:13.668606	2017-05-31 17:44:13.668606	\N	\N
+2729	50			2017-01-01	\N		2	1458	2017-05-18 19:38:25.630295	2017-05-29 17:45:13.309195	\N	\N
+3051	13		1177	2017-05-26	\N		6	945	2017-05-31 17:44:57.139893	2017-05-31 17:44:57.139893	\N	\N
+3052	15		1177	2017-05-30	\N		6	945	2017-05-31 17:45:50.613824	2017-05-31 17:45:50.613824	\N	\N
+2817	61	CONTRATO	N° 028-2017-MGP/DIRCOMAT	2017-03-22	618	MONTO: 618,092.70 EUROS	14	1407	2017-05-22 22:11:14.594244	2017-05-22 22:11:22.207887	\N	\N
+2725	59			2017-01-01	\N		2	1454	2017-05-18 19:15:21.057517	2017-05-31 15:35:35.78952	\N	\N
+2784	19	OFERTAS	005	2017-06-18	\N	PRESENTACION DE PROPUESTAS	13	979	2017-05-22 16:25:03.541338	2017-06-08 14:14:48.270419	1	\N
+2727	59			2017-01-01	\N		2	1455	2017-05-18 19:31:26.659793	2017-05-31 15:38:41.823896	\N	\N
+2542	59			2017-01-01	\N		2	1379	2017-05-10 17:58:33.279902	2017-05-31 15:42:58.848261	\N	\N
+3054	58			2017-06-20	\N		9	1572	2017-05-31 21:51:06.285462	2017-05-31 21:51:06.285462	\N	\N
+3056	13		NC-70-SGFA-LOCN-PS-1974	2017-05-26	191750		8	1412	2017-06-02 14:49:33.489301	2017-06-02 14:49:33.489301	1	\N
+3057	15		NC-70-SGA-LOCN-PS-1974	2017-05-29	191750		8	1412	2017-06-02 14:50:57.970933	2017-06-02 14:50:57.970933	1	\N
+3064	12		NC-70-SGFA-LOCN-PS-2028	2017-05-31	6168724.09999999963		8	1445	2017-06-02 15:07:07.834206	2017-06-02 15:07:07.834206	1	\N
+3065	13		NC-70-SGFA-LOCN-PS-2028	2017-05-31	6168724.09999999963		8	1445	2017-06-02 15:08:06.913538	2017-06-02 15:08:06.913538	1	\N
+3066	15		NC-70-SGFA-LOCN-PS-2028	2017-05-31	6168724.09999999963		8	1445	2017-06-02 15:09:11.392221	2017-06-02 15:09:11.392221	1	\N
+3067	15			2017-06-02	\N		6	1245	2017-06-02 19:45:55.754834	2017-06-02 19:45:55.754834	\N	\N
+3068	15			2017-06-02	\N		6	1246	2017-06-02 19:46:19.163265	2017-06-02 19:46:19.163265	\N	\N
+2330	40	RESOLUCION Nº 066-2017-ACFFAA	066	2017-04-26	9	RESOLUCION DE NOMBRAMIENTO 	13	979	2017-05-03 20:28:28.887967	2017-05-03 20:28:48.82847	1	\N
+3032	36	 	  	2017-05-26	1335036.30000000005		9	1572	2017-05-30 00:00:00	2017-05-31 21:50:20.263185	1	\N
+2818	24		G.500-2313	2017-05-15	\N		6	1014	2017-05-22 22:18:43.258146	2017-05-22 22:18:43.258146	\N	\N
+2820	24		G.500-2313	2017-05-15	\N		6	1016	2017-05-22 22:20:21.182825	2017-05-22 22:20:21.182825	\N	\N
+2883	22		N° 063-2017/DPC/ACFFAA	2017-05-04	1	Recepción de DIEZ (10)  archivadores con todo el actuado 	14	830	2017-05-23 21:57:54.844956	2017-05-23 21:57:54.844956	1	\N
+2886	15			2017-01-01	\N		6	908	2017-05-23 22:09:10.817883	2017-05-23 22:09:10.817883	\N	\N
+2901	15		0857	2017-05-25	\N		6	954	2017-05-25 17:55:48.423639	2017-05-25 17:55:48.423639	\N	\N
+1283	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	949	2017-04-30 00:00:00	2017-05-26 13:36:55.324839	\N	\N
+1255	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1022	2017-04-30 00:00:00	2017-05-26 13:42:17.927796	\N	\N
+1235	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1247	2017-04-30 00:00:00	2017-05-26 13:43:53.499482	\N	\N
+2344	42	H.T. Nº 083 LP 1	083	2017-04-10	1690166.6399999999	FORMATO APROBACION DE BASES LP-N º1	13	980	2017-05-03 21:05:28.186754	2017-05-03 21:35:13.278082	1	\N
+2346	18	Bases LP 1	001	2017-04-10	1690166.6399999999	CONVOCATORIA EN EL SEACE LP-Nº1	13	980	2017-05-03 21:11:10.978698	2017-05-03 21:35:31.151912	1	\N
+2334	47	H.T. Nº 055 	055	2017-04-28	876	FORMATO APROBACION DE BASES 	13	518	2017-05-03 20:38:04.6197	2017-05-05 14:08:00.363383	1	\N
+2543	16			2017-01-01	\N		6	1382	2017-05-10 18:00:55.457395	2017-05-10 18:00:55.457395	\N	\N
+2544	16			2017-01-01	\N		6	1383	2017-05-10 18:01:34.711489	2017-05-10 18:01:34.711489	\N	\N
+2547	16			2017-01-01	\N		6	1381	2017-05-10 18:02:53.779914	2017-05-10 18:02:53.779914	\N	\N
+2163	36	RCCFFAA version 1	28	2017-01-19	\N		9	706	2017-04-30 00:00:00	2017-05-27 00:02:09.950338	\N	\N
+2584	200		NC-70-EMPL-PC N° 0429	2017-03-13	179000	EXCLUSION SOLICITADA EN LA VERSION 3 DEL PAC DE LA FAP	8	563	2017-05-11 19:06:38.808065	2017-05-11 19:06:38.808065	1	\N
+2586	200		NC-70-EMPL-PC N° 0429	2017-03-13	348396.940000000002	EXCLUSION SOLICITADA EN LA VERSION 3 DEL PAC DE LA FAP	8	561	2017-05-11 19:33:07.577786	2017-05-11 19:33:07.577786	1	\N
+2587	56	DOCUMENTO A LAS OBAC'S - PERSISTENCIA DE NECESIDAD		2017-04-21	\N	DOCUMENTO A LAS OBAC'S - PERSISTENCIA DE NECESIDAD	13	1367	2017-05-11 19:34:29.04561	2017-05-11 19:34:36.357405	\N	\N
+2588	17	Expediente		2016-10-24	\N	RECEPCIÓN DE EXPEDIENTE	13	1376	2017-05-11 19:35:20.564949	2017-05-11 19:35:33.705391	\N	\N
+2589	18	Bases		2016-11-09	\N	CONVOCATORIA EN EL SEACE	13	1376	2017-05-11 19:35:53.777236	2017-05-11 19:36:01.057626	\N	\N
+2591	44	Bases		2016-12-09	\N	ABSOLUCIÓN DE BASES	13	1376	2017-05-11 19:37:02.108463	2017-05-11 19:37:16.489785	\N	\N
+2593	19	Ofertas		2017-01-20	\N	PRESENTACIÓN DE OFERTAS 	13	1376	2017-05-11 19:38:34.5444	2017-05-11 19:38:56.387647	\N	\N
+2595	56	DOCUMENTO A LAS OBAC'S - PERSISTENCIA DE NECESIDAD		2017-04-21	\N	DOCUMENTO A LAS OBAC'S - PERSISTENCIA DE NECESIDAD	13	1376	2017-05-11 19:41:00.202527	2017-05-11 19:41:13.984315	\N	\N
+2622	25		596	2017-05-16	\N		6	902	2017-05-16 16:01:26.866517	2017-05-16 16:01:26.866517	\N	\N
+2805	13		1085	2017-05-22	\N		6	769	2017-05-22 18:52:13.151946	2017-05-22 18:52:13.151946	\N	\N
+2806	13		1072	2017-05-22	\N		6	912	2017-05-22 18:53:41.420443	2017-05-22 18:53:41.420443	\N	\N
+2807	13		1067	2017-05-22	\N		6	780	2017-05-22 18:55:24.539907	2017-05-22 18:55:24.539907	\N	\N
+2808	13		1079	2017-05-22	\N		6	763	2017-05-22 18:56:21.042885	2017-05-22 18:56:21.042885	\N	\N
+2809	22	MEMORANDUM	N° 141-2015-ACFFAA-DPC	2015-11-17	2.57600000000000007	MONTO: 2'575,526.41	14	1381	2017-05-22 20:12:07.828446	2017-05-22 20:12:17.278957	2	\N
+2810	51	CARTA OFICIO	G.500-5794	2015-12-31	2.57600000000000007	MONTO: 2'575,526.41	14	1381	2017-05-22 20:13:39.434397	2017-05-22 20:13:48.616213	2	\N
+2811	22	MEMORANDUM	N° 138-2015-ACFFAA-DPC	2015-11-10	5.20199999999999996	MONTO: 5'201,990.9	14	1382	2017-05-22 20:25:15.811002	2017-05-22 20:25:23.725224	\N	\N
+2813	51	CARTA OFICIO	G.500-1100	2016-03-03	1.74199999999999999	MONTO: 1'742,300.00	14	1382	2017-05-22 20:43:31.403273	2017-05-22 20:43:54.31126	2	\N
+2814	22	MEMORANDUM	N° 138-2015-ACFFAA-DPC	2015-11-10	5.20199999999999996	5'201.990.9  EUROS	14	1383	2017-05-22 21:29:48.196321	2017-05-22 21:29:58.201735	\N	\N
+3023	17			2017-05-22	\N		2	119	2017-05-29 14:29:24.992638	2017-05-29 14:29:24.992638	\N	\N
+3025	17			2017-05-22	\N		2	590	2017-05-29 14:30:56.606738	2017-05-29 14:30:56.606738	\N	\N
+3026	17			2017-05-22	\N		2	706	2017-05-29 14:31:40.190721	2017-05-29 14:31:40.190721	\N	\N
+3027	17			2017-05-26	\N		2	728	2017-05-29 14:33:50.591511	2017-05-29 14:33:50.591511	\N	\N
+3029	13			2017-05-25	\N		8	1061	2017-05-29 16:31:24.581267	2017-05-29 16:31:24.581267	\N	\N
+3031	36	 	  	2017-05-26	496229.200000000012	\N	2	1571	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3033	36	 	  	2017-05-26	158900	\N	2	1573	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3034	36	 	  	2017-05-26	90000	\N	2	1574	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3035	36	 	  	2017-05-26	77500	\N	2	1575	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3036	36	 	  	2017-05-26	245000	\N	2	1576	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3037	36	 	  	2017-05-26	293850	\N	2	1577	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3038	36	 	  	2017-05-26	380000	\N	2	1578	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3039	36	 	  	2017-05-26	1843445	\N	2	1579	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3040	36	 	  	2017-05-26	90000	\N	2	1580	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3041	36	 	  	2017-05-26	241936	\N	2	1581	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3042	36	 	  	2017-05-26	71984	\N	2	1582	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3043	36	 	  	2017-05-26	1125000	\N	2	1583	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+3044	36	 	  	2017-05-26	268200	\N	2	1584	2017-05-30 00:00:00	2017-05-30 00:00:00	1	\N
+2734	50	OFICIO	ITEM 1: N° 882-2016/SG/DEC/ACFFAA	2016-10-27	51	ITEM 2: OFICIO N° 910-2016/SG/DEC/ACFFAA 08/11/2016	2	1460	2017-05-19 20:03:08.606705	2017-05-29 17:09:24.241389	2	\N
+2816	50	OFICIO	N° 136-2017/SG/DEC/ACFFAA	2017-02-01	618	MONTO: 618,092.70 EUROS	2	1407	2017-05-22 22:08:36.786119	2017-05-29 17:12:02.05264	\N	\N
+2728	50			2017-01-01	\N		2	1457	2017-05-18 19:33:11.882038	2017-05-29 17:46:15.321068	\N	\N
+3045	13		1174	2017-05-26	\N		6	1243	2017-05-31 17:40:13.104056	2017-05-31 17:40:13.104056	\N	\N
+3047	13		1174	2017-05-26	\N		6	1248	2017-05-31 17:42:29.496414	2017-05-31 17:42:29.496414	\N	\N
+3053	58			2017-06-16	\N		9	1571	2017-05-31 21:48:31.069625	2017-05-31 21:48:31.069625	\N	\N
+3055	12		NC-70-SGFA-LOCN-PS-N° 1974	2017-05-26	191750		8	1412	2017-06-02 14:48:10.281826	2017-06-02 14:48:10.281826	\N	\N
+3058	12		NC-70-SGFA-LOC-PS-1973	2017-05-26	399401		8	1410	2017-06-02 14:52:37.008182	2017-06-02 14:52:37.008182	1	\N
+3059	13		NC-70-SGFA-LOCN-PS-1973	2017-05-26	399401		8	1410	2017-06-02 14:53:35.535635	2017-06-02 14:53:35.535635	1	\N
+3060	15		NC-70-SGFA-LOCN-PS-1973	2017-05-29	399		8	1410	2017-06-02 14:58:34.277456	2017-06-02 14:58:34.277456	1	\N
+3062	13		NC-70-SGFA-LOCN-PS-2029	2017-05-31	13972903.2300000004		8	1413	2017-06-02 15:04:03.652721	2017-06-02 15:04:03.652721	1	\N
+3063	15		NC-70-SGFA-LOCN-PS-2029	2017-05-31	13972903.2300000004		8	1413	2017-06-02 15:05:00.264497	2017-06-02 15:05:00.264497	1	\N
+3061	12	CARTA	NC-70-SGFA-LOCN-PS-2029	2017-05-31	13972903.2300000004		8	1413	2017-06-02 15:03:03.84844	2017-06-02 15:05:19.472129	1	\N
+3070	30		000-2017/SG/ADJ/ACFFAA	2017-05-26	805605.040000000037		8	1061	2017-06-02 19:52:22.334617	2017-06-02 19:52:22.334617	1	\N
+3069	30	OFICIO	546-2017/SG/ADJ/ACFFAA	2017-05-29	2138984.31000000006	CCP N° 1049 del 13-03-2017, NO GARANTIZA LOS RECUROS SUFICIENTES PARA ATENDER EL PAGO DE LAS OBLIGACIONES EN EL PRESENTE AÑO, AL SER INFERIOR DICHO IMPORTE A LO REGISTRADO EN EL FORMATO N° 01 CUYO MONTO ASCIENDE A LA SUMA DE S/. 2,138,984.31	8	1060	2017-06-02 19:51:02.563903	2017-06-02 21:25:09.59647	1	\N
+2885	26			2017-01-01	\N		2	1462	2017-05-23 22:04:26.670974	2017-06-05 14:07:36.965629	\N	\N
+3073	61			2017-03-08	\N		2	1462	2017-06-05 14:09:21.004879	2017-06-05 14:09:21.004879	\N	\N
+2592	45	Bases		2017-01-09	\N	INTEGRACIÓN DE BASES	13	1376	2017-05-11 19:37:52.500519	2017-05-11 19:38:01.979054	\N	\N
+2594	49	Ofertas		2017-02-07	\N	DESIERTO	13	1376	2017-05-11 19:39:19.772254	2017-05-11 19:39:33.208141	\N	\N
+2350	40	RESOLUCION Nº 049-2017-ACFFAA LP 2	049	2017-03-30	689074.869999999995	RESOLUCION DE NOMBRAMIENTO LP 2	13	980	2017-05-03 21:37:37.937217	2017-05-03 21:38:02.026751	1	\N
+2812	51	CARTA OFICIO	G.500-0111	2016-01-11	5.20199999999999996	5'201,999.9 EUROS	14	1382	2017-05-22 20:29:21.291283	2017-05-22 20:29:32.253622	\N	\N
+2353	18	BASES 002 LP 2	002	2017-04-27	689074.869999999995	CONVOCATORIA EN EL SEACE LP-Nº2	13	980	2017-05-03 21:49:09.624907	2017-05-03 21:49:20.354196	1	\N
+2596	56	MEMORÁNDUM Nº 069-2017/DPC/ACFFAA (DEVOLUCIÓN A DEM)	069	2017-05-11	\N	DEVUELTO A DEM PARA REFORMULACION POR FICHA SUBASTA INVERSA	13	983	2017-05-11 20:31:29.893442	2017-05-11 20:32:17.278353	\N	\N
+2356	40	RESOLUCION Nº 048-2017-ACFFAA LP 3	048	2017-03-30	495177.150000000023	RESOLUCION DE NOMBRAMIENTO LP-Nº 3	13	980	2017-05-03 22:03:07.015173	2017-05-03 22:03:19.062989	1	\N
+2357	42	FORMATO Nº 004-2017 DEL 12-04-2017	004	2017-04-12	495177.150000000023	FORMATO APROBACION DE BASES LP-N º3	13	980	2017-05-03 22:10:24.626907	2017-05-03 22:11:04.120463	1	\N
+2359	18	Bases 003 LP 3	003	2017-04-21	495177.150000000023	CONVOCATORIA EN EL SEACE LP-Nº3	13	980	2017-05-03 22:14:32.770709	2017-05-03 22:14:44.021504	1	\N
+2623	57		G.500-1868	2017-04-18	\N		6	1019	2017-05-16 20:30:15.665788	2017-05-16 20:30:15.665788	\N	\N
+2361	46	H.T. 100	100	2017-04-27	5585819.8200000003	INFORME Nº 030 SOLICITUD DE COMITE	13	983	2017-05-03 22:24:22.519341	2017-05-05 14:05:55.456549	1	\N
+2349	46	H.T. Nº 065 LP 2	065	2017-03-23	689074.869999999995	INFORME Nº 016 SOLICITUD DE COMITE LP-Nº 2	13	980	2017-05-03 21:33:10.522035	2017-05-05 14:10:55.897337	1	\N
+2355	46	H.T. 067 LP 3	067	2017-03-27	495177.150000000023	INFORME Nº 017 SOLICITUD DE COMITE LP-Nº 3	13	980	2017-05-03 21:57:32.206609	2017-05-05 14:11:10.113054	1	\N
+2351	47	FORMATO Nº 003-2017 DEL 04-04-2017 LP 2	003	2017-04-06	689074.869999999995	FORMATO APROBACION DE BASES LP-N º2	13	980	2017-05-03 21:39:44.426485	2017-05-05 14:11:47.897517	1	\N
+2441	48	Oficio 	56	2017-05-05	\N		11	555	2017-05-09 14:16:54.879898	2017-05-09 14:17:03.90998	\N	\N
+2442	48	Oficio 	056	2017-05-05	\N		11	556	2017-05-09 14:17:37.405695	2017-05-09 14:17:44.875674	\N	\N
+2443	48	Oficio 	056	2017-05-05	\N		11	568	2017-05-09 14:18:19.181474	2017-05-09 14:18:25.70441	\N	\N
+2448	19	Ofertas		2017-03-08	\N	PRESENTACIÓN DE OFERTAS 	13	1364	2017-05-09 14:55:07.933239	2017-05-09 14:55:26.118328	\N	\N
+2449	18	Bases		2016-12-30	\N	CONVOCATORIA EN EL SEACE	13	1361	2017-05-09 14:58:09.960195	2017-05-09 14:58:30.047959	\N	\N
+2453	19	Ofertas		2017-03-08	\N	PRESENTACIÓN DE OFERTAS 	13	1361	2017-05-09 15:02:42.275633	2017-05-09 15:02:50.314412	\N	\N
+2454	18	Bases		2016-12-30	\N	CONVOCATORIA EN EL SEACE	13	1366	2017-05-09 15:03:37.092026	2017-05-09 15:12:26.248972	\N	\N
+2456	43	Bases		2017-01-02	\N	FORMULACIÓN DE CONSULTAS	13	1366	2017-05-09 15:13:43.20288	2017-05-09 15:13:52.972798	\N	\N
+2458	45	Bases		2017-02-24	\N	INTEGRACIÓN DE BASES	13	1366	2017-05-09 15:15:12.096557	2017-05-09 15:15:20.814414	\N	\N
+2461	18	Bases		2016-11-09	\N	CONVOCATORIA EN EL SEACE	13	1362	2017-05-09 15:20:27.374041	2017-05-09 15:20:36.672509	\N	\N
+2463	44	Bases		2016-12-09	\N	ABSOLUCIÓN DE BASES	13	1362	2017-05-09 15:25:33.290027	2017-05-09 15:25:43.326544	\N	\N
+2464	45	Bases		2016-11-09	\N	INTEGRACIÓN DE BASES	13	1362	2017-05-09 15:27:23.265524	2017-05-09 15:27:35.788697	\N	\N
+2466	49	Desierto		2017-02-07	\N	DESIERTO	13	1362	2017-05-09 15:37:27.776076	2017-05-09 15:37:36.253749	\N	\N
+2468	17	Expediente		2016-10-24	\N	RECEPCIÓN DE EXPEDIENTE	13	1367	2017-05-09 15:39:55.435514	2017-05-09 15:40:02.870478	\N	\N
+2545	16			2017-01-01	\N		6	1385	2017-05-10 18:01:58.436772	2017-05-10 18:01:58.436772	\N	\N
+2348	44	Bases LP 1	001	2017-05-03	1690166.6399999999	ABSOLUCION DE CONSULTAS Y OBSERVACIONES LP-Nº 1	13	980	2017-05-03 21:25:10.698345	2017-05-10 20:29:06.909687	1	\N
+2590	43	Bases		2016-11-25	\N	FORMULACIÓN DE CONSULTAS	13	1376	2017-05-11 19:36:23.928245	2017-05-11 19:36:31.526171	\N	\N
+2625	57		G.500-1868	2017-04-18	\N		6	1022	2017-05-16 20:32:24.623131	2017-05-16 20:32:24.623131	\N	\N
+2732	22	MEMORANDUM	158-2016-ACFFAA-DPC	2016-10-25	51	ITEM 1 ($ 11,000.00) ITEM 2 ($ 40,000.00)	14	1460	2017-05-19 19:54:12.342556	2017-05-19 19:55:41.79859	2	\N
+2733	12		NC-70-SGFA-LOCN N° 1511 	2016-04-14	1934754		8	1461	2017-05-19 19:59:46.681706	2017-05-19 19:59:46.681706	1	\N
+2815	22	MEMORANDUM	017-2017-DPC-ACFFAA	2017-01-30	618	MONTO: 618,092.70 EUROS	14	1407	2017-05-22 22:05:31.715878	2017-05-22 22:05:44.423022	\N	\N
+2735	17		NC-70-SGFA-LOCN-N° 1511 	2017-01-01	1934754	SE ENCUENTRA PARA EL OTORGAMIENTO DE LA BUENA PRO	8	1461	2017-05-19 20:03:35.703877	2017-05-19 20:03:35.703877	1	\N
+2753	59			2017-01-01	174802.299999999988		2	1372	2017-05-19 21:58:24.029038	2017-05-31 15:40:15.261089	1	\N
+2738	15		0901	2017-05-17	2697774.91999999993	DOCUMENTACIÓN COMPLETADA POR EL SEBAT (16-05-2017) ENTREGADA A LA MANO POR EL COM. FAP NOVOA	8	1380	2017-05-19 20:21:46.901109	2017-05-19 20:21:46.901109	1	\N
+2742	34	RESOLUCIÓN DIRECTORAL	034	2016-11-04	\N		11	1373	2017-05-19 21:29:10.558008	2017-05-19 21:29:19.455632	\N	\N
+2743	4		NC-70-SGFA-LOCN-PS-N° 1783	2017-05-16	1811034.5		8	1337	2017-05-19 21:36:54.562628	2017-05-19 21:36:54.562628	1	\N
+2745	34	RESOLUCIÓN DIRECTORAL	021	2015-09-22	\N		11	1383	2017-05-19 21:42:19.978569	2017-05-19 21:42:38.791662	\N	\N
+2747	15		NC-70-SGFA-LOCN-PS-N° 1783	2017-05-19	1811094		8	1337	2017-05-19 21:44:45.570617	2017-05-19 21:44:45.570617	1	\N
+2754	34	HDT	003	2017-05-15	\N		11	1080	2017-05-19 21:59:23.363596	2017-05-19 21:59:28.811668	\N	\N
+2758	15		NC-70-SGFA-LOCN-N° 1025	2017-04-27	\N		8	516	2017-05-19 22:49:12.728542	2017-05-19 22:49:12.728542	1	\N
+2819	24		G.500-2313	2017-05-15	\N		6	1015	2017-05-22 22:19:35.977952	2017-05-22 22:19:35.977952	\N	\N
+1225	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1244	2017-04-30 00:00:00	2017-05-25 20:08:33.651009	\N	\N
+2750	300	CARTA 	G.500-2190	2017-05-04	4	Proceso culminado documentación remitida completa actas de recepción y documentos de pago  del el TIPO A  TIPO B  TIPO C  de vehículos de seguridad de la LP N° 002-2016 	14	1458	2017-05-19 21:52:32.977897	2017-05-23 23:22:18.689006	1	\N
+2887	300		G.500-2190	2017-05-04	277	Proceso culminado de los ítems 2 y 3 adjudicados  documentación completa, los demás ítems desiertos 1 y 4  y nulo  ítem 5 se realizado una segunda convocatoria, actualmente se encuentra a la fecha en DPC	14	828	2017-05-24 00:56:18.583728	2017-05-24 00:56:18.583728	1	\N
+2965	36	RCGM	RCG   0274-2017	2017-05-12	113694	\N	2	1526	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2966	36	RCGM	RCG   0274-2017	2017-05-12	351219.359999999986	\N	2	1527	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2967	36	RCGM	RCG   0274-2017	2017-05-12	1902690	\N	2	1528	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2968	36	RCGM	RCG   0274-2017	2017-05-12	888623.020000000019	\N	2	1529	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2969	36	RCGM	RCG   0274-2017	2017-05-12	58622.4000000000015	\N	2	1530	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2970	36	RCGM	RCG   0274-2017	2017-05-12	40000	\N	2	1531	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2971	36	RCGM	RCG   0274-2017	2017-05-12	204075	\N	2	1532	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2972	36	RCGM	RCG   0274-2017	2017-05-12	281511.260000000009	\N	2	1533	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2973	36	RCGM	RCG   0274-2017	2017-05-12	45000	\N	2	1534	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2974	36	RCGM	RCG   0274-2017	2017-05-12	50000	\N	2	1535	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2975	36	RCGM	RCG   0274-2017	2017-05-12	202000	\N	2	1536	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2736	61	CONTRATO DIRCOMAT	N° 241-2016-MGP/DIRCOMAT	2016-11-21	51		14	1460	2017-05-19 20:06:50.314011	2017-05-19 20:07:02.910693	2	\N
+2752	48	HDT	003	2017-05-15	\N		11	1244	2017-05-19 21:58:04.102502	2017-05-19 21:58:17.815272	\N	\N
+2755	30		476 2017/SG/ADJ/ACFFAA	2017-05-10	1638656		8	555	2017-05-19 22:11:41.451079	2017-05-19 22:11:41.451079	1	\N
+2352	42	H.T. Nº 084 LP 2	084	2017-04-27	689074.869999999995	FORMATO APROBACION DE BASES LP-Nº 2	13	980	2017-05-03 21:47:50.892518	2017-05-03 22:04:06.620674	1	\N
+2756	30		2017/SG/ADJ/ACFFAA	2017-05-09	1373852.64999999991		8	556	2017-05-19 22:13:40.730507	2017-05-19 22:13:40.730507	1	\N
+2360	17	OFICIO 052 DEL 25-04-2017	052	2017-04-26	5585819.8200000003	RECEPCION DE EXPEDIENTE	13	983	2017-05-03 22:23:23.289129	2017-05-03 22:23:31.505593	1	\N
+2358	47	FORMATO Nº 004-2017 DEL 21-04-2017 LP 3	004	2017-04-21	495177.150000000023	FORMATO APROBACION DE BASES LP-Nº 3	13	980	2017-05-03 22:12:26.735117	2017-05-05 14:12:57.568243	1	\N
+2447	45	Bases		2017-02-24	\N	INTEGRACIÓN DE BASES	13	1364	2017-05-09 14:53:50.678911	2017-05-09 14:55:44.34462	\N	\N
+2446	44	Bases		2017-01-24	\N	ABSOLUCIÓN DE BASES	13	1364	2017-05-09 14:52:59.136618	2017-05-09 14:56:06.521025	\N	\N
+2445	43	Bases		2017-01-02	\N	FORMULACIÓN DE CONSULTAS	13	1364	2017-05-09 14:52:19.42271	2017-05-09 14:56:40.263979	\N	\N
+2444	18	Bases		2016-12-30	\N	CONVOCATORIA EN EL SEACE	13	1364	2017-05-09 14:51:34.612937	2017-05-09 14:57:06.531874	\N	\N
+2450	43	Bases		2017-01-02	\N	FORMULACIÓN DE CONSULTAS	13	1361	2017-05-09 14:59:19.402066	2017-05-09 14:59:27.631717	\N	\N
+2451	44	Bases		2017-01-24	\N	ABSOLUCIÓN DE BASES	13	1361	2017-05-09 14:59:51.074358	2017-05-09 15:00:00.543477	\N	\N
+2452	45	Bases		2017-02-24	\N	INTEGRACIÓN DE BASES	13	1361	2017-05-09 15:00:26.059334	2017-05-09 15:00:37.877246	\N	\N
+2457	44	Bases		2017-01-24	\N	ABSOLUCIÓN DE BASES	13	1366	2017-05-09 15:14:17.647077	2017-05-09 15:14:29.612364	\N	\N
+2459	19	Ofertas		2017-03-08	\N	PRESENTACIÓN DE OFERTAS 	13	1366	2017-05-09 15:15:48.328655	2017-05-09 15:15:57.815185	\N	\N
+2460	17	Expediente		2016-10-24	\N	RECEPCIÓN DE EXPEDIENTE	13	1362	2017-05-09 15:19:47.86432	2017-05-09 15:19:57.530345	\N	\N
+2462	43	Bases		2016-11-25	\N	FORMULACIÓN DE CONSULTAS	13	1362	2017-05-09 15:21:02.279257	2017-05-09 15:21:11.740233	\N	\N
+2465	19	Ofertas		2017-01-20	\N	PRESENTACIÓN DE OFERTAS 	13	1362	2017-05-09 15:30:42.9439	2017-05-09 15:31:02.909559	\N	\N
+2757	30		476-2017/SG/ADJ/ACFFAA	2017-05-09	1569958.17999999993		8	568	2017-05-19 22:15:27.768326	2017-05-19 22:15:27.768326	1	\N
+2469	18	Bases		2016-11-09	\N	CONVOCATORIA EN EL SEACE	13	1367	2017-05-09 15:40:33.887365	2017-05-09 15:40:42.109839	\N	\N
+2467	56	DOCUMENTO A LAS OBAC'S - PERSISTENCIA DE NECESIDAD		2017-04-21	\N	DOCUMENTO A LAS OBAC'S - PERSISTENCIA DE NECESIDAD	2	1362	2017-05-09 15:38:39.101006	2017-05-11 14:15:54.959334	\N	\N
+2597	17	H.T. Nº 074 del 11-05-2017	074	2017-05-11	388254	RECEPCION DE EXPEDIENTE DE DEM	13	591	2017-05-12 16:22:54.608221	2017-05-12 16:23:13.624594	1	\N
+2600	46	H.T. 		2017-05-12	435490	INFORME Nº 33 DEL 12-05-2017	13	977	2017-05-12 16:27:03.058419	2017-05-12 16:27:12.096122	1	\N
+2602	46	H.T. 		2017-05-12	244049.790000000008	INFORME Nº 33 DEL 12-05-2017	13	750	2017-05-12 16:29:19.784907	2017-05-12 16:29:30.888831	1	\N
+2624	57		G.500-1870	2017-04-18	\N		6	1020	2017-05-16 20:31:18.199842	2017-05-16 20:31:18.199842	\N	\N
+2737	53	ACTA DE AFORO Y RECEPCION 	N° 040-2017	2017-03-20	51		14	1460	2017-05-19 20:14:56.705197	2017-05-19 20:15:06.770625	2	\N
+2740	15		NC-70-SGFA-LOCN-PS-N° 1620	2017-05-17	1236010.19999999995	DOCUMENTACION COMPLETADA POR EL SEBAT EL 16-05-2017	8	1377	2017-05-19 20:30:39.969975	2017-05-19 20:30:39.969975	1	\N
+2741	34	RESOLUCIÓN DIRECTORAL	21	2016-09-13	\N		11	1374	2017-05-19 21:20:23.692724	2017-05-19 21:20:29.058529	\N	\N
+2744	12		NC-70-SGFA-LOCN-PS-N° 1783	2017-05-16	1811094		8	1337	2017-05-19 21:39:10.948577	2017-05-19 21:39:10.948577	1	\N
+2746	13		NC-70-SGFA-LOCN-PS-N° 1783	2017-05-18	1811094		8	1337	2017-05-19 21:43:46.620141	2017-05-19 21:43:46.620141	1	\N
+2748	34	RESOLUCIÓN DIRECTORAL	20	2015-09-21	\N		11	1382	2017-05-19 21:49:59.244062	2017-05-19 21:50:08.119414	\N	\N
+2749	300			2017-03-27	\N		14	1457	2017-05-19 21:51:10.189144	2017-05-19 21:51:10.189144	\N	\N
+1124	13	CARTA	NC-70-SGFA-LOCN-PS N° 1257 	2017-04-03	997635.709999999963	12.04.2017-SITUACIÓN : EXPEDIENTE DE INICIO FUE EVALUADO POR PEC-DEM / ESTADO DE CONSULTA AL SEBAT FAP	8	520	2017-04-10 12:30:23.791973	2017-05-22 23:01:12.121507	1	\N
+2821	15		NC-70-SGFA-LOCN-PS N° 1257 	2017-04-27	997635.709999999963	SE REMITIO CON EL OFICIO ORIGINAL Y HOJA DE TRÁMITE 631 DEL 31-03-2017 (27-04-2017)	8	520	2017-05-22 23:03:24.143231	2017-05-22 23:03:24.143231	1	\N
+2889	58			2017-07-01	\N		6	1008	2017-05-24 14:36:18.693022	2017-05-24 14:36:18.693022	\N	\N
+2890	58			2017-05-25	\N		6	1243	2017-05-24 14:39:37.319008	2017-05-24 14:39:37.319008	\N	\N
+2892	58			2017-05-25	\N		6	1246	2017-05-24 14:40:59.415849	2017-05-24 14:40:59.415849	\N	\N
+2976	36	RCGM	RCG   0274-2017	2017-05-12	160424.820000000007	\N	2	1537	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2977	36	RCGM	RCG   0274-2017	2017-05-12	87542	\N	2	1538	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2978	36	RCGM	RCG   0274-2017	2017-05-12	169274	\N	2	1539	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2979	36	RCGM	RCG   0274-2017	2017-05-12	70000	\N	2	1540	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2980	36	RCGM	RCG   0274-2017	2017-05-12	100000	\N	2	1541	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2981	36	RCGM	RCG   0274-2017	2017-05-12	68310	\N	2	1542	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2982	36	RCGM	RCG   0274-2017	2017-05-12	80448	\N	2	1543	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2983	36	RCGM	RCG   0274-2017	2017-05-12	89350.3800000000047	\N	2	1544	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2984	36	RCGM	RCG   0274-2017	2017-05-12	478800	\N	2	1545	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2985	36	RCGM	RCG   0274-2017	2017-05-12	139717.399999999994	\N	2	1546	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2986	36	RCGM	RCG   0274-2017	2017-05-12	57700	\N	2	1547	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2987	36	RCGM	RCG   0274-2017	2017-05-12	32920	\N	2	1548	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2988	36	RCGM	RCG   0274-2017	2017-05-12	56597	\N	2	1549	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2989	36	RCGM	RCG   0274-2017	2017-05-12	64800	\N	2	1550	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2990	36	RCGM	RCG   0274-2017	2017-05-12	99435	\N	2	1551	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2991	36	RCGM	RCG   0274-2017	2017-05-12	65000	\N	2	1552	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2992	36	RCGM	RCG   0274-2017	2017-05-12	301285.799999999988	\N	2	1553	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2993	36	RCGM	RCG   0274-2017	2017-05-12	135000	\N	2	1554	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2994	36	RCGM	RCG   0274-2017	2017-05-12	70000	\N	2	1555	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2995	36	RCGM	RCG   0274-2017	2017-05-12	58915.1999999999971	\N	2	1556	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2997	36	RCGM	RCG   0274-2017	2017-05-12	551620.859999999986	\N	2	1558	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2998	36	RCGM	RCG   0274-2017	2017-05-12	111799.240000000005	\N	2	1559	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2999	36	RCGM	RCG   0274-2017	2017-05-12	800000	\N	2	1560	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3000	36	RCGM	RCG   0274-2017	2017-05-12	80000	\N	2	1561	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3001	36	RCGM	RCG   0274-2017	2017-05-12	132000	\N	2	1562	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3019	15			2017-04-06	\N		6	1017	2017-05-26 20:58:54.767761	2017-05-26 21:04:02.611083	\N	\N
+2362	12		G.500-1812	2017-04-14	\N		6	893	2017-05-04 14:38:25.530084	2017-05-04 14:38:25.530084	\N	\N
+2363	13		728	2017-04-21	\N		6	893	2017-05-04 14:39:06.914965	2017-05-04 14:39:06.914965	\N	\N
+2364	12		G.500-1813	2017-04-17	\N		6	884	2017-05-04 14:40:54.684044	2017-05-04 14:40:54.684044	\N	\N
+2365	13		729	2017-04-21	\N		6	884	2017-05-04 14:41:46.708953	2017-05-04 14:41:46.708953	\N	\N
+2366	12		G.500-1815	2017-04-17	\N		6	882	2017-05-04 14:43:19.433394	2017-05-04 14:43:19.433394	\N	\N
+2367	13		731	2017-04-21	\N		6	882	2017-05-04 14:43:50.97152	2017-05-04 14:43:50.97152	\N	\N
+1084	8	RERSOLUCION JEFATURAL 	23	2017-02-16	198000	adjudicado	4	480	2017-04-06 22:30:51.601715	2017-04-28 22:06:13.504847	2	\N
+1183	36	version	\N	2017-01-05	\N	\N	2	895	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2470	43	Bases		2016-11-25	\N	FORMULACIÓN DE CONSULTAS	13	1367	2017-05-09 15:41:01.837015	2017-05-09 15:41:11.081802	\N	\N
+1092	30	OFICIO N° 0252-2017-SG/DEM/ACFFAA DEL 13-03-2017		2017-03-13	\N	SEGÚN INFORMACIÓN DEL OBAC, EL EXPEDIENTE SE SENCUENTRA EN PROCESO DE RESTRUCTURACIÓN	4	517	2017-04-06 22:38:26.281338	2017-04-13 17:54:25.244558	\N	\N
+2472	45	Bases		2017-01-09	\N	INTEGRACIÓN DE BASES	13	1367	2017-05-09 15:42:30.465048	2017-05-09 15:42:39.36707	\N	\N
+2549	34	Oficio 	101	2016-11-23	\N		11	1371	2017-05-10 19:54:36.128284	2017-05-10 19:54:45.423468	\N	\N
+2552	4		NC-70-SGFA-LOCN-PS-N° 1317	2017-04-05	1320255.53000000003		8	1278	2017-05-10 20:06:00.160429	2017-05-10 20:06:00.160429	1	\N
+2553	34	Oficio 	084	2016-10-07	\N		11	1376	2017-05-10 20:06:32.746408	2017-05-10 20:06:42.975849	\N	\N
+2555	14		NC-70-SGFA-LOCN-PS-N° 1017	2017-04-10	1320255.53000000003		8	1278	2017-05-10 20:08:06.757086	2017-05-10 20:08:06.757086	1	\N
+2561	44	Bases		2017-05-10	\N	ABSOLUCIÓN DE BASES	13	828	2017-05-10 20:24:32.433798	2017-05-10 20:24:40.229355	\N	\N
+2598	46	H.T. 		2017-05-12	388254	INFORME Nº 33 DEL 12-05-2017	13	591	2017-05-12 16:24:54.031758	2017-05-12 16:25:02.432143	1	\N
+2599	17	H.T. Nº 074 del 11-05-2017	074	2017-05-11	435490	RECEPCION DE EXPEDIENTE DE DEM	13	977	2017-05-12 16:26:06.819775	2017-05-12 16:26:22.665457	1	\N
+2601	17	H.T. Nº 074 del 11-05-2017	074	2017-05-11	244049.790000000008	RECEPCION DE EXPEDIENTE DE DEM	13	750	2017-05-12 16:28:12.676437	2017-05-12 16:28:33.543203	1	\N
+1185	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	882	2017-04-30 00:00:00	2017-05-25 19:30:53.7902	\N	\N
+1186	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1023	2017-04-30 00:00:00	2017-05-25 20:04:01.120265	\N	\N
+1184	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	574	2017-04-30 00:00:00	2017-06-08 14:29:45.920472	\N	\N
+1199	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1040	2017-04-30 00:00:00	2017-06-08 14:36:24.784072	\N	\N
+1200	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1046	2017-04-30 00:00:00	2017-06-08 14:37:16.634592	\N	\N
+1189	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1042	2017-04-30 00:00:00	2017-06-08 14:45:23.403566	\N	\N
+1190	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1048	2017-04-30 00:00:00	2017-06-08 14:47:21.342848	\N	\N
+1191	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1049	2017-04-30 00:00:00	2017-06-08 14:47:52.886964	\N	\N
+1192	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1050	2017-04-30 00:00:00	2017-06-08 14:48:33.420273	\N	\N
+1065	12	OFICIO S-SGFA-LOCN-PS-N° 0139 DEL 01-03-2017		2017-03-03	\N		4	700	2017-04-06 21:43:39.627123	2017-04-06 21:43:39.627123	\N	\N
+1066	14			2017-03-03	\N		4	700	2017-04-06 21:44:06.522102	2017-04-06 21:44:06.522102	\N	\N
+1067	13			2017-03-06	\N		4	700	2017-04-06 21:44:54.414741	2017-04-06 21:44:54.414741	\N	\N
+1068	14			2017-03-07	\N		4	700	2017-04-06 21:46:41.316052	2017-04-06 21:46:41.316052	\N	\N
+1074	13			2017-02-13	\N		4	516	2017-04-06 21:54:02.592689	2017-04-06 21:54:02.592689	\N	\N
+1078	12	OFICIO 684 S-CGE	684	2017-02-23	0		4	980	2017-04-06 21:59:11.584958	2017-04-06 21:59:11.584958	1	\N
+1086	14			2017-02-13	\N		4	517	2017-04-06 22:33:22.050931	2017-04-06 22:33:22.050931	\N	\N
+1087	13			2017-02-13	\N		4	517	2017-04-06 22:34:24.606314	2017-04-06 22:34:24.606314	\N	\N
+1091	25	OFICIO N° 025-2017-ACFFAA-DEM		2017-02-20	\N		4	517	2017-04-06 22:37:42.356114	2017-04-06 22:37:42.356114	\N	\N
+1093	12	OFICIO NC-70-SGFA-LOCN-PS-N° 0503 DEL 10-02-2017		2017-02-10	\N		4	518	2017-04-06 22:48:08.801296	2017-04-06 22:48:08.801296	\N	\N
+1094	14			2017-02-13	\N		4	518	2017-04-06 22:48:35.200908	2017-04-06 22:48:35.200908	\N	\N
+1095	13			2017-02-13	\N		4	518	2017-04-06 22:48:52.976347	2017-04-06 22:48:52.976347	\N	\N
+1096	14			2017-02-17	\N		4	518	2017-04-06 22:49:26.20342	2017-04-06 22:49:26.20342	\N	\N
+1097	15			2017-02-17	\N		4	518	2017-04-06 22:50:07.675799	2017-04-06 22:50:07.675799	\N	\N
+1098	25	OFICIO N° 025-2017-ACFFAA-DEM		2017-02-20	\N		4	518	2017-04-06 22:51:25.41752	2017-04-06 22:51:25.41752	\N	\N
+1071	13	HOJA TRAMITE 	524	2017-03-17	9713266.09999999963		4	979	2017-04-06 21:52:12.577938	2017-04-12 21:49:54.540281	1	\N
+1069	15	MEMORANDÚM N° 044-2017/OPP/UPP/ACFFAA DEL 07.03.2017		2017-03-08	\N	12.04.2017 - SITUACIÓN : EN LA DIRECCIÓN DE PROCESOS DE CONTRATACIONES	4	700	2017-04-06 21:46:59.31252	2017-04-13 18:32:56.357372	\N	\N
+1063	12	OFICIO 	684	2017-02-23	1658414.25		4	978	2017-04-06 21:42:00.45651	2017-04-12 22:09:46.270284	1	\N
+1064	13	HOJA TRAMITE 	375	2017-02-23	1658414.25		4	978	2017-04-06 21:42:53.954456	2017-04-12 22:10:33.930594	1	\N
+1090	15	MEMORANDÚM N° 025-2017/ACFFAA/OPP/2 DEL 20.02.2017		2017-02-20	\N		4	517	2017-04-06 22:35:39.825311	2017-04-13 18:35:39.668829	\N	\N
+1058	13	HOJA TRAMITE 	370	2017-02-22	97000		4	977	2017-04-06 21:28:49.118144	2017-04-12 22:19:58.967792	1	\N
+143	\N			\N	\N		4	\N	2017-03-21 06:34:00	2017-04-12 22:35:40.254815	1	\N
+141	\N			\N	\N		4	\N	2017-03-21 06:34:00	2017-04-12 22:40:37.110096	1	\N
+1088	8	RERSOLUCION JEFATURAL 	25-2017-ACFFAA	2017-02-17	650000	adjudicado	4	992	2017-04-06 22:34:53.592328	2017-04-28 22:03:29.284823	2	\N
+1188	36	version	\N	2017-01-05	\N	\N	2	872	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1194	36	version	\N	2017-01-05	\N	\N	2	1031	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1195	36	version	\N	2017-01-05	\N	\N	2	1030	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1196	36	version	\N	2017-01-05	\N	\N	2	1029	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1197	36	version	\N	2017-01-05	\N	\N	2	1028	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1198	36	version	\N	2017-01-05	\N	\N	2	1027	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2368	17	H.T. N° 053 DEL 07-04-2017	053	2017-04-07	230252	RECEPCION DE EXPEDIENTE DE LA DEM	13	700	2017-05-04 16:14:54.577091	2017-05-04 16:15:07.272845	2	\N
+2371	47		001	2017-04-25	230252	SOLICITUD DE APROBACION DE BASES	13	700	2017-05-04 16:20:20.913501	2017-05-05 14:04:24.528845	2	\N
+2370	40	RESOLUCION N°062 DEL 21-04-2017	062	2017-04-21	230252	NOMBRAMIENTO DE COMITE	13	700	2017-05-04 16:18:05.869176	2017-05-04 16:18:13.746303	2	\N
+1010	15	Memorandum 	030-2017	2017-02-27	\N		4	742	2017-04-04 22:01:08.553054	2017-04-04 22:01:08.553054	\N	\N
+1008	12	carta oficio	G.500-0826	2017-02-22	625205.199999999953		4	742	2017-04-04 21:47:22.843963	2017-04-04 22:04:40.654648	1	\N
+1011	12	carta oficio	G.500-0826	2017-02-22	100000		4	750	2017-04-04 22:08:15.277483	2017-04-04 22:08:15.277483	1	\N
+1012	13	carta oficio	G.500-0826	2017-02-24	\N		4	750	2017-04-04 22:12:41.020248	2017-04-04 22:12:41.020248	\N	\N
+1013	15	Memorandum	030-2017	2017-02-27	\N		4	750	2017-04-04 22:13:43.461603	2017-04-04 22:13:43.461603	\N	\N
+1014	12	carta oficio	G.500-1227	2017-03-14	1500000		4	728	2017-04-04 22:21:46.052528	2017-04-04 22:21:46.052528	1	\N
+1015	13	hoja tramite	0499	2017-03-17	\N		4	728	2017-04-04 22:22:59.411897	2017-04-04 22:22:59.411897	\N	\N
+1009	13	hoja tramite	0367	2017-02-24	\N		4	742	2017-04-04 21:49:04.942315	2017-04-04 22:24:33.806912	\N	\N
+1005	13	carta oficio	G.500-1466	2017-03-28	\N		2	902	2017-04-04 20:42:55.413672	2017-04-04 22:30:02.916656	\N	\N
+1004	12	carta oficio	G.500-1466	2017-03-27	1		2	902	2017-04-04 20:41:49.279431	2017-04-04 22:30:18.289673	1	\N
+1007	13	carta oficio	G.500-1350	2017-03-28	\N		2	899	2017-04-04 21:01:53.29147	2017-04-04 22:32:12.121639	\N	\N
+2372	42	RESOLUCION N°067 DEL 26-04-2017	067	2017-04-26	230252	APROBACION DE BASES	13	700	2017-05-04 16:21:13.072554	2017-05-04 16:21:22.906711	2	\N
+1006	12	carta oficio	G.500-1350	2017-03-21	\N		2	899	2017-04-04 20:55:12.075896	2017-04-05 21:31:00.551868	1	\N
+2373	18	Bases N° 001	001	2017-04-26	230252	CONVOCATORIA EN EL SEACE	13	700	2017-05-04 16:22:23.737075	2017-05-04 16:22:31.543338	2	\N
+1101	14			2017-03-01	\N		4	518	2017-04-06 23:39:33.825234	2017-04-06 23:39:33.825234	\N	\N
+1102	13			2017-03-02	\N		4	518	2017-04-06 23:40:08.865092	2017-04-06 23:40:08.865092	\N	\N
+1103	14			2017-03-02	\N		4	518	2017-04-06 23:40:38.561779	2017-04-06 23:40:38.561779	\N	\N
+2374	43	Bases N° 001	001	2017-04-28	230252	FORMULACION DE CONSULTAS	13	700	2017-05-04 16:23:28.940959	2017-05-04 16:23:35.637395	2	\N
+1148	15	MEMORANDUM N° 024-2017/OPP/ACFFAA		2017-02-17	\N		8	556	2017-04-21 20:31:10.712472	2017-04-21 20:31:10.712472	\N	\N
+1104	15	MEMORANDÚM N° 039-2017/OPP/ACFFAA DEL 02.03.2017		2017-03-03	\N	21.04.2017-SITUACIÓN : EN ESTUD IO DE POSIBILIDADES QUE OFRECE EL ESTUDIO DE MERCADO	8	518	2017-04-06 23:41:16.892844	2017-04-23 21:58:02.224332	\N	\N
+1149	16	Oficio EP solicitando incremento de presupuesto	34	2017-03-25	\N		11	977	2017-04-25 15:55:15.410755	2017-04-25 15:56:38.670259	\N	\N
+2375	44	Bases N° 001	001	2017-05-02	230252	ABSOLUCION DE CONSULTAS	13	700	2017-05-04 16:24:26.79006	2017-05-04 16:24:33.925122	2	\N
+2369	46	H.T. N° 085 DEL 10-04-2017	085	2017-04-10	230252	INFORME N° 024 DEL 07-04-2017 SOLICITUD DE COMITE	13	700	2017-05-04 16:17:03.714988	2017-05-05 14:04:05.559785	2	\N
+1202	36	version	\N	2017-01-05	\N	\N	2	735	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1203	36	version	\N	2017-01-05	\N	\N	2	996	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1204	36	version	\N	2017-01-05	\N	\N	2	995	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1205	36	version	\N	2017-01-05	\N	\N	2	989	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1206	36	version	\N	2017-01-05	\N	\N	2	981	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1207	36	version	\N	2017-01-05	\N	\N	2	1039	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1208	36	version	\N	2017-01-05	\N	\N	2	1038	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1209	36	version	\N	2017-01-05	\N	\N	2	480	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1210	36	version	\N	2017-01-05	\N	\N	2	985	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1212	36	version	\N	2017-01-05	\N	\N	2	1037	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1214	36	version	\N	2017-01-05	\N	\N	2	1036	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1221	36	version	\N	2017-01-05	\N	\N	2	1035	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1222	36	version	\N	2017-01-05	\N	\N	2	1034	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1223	36	version	\N	2017-01-05	\N	\N	2	1033	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1224	36	version	\N	2017-01-05	\N	\N	2	1032	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1227	36	version	\N	2017-01-05	\N	\N	2	773	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1228	36	version	\N	2017-01-05	\N	\N	2	994	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1229	36	version	\N	2017-01-05	\N	\N	2	993	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1230	36	version	\N	2017-01-05	\N	\N	2	991	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1231	36	version	\N	2017-01-05	\N	\N	2	990	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1232	36	version	\N	2017-01-05	\N	\N	2	988	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1233	36	version	\N	2017-01-05	\N	\N	2	987	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1234	36	version	\N	2017-01-05	\N	\N	2	986	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1236	36	version	\N	2017-01-05	\N	\N	2	992	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1237	36	version	\N	2017-01-05	\N	\N	2	984	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1238	36	version	\N	2017-01-05	\N	\N	2	982	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1241	36	version	\N	2017-01-05	\N	\N	2	978	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1242	36	version	\N	2017-01-05	\N	\N	2	813	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1244	36	version	\N	2017-01-05	\N	\N	2	1014	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1245	36	version	\N	2017-01-05	\N	\N	2	1015	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2471	44	Bases		2016-12-09	\N	ABSOLUCIÓN DE BASES	13	1367	2017-05-09 15:41:44.975133	2017-05-09 15:41:58.068242	\N	\N
+2473	19	Bases		2017-01-20	\N	PRESENTACIÓN DE OFERTAS 	13	1367	2017-05-09 15:43:28.275537	2017-05-09 15:43:46.530079	\N	\N
+2474	49	Desierto		2017-02-07	\N	DESIERTO	13	1367	2017-05-09 15:45:45.634855	2017-05-09 15:45:55.170043	\N	\N
+1128	24	CARTA OFICIO	G.500-1053	2017-03-01	\N		6	821	2017-04-12 21:28:08.440391	2017-05-10 17:26:31.31676	\N	\N
+2554	12		NC-70-SGFA-LONC-PS-N° 1317	2017-04-06	1320255.53000000003		8	1278	2017-05-10 20:07:08.790375	2017-05-10 20:07:08.790375	1	\N
+2557	13		NC-70-SGFA-LOCN-PS-N° 1317	2017-04-10	1320255.53000000003	SE ENCUENTRA A LA ESPERA DEL EXPEDIENTE DEL EJERCITO / DE LLEGAR SOLICITAR CAMBIO DE MODALIDAD DE ENCARGO POR COROPORATIVO 	8	1278	2017-05-10 20:09:03.161862	2017-05-10 20:12:07.601607	1	\N
+2556	45	Bases		2017-05-03	230252	INTEGRACIÓN DE BASES	13	700	2017-05-10 20:08:54.020496	2017-05-10 20:09:38.772501	2	\N
+2558	43	Bases		2017-05-08	\N	FORMULACIÓN DE CONSULTAS	13	978	2017-05-10 20:19:55.131989	2017-05-10 20:20:06.328887	\N	\N
+2550	26			2017-01-01	\N		2	1407	2017-05-10 20:03:42.499896	2017-05-22 14:08:38.678831	\N	\N
+1213	36	RCGM VERSION 2	0142-2017	2017-03-02	\N		6	902	2017-04-30 00:00:00	2017-05-25 19:37:01.576985	\N	\N
+1215	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1243	2017-04-30 00:00:00	2017-05-25 20:07:42.358249	\N	\N
+1226	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1245	2017-04-30 00:00:00	2017-05-25 20:09:27.626701	\N	\N
+1243	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1246	2017-04-30 00:00:00	2017-05-25 20:10:17.174778	\N	\N
+1240	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1248	2017-04-30 00:00:00	2017-05-25 20:11:04.522789	\N	\N
+1216	36	RCGE version 3	158	2017-04-12	\N		9	979	2017-04-30 00:00:00	2017-05-26 23:44:27.167217	\N	\N
+1239	36	RCGE version 3	158	2017-04-12	\N		9	983	2017-04-30 00:00:00	2017-05-26 23:45:45.553235	\N	\N
+1211	36	RCGE version 1	052	2017-01-02	\N		9	119	2017-04-30 00:00:00	2017-05-26 23:57:11.782477	\N	\N
+1219	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1045	2017-04-30 00:00:00	2017-06-08 14:42:10.550722	\N	\N
+1218	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1043	2017-04-30 00:00:00	2017-06-08 14:46:06.224287	\N	\N
+1201	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1044	2017-04-30 00:00:00	2017-06-08 14:46:48.790439	\N	\N
+1017	15	Memorandum	059-2017	2017-03-28	\N		4	728	2017-04-05 21:12:42.115237	2017-04-05 21:12:42.115237	\N	\N
+1018	12	OFICIO NC-70-SGFA-LOCN N° 0446 DEL 07-02-2017		2017-02-08	1731877		4	574	2017-04-05 21:51:55.80267	2017-04-05 21:56:05.074487	1	\N
+1019	13	OFICIO NC-70-SGFA-LOCN N° 0446 DEL 07-02-2017		2017-02-13	\N		4	574	2017-04-05 21:54:47.443293	2017-04-05 21:56:33.498937	\N	\N
+1021	25	OFICIO N° 025-2017-ACFFAA-DEM		2017-02-20	\N	ESTUDIO DE MERCADO REMITIÓ EL EXPEDIENTE A LA DC	4	574	2017-04-05 22:03:52.151466	2017-04-05 22:03:52.151466	\N	\N
+1100	12	OFICIO NC-70-SGFA-SNDA N° 0776 DEL 20-02-2017		2017-03-01	\N		4	518	2017-04-06 23:38:34.895271	2017-04-06 23:38:34.895271	1	\N
+1129	24	CARTA OFICIO	G.500-1053	2017-03-01	\N		4	855	2017-04-12 21:35:01.165043	2017-04-12 21:35:01.165043	\N	\N
+1057	12	OFICIO 	052	2017-02-22	97000		4	977	2017-04-06 21:27:56.124827	2017-04-12 22:20:25.529064	1	\N
+1136	8	RESOLUCION JEFATURAL	054-2017	2017-03-31	\N		4	855	2017-04-12 22:46:37.578962	2017-04-12 22:46:37.578962	\N	\N
+1138	16	HOJA TRAMITE 	375	2017-04-24	1690166.54000000004		4	978	2017-04-12 23:12:15.567401	2017-04-12 23:12:15.567401	1	\N
+1139	16	MEMO	041	2017-03-02	900000		4	119	2017-04-12 23:17:46.647411	2017-04-12 23:17:46.647411	1	\N
+1151	34	Oficio 	Oficio 047	2017-04-19	\N		11	518	2017-04-28 15:13:42.656121	2017-04-28 15:14:31.920424	\N	\N
+1152	34		Oficio 046	2017-04-18	\N		11	574	2017-04-28 15:18:01.428402	2017-04-28 15:18:01.428402	\N	\N
+1153	34		Oficio 043	2017-04-12	\N		11	573	2017-04-28 15:24:56.109736	2017-04-28 15:24:56.109736	\N	\N
+1246	36	version	\N	2017-01-05	\N	\N	2	1016	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1259	36	version	\N	2017-01-05	\N	\N	2	1010	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1260	36	version	\N	2017-01-05	\N	\N	2	1009	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1261	36	version	\N	2017-01-05	\N	\N	2	1007	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1262	36	version	\N	2017-01-05	\N	\N	2	1006	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1263	36	version	\N	2017-01-05	\N	\N	2	1005	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1264	36	version	\N	2017-01-05	\N	\N	2	1004	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1265	36	version	\N	2017-01-05	\N	\N	2	1003	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1266	36	version	\N	2017-01-05	\N	\N	2	1002	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1267	36	version	\N	2017-01-05	\N	\N	2	1001	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1268	36	version	\N	2017-01-05	\N	\N	2	1000	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1269	36	version	\N	2017-01-05	\N	\N	2	999	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1270	36	version	\N	2017-01-05	\N	\N	2	998	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1271	36	version	\N	2017-01-05	\N	\N	2	997	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1272	36	version	\N	2017-01-05	\N	\N	2	141	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1273	36	version	\N	2017-01-05	\N	\N	2	143	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1274	36	version	\N	2017-01-05	\N	\N	2	261	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1275	36	version	\N	2017-01-05	\N	\N	2	324	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1276	36	version	\N	2017-01-05	\N	\N	2	348	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1281	36	version	\N	2017-01-05	\N	\N	2	1012	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1282	36	version	\N	2017-01-05	\N	\N	2	1011	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1293	36	version	\N	2017-01-05	\N	\N	2	1104	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1294	36	version	\N	2017-01-05	\N	\N	2	1215	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1296	36	version	\N	2017-01-05	\N	\N	2	205	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1299	36	version	\N	2017-01-05	\N	\N	2	1159	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1303	36	version	\N	2017-01-05	\N	\N	2	1024	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1306	36	version	\N	2017-01-05	\N	\N	2	1026	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1307	36	version	\N	2017-01-05	\N	\N	2	1025	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1309	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	830	2017-04-30 00:00:00	2017-05-26 13:24:41.900792	\N	\N
+1300	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	828	2017-04-30 00:00:00	2017-05-26 13:22:33.35023	\N	\N
+1278	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1017	2017-04-30 00:00:00	2017-05-26 13:38:56.699996	\N	\N
+2376	17	OFICIO N° 043 DEL 12-04-2017	043	2017-04-12	787252.5	RECEPCION DE EXPEDIENTE DE LA DEM	13	573	2017-05-04 16:39:03.258514	2017-05-04 16:39:18.530157	1	\N
+1277	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1018	2017-04-30 00:00:00	2017-05-26 13:39:42.32117	\N	\N
+1020	15	MEMORANDUM	N° 025-2017-ACFFAA-OPP/2	2017-02-22	\N		8	574	2017-04-05 21:59:20.801517	2017-05-23 16:44:42.231895	\N	\N
+1279	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1008	2017-04-30 00:00:00	2017-05-25 19:58:21.613404	\N	\N
+1288	36	RCGM VERSION 5	0208	2017-04-05	\N		6	1013	2017-04-30 00:00:00	2017-05-25 20:01:29.890682	\N	\N
+1252	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1021	2017-04-30 00:00:00	2017-05-25 20:02:33.605511	\N	\N
+1308	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	825	2017-04-30 00:00:00	2017-05-26 13:21:07.274563	\N	\N
+1250	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1019	2017-04-30 00:00:00	2017-05-26 13:40:37.911743	\N	\N
+1256	36	RCGM VERSION 5	0208-2017	2017-04-05	\N		6	1020	2017-04-30 00:00:00	2017-05-26 13:41:24.053309	\N	\N
+1247	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1249	2017-04-30 00:00:00	2017-05-26 13:44:48.173534	\N	\N
+1249	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1250	2017-04-30 00:00:00	2017-05-26 13:45:38.011385	\N	\N
+1248	36	RCGM VERSION 6	0243-2017	2017-04-25	\N		6	1251	2017-04-30 00:00:00	2017-05-26 13:46:29.845601	\N	\N
+1295	36	RCGE version 4	385	2017-05-12	\N		9	1151	2017-04-30 00:00:00	2017-05-26 23:49:07.357499	\N	\N
+1251	36	RCGE version 1	052	2017-01-20	\N		9	977	2017-04-30 00:00:00	2017-05-26 23:56:14.149877	\N	\N
+1298	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	516	2017-04-30 00:00:00	2017-06-08 14:19:58.411867	\N	\N
+1287	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	590	2017-04-30 00:00:00	2017-06-08 14:33:59.789317	\N	\N
+1257	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1053	2017-04-30 00:00:00	2017-06-08 14:50:24.859531	\N	\N
+1258	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1054	2017-04-30 00:00:00	2017-06-08 14:51:36.118859	\N	\N
+1280	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1055	2017-04-30 00:00:00	2017-06-08 14:52:08.298396	\N	\N
+1285	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1056	2017-04-30 00:00:00	2017-06-08 14:52:41.067913	\N	\N
+1289	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1057	2017-04-30 00:00:00	2017-06-08 14:53:25.190529	\N	\N
+1292	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1060	2017-04-30 00:00:00	2017-06-08 14:57:23.980955	\N	\N
+1291	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1061	2017-04-30 00:00:00	2017-06-08 14:58:03.808244	\N	\N
+1301	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1063	2017-04-30 00:00:00	2017-06-08 14:59:45.646552	\N	\N
+1302	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1064	2017-04-30 00:00:00	2017-06-08 15:00:14.814097	\N	\N
+1304	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1065	2017-04-30 00:00:00	2017-06-08 15:00:47.882259	\N	\N
+1310	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1067	2017-04-30 00:00:00	2017-06-08 15:02:11.714671	\N	\N
+1311	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1068	2017-04-30 00:00:00	2017-06-08 15:02:42.005678	\N	\N
+1312	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1069	2017-04-30 00:00:00	2017-06-08 15:03:34.112969	\N	\N
+1314	36	RCGFAP-VERSIÓN 3	0155-2017	2017-01-05	\N		8	1071	2017-04-30 00:00:00	2017-06-08 15:05:10.94269	\N	\N
+1315	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1072	2017-04-30 00:00:00	2017-06-08 15:05:48.118778	\N	\N
+1316	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1073	2017-04-30 00:00:00	2017-06-08 15:06:34.925575	\N	\N
+1318	36	RCGFAP-VERSIÓN 4	0183-2017	2017-04-18	\N		8	1075	2017-04-30 00:00:00	2017-06-08 15:16:35.451567	\N	\N
+1319	36	RCGFAP-VERSIÓN 5	0184-2017	2017-04-18	\N		8	1076	2017-04-30 00:00:00	2017-06-08 15:17:45.177622	\N	\N
+1022	12	OFICIO NC-70-DECS-N° 0316 DEL 10-02-2017		2017-02-27	\N		4	590	2017-04-06 13:29:59.56889	2017-04-06 16:09:00.792996	1	\N
+1105	12	OFICIO NC-70-SGFA-LOCN-PS-N° 0590 DEL 15-02-2017		2017-02-16	\N		4	573	2017-04-06 23:46:32.703593	2017-04-06 23:46:32.703593	\N	\N
+1106	14			2017-02-16	\N		4	573	2017-04-06 23:47:05.720268	2017-04-06 23:47:05.720268	\N	\N
+1107	13			2017-02-17	\N		4	573	2017-04-06 23:47:42.984484	2017-04-06 23:47:42.984484	\N	\N
+1108	14			2017-02-20	\N		4	573	2017-04-06 23:48:18.154848	2017-04-06 23:48:18.154848	\N	\N
+1109	15			2017-02-20	\N		4	573	2017-04-06 23:49:00.383683	2017-04-06 23:49:00.383683	\N	\N
+1110	25			2017-02-20	\N		4	573	2017-04-06 23:49:42.117119	2017-04-06 23:49:42.117119	\N	\N
+1111	12	OFICIO NC-70-SGFA-SNDA-N° 0776 DEL 28-02-2017		2017-03-01	\N		4	573	2017-04-06 23:51:00.224343	2017-04-06 23:51:00.224343	\N	\N
+1112	14			2017-03-01	\N		4	573	2017-04-06 23:51:23.455325	2017-04-06 23:51:23.455325	\N	\N
+1113	13			2017-03-02	\N		4	573	2017-04-06 23:51:44.676848	2017-04-06 23:51:44.676848	\N	\N
+1114	14			2017-03-02	\N		4	573	2017-04-06 23:53:01.69566	2017-04-06 23:53:01.69566	\N	\N
+1115	15			2017-03-03	\N		4	573	2017-04-06 23:54:09.14331	2017-04-06 23:54:09.14331	\N	\N
+1130	30	OFICIO	384	2017-04-12	\N		4	912	2017-04-12 21:51:37.688211	2017-04-12 21:51:37.688211	\N	\N
+1131	2	ACTA	005-2017	2017-01-30	\N		4	821	2017-04-12 22:29:36.969045	2017-04-12 22:29:36.969045	\N	\N
+1132	7	RESOLUCION JEFATURAL	054-2017	2017-03-31	\N		4	821	2017-04-12 22:30:49.732753	2017-04-12 22:30:49.732753	\N	\N
+1154	34		Oficio 052	2017-04-26	\N		11	983	2017-04-28 15:38:29.560661	2017-04-28 15:38:29.560661	\N	\N
+1155	34		Oficio 044	2017-04-17	\N		11	979	2017-04-28 15:43:11.364513	2017-04-28 15:43:11.364513	\N	\N
+1157	34	HDT	39,38,37	2017-03-20	\N		11	980	2017-04-28 16:22:15.752726	2017-04-28 16:22:29.43029	\N	\N
+1158	34	hdt	53	2017-04-07	\N		11	700	2017-04-28 16:26:38.520272	2017-04-28 16:27:40.77657	\N	\N
+1324	36	version	\N	2017-01-05	\N	\N	2	1081	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1325	36	version	\N	2017-01-05	\N	\N	2	1082	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1326	36	version	\N	2017-01-05	\N	\N	2	1083	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1327	36	version	\N	2017-01-05	\N	\N	2	1084	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1328	36	version	\N	2017-01-05	\N	\N	2	1085	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1329	36	version	\N	2017-01-05	\N	\N	2	1086	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1330	36	version	\N	2017-01-05	\N	\N	2	1087	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1331	36	version	\N	2017-01-05	\N	\N	2	1088	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1332	36	version	\N	2017-01-05	\N	\N	2	1089	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1333	36	version	\N	2017-01-05	\N	\N	2	1090	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1334	36	version	\N	2017-01-05	\N	\N	2	1091	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1335	36	version	\N	2017-01-05	\N	\N	2	1092	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1336	36	version	\N	2017-01-05	\N	\N	2	1093	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1337	36	version	\N	2017-01-05	\N	\N	2	1094	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1338	36	version	\N	2017-01-05	\N	\N	2	1095	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1339	36	version	\N	2017-01-05	\N	\N	2	1096	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1340	36	version	\N	2017-01-05	\N	\N	2	1097	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1341	36	version	\N	2017-01-05	\N	\N	2	1098	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1342	36	version	\N	2017-01-05	\N	\N	2	1099	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1343	36	version	\N	2017-01-05	\N	\N	2	1100	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1344	36	version	\N	2017-01-05	\N	\N	2	1101	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1345	36	version	\N	2017-01-05	\N	\N	2	1103	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1346	36	version	\N	2017-01-05	\N	\N	2	1105	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1347	36	version	\N	2017-01-05	\N	\N	2	1106	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1348	36	version	\N	2017-01-05	\N	\N	2	1107	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1349	36	version	\N	2017-01-05	\N	\N	2	1108	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1350	36	version	\N	2017-01-05	\N	\N	2	1109	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1351	36	version	\N	2017-01-05	\N	\N	2	1110	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1352	36	version	\N	2017-01-05	\N	\N	2	1111	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1353	36	version	\N	2017-01-05	\N	\N	2	1112	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1354	36	version	\N	2017-01-05	\N	\N	2	1113	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1355	36	version	\N	2017-01-05	\N	\N	2	1114	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1356	36	version	\N	2017-01-05	\N	\N	2	1115	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1357	36	version	\N	2017-01-05	\N	\N	2	1116	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1358	36	version	\N	2017-01-05	\N	\N	2	1117	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1359	36	version	\N	2017-01-05	\N	\N	2	1102	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1360	36	version	\N	2017-01-05	\N	\N	2	1118	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1361	36	version	\N	2017-01-05	\N	\N	2	1119	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1362	36	version	\N	2017-01-05	\N	\N	2	1120	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1363	36	version	\N	2017-01-05	\N	\N	2	1121	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1364	36	version	\N	2017-01-05	\N	\N	2	1122	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1365	36	version	\N	2017-01-05	\N	\N	2	1123	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1366	36	version	\N	2017-01-05	\N	\N	2	1124	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1367	36	version	\N	2017-01-05	\N	\N	2	1125	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1368	36	version	\N	2017-01-05	\N	\N	2	1126	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1369	36	version	\N	2017-01-05	\N	\N	2	1127	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1370	36	version	\N	2017-01-05	\N	\N	2	1128	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1371	36	version	\N	2017-01-05	\N	\N	2	1129	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1372	36	version	\N	2017-01-05	\N	\N	2	1130	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1373	36	version	\N	2017-01-05	\N	\N	2	1131	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1374	36	version	\N	2017-01-05	\N	\N	2	1132	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1375	36	version	\N	2017-01-05	\N	\N	2	1133	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1376	36	version	\N	2017-01-05	\N	\N	2	1134	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1377	36	version	\N	2017-01-05	\N	\N	2	1135	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1378	36	version	\N	2017-01-05	\N	\N	2	1136	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1379	36	version	\N	2017-01-05	\N	\N	2	1137	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1380	36	version	\N	2017-01-05	\N	\N	2	1138	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1381	36	version	\N	2017-01-05	\N	\N	2	1139	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1382	36	version	\N	2017-01-05	\N	\N	2	1140	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1383	36	version	\N	2017-01-05	\N	\N	2	1141	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1384	36	version	\N	2017-01-05	\N	\N	2	1142	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1385	36	version	\N	2017-01-05	\N	\N	2	1143	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1386	36	version	\N	2017-01-05	\N	\N	2	1144	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1387	36	version	\N	2017-01-05	\N	\N	2	1145	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1388	36	version	\N	2017-01-05	\N	\N	2	1146	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1389	36	version	\N	2017-01-05	\N	\N	2	1147	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1390	36	version	\N	2017-01-05	\N	\N	2	1148	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2377	46	H.T. N° 088 DEL 17-04-2017	088	2017-04-17	787252.5	INFORME N° 025 DEL 17-04-2017 SOLICITUD DE COMITE	13	573	2017-05-04 16:40:48.376868	2017-05-05 14:06:33.685256	1	\N
+2476	34	Oficio 	084	2016-10-07	\N		11	1362	2017-05-09 16:02:27.078593	2017-05-09 16:02:36.563869	\N	\N
+1320	36	RCGFAP-VERSIÓN 5	0184-2017	2017-04-18	\N		8	1077	2017-04-30 00:00:00	2017-06-08 15:18:38.894439	\N	\N
+1322	36	RCGFAP-VERSIÓN 5	0184-2017	2017-04-18	\N		8	1079	2017-04-30 00:00:00	2017-06-08 15:20:02.726888	\N	\N
+1323	36	RCGFAP-VERSIÓN 5	0184-2017	2017-04-18	\N		8	1080	2017-04-30 00:00:00	2017-06-08 15:20:50.35029	\N	\N
+1023	12	carta oficio	G.500-1345	2017-03-20	1250000		4	912	2017-04-06 16:59:12.139368	2017-04-06 16:59:12.139368	1	\N
+1024	13	hoja de trámite	545	2017-03-27	\N		4	912	2017-04-06 17:01:56.486235	2017-04-06 17:01:56.486235	\N	\N
+1116	12	OFICIO NC-70-SGFA-SNDA-N° 0776 DEL 28-02-2017		2017-03-01	\N		4	574	2017-04-06 23:56:22.819385	2017-04-06 23:56:22.819385	\N	\N
+1117	14			2017-03-01	\N		4	574	2017-04-06 23:56:39.106299	2017-04-06 23:56:39.106299	\N	\N
+1118	13			2017-03-02	\N		4	574	2017-04-06 23:57:20.382719	2017-04-06 23:57:20.382719	\N	\N
+1119	14			2017-03-02	\N		4	574	2017-04-06 23:58:12.761216	2017-04-06 23:58:12.761216	\N	\N
+1120	15			2017-03-03	\N		4	574	2017-04-06 23:58:35.363703	2017-04-06 23:58:35.363703	\N	\N
+1133	8	RESOLUCION JEFATURAL	054-2017	2017-03-31	\N		4	821	2017-04-12 22:37:03.013134	2017-04-12 22:37:03.013134	\N	\N
+2378	40	RESOLUCION N°063 DEL 21-04-2017	063	2017-04-21	787252.5	NOMBRAMIENTO DE COMITE	13	573	2017-05-04 16:42:07.010868	2017-05-04 16:42:15.499692	1	\N
+1140	15	MEMO 	041	2017-03-02	97000		11	977	2017-04-12 23:19:38.65383	2017-04-25 15:52:17.87805	1	\N
+1159	8		 020-2017-ACFFAA	2017-02-13	\N		8	1040	2017-04-28 18:59:37.913081	2017-04-28 18:59:48.34093	\N	\N
+1175	8		052-2017-ACFFAA 	2017-03-30	\N		8	1058	2017-04-28 19:35:35.159334	2017-04-28 19:35:35.159334	\N	\N
+1391	36	version	\N	2017-01-05	\N	\N	2	1149	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1392	36	version	\N	2017-01-05	\N	\N	2	1150	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1393	36	version	\N	2017-01-05	\N	\N	2	1152	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1394	36	version	\N	2017-01-05	\N	\N	2	1153	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1395	36	version	\N	2017-01-05	\N	\N	2	1154	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1396	36	version	\N	2017-01-05	\N	\N	2	1155	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1397	36	version	\N	2017-01-05	\N	\N	2	1156	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1398	36	version	\N	2017-01-05	\N	\N	2	1157	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1399	36	version	\N	2017-01-05	\N	\N	2	1158	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1400	36	version	\N	2017-01-05	\N	\N	2	1160	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1401	36	version	\N	2017-01-05	\N	\N	2	1161	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1402	36	version	\N	2017-01-05	\N	\N	2	1162	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1403	36	version	\N	2017-01-05	\N	\N	2	1163	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1404	36	version	\N	2017-01-05	\N	\N	2	1164	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1405	36	version	\N	2017-01-05	\N	\N	2	1165	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1406	36	version	\N	2017-01-05	\N	\N	2	1166	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1407	36	version	\N	2017-01-05	\N	\N	2	1167	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1408	36	version	\N	2017-01-05	\N	\N	2	1168	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1409	36	version	\N	2017-01-05	\N	\N	2	1169	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1410	36	version	\N	2017-01-05	\N	\N	2	1170	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1411	36	version	\N	2017-01-05	\N	\N	2	1171	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1412	36	version	\N	2017-01-05	\N	\N	2	1172	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1413	36	version	\N	2017-01-05	\N	\N	2	1173	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1414	36	version	\N	2017-01-05	\N	\N	2	1174	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1415	36	version	\N	2017-01-05	\N	\N	2	1175	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1416	36	version	\N	2017-01-05	\N	\N	2	1176	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1417	36	version	\N	2017-01-05	\N	\N	2	1177	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1418	36	version	\N	2017-01-05	\N	\N	2	1178	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1419	36	version	\N	2017-01-05	\N	\N	2	1179	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1420	36	version	\N	2017-01-05	\N	\N	2	1180	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1421	36	version	\N	2017-01-05	\N	\N	2	1181	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1422	36	version	\N	2017-01-05	\N	\N	2	1182	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1423	36	version	\N	2017-01-05	\N	\N	2	1183	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1425	36	version	\N	2017-01-05	\N	\N	2	1185	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1426	36	version	\N	2017-01-05	\N	\N	2	1186	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1427	36	version	\N	2017-01-05	\N	\N	2	1187	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1428	36	version	\N	2017-01-05	\N	\N	2	1188	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1429	36	version	\N	2017-01-05	\N	\N	2	1189	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1430	36	version	\N	2017-01-05	\N	\N	2	1190	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1431	36	version	\N	2017-01-05	\N	\N	2	1191	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1432	36	version	\N	2017-01-05	\N	\N	2	1192	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1433	36	version	\N	2017-01-05	\N	\N	2	1193	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1434	36	version	\N	2017-01-05	\N	\N	2	1194	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1435	36	version	\N	2017-01-05	\N	\N	2	1195	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1436	36	version	\N	2017-01-05	\N	\N	2	1196	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1437	36	version	\N	2017-01-05	\N	\N	2	1197	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1438	36	version	\N	2017-01-05	\N	\N	2	1198	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1439	36	version	\N	2017-01-05	\N	\N	2	1199	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1440	36	version	\N	2017-01-05	\N	\N	2	1200	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1441	36	version	\N	2017-01-05	\N	\N	2	1201	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1442	36	version	\N	2017-01-05	\N	\N	2	1202	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1443	36	version	\N	2017-01-05	\N	\N	2	1203	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1444	36	version	\N	2017-01-05	\N	\N	2	1204	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1445	36	version	\N	2017-01-05	\N	\N	2	1205	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1446	36	version	\N	2017-01-05	\N	\N	2	1206	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1447	36	version	\N	2017-01-05	\N	\N	2	1207	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1448	36	version	\N	2017-01-05	\N	\N	2	1208	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1449	36	version	\N	2017-01-05	\N	\N	2	1209	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1450	36	version	\N	2017-01-05	\N	\N	2	469	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1451	36	version	\N	2017-01-05	\N	\N	2	1210	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1452	36	version	\N	2017-01-05	\N	\N	2	1211	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1453	36	version	\N	2017-01-05	\N	\N	2	1212	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1454	36	version	\N	2017-01-05	\N	\N	2	1213	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1455	36	version	\N	2017-01-05	\N	\N	2	1214	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1456	36	version	\N	2017-01-05	\N	\N	2	1216	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1457	36	version	\N	2017-01-05	\N	\N	2	1219	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1458	36	version	\N	2017-01-05	\N	\N	2	1220	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1459	36	version	\N	2017-01-05	\N	\N	2	1221	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1460	36	version	\N	2017-01-05	\N	\N	2	1223	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1461	36	version	\N	2017-01-05	\N	\N	2	1224	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1462	36	version	\N	2017-01-05	\N	\N	2	1225	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1463	36	version	\N	2017-01-05	\N	\N	2	1226	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1464	36	version	\N	2017-01-05	\N	\N	2	1227	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1465	36	version	\N	2017-01-05	\N	\N	2	1228	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1466	36	version	\N	2017-01-05	\N	\N	2	1229	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1467	36	version	\N	2017-01-05	\N	\N	2	1230	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1468	36	version	\N	2017-01-05	\N	\N	2	1231	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1469	36	version	\N	2017-01-05	\N	\N	2	1232	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1470	36	version	\N	2017-01-05	\N	\N	2	1233	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1424	36	RCGE version 3	247	2017-04-20	\N		9	1184	2017-04-30 00:00:00	2017-05-26 23:59:54.974375	\N	\N
+1025	12	OFICIO NC-70-SGFA-LOCN-PS N° 0554 DEL 13-02-2017		2017-02-16	\N		4	555	2017-04-06 19:45:56.266469	2017-04-06 19:45:56.266469	1	\N
+1026	14	OFICIO NC-70-SGFA-LOCN-PS-N° 0554 DEL 13-02-2017		2017-02-16	\N		4	555	2017-04-06 19:49:21.734646	2017-04-06 19:49:21.734646	1	\N
+1027	14	OFICIO NC-70-SGFA-LOCN-PS-N° 0554 DEL 13-02-2017		2017-02-16	\N		4	555	2017-04-06 19:49:45.229515	2017-04-06 19:49:45.229515	1	\N
+1028	13			2017-02-17	\N		4	555	2017-04-06 19:50:17.057356	2017-04-06 19:50:17.057356	1	\N
+1029	14	OFICIO NC-70-SGFA-LOCN-PS-N° 0554 DEL 13-02-2017		2017-02-17	\N		4	555	2017-04-06 19:52:08.138665	2017-04-06 20:35:28.556029	1	\N
+2379	47	FORMATO N° 004 DEL 26-04-2017	004	2017-04-26	787252.5	SOLICITUD DE APROBACION DE BASES	13	573	2017-05-04 16:43:37.466275	2017-05-05 14:06:58.341405	1	\N
+1134	2	ACTA	005-2017	2017-01-30	\N		4	855	2017-04-12 22:38:33.855161	2017-04-12 22:38:33.855161	\N	\N
+1135	7	RESOLUCION JEFATURAL	054-2017	2017-03-31	\N		4	855	2017-04-12 22:46:02.899683	2017-04-12 22:46:02.899683	\N	\N
+1137	16	HOJA TRAMITE 	230	2017-02-10	22972141.6400000006		4	121	2017-04-12 23:06:28.993222	2017-04-12 23:06:28.993222	1	\N
+1141	16	HOJA TRAMITE 	524	2017-03-20	9795538.09999999963		4	979	2017-04-12 23:22:35.243266	2017-04-12 23:22:35.243266	1	\N
+1142	16	MEMO	032	2017-02-27	1658414.25		4	980	2017-04-12 23:24:15.59373	2017-04-12 23:24:15.59373	1	\N
+1143	16	HOJA TRAMITE 	523	2017-03-21	5642844.33999999985		4	983	2017-04-12 23:26:32.831064	2017-04-12 23:26:32.831064	1	\N
+1160	8		 020-2017-ACFFAA 	2017-02-13	\N		8	1046	2017-04-28 19:04:36.808462	2017-04-28 19:07:51.771447	\N	\N
+1162	8		 020-2017-ACFFAA 	2017-02-13	\N		8	1047	2017-04-28 19:11:14.079043	2017-04-28 19:11:14.079043	\N	\N
+1166	8		 020-2017-ACFFAA	2017-02-13	\N		8	1048	2017-04-28 19:21:24.861571	2017-04-28 19:21:24.861571	\N	\N
+1167	8		 020-2017-ACFFAA	2017-02-13	\N		8	1049	2017-04-28 19:22:46.236846	2017-04-28 19:22:46.236846	\N	\N
+1168	8		 020-2017-ACFFAA	2017-02-13	\N		8	1050	2017-04-28 19:24:05.267217	2017-04-28 19:24:05.267217	\N	\N
+1169	8		052-2017-ACFFAA 	2017-03-30	\N		8	1052	2017-04-28 19:27:16.543021	2017-04-28 19:27:16.543021	\N	\N
+1170	8		052-2017-ACFFAA 	2017-03-30	\N		8	1053	2017-04-28 19:29:05.231316	2017-04-28 19:29:05.231316	\N	\N
+1171	8		052-2017-ACFFAA 	2017-03-30	\N		8	1054	2017-04-28 19:31:23.680714	2017-04-28 19:31:23.680714	\N	\N
+1172	8		052-2017-ACFFAA 	2017-03-30	\N		8	1055	2017-04-28 19:32:10.386658	2017-04-28 19:32:10.386658	\N	\N
+1173	8		052-2017-ACFFAA 	2017-03-30	\N		8	1056	2017-04-28 19:33:33.806071	2017-04-28 19:33:33.806071	\N	\N
+1174	8		052-2017-ACFFAA 	2017-03-30	\N		8	1057	2017-04-28 19:34:13.776488	2017-04-28 19:34:31.229389	\N	\N
+1161	8		 020-2017-ACFFAA 	2017-02-13	\N		8	1045	2017-04-28 19:09:56.591201	2017-04-28 19:09:56.591201	\N	\N
+2487	26			2017-01-01	\N		2	1371	2017-05-09 16:57:44.586326	2017-05-22 14:09:34.337839	\N	\N
+1165	8		 020-2017-ACFFAA	2017-02-13	\N		8	1044	2017-04-28 19:20:32.546355	2017-04-28 19:20:32.546355	\N	\N
+1163	8		020-2017-ACFFAA	2017-02-13	\N		8	1042	2017-04-28 19:17:53.4007	2017-04-28 19:17:53.4007	\N	\N
+1164	8		020-2017-ACFFAA	2017-02-13	\N		8	1043	2017-04-28 19:19:02.298368	2017-04-28 19:19:02.298368	\N	\N
+1471	36	version	\N	2017-01-05	\N	\N	2	1234	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1472	36	version	\N	2017-01-05	\N	\N	2	1235	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1473	36	version	\N	2017-01-05	\N	\N	2	1236	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1474	36	version	\N	2017-01-05	\N	\N	2	1237	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1475	36	version	\N	2017-01-05	\N	\N	2	1238	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1476	36	version	\N	2017-01-05	\N	\N	2	1217	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1479	36	version	\N	2017-01-05	\N	\N	2	1239	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1480	36	version	\N	2017-01-05	\N	\N	2	1240	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1481	36	version	\N	2017-01-05	\N	\N	2	1241	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1482	36	version	\N	2017-01-05	\N	\N	2	201	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1483	36	version	\N	2017-01-05	\N	\N	2	202	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1484	36	version	\N	2017-01-05	\N	\N	2	203	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1485	36	version	\N	2017-01-05	\N	\N	2	204	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1486	36	version	\N	2017-01-05	\N	\N	2	206	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1487	36	version	\N	2017-01-05	\N	\N	2	207	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1488	36	version	\N	2017-01-05	\N	\N	2	208	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1489	36	version	\N	2017-01-05	\N	\N	2	209	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1490	36	version	\N	2017-01-05	\N	\N	2	210	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1491	36	version	\N	2017-01-05	\N	\N	2	211	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1492	36	version	\N	2017-01-05	\N	\N	2	212	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1493	36	version	\N	2017-01-05	\N	\N	2	213	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1494	36	version	\N	2017-01-05	\N	\N	2	214	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1495	36	version	\N	2017-01-05	\N	\N	2	215	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1496	36	version	\N	2017-01-05	\N	\N	2	216	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1497	36	version	\N	2017-01-05	\N	\N	2	217	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1498	36	version	\N	2017-01-05	\N	\N	2	218	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1499	36	version	\N	2017-01-05	\N	\N	2	227	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1500	36	version	\N	2017-01-05	\N	\N	2	219	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1501	36	version	\N	2017-01-05	\N	\N	2	220	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1502	36	version	\N	2017-01-05	\N	\N	2	221	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1503	36	version	\N	2017-01-05	\N	\N	2	222	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1504	36	version	\N	2017-01-05	\N	\N	2	223	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1505	36	version	\N	2017-01-05	\N	\N	2	224	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1506	36	version	\N	2017-01-05	\N	\N	2	225	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1507	36	version	\N	2017-01-05	\N	\N	2	226	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1508	36	version	\N	2017-01-05	\N	\N	2	228	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1509	36	version	\N	2017-01-05	\N	\N	2	229	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1510	36	version	\N	2017-01-05	\N	\N	2	230	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1511	36	version	\N	2017-01-05	\N	\N	2	231	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1512	36	version	\N	2017-01-05	\N	\N	2	232	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1513	36	version	\N	2017-01-05	\N	\N	2	235	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1514	36	version	\N	2017-01-05	\N	\N	2	236	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1515	36	version	\N	2017-01-05	\N	\N	2	237	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1516	36	version	\N	2017-01-05	\N	\N	2	238	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1517	36	version	\N	2017-01-05	\N	\N	2	239	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1518	36	version	\N	2017-01-05	\N	\N	2	240	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1519	36	version	\N	2017-01-05	\N	\N	2	241	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1520	36	version	\N	2017-01-05	\N	\N	2	242	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1521	36	version	\N	2017-01-05	\N	\N	2	243	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1522	36	version	\N	2017-01-05	\N	\N	2	244	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2480	32		961	2017-05-05	972615.800000000047	tiene dos CCP,  un  por  832855.80 y otro por 139,760.00 	9	713	2017-05-09 16:12:32.21214	2017-05-09 16:12:32.21214	1	\N
+2481	4		1104	2016-03-11	344581		8	1368	2017-05-09 16:28:26.889207	2017-05-09 16:28:43.630591	1	\N
+2477	34	Oficio 	084	2017-04-21	\N		2	1367	2017-05-09 16:03:13.837164	2017-05-11 14:28:16.395912	\N	\N
+1477	36	RCGE version 4	385	2017-05-12	\N		9	1218	2017-04-30 00:00:00	2017-05-26 23:50:15.53174	\N	\N
+1478	36	RCGE version 4	385	2017-05-12	\N		9	1222	2017-04-30 00:00:00	2017-05-26 23:52:40.012899	\N	\N
+1033	13			2017-02-17	\N		4	556	2017-04-06 20:40:42.496124	2017-04-06 20:40:42.496124	1	\N
+1125	12	OFICIO NC-70-SGFA-LOCN N° 1025 DEL 16-03-2017		2017-03-17	\N		4	516	2017-04-10 12:35:28.407805	2017-04-10 12:35:28.407805	\N	\N
+1126	14			2017-03-17	\N		4	516	2017-04-10 12:36:08.290409	2017-04-10 12:36:08.290409	\N	\N
+1030	15	MEMORANDÚM N° 024-2017/OPP/ACFFAA		2017-02-17	\N	12.04.17 - SITUACIÓN : EN ESTUDIO DE POSIBILIDADES QUE OFRECE EL MERCADO	4	555	2017-04-06 20:36:45.042702	2017-04-13 18:12:46.707348	\N	\N
+1577	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	742	2017-04-30 00:00:00	2017-05-25 16:23:59.976071	\N	\N
+1178	3		018-2017-ACFFAA	2017-04-24	\N		4	1104	2017-04-28 22:38:26.384657	2017-04-28 22:38:26.384657	\N	\N
+1180	3		018-2017-ACFFAA	2017-04-24	\N		4	1217	2017-04-28 22:41:41.924404	2017-04-28 22:41:41.924404	\N	\N
+1523	36	version	\N	2017-01-05	\N	\N	2	246	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1524	36	version	\N	2017-01-05	\N	\N	2	247	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1525	36	version	\N	2017-01-05	\N	\N	2	248	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1526	36	version	\N	2017-01-05	\N	\N	2	249	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1527	36	version	\N	2017-01-05	\N	\N	2	250	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1528	36	version	\N	2017-01-05	\N	\N	2	251	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1529	36	version	\N	2017-01-05	\N	\N	2	252	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1530	36	version	\N	2017-01-05	\N	\N	2	253	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1531	36	version	\N	2017-01-05	\N	\N	2	254	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1532	36	version	\N	2017-01-05	\N	\N	2	255	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1533	36	version	\N	2017-01-05	\N	\N	2	256	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1534	36	version	\N	2017-01-05	\N	\N	2	257	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1535	36	version	\N	2017-01-05	\N	\N	2	258	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1536	36	version	\N	2017-01-05	\N	\N	2	259	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1537	36	version	\N	2017-01-05	\N	\N	2	260	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1538	36	version	\N	2017-01-05	\N	\N	2	245	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1539	36	version	\N	2017-01-05	\N	\N	2	731	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1540	36	version	\N	2017-01-05	\N	\N	2	732	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1541	36	version	\N	2017-01-05	\N	\N	2	733	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1542	36	version	\N	2017-01-05	\N	\N	2	734	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1543	36	version	\N	2017-01-05	\N	\N	2	736	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1544	36	version	\N	2017-01-05	\N	\N	2	737	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1545	36	version	\N	2017-01-05	\N	\N	2	738	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1546	36	version	\N	2017-01-05	\N	\N	2	739	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1547	36	version	\N	2017-01-05	\N	\N	2	740	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1548	36	version	\N	2017-01-05	\N	\N	2	741	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1549	36	version	\N	2017-01-05	\N	\N	2	743	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1550	36	version	\N	2017-01-05	\N	\N	2	744	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1551	36	version	\N	2017-01-05	\N	\N	2	745	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1552	36	version	\N	2017-01-05	\N	\N	2	746	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1553	36	version	\N	2017-01-05	\N	\N	2	747	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1554	36	version	\N	2017-01-05	\N	\N	2	748	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1555	36	version	\N	2017-01-05	\N	\N	2	749	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1556	36	version	\N	2017-01-05	\N	\N	2	751	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1557	36	version	\N	2017-01-05	\N	\N	2	752	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1558	36	version	\N	2017-01-05	\N	\N	2	753	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1559	36	version	\N	2017-01-05	\N	\N	2	754	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1560	36	version	\N	2017-01-05	\N	\N	2	755	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1561	36	version	\N	2017-01-05	\N	\N	2	756	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1562	36	version	\N	2017-01-05	\N	\N	2	757	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1563	36	version	\N	2017-01-05	\N	\N	2	758	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1564	36	version	\N	2017-01-05	\N	\N	2	759	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1565	36	version	\N	2017-01-05	\N	\N	2	760	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1566	36	version	\N	2017-01-05	\N	\N	2	761	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1567	36	version	\N	2017-01-05	\N	\N	2	762	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1568	36	version	\N	2017-01-05	\N	\N	2	764	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1569	36	version	\N	2017-01-05	\N	\N	2	765	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1570	36	version	\N	2017-01-05	\N	\N	2	766	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1571	36	version	\N	2017-01-05	\N	\N	2	767	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1572	36	version	\N	2017-01-05	\N	\N	2	768	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1573	36	version	\N	2017-01-05	\N	\N	2	770	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1574	36	version	\N	2017-01-05	\N	\N	2	771	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1575	36	version	\N	2017-01-05	\N	\N	2	772	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1576	36	version	\N	2017-01-05	\N	\N	2	774	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1580	36	version	\N	2017-01-05	\N	\N	2	814	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1581	36	version	\N	2017-01-05	\N	\N	2	775	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1582	36	version	\N	2017-01-05	\N	\N	2	776	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1583	36	version	\N	2017-01-05	\N	\N	2	777	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1584	36	version	\N	2017-01-05	\N	\N	2	778	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1585	36	version	\N	2017-01-05	\N	\N	2	779	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1586	36	version	\N	2017-01-05	\N	\N	2	783	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1587	36	version	\N	2017-01-05	\N	\N	2	784	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1588	36	version	\N	2017-01-05	\N	\N	2	787	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1589	36	version	\N	2017-01-05	\N	\N	2	791	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1590	36	version	\N	2017-01-05	\N	\N	2	792	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1591	36	version	\N	2017-01-05	\N	\N	2	795	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1592	36	version	\N	2017-01-05	\N	\N	2	796	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1593	36	version	\N	2017-01-05	\N	\N	2	799	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1594	36	version	\N	2017-01-05	\N	\N	2	233	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1595	36	version	\N	2017-01-05	\N	\N	2	803	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1596	36	version	\N	2017-01-05	\N	\N	2	809	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1597	36	version	\N	2017-01-05	\N	\N	2	812	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2380	42	H.T. N° 055 DEL 02-05-2017	055	2017-05-02	787252.5	APROBACION DE BASES	13	573	2017-05-04 19:24:08.384929	2017-05-04 19:24:17.636358	1	\N
+2381	18		004	2017-05-02	787252.5	CONVOCATORIA EN EL SEACE	13	573	2017-05-04 19:24:56.717357	2017-05-04 19:24:56.717357	1	\N
+2478	34	Oficio 	113	2016-12-15	\N		2	1361	2017-05-09 16:04:04.833333	2017-05-09 19:43:49.584739	\N	\N
+1127	13	CARTA	NC-70-SGFA-LOCN-N°1025	2017-03-22	\N	EXPEDIENTE SE ENCUENTRA A LA ESPERA A QUE LA FAP CAMBIE LA MODALIDAD DE CORPORATIVO POR ENCARGO	8	516	2017-04-10 12:36:26.396147	2017-05-19 22:48:01.625229	1	\N
+1123	14	CARTA	NC-70-SGFA-LOCN-PS N° 1257 	2017-04-03	997635.709999999963		8	520	2017-04-10 12:29:41.440346	2017-05-22 22:59:29.637759	1	\N
+1579	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	750	2017-04-30 00:00:00	2017-05-25 16:24:54.253561	\N	\N
+1122	12	CARTA	NC-70-SGFA-LOCN-PS N° 1257 	2017-03-31	997635.709999999963		8	520	2017-04-10 12:29:09.233619	2017-05-22 22:59:52.888223	1	\N
+1578	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	763	2017-04-30 00:00:00	2017-05-25 16:25:48.381957	\N	\N
+1031	12	OFICIO NC-70-SGFA-LOCN-PS-N° 0553 DEL 13-02-2017		2017-02-16	\N		4	556	2017-04-06 20:39:27.534129	2017-04-06 20:39:27.534129	1	\N
+1032	14			2017-02-16	\N		4	556	2017-04-06 20:39:55.676378	2017-04-06 20:39:55.676378	\N	\N
+1177	3		009-2017	2017-03-14	\N		8	1062	2017-04-28 20:10:55.79519	2017-04-28 20:10:55.79519	\N	\N
+1179	3		018-2017-ACFFAA	2017-04-24	\N		4	1215	2017-04-28 22:40:48.583046	2017-04-28 22:40:48.583046	\N	\N
+1181	3		018-2017-ACFFAA	2017-04-24	\N		4	1102	2017-04-28 22:42:17.724319	2017-04-28 22:42:17.724319	\N	\N
+1598	36	version	\N	2017-01-05	\N	\N	2	811	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1599	36	version	\N	2017-01-05	\N	\N	2	810	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1600	36	version	\N	2017-01-05	\N	\N	2	815	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1601	36	version	\N	2017-01-05	\N	\N	2	788	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1602	36	version	\N	2017-01-05	\N	\N	2	800	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1603	36	version	\N	2017-01-05	\N	\N	2	808	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1604	36	version	\N	2017-01-05	\N	\N	2	807	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1605	36	version	\N	2017-01-05	\N	\N	2	805	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1606	36	version	\N	2017-01-05	\N	\N	2	804	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1607	36	version	\N	2017-01-05	\N	\N	2	802	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1608	36	version	\N	2017-01-05	\N	\N	2	801	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1609	36	version	\N	2017-01-05	\N	\N	2	798	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1610	36	version	\N	2017-01-05	\N	\N	2	797	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1611	36	version	\N	2017-01-05	\N	\N	2	794	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1612	36	version	\N	2017-01-05	\N	\N	2	793	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1613	36	version	\N	2017-01-05	\N	\N	2	790	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1614	36	version	\N	2017-01-05	\N	\N	2	789	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1615	36	version	\N	2017-01-05	\N	\N	2	786	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1616	36	version	\N	2017-01-05	\N	\N	2	785	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1617	36	version	\N	2017-01-05	\N	\N	2	782	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1618	36	version	\N	2017-01-05	\N	\N	2	781	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1619	36	version	\N	2017-01-05	\N	\N	2	818	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1620	36	version	\N	2017-01-05	\N	\N	2	842	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1621	36	version	\N	2017-01-05	\N	\N	2	841	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2382	43	Bases N° 004	004	2017-05-03	787252.5	FORMULACION DE CONSULTAS	13	573	2017-05-04 19:26:00.196842	2017-05-04 19:26:07.673143	1	\N
+2401	44		001	2017-03-20	\N	APROBACION DE BASES	13	830	2017-05-04 20:27:28.81282	2017-05-04 20:27:28.81282	\N	\N
+2402	45		001	2017-03-21	\N	INTEGRACION	13	830	2017-05-04 20:28:21.059021	2017-05-04 20:28:21.059021	\N	\N
+2403	19		001	2017-03-31	\N	PRESENTACION PROPUESTSAS	13	830	2017-05-04 20:28:54.850953	2017-05-04 20:28:54.850953	\N	\N
+2404	20		001	2017-04-19	\N	BUENA PRO	13	830	2017-05-04 20:29:21.688652	2017-05-04 20:29:21.688652	\N	\N
+2490	13	CARTA	NC-70-SGFA-LOCN N° 1145	2016-03-15	174802.299999999988		8	1372	2017-05-09 17:17:13.078443	2017-05-09 17:21:04.897759	1	\N
+2489	14	CARTA	NC-70-SGFA-LOCN-N° 1145	2016-03-15	174802.299999999988		8	1372	2017-05-09 17:15:27.228023	2017-05-09 17:21:27.240438	1	\N
+2383	17	H.T. N° 070 DEL 28-04-2017	070	2017-04-28	1690166.54000000004	RECEPCION DE EXPEDIENTE DE LA DEM	13	978	2017-05-04 19:41:53.70971	2017-05-04 19:57:17.085079	1	\N
+2488	4	CARTA	NC-70-SGFA-LOCN-N° 1145	2016-03-15	174802.299999999988		8	1372	2017-05-09 17:14:06.328414	2017-05-09 17:21:46.077172	1	\N
+2387	17	H.T. N° 031	031	2017-03-03	\N	RECEPCION DE EXPEDIENTE DE LA DEM	13	121	2017-05-04 20:00:20.946644	2017-05-04 20:00:54.440867	\N	\N
+2388	47	FORMATO N° 001 DEL 28-02-2017	001	2017-02-28	\N	SOLICITUD DE APROBACION DE BASES	13	121	2017-05-04 20:02:36.85766	2017-05-05 14:13:38.937626	\N	\N
+2398	46		001	2017-03-09	\N	NOMBRAMIENTO DE COMITE	13	830	2017-05-04 20:23:21.920832	2017-05-05 14:14:35.013614	\N	\N
+2389	42		001	2017-03-09	\N	APROBACION DE BASES	13	121	2017-05-04 20:05:53.82541	2017-05-04 20:05:53.82541	\N	\N
+2390	18		001	2017-03-10	\N	CONVOCATORIA EN EL SEACE	13	121	2017-05-04 20:07:07.070879	2017-05-04 20:07:07.070879	\N	\N
+2391	43		001	2017-03-14	\N	FORMULACION DE CONSULTAS	13	121	2017-05-04 20:07:55.951593	2017-05-04 20:07:55.951593	\N	\N
+2392	44	Bases N° 001	001	2017-03-20	\N	ABSOLUCION DE CONSULTAS	13	121	2017-05-04 20:09:59.89974	2017-05-04 20:10:17.477345	\N	\N
+2393	45	Bases N° 001	001	2017-03-21	\N	INTEGRACION	13	121	2017-05-04 20:10:47.837699	2017-05-04 20:11:00.545532	\N	\N
+2394	19		001	2017-03-31	\N	PRESENTACION PROPUESTSAS	13	121	2017-05-04 20:11:55.618729	2017-05-04 20:11:55.618729	\N	\N
+2395	20	Bases N° 001	001	2017-04-19	\N	BUENA PRO - A TRAVÉS DEL SEACE	13	121	2017-05-04 20:14:25.499587	2017-05-04 20:15:01.906357	\N	\N
+2396	17		031	2017-02-28	\N	RECEPCION DE EXPEDIENTE DE LA DEM	13	830	2017-05-04 20:20:42.085812	2017-05-04 20:20:42.085812	\N	\N
+2397	40		001	2017-04-28	\N		13	830	2017-05-04 20:22:19.401153	2017-05-04 20:22:19.401153	\N	\N
+2399	18		001	2017-03-10	\N	CONVOCATORIA EN EL SEACE	13	830	2017-05-04 20:24:13.240069	2017-05-04 20:24:13.240069	\N	\N
+2400	43	Bases N° 001	001	2017-03-14	\N	FORMULACION DE CONSULTAS	13	830	2017-05-04 20:25:19.810274	2017-05-04 20:25:40.5704	\N	\N
+2495	4		S-70-SGFA-LOCN-N° 0551	2016-06-22	1395132		8	1374	2017-05-09 17:51:58.347453	2017-05-09 17:51:58.347453	1	\N
+2386	47	FORMATO N° 008 DEL 03-05-2017	008	2017-05-03	1690166.54000000004	SOLICITUD DE APROBACION DE BASES	13	978	2017-05-04 19:52:11.477696	2017-05-05 14:16:16.929472	1	\N
+2384	40	RESOLUCION N° 0041 DEL 20-03-2017	068	2017-03-20	1690166.54000000004	INFORME N° 009 DEL 20-02-2017 SOLICITUD DE COMITE	13	978	2017-05-04 19:44:06.800117	2017-05-05 14:20:56.564831	1	\N
+2385	46	FORMATO N° 009 DEL 20-02-2017	047	2017-02-20	1690166.54000000004	INFORME N° 009 DEL 20-02-2017 SOLICITUD DE COMITE	13	978	2017-05-04 19:49:08.410251	2017-05-05 14:22:53.163246	1	\N
+2551	20	Bases		2017-05-10	230000	BUENA PRO	13	700	2017-05-10 20:05:28.676596	2017-05-10 20:06:51.898704	2	\N
+2560	43	Bases		2017-05-08	\N	FORMULACIÓN DE CONSULTAS	13	828	2017-05-10 20:24:05.666232	2017-05-10 20:24:14.338773	\N	\N
+2563	34	Oficio 	097	2016-11-04	\N		11	1373	2017-05-10 20:28:22.11639	2017-05-10 20:28:30.12133	\N	\N
+1622	36	version	\N	2017-01-05	\N	\N	2	111	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1623	36	version	\N	2017-01-05	\N	\N	2	112	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2405	42	FORMATO N° 008 DEL 04-05-2017	008	2017-05-04	\N	APROBACION DE BASES	13	978	2017-05-05 14:17:09.234238	2017-05-05 14:17:17.724997	\N	\N
+2492	4	CARTA	NC-70-SGFA-LOCN-N° 3750 	2016-10-20	3138003.60000000009	RECEPCIONADO 27-10-2016	8	1373	2017-05-09 17:32:14.399269	2017-05-09 17:35:40.227572	1	\N
+2498	25		1088	2016-06-24	1395123		8	1374	2017-05-09 17:58:21.188213	2017-05-09 17:58:21.188213	1	\N
+2559	44	Bases		2017-05-10	\N	ABSOLUCIÓN DE BASES	13	978	2017-05-10 20:20:28.370014	2017-05-10 20:20:39.069957	\N	\N
+2855	43	Bases 002 LP 2	002	2017-05-12	\N	FORMULACION DE CONSULTAS LP-2	13	980	2017-05-23 16:06:27.999419	2017-05-23 16:06:37.669206	1	\N
+2562	45	Bases LP 1		2017-05-09	\N	INTEGRACIÓN DE BASES	13	980	2017-05-10 20:27:13.043395	2017-05-10 20:29:41.929966	\N	\N
+2759	4		0280	2017-05-12	1325923.69999999995	RESERVADO	8	1060	2017-05-19 23:35:58.168946	2017-05-19 23:35:58.168946	1	\N
+2760	12		0280	2017-05-16	1325923.69999999995	RESERVADO	8	1060	2017-05-19 23:37:30.595493	2017-05-19 23:37:30.595493	1	\N
+2761	13		0280	2017-05-16	1325923.69999999995		8	1060	2017-05-19 23:38:22.20923	2017-05-19 23:38:22.20923	1	\N
+2762	15		0280	2017-05-17	1325923.69999999995	RESERVADO	8	1060	2017-05-19 23:39:57.581946	2017-05-19 23:39:57.581946	1	\N
+2763	12		0281	2017-05-12	805605.040000000037	RESERVADO	8	1061	2017-05-19 23:44:38.834401	2017-05-19 23:44:38.834401	1	\N
+2764	13		0281	2017-05-15	805605.040000000037	RESERVADO	8	1061	2017-05-19 23:45:28.233478	2017-05-19 23:45:28.233478	1	\N
+2822	43	Bases	006	2017-05-16	\N	FORMULACION DE CONSULTAS Y OBSERVACIONES	13	574	2017-05-23 13:30:45.41237	2017-05-23 13:30:55.252939	1	\N
+2823	44	Bases	006	2017-05-22	\N	ABSOLUCION DE CONSULTAS Y OBSERVACIONES	13	574	2017-05-23 13:31:33.594862	2017-05-23 13:31:44.313979	1	\N
+2873	21	OFERTAS AS-3		2017-06-13	\N	CONSENTIMIENTO DE LA BUENA PRO	13	978	2017-05-23 17:07:24.910616	2017-06-08 14:33:33.342896	\N	\N
+2876	20	OFERTAS AS-3		2017-06-06	\N	OTORGAMENTO DE BUENA PRO	13	828	2017-05-23 17:11:25.438559	2017-06-08 14:34:13.225235	1	\N
+2828	34	Oficio 	059	2017-05-22	\N		11	742	2017-05-23 13:43:58.251377	2017-05-23 13:44:07.328057	\N	\N
+2829	34	Oficio 	059	2017-05-22	\N		11	119	2017-05-23 13:44:46.638948	2017-05-23 13:44:53.380884	\N	\N
+2831	34	Oficio 	059	2017-05-22	\N		11	590	2017-05-23 13:46:10.428461	2017-05-23 13:46:18.633924	\N	\N
+2840	51	OFICIO	R-136-SGFA-LOMA-MG-N° 1026	2016-12-12	111	US$ 111,000.00	14	1374	2017-05-23 15:05:45.428545	2017-05-23 15:05:53.173712	2	\N
+2842	53	ACTA DE CONFORMIDAD	S/N°	2017-03-31	111	ADJUDICADO ITEM 3	14	1374	2017-05-23 15:11:21.228543	2017-05-23 15:11:33.068559	2	\N
+2844	15		1067	2017-05-23	\N		6	780	2017-05-23 15:13:50.048791	2017-05-23 15:13:50.048791	\N	\N
+2494	26			2017-01-01	\N		2	1373	2017-05-09 17:39:26.895017	2017-06-05 14:22:55.38036	\N	\N
+2852	19	OFERTAS LP-1	001	2017-05-24	\N	PRESENTACION DE PROPUESTAS	13	980	2017-05-23 15:52:52.543074	2017-05-23 15:53:02.487113	1	\N
+2854	21	OFERTAS LP-1	001	2017-06-12	\N	CONSENTIMIENTO DE LA BUENA PRO	13	980	2017-05-23 15:54:38.465831	2017-05-23 15:54:46.393808	1	\N
+2857	45	Bases 002 LP 2	002	2017-05-22	\N	INTEGRACION DE BASES	13	980	2017-05-23 16:08:15.468515	2017-05-23 16:08:23.39256	1	\N
+2859	20	OFERTAS LP-2	002	2017-06-12	\N	OTORGAMENTO DE BUENA PRO	13	980	2017-05-23 16:10:35.002859	2017-05-23 16:10:44.195416	1	\N
+2861	43	Bases 003 LP 3	003	2017-05-08	\N	FORMULACION DE CONSULTAS LP-3	13	980	2017-05-23 16:12:46.505313	2017-05-23 16:12:54.412435	1	\N
+2903	36	modif 4	385	2017-05-12	3453901.81199999992		9	1465	2017-04-20 00:00:00	2017-05-27 00:11:04.051971	1	\N
+2871	19	OFERTAS AS-3		2017-05-16	\N	PRESENTACION DE PROPUESTAS	13	978	2017-05-23 17:05:26.737431	2017-05-23 17:05:40.047927	\N	\N
+2874	45	Bases		2017-05-11	\N	INTEGRACION DE BASES	13	828	2017-05-23 17:09:34.529857	2017-05-23 17:09:46.012109	1	\N
+2875	19	OFERTAS AS-3		2017-05-16	\N	PRESENTACION DE PROPUESTAS	13	828	2017-05-23 17:10:16.368897	2017-05-23 17:10:32.274379	1	\N
+2866	19	OFERTAS LP-3	003	2017-06-01	\N	PRESENTACION DE PROPUESTAS	13	980	2017-05-23 16:19:44.765315	2017-05-23 21:05:31.158012	1	\N
+2834	45	Bases	004	2017-05-31	\N	INTEGRACION DE BASES	13	573	2017-05-23 14:21:47.558053	2017-06-08 14:25:04.674546	1	\N
+1034	14			2017-02-17	\N		4	556	2017-04-06 20:42:04.914066	2017-04-06 20:42:04.914066	\N	\N
+2891	58			2017-05-25	\N		6	1245	2017-05-24 14:40:12.88988	2017-05-24 14:40:12.88988	\N	\N
+1036	12	OFICIO R-70-SGFA-LOCN-PS-N° 0141 DEL 02-03-2017		2017-03-03	\N		4	568	2017-04-06 20:47:50.652505	2017-04-06 20:47:50.652505	1	\N
+1037	14			2017-03-03	\N		4	568	2017-04-06 20:48:13.988478	2017-04-06 20:48:13.988478	\N	\N
+2893	58			2017-05-25	\N		6	1248	2017-05-24 14:41:32.587614	2017-05-24 14:41:32.587614	\N	\N
+2904	36	modif 4	\N	2017-05-12	483167	\N	2	1466	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2905	36	modif 4	\N	2017-05-12	284729.039999999979	\N	2	1467	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2906	36	modif 4	\N	2017-05-12	53100	\N	2	1468	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2907	36	modif 4	\N	2017-05-12	399938.599999999977	\N	2	1469	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2908	36	modif 4	\N	2017-05-12	534387	\N	2	1470	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2909	36	modif 4	\N	2017-05-12	211653	\N	2	1471	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2910	36	modif 4	\N	2017-05-12	34400	\N	2	1472	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2911	36	modif 4	\N	2017-05-12	736104	\N	2	1473	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2912	36	modif 4	\N	2017-05-12	108756	\N	2	1474	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+2836	20	OFERTAS	004	2017-06-19	\N	OTORGAMENTO DE BUENA PRO	13	573	2017-05-23 14:25:03.406952	2017-06-08 14:26:11.794532	1	\N
+2847	50	OFICIO	N° 191-2017/SG/DEC/ACFFAA	2017-02-16	198.400000000000006	ITEM 1,2,4: US$ 198,460.00	2	1371	2017-05-23 15:31:03.137289	2017-05-29 17:12:28.01331	2	\N
+2849	61	CONTRATO DIRCOMAT	(ITEM 2)  N° 026-2017-MGP/DIRCOMAT	2017-03-21	69.5600000000000023	ITEM 2: US$ 69,560.00	14	1371	2017-05-23 15:36:25.963334	2017-05-23 15:40:01.266469	2	\N
+2878	61		N°  473-2017/SG/DEC/ACFFAA 	2017-05-09	18	Contrato suscrito - Pendiente de internamiento 	14	121	2017-05-23 17:30:51.257486	2017-05-23 17:30:51.257486	1	\N
+2879	61		N°  473-2017/SG/DEC/ACFFAA 	2017-05-09	18	Contrato suscrito y remitido  - Pendiente de internamiento 	14	121	2017-05-23 17:31:05.359244	2017-05-23 22:04:03.366969	1	\N
+2824	45	Bases	006	2017-06-12	\N	INTEGRACION DE BASES	13	574	2017-05-23 13:32:25.99616	2017-06-08 14:27:17.232504	1	\N
+2825	19	OFERTAS	006	2017-06-21	\N	PRESENTACION DE PROPUESTAS	13	574	2017-05-23 13:40:07.988253	2017-06-08 14:27:34.298853	1	\N
+2826	20	OFERTAS	006	2017-07-03	\N	OTORGAMENTO DE BUENA PRO	13	574	2017-05-23 13:41:55.158785	2017-06-08 14:27:54.149733	1	\N
+1656	36	version	\N	2017-01-05	\N	\N	2	125	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1657	36	version	\N	2017-01-05	\N	\N	2	126	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1658	36	version	\N	2017-01-05	\N	\N	2	127	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1659	36	version	\N	2017-01-05	\N	\N	2	128	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1660	36	version	\N	2017-01-05	\N	\N	2	129	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1661	36	version	\N	2017-01-05	\N	\N	2	130	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1662	36	version	\N	2017-01-05	\N	\N	2	131	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1663	36	version	\N	2017-01-05	\N	\N	2	132	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1664	36	version	\N	2017-01-05	\N	\N	2	133	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1665	36	version	\N	2017-01-05	\N	\N	2	134	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1666	36	version	\N	2017-01-05	\N	\N	2	135	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1667	36	version	\N	2017-01-05	\N	\N	2	136	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1668	36	version	\N	2017-01-05	\N	\N	2	137	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1669	36	version	\N	2017-01-05	\N	\N	2	138	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1670	36	version	\N	2017-01-05	\N	\N	2	139	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1671	36	version	\N	2017-01-05	\N	\N	2	140	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1672	36	version	\N	2017-01-05	\N	\N	2	142	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1673	36	version	\N	2017-01-05	\N	\N	2	144	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1674	36	version	\N	2017-01-05	\N	\N	2	146	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1675	36	version	\N	2017-01-05	\N	\N	2	147	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1676	36	version	\N	2017-01-05	\N	\N	2	148	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1677	36	version	\N	2017-01-05	\N	\N	2	150	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1678	36	version	\N	2017-01-05	\N	\N	2	151	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1679	36	version	\N	2017-01-05	\N	\N	2	152	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1680	36	version	\N	2017-01-05	\N	\N	2	154	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1681	36	version	\N	2017-01-05	\N	\N	2	155	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1682	36	version	\N	2017-01-05	\N	\N	2	156	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1683	36	version	\N	2017-01-05	\N	\N	2	157	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1684	36	version	\N	2017-01-05	\N	\N	2	158	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1685	36	version	\N	2017-01-05	\N	\N	2	159	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1686	36	version	\N	2017-01-05	\N	\N	2	160	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1687	36	version	\N	2017-01-05	\N	\N	2	287	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1688	36	version	\N	2017-01-05	\N	\N	2	163	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1689	36	version	\N	2017-01-05	\N	\N	2	164	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1690	36	version	\N	2017-01-05	\N	\N	2	145	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1691	36	version	\N	2017-01-05	\N	\N	2	149	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1692	36	version	\N	2017-01-05	\N	\N	2	153	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1693	36	version	\N	2017-01-05	\N	\N	2	161	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1694	36	version	\N	2017-01-05	\N	\N	2	162	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1695	36	version	\N	2017-01-05	\N	\N	2	165	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1696	36	version	\N	2017-01-05	\N	\N	2	166	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1697	36	version	\N	2017-01-05	\N	\N	2	167	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1698	36	version	\N	2017-01-05	\N	\N	2	168	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1699	36	version	\N	2017-01-05	\N	\N	2	169	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1700	36	version	\N	2017-01-05	\N	\N	2	170	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1701	36	version	\N	2017-01-05	\N	\N	2	171	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1702	36	version	\N	2017-01-05	\N	\N	2	172	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1703	36	version	\N	2017-01-05	\N	\N	2	173	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1704	36	version	\N	2017-01-05	\N	\N	2	174	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1705	36	version	\N	2017-01-05	\N	\N	2	175	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1706	36	version	\N	2017-01-05	\N	\N	2	176	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1707	36	version	\N	2017-01-05	\N	\N	2	177	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1708	36	version	\N	2017-01-05	\N	\N	2	178	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1709	36	version	\N	2017-01-05	\N	\N	2	179	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1710	36	version	\N	2017-01-05	\N	\N	2	180	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1711	36	version	\N	2017-01-05	\N	\N	2	181	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1712	36	version	\N	2017-01-05	\N	\N	2	182	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1713	36	version	\N	2017-01-05	\N	\N	2	183	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1714	36	version	\N	2017-01-05	\N	\N	2	184	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1715	36	version	\N	2017-01-05	\N	\N	2	185	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1716	36	version	\N	2017-01-05	\N	\N	2	186	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1717	36	version	\N	2017-01-05	\N	\N	2	187	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1718	36	version	\N	2017-01-05	\N	\N	2	188	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1719	36	version	\N	2017-01-05	\N	\N	2	189	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1720	36	version	\N	2017-01-05	\N	\N	2	190	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1721	36	version	\N	2017-01-05	\N	\N	2	191	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1722	36	version	\N	2017-01-05	\N	\N	2	192	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1723	36	version	\N	2017-01-05	\N	\N	2	234	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1724	36	version	\N	2017-01-05	\N	\N	2	193	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1725	36	version	\N	2017-01-05	\N	\N	2	194	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1726	36	version	\N	2017-01-05	\N	\N	2	195	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1727	36	version	\N	2017-01-05	\N	\N	2	856	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1728	36	version	\N	2017-01-05	\N	\N	2	898	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1729	36	version	\N	2017-01-05	\N	\N	2	196	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1730	36	version	\N	2017-01-05	\N	\N	2	197	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1731	36	version	\N	2017-01-05	\N	\N	2	198	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1732	36	version	\N	2017-01-05	\N	\N	2	199	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1733	36	version	\N	2017-01-05	\N	\N	2	200	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1734	36	version	\N	2017-01-05	\N	\N	2	262	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1735	36	version	\N	2017-01-05	\N	\N	2	264	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1736	36	version	\N	2017-01-05	\N	\N	2	265	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1737	36	version	\N	2017-01-05	\N	\N	2	266	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1738	36	version	\N	2017-01-05	\N	\N	2	268	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1739	36	version	\N	2017-01-05	\N	\N	2	269	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1740	36	version	\N	2017-01-05	\N	\N	2	270	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1741	36	version	\N	2017-01-05	\N	\N	2	271	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1742	36	version	\N	2017-01-05	\N	\N	2	272	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1743	36	version	\N	2017-01-05	\N	\N	2	273	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1744	36	version	\N	2017-01-05	\N	\N	2	274	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1745	36	version	\N	2017-01-05	\N	\N	2	275	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1746	36	version	\N	2017-01-05	\N	\N	2	276	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1747	36	version	\N	2017-01-05	\N	\N	2	277	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1748	36	version	\N	2017-01-05	\N	\N	2	278	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1749	36	version	\N	2017-01-05	\N	\N	2	279	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1750	36	version	\N	2017-01-05	\N	\N	2	280	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1751	36	version	\N	2017-01-05	\N	\N	2	281	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1752	36	version	\N	2017-01-05	\N	\N	2	282	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1753	36	version	\N	2017-01-05	\N	\N	2	283	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1754	36	version	\N	2017-01-05	\N	\N	2	284	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1755	36	version	\N	2017-01-05	\N	\N	2	286	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1756	36	version	\N	2017-01-05	\N	\N	2	288	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1757	36	version	\N	2017-01-05	\N	\N	2	289	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1758	36	version	\N	2017-01-05	\N	\N	2	290	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1759	36	version	\N	2017-01-05	\N	\N	2	291	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1760	36	version	\N	2017-01-05	\N	\N	2	292	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1761	36	version	\N	2017-01-05	\N	\N	2	293	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1762	36	version	\N	2017-01-05	\N	\N	2	294	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1763	36	version	\N	2017-01-05	\N	\N	2	295	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1764	36	version	\N	2017-01-05	\N	\N	2	296	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1765	36	version	\N	2017-01-05	\N	\N	2	297	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1766	36	version	\N	2017-01-05	\N	\N	2	299	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1767	36	version	\N	2017-01-05	\N	\N	2	263	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1768	36	version	\N	2017-01-05	\N	\N	2	267	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1769	36	version	\N	2017-01-05	\N	\N	2	285	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1770	36	version	\N	2017-01-05	\N	\N	2	298	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1771	36	version	\N	2017-01-05	\N	\N	2	300	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1772	36	version	\N	2017-01-05	\N	\N	2	302	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1773	36	version	\N	2017-01-05	\N	\N	2	303	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1774	36	version	\N	2017-01-05	\N	\N	2	304	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1775	36	version	\N	2017-01-05	\N	\N	2	305	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1776	36	version	\N	2017-01-05	\N	\N	2	306	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1777	36	version	\N	2017-01-05	\N	\N	2	307	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1778	36	version	\N	2017-01-05	\N	\N	2	308	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1779	36	version	\N	2017-01-05	\N	\N	2	309	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1780	36	version	\N	2017-01-05	\N	\N	2	310	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1781	36	version	\N	2017-01-05	\N	\N	2	311	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1782	36	version	\N	2017-01-05	\N	\N	2	312	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1783	36	version	\N	2017-01-05	\N	\N	2	313	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1784	36	version	\N	2017-01-05	\N	\N	2	314	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1785	36	version	\N	2017-01-05	\N	\N	2	315	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1786	36	version	\N	2017-01-05	\N	\N	2	316	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1787	36	version	\N	2017-01-05	\N	\N	2	317	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1788	36	version	\N	2017-01-05	\N	\N	2	318	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1789	36	version	\N	2017-01-05	\N	\N	2	319	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1790	36	version	\N	2017-01-05	\N	\N	2	320	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1791	36	version	\N	2017-01-05	\N	\N	2	321	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1792	36	version	\N	2017-01-05	\N	\N	2	322	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1793	36	version	\N	2017-01-05	\N	\N	2	323	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1794	36	version	\N	2017-01-05	\N	\N	2	325	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1795	36	version	\N	2017-01-05	\N	\N	2	326	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1796	36	version	\N	2017-01-05	\N	\N	2	327	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1797	36	version	\N	2017-01-05	\N	\N	2	328	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1798	36	version	\N	2017-01-05	\N	\N	2	329	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1799	36	version	\N	2017-01-05	\N	\N	2	330	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1800	36	version	\N	2017-01-05	\N	\N	2	331	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1801	36	version	\N	2017-01-05	\N	\N	2	332	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1802	36	version	\N	2017-01-05	\N	\N	2	333	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1803	36	version	\N	2017-01-05	\N	\N	2	334	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1804	36	version	\N	2017-01-05	\N	\N	2	335	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1805	36	version	\N	2017-01-05	\N	\N	2	336	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1806	36	version	\N	2017-01-05	\N	\N	2	337	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1807	36	version	\N	2017-01-05	\N	\N	2	338	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1808	36	version	\N	2017-01-05	\N	\N	2	339	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1809	36	version	\N	2017-01-05	\N	\N	2	340	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1810	36	version	\N	2017-01-05	\N	\N	2	341	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1811	36	version	\N	2017-01-05	\N	\N	2	342	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1812	36	version	\N	2017-01-05	\N	\N	2	343	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1813	36	version	\N	2017-01-05	\N	\N	2	344	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1814	36	version	\N	2017-01-05	\N	\N	2	345	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1815	36	version	\N	2017-01-05	\N	\N	2	301	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1816	36	version	\N	2017-01-05	\N	\N	2	346	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1817	36	version	\N	2017-01-05	\N	\N	2	347	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1818	36	version	\N	2017-01-05	\N	\N	2	349	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1819	36	version	\N	2017-01-05	\N	\N	2	350	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1820	36	version	\N	2017-01-05	\N	\N	2	351	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1821	36	version	\N	2017-01-05	\N	\N	2	352	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1822	36	version	\N	2017-01-05	\N	\N	2	353	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1823	36	version	\N	2017-01-05	\N	\N	2	354	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1824	36	version	\N	2017-01-05	\N	\N	2	355	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1825	36	version	\N	2017-01-05	\N	\N	2	356	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1826	36	version	\N	2017-01-05	\N	\N	2	357	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1827	36	version	\N	2017-01-05	\N	\N	2	358	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1828	36	version	\N	2017-01-05	\N	\N	2	359	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1829	36	version	\N	2017-01-05	\N	\N	2	360	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1830	36	version	\N	2017-01-05	\N	\N	2	361	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1831	36	version	\N	2017-01-05	\N	\N	2	362	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1832	36	version	\N	2017-01-05	\N	\N	2	363	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1833	36	version	\N	2017-01-05	\N	\N	2	364	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1834	36	version	\N	2017-01-05	\N	\N	2	365	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1835	36	version	\N	2017-01-05	\N	\N	2	366	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1836	36	version	\N	2017-01-05	\N	\N	2	367	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1837	36	version	\N	2017-01-05	\N	\N	2	368	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1838	36	version	\N	2017-01-05	\N	\N	2	369	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1839	36	version	\N	2017-01-05	\N	\N	2	370	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1840	36	version	\N	2017-01-05	\N	\N	2	371	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1841	36	version	\N	2017-01-05	\N	\N	2	372	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1842	36	version	\N	2017-01-05	\N	\N	2	373	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1843	36	version	\N	2017-01-05	\N	\N	2	374	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1844	36	version	\N	2017-01-05	\N	\N	2	375	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1845	36	version	\N	2017-01-05	\N	\N	2	456	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1846	36	version	\N	2017-01-05	\N	\N	2	376	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1847	36	version	\N	2017-01-05	\N	\N	2	377	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1848	36	version	\N	2017-01-05	\N	\N	2	378	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1849	36	version	\N	2017-01-05	\N	\N	2	379	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1850	36	version	\N	2017-01-05	\N	\N	2	380	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1851	36	version	\N	2017-01-05	\N	\N	2	381	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1852	36	version	\N	2017-01-05	\N	\N	2	382	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1853	36	version	\N	2017-01-05	\N	\N	2	383	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1854	36	version	\N	2017-01-05	\N	\N	2	384	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1855	36	version	\N	2017-01-05	\N	\N	2	385	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1856	36	version	\N	2017-01-05	\N	\N	2	425	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1857	36	version	\N	2017-01-05	\N	\N	2	386	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1858	36	version	\N	2017-01-05	\N	\N	2	387	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1859	36	version	\N	2017-01-05	\N	\N	2	388	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1860	36	version	\N	2017-01-05	\N	\N	2	389	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1861	36	version	\N	2017-01-05	\N	\N	2	390	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1862	36	version	\N	2017-01-05	\N	\N	2	391	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1863	36	version	\N	2017-01-05	\N	\N	2	392	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1864	36	version	\N	2017-01-05	\N	\N	2	393	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1865	36	version	\N	2017-01-05	\N	\N	2	394	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1866	36	version	\N	2017-01-05	\N	\N	2	395	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1867	36	version	\N	2017-01-05	\N	\N	2	396	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1868	36	version	\N	2017-01-05	\N	\N	2	397	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1869	36	version	\N	2017-01-05	\N	\N	2	398	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1870	36	version	\N	2017-01-05	\N	\N	2	399	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1871	36	version	\N	2017-01-05	\N	\N	2	400	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1872	36	version	\N	2017-01-05	\N	\N	2	401	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1873	36	version	\N	2017-01-05	\N	\N	2	402	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1874	36	version	\N	2017-01-05	\N	\N	2	403	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1875	36	version	\N	2017-01-05	\N	\N	2	404	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1876	36	version	\N	2017-01-05	\N	\N	2	406	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1877	36	version	\N	2017-01-05	\N	\N	2	407	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1878	36	version	\N	2017-01-05	\N	\N	2	408	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1879	36	version	\N	2017-01-05	\N	\N	2	409	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1880	36	version	\N	2017-01-05	\N	\N	2	410	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1881	36	version	\N	2017-01-05	\N	\N	2	411	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1882	36	version	\N	2017-01-05	\N	\N	2	412	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1883	36	version	\N	2017-01-05	\N	\N	2	413	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1884	36	version	\N	2017-01-05	\N	\N	2	414	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1885	36	version	\N	2017-01-05	\N	\N	2	454	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1886	36	version	\N	2017-01-05	\N	\N	2	415	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1887	36	version	\N	2017-01-05	\N	\N	2	416	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1888	36	version	\N	2017-01-05	\N	\N	2	417	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1889	36	version	\N	2017-01-05	\N	\N	2	418	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1890	36	version	\N	2017-01-05	\N	\N	2	419	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1891	36	version	\N	2017-01-05	\N	\N	2	420	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1892	36	version	\N	2017-01-05	\N	\N	2	421	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1893	36	version	\N	2017-01-05	\N	\N	2	422	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1894	36	version	\N	2017-01-05	\N	\N	2	423	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1895	36	version	\N	2017-01-05	\N	\N	2	424	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1896	36	version	\N	2017-01-05	\N	\N	2	426	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1897	36	version	\N	2017-01-05	\N	\N	2	427	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1898	36	version	\N	2017-01-05	\N	\N	2	428	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1899	36	version	\N	2017-01-05	\N	\N	2	429	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1900	36	version	\N	2017-01-05	\N	\N	2	430	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1901	36	version	\N	2017-01-05	\N	\N	2	431	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1902	36	version	\N	2017-01-05	\N	\N	2	432	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1903	36	version	\N	2017-01-05	\N	\N	2	433	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1904	36	version	\N	2017-01-05	\N	\N	2	434	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1905	36	version	\N	2017-01-05	\N	\N	2	435	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1906	36	version	\N	2017-01-05	\N	\N	2	436	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1907	36	version	\N	2017-01-05	\N	\N	2	437	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1908	36	version	\N	2017-01-05	\N	\N	2	438	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1909	36	version	\N	2017-01-05	\N	\N	2	439	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1910	36	version	\N	2017-01-05	\N	\N	2	440	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1911	36	version	\N	2017-01-05	\N	\N	2	441	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1912	36	version	\N	2017-01-05	\N	\N	2	442	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1913	36	version	\N	2017-01-05	\N	\N	2	443	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1914	36	version	\N	2017-01-05	\N	\N	2	444	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1915	36	version	\N	2017-01-05	\N	\N	2	445	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1916	36	version	\N	2017-01-05	\N	\N	2	446	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1917	36	version	\N	2017-01-05	\N	\N	2	447	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1918	36	version	\N	2017-01-05	\N	\N	2	448	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1919	36	version	\N	2017-01-05	\N	\N	2	449	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1920	36	version	\N	2017-01-05	\N	\N	2	450	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1921	36	version	\N	2017-01-05	\N	\N	2	451	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1922	36	version	\N	2017-01-05	\N	\N	2	452	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1923	36	version	\N	2017-01-05	\N	\N	2	453	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1924	36	version	\N	2017-01-05	\N	\N	2	455	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1925	36	version	\N	2017-01-05	\N	\N	2	457	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1926	36	version	\N	2017-01-05	\N	\N	2	458	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1927	36	version	\N	2017-01-05	\N	\N	2	459	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1928	36	version	\N	2017-01-05	\N	\N	2	460	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1929	36	version	\N	2017-01-05	\N	\N	2	461	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1930	36	version	\N	2017-01-05	\N	\N	2	462	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1931	36	version	\N	2017-01-05	\N	\N	2	463	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1932	36	version	\N	2017-01-05	\N	\N	2	464	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1933	36	version	\N	2017-01-05	\N	\N	2	465	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1934	36	version	\N	2017-01-05	\N	\N	2	466	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1935	36	version	\N	2017-01-05	\N	\N	2	467	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1936	36	version	\N	2017-01-05	\N	\N	2	468	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1937	36	version	\N	2017-01-05	\N	\N	2	470	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1938	36	version	\N	2017-01-05	\N	\N	2	471	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1939	36	version	\N	2017-01-05	\N	\N	2	472	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1940	36	version	\N	2017-01-05	\N	\N	2	473	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1941	36	version	\N	2017-01-05	\N	\N	2	474	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1942	36	version	\N	2017-01-05	\N	\N	2	475	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1943	36	version	\N	2017-01-05	\N	\N	2	476	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1944	36	version	\N	2017-01-05	\N	\N	2	477	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1945	36	version	\N	2017-01-05	\N	\N	2	478	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1946	36	version	\N	2017-01-05	\N	\N	2	479	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1947	36	version	\N	2017-01-05	\N	\N	2	483	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1948	36	version	\N	2017-01-05	\N	\N	2	484	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1949	36	version	\N	2017-01-05	\N	\N	2	485	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1950	36	version	\N	2017-01-05	\N	\N	2	486	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1951	36	version	\N	2017-01-05	\N	\N	2	487	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1952	36	version	\N	2017-01-05	\N	\N	2	488	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1953	36	version	\N	2017-01-05	\N	\N	2	489	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1954	36	version	\N	2017-01-05	\N	\N	2	490	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1955	36	version	\N	2017-01-05	\N	\N	2	491	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1956	36	version	\N	2017-01-05	\N	\N	2	492	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1957	36	version	\N	2017-01-05	\N	\N	2	493	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1958	36	version	\N	2017-01-05	\N	\N	2	494	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1959	36	version	\N	2017-01-05	\N	\N	2	495	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1960	36	version	\N	2017-01-05	\N	\N	2	496	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1961	36	version	\N	2017-01-05	\N	\N	2	497	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1962	36	version	\N	2017-01-05	\N	\N	2	498	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1963	36	version	\N	2017-01-05	\N	\N	2	501	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1964	36	version	\N	2017-01-05	\N	\N	2	502	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1965	36	version	\N	2017-01-05	\N	\N	2	503	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1966	36	version	\N	2017-01-05	\N	\N	2	504	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1967	36	version	\N	2017-01-05	\N	\N	2	505	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1968	36	version	\N	2017-01-05	\N	\N	2	506	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1969	36	version	\N	2017-01-05	\N	\N	2	507	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1970	36	version	\N	2017-01-05	\N	\N	2	508	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1971	36	version	\N	2017-01-05	\N	\N	2	509	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1972	36	version	\N	2017-01-05	\N	\N	2	510	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1973	36	version	\N	2017-01-05	\N	\N	2	511	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1975	36	version	\N	2017-01-05	\N	\N	2	513	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1976	36	version	\N	2017-01-05	\N	\N	2	514	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1977	36	version	\N	2017-01-05	\N	\N	2	515	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1978	36	version	\N	2017-01-05	\N	\N	2	519	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1979	36	version	\N	2017-01-05	\N	\N	2	521	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1980	36	version	\N	2017-01-05	\N	\N	2	522	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1981	36	version	\N	2017-01-05	\N	\N	2	523	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1982	36	version	\N	2017-01-05	\N	\N	2	524	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1983	36	version	\N	2017-01-05	\N	\N	2	525	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1984	36	version	\N	2017-01-05	\N	\N	2	526	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1985	36	version	\N	2017-01-05	\N	\N	2	530	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1986	36	version	\N	2017-01-05	\N	\N	2	531	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1987	36	version	\N	2017-01-05	\N	\N	2	532	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1988	36	version	\N	2017-01-05	\N	\N	2	533	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1989	36	version	\N	2017-01-05	\N	\N	2	534	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1990	36	version	\N	2017-01-05	\N	\N	2	535	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1991	36	version	\N	2017-01-05	\N	\N	2	536	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1992	36	version	\N	2017-01-05	\N	\N	2	537	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1993	36	version	\N	2017-01-05	\N	\N	2	538	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1994	36	version	\N	2017-01-05	\N	\N	2	539	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1995	36	version	\N	2017-01-05	\N	\N	2	540	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1996	36	version	\N	2017-01-05	\N	\N	2	843	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1998	36	version	\N	2017-01-05	\N	\N	2	541	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+1999	36	version	\N	2017-01-05	\N	\N	2	542	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2000	36	version	\N	2017-01-05	\N	\N	2	543	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2001	36	version	\N	2017-01-05	\N	\N	2	544	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2002	36	version	\N	2017-01-05	\N	\N	2	545	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2003	36	version	\N	2017-01-05	\N	\N	2	546	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2004	36	version	\N	2017-01-05	\N	\N	2	547	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2005	36	version	\N	2017-01-05	\N	\N	2	548	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2006	36	version	\N	2017-01-05	\N	\N	2	549	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2007	36	version	\N	2017-01-05	\N	\N	2	550	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2008	36	version	\N	2017-01-05	\N	\N	2	551	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2009	36	version	\N	2017-01-05	\N	\N	2	552	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2010	36	version	\N	2017-01-05	\N	\N	2	553	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2011	36	version	\N	2017-01-05	\N	\N	2	517	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2016	36	version	\N	2017-01-05	\N	\N	2	554	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2025	36	version	\N	2017-01-05	\N	\N	2	565	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2026	36	version	\N	2017-01-05	\N	\N	2	566	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2031	36	version	\N	2017-01-05	\N	\N	2	572	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2032	36	version	\N	2017-01-05	\N	\N	2	576	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2033	36	version	\N	2017-01-05	\N	\N	2	577	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2034	36	version	\N	2017-01-05	\N	\N	2	578	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2035	36	version	\N	2017-01-05	\N	\N	2	579	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2036	36	version	\N	2017-01-05	\N	\N	2	580	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2038	36	version	\N	2017-01-05	\N	\N	2	844	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2039	36	version	\N	2017-01-05	\N	\N	2	581	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2040	36	version	\N	2017-01-05	\N	\N	2	582	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2041	36	version	\N	2017-01-05	\N	\N	2	583	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2042	36	version	\N	2017-01-05	\N	\N	2	584	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2043	36	version	\N	2017-01-05	\N	\N	2	585	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2015	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	518	2017-04-30 00:00:00	2017-06-08 14:22:32.463965	\N	\N
+2014	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	520	2017-04-30 00:00:00	2017-06-08 14:23:16.977644	\N	\N
+1997	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	528	2017-04-30 00:00:00	2017-06-08 14:24:39.080625	\N	\N
+2013	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	529	2017-04-30 00:00:00	2017-06-08 14:25:15.166253	\N	\N
+2012	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	556	2017-04-30 00:00:00	2017-06-08 14:26:33.565882	\N	\N
+2037	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	573	2017-04-30 00:00:00	2017-06-08 14:27:41.497959	\N	\N
+2018	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	558	2017-04-30 00:00:00	2017-06-08 14:37:53.281293	\N	\N
+2019	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	559	2017-04-30 00:00:00	2017-06-08 14:41:31.922106	\N	\N
+2021	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	561	2017-04-30 00:00:00	2017-06-08 14:43:09.515436	\N	\N
+2023	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	563	2017-04-30 00:00:00	2017-06-08 14:44:28.566806	\N	\N
+2044	36	version	\N	2017-01-05	\N	\N	2	586	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2045	36	version	\N	2017-01-05	\N	\N	2	587	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2046	36	version	\N	2017-01-05	\N	\N	2	588	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2047	36	version	\N	2017-01-05	\N	\N	2	589	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2048	36	version	\N	2017-01-05	\N	\N	2	592	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2049	36	version	\N	2017-01-05	\N	\N	2	593	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2050	36	version	\N	2017-01-05	\N	\N	2	594	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2051	36	version	\N	2017-01-05	\N	\N	2	595	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2052	36	version	\N	2017-01-05	\N	\N	2	596	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2053	36	version	\N	2017-01-05	\N	\N	2	597	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2056	36	version	\N	2017-01-05	\N	\N	2	598	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2057	36	version	\N	2017-01-05	\N	\N	2	599	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2058	36	version	\N	2017-01-05	\N	\N	2	600	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2059	36	version	\N	2017-01-05	\N	\N	2	601	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2060	36	version	\N	2017-01-05	\N	\N	2	602	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2061	36	version	\N	2017-01-05	\N	\N	2	603	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2062	36	version	\N	2017-01-05	\N	\N	2	604	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2063	36	version	\N	2017-01-05	\N	\N	2	605	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2064	36	version	\N	2017-01-05	\N	\N	2	606	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2065	36	version	\N	2017-01-05	\N	\N	2	607	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2066	36	version	\N	2017-01-05	\N	\N	2	608	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2067	36	version	\N	2017-01-05	\N	\N	2	609	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2068	36	version	\N	2017-01-05	\N	\N	2	610	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2069	36	version	\N	2017-01-05	\N	\N	2	611	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2070	36	version	\N	2017-01-05	\N	\N	2	612	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2071	36	version	\N	2017-01-05	\N	\N	2	613	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2072	36	version	\N	2017-01-05	\N	\N	2	614	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2073	36	version	\N	2017-01-05	\N	\N	2	615	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2074	36	version	\N	2017-01-05	\N	\N	2	616	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2075	36	version	\N	2017-01-05	\N	\N	2	617	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2076	36	version	\N	2017-01-05	\N	\N	2	618	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2077	36	version	\N	2017-01-05	\N	\N	2	619	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2078	36	version	\N	2017-01-05	\N	\N	2	620	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2079	36	version	\N	2017-01-05	\N	\N	2	621	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2080	36	version	\N	2017-01-05	\N	\N	2	622	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2081	36	version	\N	2017-01-05	\N	\N	2	623	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2082	36	version	\N	2017-01-05	\N	\N	2	624	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2084	36	version	\N	2017-01-05	\N	\N	2	626	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2085	36	version	\N	2017-01-05	\N	\N	2	627	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2086	36	version	\N	2017-01-05	\N	\N	2	628	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2087	36	version	\N	2017-01-05	\N	\N	2	629	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2088	36	version	\N	2017-01-05	\N	\N	2	630	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2089	36	version	\N	2017-01-05	\N	\N	2	631	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2090	36	version	\N	2017-01-05	\N	\N	2	632	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2091	36	version	\N	2017-01-05	\N	\N	2	633	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2092	36	version	\N	2017-01-05	\N	\N	2	634	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2093	36	version	\N	2017-01-05	\N	\N	2	635	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2094	36	version	\N	2017-01-05	\N	\N	2	636	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2095	36	version	\N	2017-01-05	\N	\N	2	637	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2096	36	version	\N	2017-01-05	\N	\N	2	638	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2097	36	version	\N	2017-01-05	\N	\N	2	639	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2098	36	version	\N	2017-01-05	\N	\N	2	640	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2099	36	version	\N	2017-01-05	\N	\N	2	641	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2100	36	version	\N	2017-01-05	\N	\N	2	642	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2101	36	version	\N	2017-01-05	\N	\N	2	643	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2102	36	version	\N	2017-01-05	\N	\N	2	644	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2103	36	version	\N	2017-01-05	\N	\N	2	645	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2104	36	version	\N	2017-01-05	\N	\N	2	646	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2105	36	version	\N	2017-01-05	\N	\N	2	647	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2106	36	version	\N	2017-01-05	\N	\N	2	648	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2107	36	version	\N	2017-01-05	\N	\N	2	649	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2108	36	version	\N	2017-01-05	\N	\N	2	650	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2109	36	version	\N	2017-01-05	\N	\N	2	651	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2110	36	version	\N	2017-01-05	\N	\N	2	652	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2111	36	version	\N	2017-01-05	\N	\N	2	653	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2112	36	version	\N	2017-01-05	\N	\N	2	654	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2113	36	version	\N	2017-01-05	\N	\N	2	655	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2114	36	version	\N	2017-01-05	\N	\N	2	656	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2115	36	version	\N	2017-01-05	\N	\N	2	657	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2116	36	version	\N	2017-01-05	\N	\N	2	658	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2117	36	version	\N	2017-01-05	\N	\N	2	659	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2118	36	version	\N	2017-01-05	\N	\N	2	660	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2119	36	version	\N	2017-01-05	\N	\N	2	661	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2120	36	version	\N	2017-01-05	\N	\N	2	662	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2121	36	version	\N	2017-01-05	\N	\N	2	663	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2122	36	version	\N	2017-01-05	\N	\N	2	664	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2124	36	version	\N	2017-01-05	\N	\N	2	666	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2125	36	version	\N	2017-01-05	\N	\N	2	667	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2130	36	version	\N	2017-01-05	\N	\N	2	672	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2132	36	version	\N	2017-01-05	\N	\N	2	674	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2133	36	version	\N	2017-01-05	\N	\N	2	675	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2134	36	version	\N	2017-01-05	\N	\N	2	676	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2135	36	version	\N	2017-01-05	\N	\N	2	677	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2136	36	version	\N	2017-01-05	\N	\N	2	678	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2137	36	version	\N	2017-01-05	\N	\N	2	679	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2138	36	version	\N	2017-01-05	\N	\N	2	680	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2139	36	version	\N	2017-01-05	\N	\N	2	681	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2140	36	version	\N	2017-01-05	\N	\N	2	682	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2054	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	568	2017-04-30 00:00:00	2017-06-08 14:27:04.011762	\N	\N
+2055	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	575	2017-04-30 00:00:00	2017-06-08 14:33:25.976696	\N	\N
+2141	36	version	\N	2017-01-05	\N	\N	2	683	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2142	36	version	\N	2017-01-05	\N	\N	2	684	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2145	36	version	\N	2017-01-05	\N	\N	2	687	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2146	36	version	\N	2017-01-05	\N	\N	2	688	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2148	36	version	\N	2017-01-05	\N	\N	2	690	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2149	36	version	\N	2017-01-05	\N	\N	2	691	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2150	36	version	\N	2017-01-05	\N	\N	2	692	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2151	36	version	\N	2017-01-05	\N	\N	2	693	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2152	36	version	\N	2017-01-05	\N	\N	2	694	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2153	36	version	\N	2017-01-05	\N	\N	2	695	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2154	36	version	\N	2017-01-05	\N	\N	2	696	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2155	36	version	\N	2017-01-05	\N	\N	2	697	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2156	36	version	\N	2017-01-05	\N	\N	2	698	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2157	36	version	\N	2017-01-05	\N	\N	2	699	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2158	36	version	\N	2017-01-05	\N	\N	2	701	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2160	36	version	\N	2017-01-05	\N	\N	2	703	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2161	36	version	\N	2017-01-05	\N	\N	2	704	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2162	36	version	\N	2017-01-05	\N	\N	2	705	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2164	36	version	\N	2017-01-05	\N	\N	2	707	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2165	36	version	\N	2017-01-05	\N	\N	2	708	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2166	36	version	\N	2017-01-05	\N	\N	2	709	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2167	36	version	\N	2017-01-05	\N	\N	2	710	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2168	36	version	\N	2017-01-05	\N	\N	2	711	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2169	36	version	\N	2017-01-05	\N	\N	2	715	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2170	36	version	\N	2017-01-05	\N	\N	2	717	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2171	36	version	\N	2017-01-05	\N	\N	2	718	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2172	36	version	\N	2017-01-05	\N	\N	2	726	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2173	36	version	\N	2017-01-05	\N	\N	2	845	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2174	36	version	\N	2017-01-05	\N	\N	2	719	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2175	36	version	\N	2017-01-05	\N	\N	2	716	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2178	36	version	\N	2017-01-05	\N	\N	2	713	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2179	36	version	\N	2017-01-05	\N	\N	2	714	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2180	36	version	\N	2017-01-05	\N	\N	2	727	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2183	36	version	\N	2017-01-05	\N	\N	2	919	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2184	36	version	\N	2017-01-05	\N	\N	2	871	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2185	36	version	\N	2017-01-05	\N	\N	2	870	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2186	36	version	\N	2017-01-05	\N	\N	2	869	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2187	36	version	\N	2017-01-05	\N	\N	2	729	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2188	36	version	\N	2017-01-05	\N	\N	2	730	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2189	36	version	\N	2017-01-05	\N	\N	2	849	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2190	36	version	\N	2017-01-05	\N	\N	2	852	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2191	36	version	\N	2017-01-05	\N	\N	2	867	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2192	36	version	\N	2017-01-05	\N	\N	2	863	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2193	36	version	\N	2017-01-05	\N	\N	2	868	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2195	36	version	\N	2017-01-05	\N	\N	2	866	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2197	36	version	\N	2017-01-05	\N	\N	2	806	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2199	36	version	\N	2017-01-05	\N	\N	2	865	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2201	36	version	\N	2017-01-05	\N	\N	2	864	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2202	36	version	\N	2017-01-05	\N	\N	2	862	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2204	36	version	\N	2017-01-05	\N	\N	2	861	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2205	36	version	\N	2017-01-05	\N	\N	2	855	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2206	36	version	\N	2017-01-05	\N	\N	2	860	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2207	36	version	\N	2017-01-05	\N	\N	2	859	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2208	36	version	\N	2017-01-05	\N	\N	2	858	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2209	36	version	\N	2017-01-05	\N	\N	2	857	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2210	36	version	\N	2017-01-05	\N	\N	2	854	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2211	36	version	\N	2017-01-05	\N	\N	2	853	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2212	36	version	\N	2017-01-05	\N	\N	2	851	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2213	36	version	\N	2017-01-05	\N	\N	2	850	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2214	36	version	\N	2017-01-05	\N	\N	2	848	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2215	36	version	\N	2017-01-05	\N	\N	2	847	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2216	36	version	\N	2017-01-05	\N	\N	2	846	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2217	36	version	\N	2017-01-05	\N	\N	2	875	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2218	36	version	\N	2017-01-05	\N	\N	2	877	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2219	36	version	\N	2017-01-05	\N	\N	2	879	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2220	36	version	\N	2017-01-05	\N	\N	2	886	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2221	36	version	\N	2017-01-05	\N	\N	2	887	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2222	36	version	\N	2017-01-05	\N	\N	2	888	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2223	36	version	\N	2017-01-05	\N	\N	2	889	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2224	36	version	\N	2017-01-05	\N	\N	2	890	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2225	36	version	\N	2017-01-05	\N	\N	2	891	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2226	36	version	\N	2017-01-05	\N	\N	2	892	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2227	36	version	\N	2017-01-05	\N	\N	2	918	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2228	36	version	\N	2017-01-05	\N	\N	2	911	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2229	36	version	\N	2017-01-05	\N	\N	2	913	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2231	36	version	\N	2017-01-05	\N	\N	2	917	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2232	36	version	\N	2017-01-05	\N	\N	2	916	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2233	36	version	\N	2017-01-05	\N	\N	2	915	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2234	36	version	\N	2017-01-05	\N	\N	2	914	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2235	36	version	\N	2017-01-05	\N	\N	2	910	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2236	36	version	\N	2017-01-05	\N	\N	2	909	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2237	36	version	\N	2017-01-05	\N	\N	2	907	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2194	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	769	2017-04-30 00:00:00	2017-05-25 17:53:28.274805	\N	\N
+2196	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	780	2017-04-30 00:00:00	2017-05-25 19:29:33.233151	\N	\N
+2230	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	884	2017-04-30 00:00:00	2017-05-25 19:32:44.556851	\N	\N
+2200	36	RCGM VERSION 1	0066-2017	2017-02-02	\N		6	893	2017-04-30 00:00:00	2017-05-25 19:33:32.984596	\N	\N
+2198	36	RCGM VERSION 2	0142-2017	2017-03-02	\N		6	912	2017-04-30 00:00:00	2017-05-25 19:37:53.167119	\N	\N
+2203	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	555	2017-04-30 00:00:00	2017-06-08 14:25:58.553118	\N	\N
+2176	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	591	2017-04-30 00:00:00	2017-06-08 14:34:48.055646	\N	\N
+2177	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	700	2017-04-30 00:00:00	2017-06-08 14:55:52.276833	\N	\N
+2143	36	RCGFAP-VERSIÓN 6	0194-2017	2017-04-24	\N		8	685	2017-04-30 00:00:00	2017-06-08 16:04:15.354044	\N	\N
+2147	36	RCGFAP-VERSIÓN 7	0198-2017	2017-04-28	\N		8	689	2017-04-30 00:00:00	2017-06-08 16:05:16.770165	\N	\N
+2238	36	version	\N	2017-01-05	\N	\N	2	906	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2239	36	version	\N	2017-01-05	\N	\N	2	904	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2240	36	version	\N	2017-01-05	\N	\N	2	903	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2241	36	version	\N	2017-01-05	\N	\N	2	901	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2242	36	version	\N	2017-01-05	\N	\N	2	900	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2243	36	version	\N	2017-01-05	\N	\N	2	897	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2244	36	version	\N	2017-01-05	\N	\N	2	896	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2245	36	version	\N	2017-01-05	\N	\N	2	894	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2246	36	version	\N	2017-01-05	\N	\N	2	885	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2247	36	version	\N	2017-01-05	\N	\N	2	883	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2248	36	version	\N	2017-01-05	\N	\N	2	881	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2249	36	version	\N	2017-01-05	\N	\N	2	880	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2250	36	version	\N	2017-01-05	\N	\N	2	878	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2251	36	version	\N	2017-01-05	\N	\N	2	876	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2252	36	version	\N	2017-01-05	\N	\N	2	874	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2253	36	version	\N	2017-01-05	\N	\N	2	873	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2254	36	version	\N	2017-01-05	\N	\N	2	920	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2255	36	version	\N	2017-01-05	\N	\N	2	922	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2256	36	version	\N	2017-01-05	\N	\N	2	951	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2257	36	version	\N	2017-01-05	\N	\N	2	925	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2258	36	version	\N	2017-01-05	\N	\N	2	927	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2259	36	version	\N	2017-01-05	\N	\N	2	928	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2260	36	version	\N	2017-01-05	\N	\N	2	950	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2261	36	version	\N	2017-01-05	\N	\N	2	931	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2262	36	version	\N	2017-01-05	\N	\N	2	932	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2263	36	version	\N	2017-01-05	\N	\N	2	933	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2264	36	version	\N	2017-01-05	\N	\N	2	948	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2265	36	version	\N	2017-01-05	\N	\N	2	947	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2266	36	version	\N	2017-01-05	\N	\N	2	946	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2267	36	version	\N	2017-01-05	\N	\N	2	938	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2268	36	version	\N	2017-01-05	\N	\N	2	939	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2269	36	version	\N	2017-01-05	\N	\N	2	944	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2270	36	version	\N	2017-01-05	\N	\N	2	943	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2271	36	version	\N	2017-01-05	\N	\N	2	942	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2272	36	version	\N	2017-01-05	\N	\N	2	940	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2273	36	version	\N	2017-01-05	\N	\N	2	937	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2274	36	version	\N	2017-01-05	\N	\N	2	936	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2275	36	version	\N	2017-01-05	\N	\N	2	934	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2276	36	version	\N	2017-01-05	\N	\N	2	930	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2278	36	version	\N	2017-01-05	\N	\N	2	959	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2282	36	version	\N	2017-01-05	\N	\N	2	905	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2283	36	version	\N	2017-01-05	\N	\N	2	958	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2284	36	version	\N	2017-01-05	\N	\N	2	957	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2285	36	version	\N	2017-01-05	\N	\N	2	956	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2286	36	version	\N	2017-01-05	\N	\N	2	953	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2287	36	version	\N	2017-01-05	\N	\N	2	952	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2288	36	version	\N	2017-01-05	\N	\N	2	926	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2289	36	version	\N	2017-01-05	\N	\N	2	923	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2290	36	version	\N	2017-01-05	\N	\N	2	921	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2293	36	version	\N	2017-01-05	\N	\N	2	973	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2294	36	version	\N	2017-01-05	\N	\N	2	972	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2295	36	version	\N	2017-01-05	\N	\N	2	971	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2296	36	version	\N	2017-01-05	\N	\N	2	970	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2297	36	version	\N	2017-01-05	\N	\N	2	969	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2298	36	version	\N	2017-01-05	\N	\N	2	968	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2299	36	version	\N	2017-01-05	\N	\N	2	967	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2300	36	version	\N	2017-01-05	\N	\N	2	966	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2301	36	version	\N	2017-01-05	\N	\N	2	965	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2302	36	version	\N	2017-01-05	\N	\N	2	964	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2303	36	version	\N	2017-01-05	\N	\N	2	963	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2304	36	version	\N	2017-01-05	\N	\N	2	962	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2305	36	version	\N	2017-01-05	\N	\N	2	960	2017-04-30 00:00:00	2017-04-30 00:00:00	\N	\N
+2406	18	Bases AS-3 DERIVADO LP 5		2017-05-04	\N	CONVOCATORIA EN EL SEACE	13	978	2017-05-05 14:18:20.829927	2017-05-05 14:18:30.468378	\N	\N
+2407	17			2017-04-28	\N		13	828	2017-05-05 14:23:46.254586	2017-05-05 14:23:46.254586	\N	\N
+2408	46			2017-02-20	\N	INFORME N° 009 DEL 20-02-2017 SOLICITUD DE COMITE	13	828	2017-05-05 14:24:26.894903	2017-05-05 14:24:26.894903	\N	\N
+2409	40		041	2017-03-20	\N	NOMBRAMIENTO DE COMITE	13	828	2017-05-05 14:24:58.971729	2017-05-05 14:24:58.971729	\N	\N
+2410	47	FORMATO N° 008 DEL 03-05-2017	008	2017-05-03	\N	APROBACION DE BASES	13	828	2017-05-05 14:27:11.995261	2017-05-05 14:27:37.575874	\N	\N
+2412	18	Bases AS-3 DERIVADO LP 5		2017-05-04	\N	CONVOCATORIA EN EL SEACE	13	828	2017-05-05 14:28:44.309389	2017-05-05 14:28:55.346229	\N	\N
+2306	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	945	2017-04-30 00:00:00	2017-05-25 19:39:49.893233	\N	\N
+2307	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	954	2017-04-30 00:00:00	2017-05-25 19:45:03.018244	\N	\N
+2308	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	955	2017-04-30 00:00:00	2017-05-25 19:51:26.385109	\N	\N
+2309	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	961	2017-04-30 00:00:00	2017-05-25 19:52:09.112275	\N	\N
+2277	36	RCGM VERSION 2	0142-2017	2017-03-02	\N		6	899	2017-04-30 00:00:00	2017-05-26 13:28:23.303545	\N	\N
+2291	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	924	2017-04-30 00:00:00	2017-05-26 13:33:27.758186	\N	\N
+2507	15	HOJA TRAMITE 	375	2017-02-23	3061905.04999999981	PROCESO QUE VIENE  DEL AÑO 2016	9	978	2017-05-09 19:11:04.242754	2017-05-09 19:14:09.753876	1	\N
+2508	15			2017-01-01	1325003.19999999995		8	1376	2017-05-09 19:16:27.008743	2017-05-09 19:16:27.008743	1	\N
+2511	200		NC-70-EMPL-PC N° 0429	2017-03-13	655000	EXPEDIENTE NO FUE REMITIDO POR LA FAP / EXCLUIDO EN EL LA VERSION 3 DEL PAC-2017	8	558	2017-05-09 20:16:42.286408	2017-05-09 20:16:42.286408	1	\N
+2512	21			2017-05-02	\N	CONSENTIMIENTO	13	121	2017-05-09 20:39:52.853492	2017-05-09 20:39:52.853492	\N	\N
+2281	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	929	2017-04-30 00:00:00	2017-05-26 13:34:15.564118	\N	\N
+2280	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	935	2017-04-30 00:00:00	2017-05-26 13:35:20.362959	\N	\N
+2292	36	RCGM VERSION 3	0170-2017	2017-03-17	\N		6	941	2017-04-30 00:00:00	2017-05-26 13:36:08.94372	\N	\N
+3071	30	OFICIO	546-2017/SG/ADJ/ACFFAA	2017-05-29	805605.040000000037	EN DICHO EXPEDIENTE NO SE ESPÉCIFICA EL TIEMPO DE REPOSICIÓN DE LOS BIENES, EN CASO DE PRESENTARSE RESPÓNSABILIDADES POR VICIOS OCULTOS	8	1061	2017-06-02 19:52:29.183586	2017-06-02 21:28:26.745615	1	\N
+3074	61			2017-02-20	\N	PACIFICO coberturado hasta 22/02/2018	2	1457	2017-06-05 14:28:07.808392	2017-06-05 14:28:07.808392	\N	\N
+3075	61			2017-01-27	\N	PACIFICO coberturado hasta 29/01/2018	2	1456	2017-06-05 14:35:43.995126	2017-06-05 14:35:43.995126	\N	\N
+1284	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	527	2017-04-30 00:00:00	2017-06-08 14:24:07.038243	\N	\N
+3143	56			2017-06-21	\N	SUSCRIPCION DE CONTRATO	13	700	2017-06-08 14:32:05.134265	2017-06-08 14:32:05.134265	\N	\N
+3076	200	R/J	083-2017	2017-05-23	\N		6	905	2017-06-06 13:22:21.090159	2017-06-06 13:47:10.927351	\N	\N
+3077	200			2017-05-15	\N		2	1014	2017-06-06 14:51:04.902744	2017-06-06 14:51:04.902744	\N	\N
+3078	200		G.500-2313	2017-05-15	\N		6	1015	2017-06-06 14:54:52.7732	2017-06-06 14:54:52.7732	\N	\N
+3079	200		G.500-2313	2017-05-15	\N		6	1016	2017-06-06 14:58:51.493348	2017-06-06 14:58:51.493348	\N	\N
+3144	49		Nº 2	2017-06-06	\N	DECLARATORIA DE DESIERTO ITEM Nº 2	13	828	2017-06-08 14:36:19.036464	2017-06-08 14:36:19.036464	\N	\N
+3080	34	RESOLUCIÓN DIRECTORAL	16	2017-05-30	\N		11	1447	2017-06-06 15:45:56.002071	2017-06-06 16:17:31.725031	\N	\N
+3081	34	OFICIO	068	2017-06-06	\N		11	575	2017-06-06 19:55:30.919376	2017-06-06 19:55:38.559641	\N	\N
+3082	36	 	  	2017-05-30	20851874.7199999988	\N	2	1585	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3083	36	 	  	2017-05-30	328509	\N	2	1612	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3084	36	 	  	2017-05-30	540615	\N	2	1613	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3085	36	 	  	2017-05-30	1361749.5	\N	2	1614	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3086	36	 	  	2017-05-30	200000	\N	2	1615	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3087	36	 	  	2017-05-30	101500	\N	2	1616	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3088	36	 	  	2017-05-30	90037.5	\N	2	1617	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3089	36	 	  	2017-05-30	182000	\N	2	1621	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3090	36	 	  	2017-05-30	40000	\N	2	1622	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3091	36	 	  	2017-05-30	40000	\N	2	1623	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3092	36	 	  	2017-05-30	66150	\N	2	1624	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3093	36	 	  	2017-05-30	90650	\N	2	1625	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3094	36	 	  	2017-05-30	228025	\N	2	1627	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3095	36	 	  	2017-05-30	220000	\N	2	1626	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3096	36	 	  	2017-05-30	300000	\N	2	1628	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3097	36	 	  	2017-05-30	290675.409999999974	\N	2	1629	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3099	36	 	  	2017-05-30	189000	\N	2	1586	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3100	36	 	  	2017-05-30	160500	\N	2	1587	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3101	36	 	  	2017-05-30	308726.059999999998	\N	2	1588	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3102	36	 	  	2017-05-30	19786.7799999999988	\N	2	1589	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3103	36	 	  	2017-05-30	234041.100000000006	\N	2	1590	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3104	36	 	  	2017-05-30	57432.3000000000029	\N	2	1591	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3105	36	 	  	2017-05-30	46916.2099999999991	\N	2	1592	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3106	36	 	  	2017-05-30	8280	\N	2	1593	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3107	36	 	  	2017-05-30	126168	\N	2	1594	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3108	36	 	  	2017-05-30	786648.5	\N	2	1595	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3109	36	 	  	2017-05-30	346409.349999999977	\N	2	1596	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3110	36	 	  	2017-05-30	122730	\N	2	1597	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3111	36	 	  	2017-05-30	38180.010000000002	\N	2	1598	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3112	36	 	  	2017-05-30	731889.550000000047	\N	2	1599	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3113	36	 	  	2017-05-30	200982	\N	2	1600	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3114	36	 	  	2017-05-30	35039.6399999999994	\N	2	1601	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3115	36	 	  	2017-05-30	102200	\N	2	1602	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3117	36	 	  	2017-05-30	64515	\N	2	1604	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3118	36	 	  	2017-05-30	468966.489999999991	\N	2	1605	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3119	36	 	  	2017-05-30	1140978.75	\N	2	1606	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3120	36	 	  	2017-05-30	245000	\N	2	1607	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3123	36	 	  	2017-05-30	98683.2799999999988	\N	2	1610	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3124	36	 	  	2017-05-30	339321.299999999988	\N	2	1611	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3125	36	 	  	2017-05-30	336000	\N	2	1618	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3126	36	 	  	2017-05-30	141750	\N	2	1619	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3127	36	 	  	2017-05-30	45000	\N	2	1620	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3128	36	 	  	2017-05-30	392900.099999999977	\N	2	1631	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3129	36	 	  	2017-05-30	254328.329999999987	\N	2	1632	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3130	36	 	  	2017-05-30	3347797.99000000022	\N	2	1633	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3131	36	 	  	2017-05-30	9886708.66000000015	\N	2	1634	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3132	36	 	  	2017-05-30	4525104.90000000037	\N	2	1635	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3133	36	 	  	2017-05-30	399999	\N	2	1636	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3134	36	 	  	2017-05-30	1711310.25	\N	2	1637	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3135	36	 	  	2017-05-30	294374.609999999986	\N	2	1638	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3136	36	 	  	2017-05-30	1514668.19999999995	\N	2	1639	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3137	36	 	  	2017-05-30	398309.400000000023	\N	2	1640	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3138	36	 	  	2017-05-30	335141.159999999974	\N	2	1641	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3139	36	 	  	2017-05-30	249997.799999999988	\N	2	1642	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3140	36	 	  	2017-05-30	299988	\N	2	1643	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3141	36	 	  	2017-05-30	242293.5	\N	2	1644	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3142	36	 	  	2017-05-30	388920	\N	2	1645	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3145	49		Nº 2	2017-06-06	\N	DECLARATORIA DE DESIERTO ITEM Nº 2	13	978	2017-06-08 14:37:05.434011	2017-06-08 14:37:05.434011	\N	\N
+3146	40	RESOLUCION Nº 081-2017-ACFFAA	Nº 081 	2017-05-23	\N	RESOLUCION DE NOMBRAMIENTO 	13	591	2017-06-08 14:38:48.034242	2017-06-08 14:39:04.008952	\N	\N
+3147	47	Bases		2017-05-24	\N	INFORME SOLICITUD DE COMITE	13	591	2017-06-08 14:40:03.135901	2017-06-08 14:40:10.396802	\N	\N
+3148	42	Bases		2017-05-25	\N	FORMATO APROBACION DE BASES 	13	591	2017-06-08 14:40:50.988326	2017-06-08 14:40:59.047688	\N	\N
+3149	18	Bases		2017-05-26	\N	CONVOCATORIA EN EL SEACE	13	591	2017-06-08 14:41:34.777955	2017-06-08 14:41:45.039953	\N	\N
+1220	36	RCGFAP-VERSIÓN 1	0032-2017	2017-01-23	\N		8	1047	2017-04-30 00:00:00	2017-06-08 14:43:48.091776	\N	\N
+3150	19	OFERTAS		2017-06-08	\N	PRESENTACION DE PROPUESTAS	13	591	2017-06-08 14:44:41.544434	2017-06-08 14:44:51.328953	\N	\N
+3121	36	 RCGFAP-VERSIÓN 12	  0267-2017	2017-05-30	296414.469999999972		8	1608	2017-04-20 00:00:00	2017-06-08 15:33:33.069188	1	\N
+3122	36	 RCGFAP-VERSIÓN 12	  0267-2017	2017-05-30	183325.190000000002		8	1609	2017-04-20 00:00:00	2017-06-08 15:34:33.147108	1	\N
+3098	36	 RCGFAP-VERSIÓN 12	  0267-2017	2017-05-30	19416489.6099999994		8	1630	2017-04-20 00:00:00	2017-06-08 15:43:00.799332	1	\N
+3151	20	OFERTAS		2017-06-08	\N	OTORGAMENTO DE BUENA PRO	13	591	2017-06-08 14:45:49.356974	2017-06-08 14:45:59.691368	\N	\N
+3152	21	OFERTAS		2017-06-20	\N	CONSENTIMIENTO DE LA BUENA PRO	13	591	2017-06-08 14:46:52.660903	2017-06-08 14:47:00.846565	\N	\N
+3153	40	RESOLUCION Nº 081-2017-ACFFAA		2017-05-23	\N	APROBACION DE COMITE	13	750	2017-06-08 14:48:25.03987	2017-06-08 14:48:41.122002	\N	\N
+1254	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1052	2017-04-30 00:00:00	2017-06-08 14:50:50.65159	\N	\N
+1290	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	1058	2017-04-30 00:00:00	2017-06-08 14:53:59.602567	\N	\N
+3155	42			2017-05-25	\N	INFORME SOLICITUD DE COMITE	13	750	2017-06-08 14:54:43.904615	2017-06-08 14:54:43.904615	\N	\N
+3157	20	Bases		2017-06-08	\N	OTORGAMENTO DE BUENA PRO	13	750	2017-06-08 14:56:28.460062	2017-06-08 14:57:00.751311	\N	\N
+3158	21	OFERTAS		2017-06-20	\N	CONSENTIMIENTO DE LA BUENA PRO	13	750	2017-06-08 14:57:54.525041	2017-06-08 14:58:04.817902	\N	\N
+3159	36	RCGFAP-VERSIÓN 4	0183-2017	2017-04-18	\N		8	1331	2017-06-08 15:08:49.364827	2017-06-08 15:09:06.956667	\N	\N
+3156	18	Bases		2017-05-26	\N	CONVOCATORIA EN EL SEACE	13	750	2017-06-08 14:55:46.14581	2017-06-08 16:36:12.751346	\N	\N
+3154	47	Bases		2017-05-24	\N	INFORME SOLICITUD DE COMITE	13	750	2017-06-08 14:49:24.827918	2017-06-08 14:49:34.076905	\N	\N
+2159	36	RCGFAP-VERSIÓN 2	0121-2017	2017-02-23	\N		8	702	2017-04-30 00:00:00	2017-06-08 14:54:58.726163	\N	\N
+1297	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1062	2017-04-30 00:00:00	2017-06-08 14:59:12.253032	\N	\N
+1305	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1066	2017-04-30 00:00:00	2017-06-08 15:01:26.893149	\N	\N
+1313	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1070	2017-04-30 00:00:00	2017-06-08 15:04:19.553769	\N	\N
+1317	36	RCGFAP-VERSIÓN 3	0155-2017	2017-03-21	\N		8	1074	2017-04-30 00:00:00	2017-06-08 15:07:09.518145	\N	\N
+3160	36		0183-2017	2017-04-18	\N		8	1380	2017-06-08 15:11:44.762088	2017-06-08 15:11:44.762088	\N	\N
+3161	36		0183-2017	2017-04-18	\N		8	1377	2017-06-08 15:12:20.74794	2017-06-08 15:12:20.74794	\N	\N
+3162	36		0183-2017	2017-04-18	\N		8	1278	2017-06-08 15:12:59.312919	2017-06-08 15:12:59.312919	\N	\N
+1321	36	RCGFAP-VERSIÓN 5	0184-2017	2017-04-18	\N		8	1078	2017-04-30 00:00:00	2017-06-08 15:19:19.240389	\N	\N
+3116	36	 RCGFAP-VERSIÓN 12	  0267-2017	2017-05-30	1296066.8600000001		8	1603	2017-04-20 00:00:00	2017-06-08 15:32:39.528772	1	\N
+3163	18			2017-05-25	\N		13	742	2017-06-08 16:34:02.49378	2017-06-08 16:34:02.49378	\N	\N
+3164	18			2017-05-26	\N		13	977	2017-06-08 16:37:21.761519	2017-06-08 16:37:21.761519	\N	\N
+3165	20			2017-06-08	\N		13	977	2017-06-08 16:38:10.91305	2017-06-08 16:38:10.91305	\N	\N
+3166	18			2017-05-25	\N		13	119	2017-06-08 16:42:04.396555	2017-06-08 16:42:04.396555	\N	\N
+3167	18			2017-05-25	\N		13	590	2017-06-08 16:42:54.405186	2017-06-08 16:42:54.405186	\N	\N
+3168	18			2017-05-25	\N		13	706	2017-06-08 16:43:37.634648	2017-06-08 16:43:37.634648	\N	\N
+3169	18			2017-06-02	\N		13	728	2017-06-08 16:46:08.473435	2017-06-08 16:46:08.473435	\N	\N
+3170	12		NC-70-SGFA-LOCN-PS-N° 2094	2017-06-06	476608.159999999974		8	1433	2017-06-08 16:50:22.838458	2017-06-08 16:50:22.838458	1	\N
+3171	18			2016-12-30	\N		13	1461	2017-06-08 16:53:13.108161	2017-06-08 16:53:13.108161	\N	\N
+3173	13		NC-70-SGFA-LOCN-PS-N° 2094	2017-06-06	476608.159999999974		8	1433	2017-06-08 16:54:03.080557	2017-06-08 16:54:03.080557	1	\N
+3172	20			2017-05-24	1924365.25		13	1461	2017-06-08 16:53:35.004228	2017-06-08 17:04:35.589872	1	\N
+3174	20			2017-05-24	4462595.16999999993		13	1366	2017-06-08 17:06:36.498037	2017-06-08 17:07:33.164042	1	\N
+3175	20			2017-05-24	199119.029999999999		13	1364	2017-06-08 17:08:38.820175	2017-06-08 17:09:29.916445	1	\N
+3176	20			2017-05-24	1139371.55000000005		13	1361	2017-06-08 17:10:36.263777	2017-06-08 17:10:36.263777	1	\N
+3177	21			2017-05-24	\N		13	1461	2017-06-08 17:14:30.173941	2017-06-08 17:14:30.173941	\N	\N
+3178	21			2017-05-24	\N		13	1366	2017-06-08 17:14:54.761307	2017-06-08 17:14:54.761307	\N	\N
+3179	21			2017-05-24	\N		13	1364	2017-06-08 17:15:21.681314	2017-06-08 17:15:21.681314	\N	\N
+3181	21			2017-05-24	\N		13	1361	2017-06-08 17:15:44.06471	2017-06-08 17:15:44.06471	\N	\N
+3182	13		NC-70-SGFA-LOCN-PS-N° 1987	2017-06-06	300394.780000000028		8	1438	2017-06-08 17:17:22.468647	2017-06-08 17:17:22.468647	1	\N
+3180	12		NC-70-SGFA-LOCN-PS-N° 1987	2017-06-06	300394.780000000028		8	1438	2017-06-08 17:15:32.66902	2017-06-08 17:17:47.089611	1	\N
+3185	12		NC-170-DECS-N° 1280	2017-06-02	19416489.6099999994		8	1630	2017-06-08 17:20:46.668539	2017-06-08 17:20:46.668539	1	\N
+3186	13		NC-170-DECS-N° 1280	2017-06-05	19416489.6099999994	NO SE TRAMITA A DEM, DEBIDO A QUE GEX ESTA A LA ESPERA DE REMISION DEL EXPEDIENTE DEL EP	8	1630	2017-06-08 17:22:16.54363	2017-06-08 17:23:41.739767	1	\N
+3190	35			2017-05-24	\N		13	1364	2017-06-08 19:03:54.408499	2017-06-08 19:03:54.408499	\N	\N
+3183	35	MEMORANDUM	088-2017/DPC/ACFFAA	2017-05-24	\N		13	1361	2017-06-08 17:19:14.88582	2017-06-08 19:16:25.400436	\N	\N
+3188	35	MEMORANDUM	088-2017/DPC/ACFFAA	2017-05-24	\N		13	1461	2017-06-08 19:02:13.478641	2017-06-08 19:17:08.462895	\N	\N
+3189	35	MEMORANDUM	088-2017/DPC/ACFFAA	2017-05-24	\N		13	1366	2017-06-08 19:03:13.784434	2017-06-08 19:17:45.168286	\N	\N
+3184	35	MEMORANDUM	088-2017/DPC/ACFFAA	2017-05-24	\N		13	1364	2017-06-08 17:20:26.171502	2017-06-08 19:18:32.81879	\N	\N
+3192	36	 	  	2017-05-19	49596.2699999999968	\N	2	1646	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3193	36	 	  	2017-05-19	34628.2099999999991	\N	2	1647	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3194	36	 	  	2017-05-19	57645.1999999999971	\N	2	1648	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3195	36	 	  	2017-05-19	258000	\N	2	1649	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3196	36	 	  	2017-05-19	43310	\N	2	1650	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3197	36	 	  	2017-05-19	40000	\N	2	1651	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3198	36	 	  	2017-05-19	37555	\N	2	1652	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3199	36	 	  	2017-05-19	60021	\N	2	1653	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3202	36	 	  	2017-05-19	80000	\N	2	1656	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3203	36	 	  	2017-05-19	94577	\N	2	1657	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3206	36	 	  	2017-05-19	91653.0500000000029	\N	2	1660	2017-04-20 00:00:00	2017-04-20 00:00:00	1	\N
+3201	36	 RCGFAP-VERSIÓN 11	  0234-2017	2017-05-19	2751870		8	1655	2017-04-20 00:00:00	2017-06-09 14:25:01.859944	1	\N
+3204	36	 RCGFAP-VERSIÓN 11	  0234-2017	2017-05-19	610737.839999999967		8	1658	2017-04-20 00:00:00	2017-06-09 14:25:56.993213	1	\N
+3205	36	 RCGFAP-VERSIÓN 11	  0234-2017	2017-05-19	57050		8	1659	2017-04-20 00:00:00	2017-06-09 14:26:34.349293	1	\N
+3207	12		NC-70-SGFA-LOCN-PS-N° 2030	2017-05-31	2751870		8	1655	2017-06-09 14:55:01.456069	2017-06-09 14:55:01.456069	1	\N
+3208	13		NC-70-SGFA-LOCN-PS-N° 2030	2017-05-31	2751870	GEX SE ENCUENTRA A LA ESPERA DEL EXPEDIENTE DEL EP 	8	1655	2017-06-09 14:58:18.509095	2017-06-09 14:58:18.509095	1	\N
+3210	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1337	2017-06-09 16:08:58.568146	2017-06-09 16:08:58.568146	\N	\N
+3216	16			2017-06-09	\N	Esperando las cotizaciones de los proveedores	11	1380	2017-06-09 16:31:35.448536	2017-06-09 16:31:35.448536	\N	\N
+3220	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1412	2017-06-09 16:52:12.595644	2017-06-09 16:52:12.595644	\N	\N
+3221	43		 1286 / 1290 / 1291	2017-06-08	\N		13	119	2017-06-09 16:53:00.694111	2017-06-09 16:53:00.694111	1	\N
+3211	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1410	2017-06-09 16:10:10.3277	2017-06-09 16:53:08.346364	\N	\N
+3218	66			2017-06-09	\N	1. Fecha de Ingreso: 24/05/2017 2. Invitación a los proveedores para Estudio de Mercado.(02/06/2017) . 3. En espera de cotizaciones. (reiteración) 4. Estimación de la aprobación del expediente: 03/07/2017	11	893	2017-06-09 16:49:37.965619	2017-06-14 18:01:31.897787	\N	\N
+3209	66			2017-06-20	\N	1.invitación a los proveedores para estudio de mercado (13/06/2017). 2.Exposición del cuadro comparativo 26/06/2017.  Estimación de la aprobación del expediente: 28/06/2017	11	908	2017-06-09 16:07:49.799574	2017-06-22 14:02:33.853124	\N	\N
+3223	16			2017-06-09	\N	Se encuentra pendiente la selección del corredor de seguros	11	912	2017-06-09 17:17:16.706409	2017-06-09 17:17:16.706409	\N	\N
+3225	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1243	2017-06-09 17:26:28.347744	2017-06-09 17:26:28.347744	\N	\N
+3226	48			2017-06-07	\N	Devuelto a Dirección de Catalogación	11	1244	2017-06-09 17:27:51.807544	2017-06-09 17:27:51.807544	\N	\N
+3229	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	945	2017-06-09 17:32:00.108337	2017-06-09 17:32:00.108337	\N	\N
+3230	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1413	2017-06-09 17:32:35.082872	2017-06-09 17:32:35.082872	\N	\N
+3224	66			2017-06-20	\N	1. fecha de ingreso: 23/05/2017  2. DC para verificación de EETT  3.Respuesta de DC 01/06/2017  4.invitación a los proveedores para estudio de mercado (02/06/2017-Rimac/Mapfre/Positiva/Pacifico) . 5. El 12/06/2017 se le envío un oficio a la MGP, indicado que ellos eligiran el corredor de seguros que les convenga. 6. Compañias presentan consultas. 7.Consultas enviadas a MGP.  8.Consulta de Rimac (modificación de los términos de referencias) 9. Se recibio cotización de positiva 10.Por modificación en los  RTM (nuevo estudio de mercado) 11.Estimación de la aprobación del expediente: modificación de RTM	11	780	2017-06-09 17:18:46.408511	2017-06-22 13:59:15.725977	\N	\N
+3215	16			2017-06-09	\N	Se ha recepcionado el expediente para iniciar el estudio de mercado sin embargo se encuentra pendiente la modificación del tipo de compra de corporativo a encargo; ya se inicio el estudio de mercado donde se esta esperando las cotizaciones de los proveedores, ademas hemos recibido consultas de ellos.	11	954	2017-06-09 16:30:35.476816	2017-06-09 17:22:54.057892	\N	\N
+3227	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1377	2017-06-09 17:29:15.31328	2017-06-09 17:29:15.31328	\N	\N
+3228	16			2017-06-09	\N	Estamos esperando las recepción de las cotizaciones por los proveedores.	11	1445	2017-06-09 17:29:57.334512	2017-06-09 17:29:57.334512	\N	\N
+3235	15	CARTA	nc-70--SGFA-LOCN-PS-1317	2017-06-09	1320255.53000000003		8	1278	2017-06-12 13:28:22.024662	2017-06-12 14:01:58.001216	1	\N
+3241	66			2017-06-09	\N	Expediente aprobado y enviado a DPC el 06/06/2017	11	575	2017-06-12 15:47:13.845357	2017-06-12 15:47:13.845357	\N	\N
+3253	66			2017-06-20	\N	Fecha de ingreso: 02/06/2017. 1. Se encuentra en la etapa de Revisión del Expediente. 2. El 21/06/2017 se modifico las EETT.  3. CAMBIOS DE TREMINOS DE REFERENCIA (CAPACITACION , ALCANCE Y DESCRIPCION DEL SERVICIO)	11	1245	2017-06-12 17:44:07.862656	2017-06-21 19:16:38.787843	\N	\N
+3247	66			2017-06-09	\N	Expediente aprobado y enviado a DPC el 30/05/2017	11	1447	2017-06-12 16:16:42.139733	2017-06-12 16:16:42.139733	\N	\N
+3249	66			2017-06-12	\N	No se encuentra en  DEM (en GEC)	11	1017	2017-06-12 17:26:27.34776	2017-06-13 19:10:44.387634	\N	\N
+3258	26	MEMORÁNDUM 	N° 088-2017-DPC/ACFFAA	2017-05-24	\N	REMISIÓN DEL EXPEDIENTE DEL CP N° 006-2016-ACFFAA  LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	1361	2017-06-12 19:45:37.22245	2017-06-12 19:45:37.22245	1	\N
+3259	26	MEMORÁNDUM 	N° 088-2017-DPC/ACFFAA	2017-05-24	\N	REMISIÓN DEL EXPEDIENTE DEL CP N° 006-2016-ACFFAA  LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	1366	2017-06-12 19:50:31.601103	2017-06-12 19:50:31.601103	1	\N
+3260	26	MEMORÁNDUM 	N° 088-2017-DPC/ACFFAA	2017-05-24	\N	REMISIÓN DEL EXPEDIENTE DEL CP N° 006-2016-ACFFAA  LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	1461	2017-06-12 19:52:25.737733	2017-06-12 19:52:25.737733	1	\N
+3261	26	MEMORÁNDUM 	N° 088-2017-DPC/ACFFAA	2017-05-24	\N	REMISIÓN DEL EXPEDIENTE DEL CP N° 006-2016-ACFFAA  LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	1364	2017-06-12 19:53:38.725449	2017-06-12 19:53:38.725449	1	\N
+3262	22	MEMORANDUM	N° 083-2017/DPC/ACFFAA	2017-05-23	230		14	700	2017-06-12 19:55:42.632483	2017-06-12 19:55:42.632483	2	\N
+3263	50	OFICIO	N° 529-2017/SG/DEC/ACFFAA	2017-05-25	230		14	700	2017-06-12 19:56:42.494243	2017-06-12 19:56:42.494243	2	\N
+3264	50	OFICIO 	N° 526-2017/SG/DEC/ACFFAA	2017-05-25	0	REMISIÓN DE DOCUMENTACIÓN AL EP PARA EL PERFECCIONAMIENTO Y SUSCRIPCIÓN DEL CONTRATO 	14	1361	2017-06-12 20:01:32.948935	2017-06-12 20:01:32.948935	1	\N
+3265	50	OFICIO 	N° 527-2017/SG/DEC/ACFFAA	2017-05-25	0	REMISIÓN DE DOCUMENTACIÓN AL MGP PARA EL PERFECCIONAMIENTO Y SUSCRIPCIÓN DEL CONTRATO 	14	1366	2017-06-12 20:03:58.495236	2017-06-12 20:03:58.495236	1	\N
+3266	50	OFICIO 	N° 528-2017/SG/DEC/ACFFAA	2017-05-25	0	REMISIÓN DE DOCUMENTACIÓN AL FAP  PARA EL PERFECCIONAMIENTO Y SUSCRIPCIÓN DEL CONTRATO 	14	1461	2017-06-12 20:09:03.044123	2017-06-12 20:09:03.044123	1	\N
+3250	66			2017-06-12	\N	No se encuentra en  DEM (en GEC)	11	1018	2017-06-12 17:27:01.837461	2017-06-13 19:11:02.074634	\N	\N
+3238	66			2017-06-09	\N	Fecha de ingreso: 06/06/2017 1. invitación a los proveedores para estudio de mercado.(07/06/2017). 2. en espera de cotizaciones (16/06/2017) 3.Estimación de la aprobación del expediente: 04/07/2017 4. Modificación del PAC de Corporativo a  encargo.	11	954	2017-06-12 15:06:36.983922	2017-06-21 19:35:39.253224	\N	\N
+3255	66			2017-06-20	\N	Fecha de Ingreso: 30/05/2017 1. Revisión de Expediente 2.Estimación de la aprobación del expediente: 07/07/2017 3.  Invitación a los proveedores para Estudio de Mercado. (15/06/2017) 4. Esperando cotizaciones.	11	1248	2017-06-12 17:54:19.875892	2017-06-21 19:22:23.825141	\N	\N
+3236	66			2017-06-21	\N	Fecha de Ingreso: 19/05/2017 1.  invitación a los proveedores para estudio de mercado.(02/06/2017). 2. En espera de cotizaciones. 3.Estimación de la aprobación del expediente: 23/06/2017 4. El 16/06/2017 fue modificado el PAC.	11	1337	2017-06-12 14:36:21.8971	2017-06-21 19:31:19.6896	\N	\N
+3237	66			2017-06-09	\N	Fecha de ingreso: 29/05/2017. 1. invitación a los proveedores para estudio de mercado.(09/06/2017). 2. en espera de cotizaciones (15/06/2017) 3.Estimación de la aprobación del expediente: 07/07/2018	11	1412	2017-06-12 14:44:05.014651	2017-06-14 18:22:19.460879	\N	\N
+3240	66			2017-06-21	\N	Se encuentra en indagación de mercado	11	1244	2017-06-12 15:44:37.715825	2017-06-21 19:52:16.877007	\N	\N
+3251	66			2017-06-21	\N	\t1. fecha de ingreso: 23/05/2017 2. DC para verificación de EETT 3.Respuesta de DC 01/06/2017 4.invitación a los proveedores para estudio de mercado (02/06/2017-Rimac/Mapfre/Positiva/Pacifico) . 5. El 12/06/2017 se le envío un oficio a la MGP, indicado que ellos eligiran el corredor de seguros que les convenga. 6. Compañias presentan consultas. 7.Consultas enviadas a MGP. 8.Consulta de Rimac (modificación de los términos de referencias) 9. Se recibio cotización de positiva 10.Por modificación en los RTM (nuevo estudio de mercado) 11.Estimación de la aprobación del expediente: modificación de RTM	11	912	2017-06-12 17:36:29.615807	2017-06-22 14:00:00.179226	\N	\N
+3239	66			2017-09-06	\N	 Fecha de ingreso: 30/05/2017  1. invitación a los proveedores para estudio de mercado.(02/06/2017). 2. en espera de cotizaciones (13/06/2017- Reiteración) 3.Estimación de la aprobación del expediente:  03/07/2017	11	1243	2017-06-12 15:30:31.778493	2017-06-14 18:27:11.28542	\N	\N
+3242	66			2017-06-09	\N	Fecha de Ingreso: 17/05/2017  1. invitación a los proveedores para estudio de mercado.(29/05/2017). 2. Cotizaciones (12/06/2017) 3. Diseño de cuadro comparativo. 4. Estimación de la aprobación del expediente: 30/06/2017	11	1380	2017-06-12 15:55:30.32392	2017-06-14 18:29:37.374397	\N	\N
+3243	66			2017-06-09	\N	Fecha de Ingreso: 17/05/20171. invitación a los proveedores para estudio de mercado.(30/05/2017). 2. en espera de cotizaciones (16/06/2017- ampliación de plazo) 3.Estimación de la aprobación del expediente: 30/06/2017	11	1377	2017-06-12 16:01:52.977513	2017-06-14 18:30:33.954303	\N	\N
+3257	66			2017-06-12	\N	1. Fecha de Ingreso: 27/04/2017 2. Realizando su Estudio de Mercado. 3. El expediente tiene observaciones, lo cuales fueron remitidos a la FAP y estamos en espera de su repuesta. 4.Estimación de la aprobación del expediente: 28/06/2017	11	520	2017-06-12 19:43:46.328359	2017-06-14 18:39:44.928043	\N	\N
+3244	66			2017-06-09	\N	Fecha de ingreso: 29/05/2017. 1. invitación a los proveedores para estudio de mercado.(09/06/2017). 2. en espera de cotizaciones (15/06/2017) 3.Estimación de la aprobación del expediente: 07/07/2017	11	1410	2017-06-12 16:08:45.690787	2017-06-14 18:33:05.227239	\N	\N
+3246	66			2017-09-06	\N	Fecha de Ingreso: 31/05/2017 1. invitación a los proveedores para estudio de mercado.(06/06/2017). 2. en espera de cotizaciones (16/06/2017) 3.Estimación de la aprobación del expediente: 03/07/2017	11	1445	2017-06-12 16:14:48.835413	2017-06-14 18:35:11.885185	\N	\N
+3219	66			2017-06-09	\N	1. Fecha de Ingreso: 24/05/2017 2. Invitación a los proveedores para Estudio de Mercado.(02/06/2017) . 3. En espera de cotizaciones. (reiteración) 4. Estimación de la aprobación del expediente: 03/07/2017	11	1331	2017-06-09 16:51:09.76267	2017-06-14 18:03:02.085976	\N	\N
+3267	50	OFICIO 	N° 525-2017/SG/DEC/ACFFAA	2017-05-25	0	REMISIÓN DE DOCUMENTACIÓN AL CCFFAA  PARA EL PERFECCIONAMIENTO Y SUSCRIPCIÓN DEL CONTRATO	14	1364	2017-06-12 20:11:57.434285	2017-06-12 20:11:57.434285	1	\N
+3268	34	OFICIO	070	2017-06-12	\N	APROBACIÓN DE EXPEDIENTE 12/06/2017	11	713	2017-06-12 21:43:41.82471	2017-06-12 21:43:41.82471	\N	\N
+3269	66			2017-06-12	\N	APROBACIÓN DE EXPEDIENTE 12/06/2017 (enviado a DPC Of: 070)	11	713	2017-06-12 21:46:25.096055	2017-06-12 21:46:25.096055	\N	\N
+3270	67	OFICIO 	N° 1650/SG-CGE/N-01.4/11.00	2017-05-16	\N	REMISIÓN DE CONTRATOS DE LOS ÍTEM 3, CONTRATO N° 53  ÍTEM 4 CONTRATO N° 54 ÍTEM 5 CONTRATO N° 55 ÍTEM 6 CONTRATO 56 ÍTEMS ADJUDICADOS DEL EP  	14	121	2017-06-12 22:11:41.756404	2017-06-12 22:11:41.756404	1	\N
+3294	26			2017-01-01	51228070.5	CON ARBITRAJE	9	1721	2017-06-15 21:51:02.347325	2017-06-15 21:51:02.347325	\N	\N
+3295	15	HOJA TRAMITE	0551	2017-06-14	\N		6	899	2017-06-16 14:11:02.504626	2017-06-16 14:11:02.504626	\N	\N
+3273	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	924	2017-06-14 13:24:36.985393	2017-06-14 13:25:54.145528	\N	\N
+3274	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	929	2017-06-14 13:26:50.459826	2017-06-14 13:26:50.459826	\N	\N
+3275	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	935	2017-06-14 13:27:34.509509	2017-06-14 13:27:34.509509	\N	\N
+3276	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	941	2017-06-14 13:28:14.32842	2017-06-14 13:28:14.32842	\N	\N
+3277	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	949	2017-06-14 13:31:58.170216	2017-06-14 13:31:58.170216	\N	\N
+3278	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1019	2017-06-14 13:32:35.938234	2017-06-14 13:32:35.938234	\N	\N
+3279	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1020	2017-06-14 13:33:11.372254	2017-06-14 13:33:11.372254	\N	\N
+3280	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1022	2017-06-14 13:33:50.505179	2017-06-14 13:33:50.505179	\N	\N
+3281	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1247	2017-06-14 13:34:35.664733	2017-06-14 13:34:35.664733	\N	\N
+3282	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1249	2017-06-14 13:35:04.468927	2017-06-14 13:35:04.468927	\N	\N
+3283	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1250	2017-06-14 13:35:42.991386	2017-06-14 13:35:42.991386	\N	\N
+3284	8	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	1251	2017-06-14 13:36:15.042156	2017-06-14 13:36:15.042156	\N	\N
+3285	200	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	788	2017-06-14 13:39:05.849921	2017-06-14 13:39:05.849921	\N	\N
+3286	200	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	800	2017-06-14 13:39:45.133731	2017-06-14 13:39:45.133731	\N	\N
+3287	200	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	806	2017-06-14 13:40:22.224877	2017-06-14 13:40:22.224877	\N	\N
+3288	200	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	821	2017-06-14 13:40:59.967333	2017-06-14 13:40:59.967333	\N	\N
+3289	200	RESOLUCIÓN JEFATURAL	098-2017	2017-06-13	\N		6	855	2017-06-14 13:41:32.214014	2017-06-14 13:41:32.214014	\N	\N
+3296	15	HOJA TRAMITE	1085	2017-06-14	\N		6	769	2017-06-16 14:35:09.145604	2017-06-16 14:35:09.145604	\N	\N
+3297	4	Oficio 	2106 SINTE T-13.f	2016-06-12	752		9	1725	2017-06-16 16:45:21.951973	2017-06-16 16:45:21.951973	1	2017-06-30
+3011	66			2017-06-09	\N	1. Fecha de Ingreso: 24/05/2017 2. Invitación a los proveedores para Estudio de Mercado.(02/06/2017) . 3. En espera de cotizaciones. (reiteración)4. Estimación de la aprobación del expediente: 03/07/2017	11	529	2017-05-26 19:16:16.888626	2017-06-14 17:56:51.57922	\N	\N
+3298	15	HOJA DE TRAMITE	1330	2017-06-16	752654.949999999953		9	1725	2017-06-16 16:47:45.237649	2017-06-16 16:47:45.237649	1	2017-06-30
+3271	66			2017-06-13	\N	1. Estudio de mercado: 20/06/2017 2. Fecha estimada de aprobación de expediente: 270/07/2017	11	825	2017-06-13 15:34:00.268295	2017-06-21 20:36:50.735992	\N	\N
+3217	66			2017-06-09	\N	1. Fecha de Ingreso: 24/05/2017 2. Invitación a los proveedores para Estudio de Mercado.(02/06/2017)  . 3. En espera de cotizaciones. (reiteración) 4. Estimación de la aprobación del expediente: 03/07/2017	11	884	2017-06-09 16:48:50.890226	2017-06-14 18:00:07.421028	\N	\N
+3307	66			2017-06-19	\N	Fecha de ingreso: 14/06/2017 1. En lista de espera: Marzo 2018	11	769	2017-06-19 16:27:40.71687	2017-06-21 19:38:44.391528	\N	\N
+3290	22	MEMORANDUM	N° 112-2017-DPCACFFAA	2017-06-13	388		14	1447	2017-06-15 17:14:07.98507	2017-06-15 17:14:34.137293	2	\N
+3291	22	MEMORÁNDUM 	N° 113-2017/DPC/ACFFAA	2017-06-14	\N	REMISIÓN DEL EXPEDIENTE DEL CP N° 006-2016-ACFFAA  DE LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	978	2017-06-15 17:34:12.742682	2017-06-15 17:34:12.742682	1	\N
+3292	22	MEMORÁNDUM 	N° 113-2017/DPC/ACFFAA	2017-06-14	\N	REMISIÓN DEL EXPEDIENTE DEL CP N° 006-2016-ACFFAA  DE LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	828	2017-06-15 17:36:47.585724	2017-06-15 17:36:47.585724	1	\N
+3293	15	HOJA DE TRAMITE	1259	2017-06-09	441246.109999999986	COMPRA CORPORATIVA - MERCADO EXTRANJERO	9	1409	2017-06-15 19:54:10.815514	2017-06-15 19:54:10.815514	1	\N
+3299	4	Oficio	2107 S-CGE/N-01.4/11.00	2017-06-12	831402.300000000047		9	1722	2017-06-16 17:09:46.16651	2017-06-16 17:09:46.16651	1	2017-06-30
+3300	15	HOJA DE TRAMITE	1331	2017-06-14	831402.300000000047		9	1722	2017-06-16 17:11:11.029703	2017-06-16 17:11:11.029703	1	2017-06-30
+3301	15	CARTA	NC-70-SGFA-LOCN-PS-N° 1987\t	2017-06-09	300		8	1438	2017-06-19 13:03:47.550418	2017-06-19 13:03:47.550418	1	\N
+3302	15	CARTA	NC-70-SGFA-LOCN-PS-N° 2094	2017-06-09	476		8	1433	2017-06-19 13:05:12.676381	2017-06-19 13:05:12.676381	1	\N
+3303	15	CARTA	NC-70-SGFA-LOCN-PS-N° 2094	2017-06-09	476		8	1433	2017-06-19 13:10:01.040787	2017-06-19 13:10:01.040787	1	\N
+3305	13	CARTA		2017-06-13	183	DERIVA DE LA LP-006-2016-ACFFAA-DPC (ÍTEMS DESIERTOS) / ASIMSMO, LA FAP NO VARÍA SUS EETT. RAZÓN POR LA CUAL NO ENVIA NUEVO EXPEDIENTE	8	1609	2017-06-19 13:16:00.087216	2017-06-19 13:16:00.087216	1	\N
+3308	50	OFICIO	N° 577-2017/SG/DEC/ACFFAA	2017-06-15	388		14	1447	2017-06-20 17:05:45.337371	2017-06-20 17:05:45.337371	2	\N
+3306	15			2017-06-14	183	DERIVA DE LA LP-006-2016-ACFFAA-DPC (ÍTEMS DESIERTOS) / ASIMSMO, LA FAP NO VARÍA SUS EETT. RAZÓN POR LA CUAL NO ENVIA NUEVO EXPEDIENTE	8	1609	2017-06-19 13:18:53.176501	2017-06-19 13:20:48.621987	1	\N
+3309	50	OFICIO 	N° 586-2017/SG/DEC/ACFFAA	2017-06-16	0	REMISIÓN DEL EXPEDIENTE AL OBAC PARA EL PERFECCIONAMIENTO DEL CONTRATO 	14	978	2017-06-20 21:41:11.124331	2017-06-20 21:41:11.124331	1	\N
+3310	50	OFICIO 	N° 587-2017/SG/DEC/ACFFAA	2017-06-16	0	REMISIÓN DE DOCUMENTACIÓN AL MGP  PARA EL PERFECCIONAMIENTO Y SUSCRIPCIÓN DEL CONTRATO	14	828	2017-06-20 21:44:42.038859	2017-06-20 21:44:42.038859	1	\N
+3311	22	MEMORÁNDUM 	N° 115-2017/DPC/ACFFAA	2017-06-16	\N	REMISIÓN DE EXPEDIENTE DE LA DIRECCIÓN DE PROCESOS DE COMPRAS 	14	980	2017-06-20 22:29:16.179477	2017-06-20 22:29:16.179477	1	\N
+3272	66			2017-06-21	\N	\tFecha de ingreso: 09/06/2017 1. Estimación de la aprobación del expediente: 20/07/2017	11	1278	2017-06-13 19:49:29.997117	2017-06-21 19:45:55.120512	\N	\N
+3245	66			2017-06-21	\N	Fecha de Ingreso: 31/05/2017 1. invitación a los proveedores para estudio de mercado.(06/06/2017). 2. en espera de cotizaciones (16/06/2017) 3.Estimación de la aprobación del expediente:  03/07/2017  4. No esta considerada en la lista General de Contrataciones consideradas Estratégicas Menores 5. Desde el 13/06/2017 se encuentra en la lista General de Contrataciones consideradas Estratégicas Menores	11	1413	2017-06-12 16:13:28.794088	2017-06-21 20:09:08.416361	\N	\N
+3248	66			2017-06-09	\N	1. Fecha de Ingreso: 27/04/2017 2. Estudio de mercado finalizado, exposición de cuadro comparativo. 3. Cambio en el PAC . 4.CUadro Comparativo aprobado 20/06/2017  5.Estimación de la aprobación del expediente: 22/06/2017	11	516	2017-06-12 17:08:50.841178	2017-06-21 20:31:53.313316	\N	\N
+3254	66			2017-06-12	\N	Fecha de ingreso: 02/06/2017. 1. Se encuentra en la etapa de Revisión del Expediente. 2. El 21/06/2017 se modifico las EETT. 3. CAMBIOS DE TREMINOS DE REFERENCIA (CAPACITACION , ALCANCE Y DESCRIPCION DEL SERVICIO)	11	1246	2017-06-12 17:48:38.679263	2017-06-21 19:19:02.059622	\N	\N
+3312	66			2017-06-21	\N	Fecha de ingreso: 09/06/2017 1. Estimación de la aprobación del expediente: 20/07/2017	11	1433	2017-06-21 19:41:01.313121	2017-06-21 19:42:11.946427	\N	\N
+3313	66			2017-06-21	\N	\tFecha de ingreso: 09/06/2017 1. Estimación de la aprobación del expediente: 20/07/2017	11	1409	2017-06-21 19:43:36.340529	2017-06-21 19:43:36.340529	\N	\N
+3256	66			2017-06-21	\N	Fecha de Ingreso: 30/05/2017 1. invitación a los proveedores para estudio de mercado.(02/06/2017). 2. Diseñando cuadro comparativo. 3.Estimación de la aprobación del expediente: 03/07/2017 4. No esta considerada en la lista General de Contrataciones consideradas Estratégicas Menores. 5. Cuadro comparativo aprobado  20/06/2017	11	945	2017-06-12 18:05:28.075285	2017-06-21 19:48:55.319792	\N	\N
+3314	66			2017-06-21	\N	Fecha de ingreso: 09/06/2017 1.Realizando estudio de mercado 2. Estimación de aprobación de expediente:17/07/2017	11	1438	2017-06-21 20:04:41.914874	2017-06-21 20:04:41.914874	\N	\N
+3252	66			2017-06-09	\N	1. Fecha de Ingreso: 12/05/2017  2. invitación a los proveedores para estudio de mercado.(19/05/2017). 3. Consulta hecha por los proveedores. 4. Remisión de consultas a MGP. 5. Absueltas por MGP el día 12/06/2017. 6.Reunión con MGP: BITEL 16/06/17 Y AMERCA  MOVIL PERU 19/06/2017. 7.El 19/06/2017 la  MGP  realizo la modificación en las EETT  8. Nuevo  Estudio de Mercado el día 20/06/2017. 9. Estimación de la aprobación del expediente: 10/07/2017	11	955	2017-06-12 17:38:28.071873	2017-06-22 14:12:55.558613	\N	\N
+3212	66			2017-06-09	\N	Fecha de ingreso: 18/05/2017. 1. invitación a los proveedores para estudio de mercado.(26/05/2017) 2. consulta hecha por los proveedores. 3. remisión de consultas a MGP ( 09/06/2017). 4. En espera de absolución. (MGP)  4.  El 16/06/2017 la MGP se reunira con los proveedores para absolver todas las dudas que tienen. 5.reunión con mgp: bitel 16/06/17 y amerca movil peru 19/06/2017. 6.el 19/06/2017 la mgp realizo la modificación en las eett 7. nuevo estudio de mercado el día 20/06/2017. 8. estimación de la aprobación del expediente: 10/07/2017	11	1013	2017-06-09 16:24:49.609139	2017-06-22 16:11:47.573332	\N	\N
+3315	34	HDT	106	2017-06-22	\N		11	516	2017-06-22 19:54:23.235525	2017-06-22 19:54:23.235525	\N	\N
+\.
+
+
+--
+-- Name: details_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('details_id_seq', 3315, true);
+
+
+--
+-- Data for Name: formulas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY formulas (id, nombre, descripcion, orden, obs, cantidad, admin_user_id, product_id, created_at, updated_at, numero) FROM stdin;
+2	MGP	Marina de Guerra del Perú	2	\N	\N	\N	\N	2017-03-18 21:09:10.00604	2017-03-18 21:09:10.00604	\N
+3	MGP	Marina de Guerra del Perú	2	\N	\N	\N	\N	2017-03-18 21:11:37.432471	2017-03-18 21:11:37.432471	\N
+4	MGP	Marina de Guerra del Perú	2	\N	\N	\N	\N	2017-03-18 21:26:38.016156	2017-03-18 21:26:38.016156	\N
+1	EP	Ejercito Peruano	1	\N	1	\N	1	2017-03-18 20:57:41.81775	2017-03-18 21:43:13.646975	\N
+5	MGP	Marina de Guerra del Perú	2	\N	\N	\N	\N	2017-03-18 21:44:29.021715	2017-03-18 21:44:29.021715	\N
+6	MGP	Marina de Guerra del Perú	2	\N	1	1	1	2017-03-18 21:46:07.547512	2017-03-18 22:12:48.30424	\N
+7	FAP	Fuerza Aerea del Perú	3	\N	1	1	1	2017-03-18 21:51:07.480632	2017-03-18 22:18:41.501686	\N
+8	ACFFAA	Agencia de compras de las Fuerzas Armadas	4	\N	2	1	1	2017-03-18 22:04:40.247113	2017-03-18 22:19:09.947537	\N
+9	ENAMM	Escuela Nacional de la Marina Mercante	5	\N	1	1	1	2017-03-18 22:20:23.21934	2017-03-18 22:20:23.21934	\N
+10	CCFFAA	Comando conjucto de las Fuerzas Armadas	6	\N	1	1	1	2017-03-18 22:21:02.33299	2017-03-18 22:21:02.33299	\N
+18	Corporativa		1	\N	\N	2	4	2017-03-19 03:19:50.016759	2017-03-19 03:19:50.016759	\N
+31	Sol		1	\N	\N	2	7	2017-03-19 03:29:43.674626	2017-03-19 03:29:43.674626	\N
+32	Dolar		2	\N	\N	2	7	2017-03-19 03:30:04.410856	2017-03-19 03:30:04.410856	\N
+34	RO	Recursos ordinarios	2	\N	\N	2	8	2017-03-19 03:33:07.76462	2017-03-19 03:33:07.76462	\N
+35	bien		1	\N	\N	2	9	2017-03-19 03:34:06.531192	2017-03-19 03:34:06.531192	\N
+36	servicio		2	\N	\N	2	9	2017-03-19 03:34:20.378248	2017-03-19 03:34:20.378248	\N
+66	6	constancia de prevision de recurso	6	\N	1	4	12	2017-03-20 16:49:53.159048	2017-03-20 17:12:27.645074	\N
+51	7	RESOLUCIÓN JEFATURAL (INCLUSIÓN LISTA)	7	\N	1	4	12	2017-03-19 04:41:27.377921	2017-03-20 16:58:01.958315	\N
+45	1	DCTO ACFFAA SOLICITA REMISION EXPEDIENTE DE INICIO OBACS 	1	\N	1	4	12	2017-03-19 04:38:39.978068	2017-03-20 16:53:33.182562	\N
+224	57	Oficio solicitando autorizacion	57	\N	1	2	12	2017-05-16 14:45:04.463462	2017-05-16 16:58:54.470285	\N
+23	SEINT /FAP	servicio de intendencia	4	\N	3	2	5	2017-03-19 03:23:07.419374	2017-04-25 15:14:24.108497	\N
+65	5	certificado presupuestal	5	\N	1	4	12	2017-03-20 16:48:46.703265	2017-03-20 17:12:41.2298	\N
+24	SEING / FAP	servicio de ingenieria	5	\N	3	2	5	2017-03-19 03:24:04.71062	2017-04-25 15:14:41.221937	\N
+25	GRUP8 /FAP	grupo aereo numero 8	6	\N	3	2	5	2017-03-19 03:24:28.796719	2017-04-25 15:15:13.220833	\N
+14	LGCS	Lista general de contrataciones con carácter secreto	2	\N	\N	4	3	2017-03-19 03:16:51.782132	2017-03-21 14:32:21.994845	\N
+47	2	ACTA COMISIÓN PEC (APRUEBA INCLUSIÓN LISTA)	2	\N	1	4	12	2017-03-19 04:39:42.6281	2017-03-20 17:12:55.056412	\N
+26	COLOGE / EP		21	\N	1	2	5	2017-03-19 03:25:08.476527	2017-04-17 17:15:41.714434	\N
+49	10	ACTA COMISIÓN PEC (APRUEBA EXCLUSIÓN LISTA)	10	\N	1	4	12	2017-03-19 04:40:31.214859	2017-03-20 17:13:11.0654	\N
+50	9	INFORME TÉCNICO (EXCLUSIÓN LISTA)	9	\N	1	4	12	2017-03-19 04:40:59.956555	2017-03-20 17:13:29.937888	\N
+27	AE /EP		22	\N	1	2	5	2017-03-19 03:25:43.520814	2017-04-17 17:16:04.291083	\N
+28	FIRACAMT /MGP		41	\N	2	2	5	2017-03-19 03:26:09.272855	2017-04-17 17:17:26.800016	\N
+71	DIRCOMAT / MGP		42	\N	2	2	5	2017-03-21 17:19:10.897697	2017-04-17 17:17:36.76937	\N
+48	3	ACTA COMISIÓN PEC     (RECOMIENDA LA AUTORIZACION)	3	\N	1	2	12	2017-03-19 04:40:10.970385	2017-04-28 22:36:07.435385	\N
+56	13	RECEPCION EXPEDIENTE GEX	13	\N	2	2	12	2017-03-19 04:43:43.843883	2017-05-04 14:31:23.489643	\N
+41	DEC	Direccion Ejecucion Contractual	6	\N	\N	2	10	2017-03-19 03:37:37.011165	2017-06-20 17:54:54.173592	\N
+138	01	Vesturario para 2do semestre 2017	1	\N	\N	2	16	2017-04-17 13:20:42.166398	2017-04-17 13:20:42.166398	\N
+225	COMOP-FAP	Comando de operaciones	100	\N	3	2	5	2017-05-22 12:43:48.824951	2017-05-22 12:43:48.824951	\N
+15	LGCE	Lista general de contrataciones estrategicas (>2,500 uit)	3	\N	\N	4	3	2017-03-19 03:17:31.590179	2017-03-21 14:33:57.315873	\N
+16	LGCEM	Lista general de contrataciones consideradas estrategicas menores (< 2,500 UIT)	4	\N	\N	4	3	2017-03-19 03:17:57.872037	2017-03-21 14:34:23.28891	\N
+67	Productos rutinarios		1	\N	\N	4	13	2017-03-21 14:35:15.602641	2017-03-21 14:35:15.602641	\N
+68	Productos apalancados		2	\N	\N	4	13	2017-03-21 14:35:47.025311	2017-03-21 14:35:47.025311	\N
+69	Productos estrategicos		3	\N	\N	4	13	2017-03-21 14:36:06.334948	2017-03-21 14:36:06.334948	\N
+70	Productos estratégicos menores		4	\N	\N	4	13	2017-03-21 14:36:40.041333	2017-03-21 14:36:40.041333	\N
+53	11	RESOLUCIÓN JEFATURAL (EXCLUSIÓN LISTA)	11	\N	\N	2	12	2017-03-19 04:42:29.429255	2017-06-06 13:49:27.76168	\N
+73	Adjudicación Simplificada		1	\N	\N	4	14	2017-03-21 21:00:27.51579	2017-03-21 21:00:27.51579	\N
+72	23	Monto segun SEACE	23	\N	1	4	12	2017-03-21 17:22:51.815575	2017-03-21 17:26:24.688174	\N
+74	Comparación de Precios		2	\N	\N	4	14	2017-03-21 21:00:57.401531	2017-03-21 21:00:57.401531	\N
+75	Concurso Público		3	\N	\N	4	14	2017-03-21 21:01:14.612188	2017-03-21 21:01:14.612188	\N
+76	Contratación Directa		4	\N	\N	4	14	2017-03-21 21:01:31.744757	2017-03-21 21:01:31.744757	\N
+77	Licitación Pública		5	\N	\N	4	14	2017-03-21 21:01:53.467435	2017-03-21 21:01:53.467435	\N
+78	Subasta Inversa Electrónica		6	\N	\N	4	14	2017-03-21 21:02:19.703717	2017-03-21 21:02:19.703717	\N
+79	Compras por catálogo (Convenio Marco)		7	\N	\N	4	14	2017-03-21 21:08:23.686413	2017-03-21 21:08:23.686413	\N
+80	Convenio		8	\N	\N	4	14	2017-03-21 21:08:49.747192	2017-03-21 21:08:49.747192	\N
+81	Regímen Especial		9	\N	\N	4	14	2017-03-21 21:09:33.187159	2017-03-21 21:09:33.187159	\N
+82	Contratación Internacional		10	\N	\N	4	14	2017-03-21 21:09:59.505286	2017-03-21 21:09:59.505286	\N
+57	15	ENVIO EXPEDIENTE A DIRECCION ESTUDIO MERCADO	15	\N	4	2	12	2017-03-19 04:45:13.814019	2017-06-07 20:04:47.877282	1
+84	D y T	Donaciones y transferencias	4	\N	\N	4	8	2017-03-21 21:51:00.947185	2017-03-21 21:51:00.947185	\N
+85	RO, RDR / RP	Recursos Ordinarios, Recursos Directamente Recaudados/Recursos Propios	5	\N	\N	4	8	2017-03-21 21:52:18.795163	2017-03-21 21:52:18.795163	\N
+29	Nacional		1	\N	\N	2	6	2017-03-19 03:27:44.045912	2017-03-28 19:25:45.619523	\N
+30	Internacional		2	\N	\N	2	6	2017-03-19 03:28:24.16687	2017-03-28 19:26:02.845946	\N
+37	PEC	Plan estrategico de compras	2	\N	\N	2	10	2017-03-19 03:35:21.623433	2017-04-03 13:05:37.321783	\N
+42	2015	PROCESOS AF-2015	1	\N	0	2	11	2017-03-19 03:38:21.261541	2017-06-04 12:57:12.709508	3
+39	DEM	Estudio de Mercado	4	\N	\N	2	10	2017-03-19 03:36:20.056983	2017-04-03 13:06:58.30673	\N
+40	DPC	Proceso de compras	5	\N	\N	2	10	2017-03-19 03:36:49.911637	2017-04-03 13:07:54.433225	\N
+46	4	EXPEDIENTE DE INICIO RECEPCIONADO POR ACFFAA DE OBACS	4	\N	2	2	12	2017-03-19 04:39:05.707208	2017-04-03 13:53:28.241687	\N
+55	14	RECEPCION EXPEDIENTE OPP	14	\N	2	2	12	2017-03-19 04:43:16.924476	2017-04-03 13:55:11.009202	\N
+54	12	RECEPCION EXPEDIENTE MESPA	12	\N	2	2	12	2017-03-19 04:42:48.944636	2017-04-03 13:55:50.020975	\N
+59	16	estudio de mercado	16	\N	4	2	12	2017-03-19 04:46:47.371558	2017-06-08 19:47:08.843601	5
+60	18	convocatoria	18	\N	5	2	12	2017-03-19 04:47:17.62003	2017-04-03 13:57:53.134824	\N
+61	19	presentacion de propuestas	19	\N	5	2	12	2017-03-19 04:47:43.405346	2017-04-03 13:58:13.981389	\N
+62	20	buena pro	20	\N	5	2	12	2017-03-19 04:48:11.181643	2017-04-03 13:58:37.045669	\N
+63	21	consentimiento	21	\N	5	2	12	2017-03-19 04:48:34.156221	2017-04-03 13:59:10.628275	\N
+17	LGPC	Lista general de procesos de contrataciones en el Mercado Nacional	1	\N	\N	2	3	2017-03-19 03:18:26.450208	2017-04-05 22:49:43.003566	\N
+19	Encargo 	Por encargo la realiza la acffaa	2	\N	\N	2	4	2017-03-19 03:20:08.632486	2017-04-06 14:30:04.890162	\N
+38	DCA	Catalogacion	3	\N	\N	2	10	2017-03-19 03:35:49.009267	2017-04-06 21:29:25.339125	\N
+83	ROOC	Recursos por operacion oficiales de credito	3	\N	\N	4	8	2017-03-21 21:50:11.518892	2017-03-21 22:04:21.629618	\N
+86	RD	Recurso determinado	6	\N	\N	4	8	2017-03-21 22:05:05.055882	2017-03-21 22:06:19.039328	\N
+33	RDR y RP / RP	Recursos directamente recaudados	1	\N	\N	4	8	2017-03-19 03:32:38.213666	2017-03-24 19:47:58.009742	\N
+249	INTER-6-2016	adquisicion de equipo optronico (ci-fap-044-2016)	49	\N	\N	2	16	2017-05-31 17:08:34.739919	2017-05-31 17:08:34.739919	\N
+226	DIGLO-FAP	Direccion General Logistica	101	\N	3	2	5	2017-05-22 12:44:35.829516	2017-05-22 12:44:35.829516	\N
+133	DIRPRONAV / MGP		45	\N	2	2	5	2017-04-12 21:21:57.595888	2017-04-17 17:18:20.523648	\N
+244	RES N°001	Adquisición de un simulador de vuelo para tripulaciones piper PA-44	44	\N	\N	2	16	2017-05-29 14:11:18.594498	2017-05-29 14:11:18.594498	\N
+129	300	Expediente culminado	300	\N	6	2	12	2017-04-06 21:41:39.567709	2017-06-09 15:58:38.005656	\N
+233	60	Devolución de expediente	60	\N	3	2	12	2017-05-26 14:31:39.239978	2017-05-26 14:31:39.239978	\N
+254	CP-1-2016	CONTRATACION DEL SERVICIO DE SEGURO VEHICULAR	54	\N	\N	2	16	2017-05-31 18:33:35.42309	2017-05-31 18:33:35.42309	\N
+239	LP N°008	Adquisición de vestuario y otros para el VRAEM	36	\N	\N	2	16	2017-05-29 14:03:03.083	2017-05-29 14:03:03.083	\N
+240	LP N°001-2-3	adquisición de vestuario, calzado y otros para las escuelas de formación	39	\N	\N	2	16	2017-05-29 14:04:41.328558	2017-05-29 14:05:28.038122	\N
+117	26	Ejecucion de contratos	26	\N	6	2	12	2017-04-04 14:03:15.546723	2017-05-31 14:48:14.904354	\N
+250	INTER-8-2015	ADQUISICION DE EQUIPO INDIVIDUAL, ESPECIAL Y COLECTIVO PARA LA BRIGADA ANFIBIA DE LA FUERZA DE INFANTERIA DE MARINA	50	\N	\N	2	16	2017-05-31 17:27:16.870818	2017-05-31 17:42:09.593388	\N
+163	AS N°003	Adquisicion corporativa de calzado	25	\N	\N	2	16	2017-04-18 20:42:08.733307	2017-05-29 13:38:06.841833	\N
+247	LP-4 -5-2016	Adquisicion corporativa de vestuario y calzado FFAA	47	\N	\N	2	16	2017-05-31 16:55:05.483858	2017-05-31 16:57:34.846161	\N
+255	AS-11-2016	SEGURO MARITIMO Y FLUVIAL	55	\N	\N	2	16	2017-05-31 18:35:06.41786	2017-05-31 18:35:06.41786	\N
+251	INTER-5-2015	ADQUISICION DE TREINTA (30) VEHICULOS PORTA TROPA TACTICOS (VPT) 6 X 6, PARA EL BATALLON DE VEHICULOS TACTICOS DE LA FUERZA DE INFANTERIA DE MARINA	51	\N	\N	2	16	2017-05-31 17:31:41.763926	2017-05-31 17:43:01.459391	\N
+44	2017	PROCESOS AF-2017	3	\N	1	2	11	2017-03-19 03:39:41.818672	2017-06-15 21:24:58.164051	2
+256	INTER-2-2016	ADQUISICIÓN DE EQUIPAMIENTO DE CAMPAÑA PARA EL COMPONENTE NAVAL DEL COMANDO ESPECIAL VRAEM	56	\N	\N	2	16	2017-05-31 18:36:49.463659	2017-05-31 18:36:49.463659	\N
+134	DIRTEL / MGP	Dioreccon de telematica	46	\N	2	2	5	2017-04-12 21:22:35.041875	2017-04-17 17:18:31.738349	\N
+135	DICAPI / MGP	Direccion de capitania	47	\N	2	2	5	2017-04-12 21:23:03.186794	2017-04-17 17:18:45.549532	\N
+266	65	Ampliacion de Certficado	65	\N	4	2	12	2017-06-08 19:45:32.976025	2017-06-08 19:59:32.13653	3
+115	25	Envio de expediente a Direccion de Catalogacion	25	\N	3	2	12	2017-04-03 14:00:39.493382	2017-04-24 16:36:53.303913	\N
+114	OBAC	Organimo Bajo Ambito de Competencia	1	\N	\N	2	10	2017-04-03 13:05:15.764747	2017-04-03 13:17:17.437947	\N
+89	24	Oficio solicitando exclusión	24	\N	1	2	12	2017-03-28 18:46:31.238239	2017-04-03 14:00:16.750781	\N
+187	COMOPERPAC -MGP	comandancia de operaciones del pacifico	53	\N	2	2	5	2017-04-25 16:54:05.776765	2017-04-25 16:54:29.004459	\N
+125	SINTE-EP	Servicio de intendencia del Ejercito	23	\N	1	2	5	2017-04-06 21:00:30.27178	2017-04-17 17:16:14.490366	\N
+126	SMGE-EP	Servicio de material de guerra del Ejercito	24	\N	1	2	5	2017-04-06 21:01:32.308902	2017-04-17 17:16:29.539011	\N
+127	SCOME-EP	Servicio de comunicaciones del Ejercito	25	\N	1	2	5	2017-04-06 21:02:11.782748	2017-04-17 17:16:53.205176	\N
+128	SINGE -EP	Servicio de ingenieria del Ejercito	26	\N	1	2	5	2017-04-06 21:03:05.236706	2017-04-17 17:17:12.827294	\N
+118	27	OFCIO A OBAC	27	\N	1	2	12	2017-04-04 21:54:30.235529	2017-04-04 21:55:28.798453	\N
+119	28	HOJA DE RUTA DE ENVIO EXPEDIENTE INICIO	28	\N	2	2	12	2017-04-04 21:56:27.883422	2017-04-04 21:56:27.883422	\N
+120	29	MEMORANDUM ENVIO DE EXPEDIENTE DE INICIO	29	\N	2	2	12	2017-04-04 21:57:07.372598	2017-04-04 21:57:07.372598	\N
+180	DIVRA-FAP		14	\N	3	2	5	2017-04-25 15:19:03.999298	2017-04-25 17:28:39.914248	\N
+237	CP-6-2016	servicio corporativo de telefonia fija e internet asimetrico para las FFAA y CCFFAA	34	\N	\N	2	16	2017-05-29 13:32:06.84852	2017-06-19 16:15:23.388895	\N
+116	200	Expediente Excluido	200	\N	1	2	12	2017-04-03 20:31:42.601249	2017-04-10 01:48:37.501944	\N
+87	COMOPERGUARD / MGP	Direccion de guardacosta	43	\N	2	2	5	2017-03-24 20:08:19.519502	2017-04-17 17:17:46.407585	\N
+174	Exclusion Tramite		4	\N	\N	2	4	2017-04-25 14:14:13.107009	2017-04-27 13:46:39.377112	\N
+124	30	Devolucion de expediente a obac	30	\N	1	2	12	2017-04-06 17:05:18.238502	2017-04-06 17:05:51.22261	\N
+136	DIHIDRONAV /MGP	Direccion de hidrografia	48	\N	2	2	5	2017-04-12 21:25:12.997791	2017-04-17 17:18:56.136236	\N
+88	DIRECOMAR / MGP		44	\N	2	2	5	2017-03-24 20:08:37.55603	2017-04-17 17:18:03.28638	\N
+137	DIRECOMAR / MGP	Direccion de economia	49	\N	2	2	5	2017-04-12 21:25:49.838075	2017-04-17 17:19:06.307932	\N
+189	SEMAN-FAP	servcio de mantenimiento	17	\N	3	2	5	2017-04-25 21:02:23.583597	2017-04-25 21:02:23.583597	\N
+21	SELEC / FAP	servicio de electronica	2	\N	3	2	5	2017-03-19 03:22:08.927711	2017-04-25 15:13:32.107909	\N
+192	SECOGRAL	secretaria de la comandacia general de la marina	56	\N	2	2	5	2017-04-25 21:26:50.88021	2017-04-25 21:26:50.88021	\N
+22	SEMAG /FAP	servicio de material de guerra	3	\N	3	2	5	2017-03-19 03:22:39.728821	2017-04-25 15:14:05.683974	\N
+172	SECOM-FAP	Servicio de comunicaciones y electronica	7	\N	3	2	5	2017-04-25 13:03:46.861426	2017-04-25 15:15:36.752668	\N
+181			\N	\N	3	2	5	2017-04-25 15:19:21.816468	2017-04-25 15:19:21.816468	\N
+178	GRUP6-FAP	grupo aereo N°6	12	\N	3	2	5	2017-04-25 15:17:55.502915	2017-04-25 16:50:04.41305	\N
+179	GRUP2-FAP	grupo aereo N°2	13	\N	3	2	5	2017-04-25 15:18:32.163925	2017-04-25 16:50:23.477217	\N
+186	COMFASUB -MGP	comandancia de la fuerza de submarino	52	\N	2	2	5	2017-04-25 16:53:31.324839	2017-04-25 16:53:31.324839	\N
+194	COMZOCINCO	comandancia de la 5ta zona naval	58	\N	2	2	5	2017-04-25 21:41:30.316002	2017-04-25 21:41:30.316002	\N
+195	COMFOE-MGP	comandancia de la fuerza de operaciones especiales	59	\N	2	2	5	2017-04-25 21:42:10.880781	2017-04-25 21:42:31.393374	\N
+123	Autorizacion Tramite	Autorizado por la ACFFAA a la institucion	3	\N	\N	2	4	2017-04-06 14:28:28.417077	2017-04-27 13:45:35.490089	\N
+198	37	Expediente observado	37	\N	5	2	12	2017-05-03 15:05:56.6048	2017-05-03 15:05:56.6048	\N
+52	8	RESOLUCIÓN JEFATURAL (AUTORIZACION)	8	\N	1	2	12	2017-03-19 04:42:10.753112	2017-04-12 22:32:18.912456	\N
+196	EP/OA-CGE		27	\N	1	2	5	2017-04-28 22:45:39.315942	2017-04-28 22:45:39.315942	\N
+199	38	Expediente devuelto	38	\N	5	2	12	2017-05-03 15:06:41.126307	2017-05-03 15:06:41.126307	\N
+200	40	En aprobacion de comite	40	\N	5	2	12	2017-05-03 15:07:24.92046	2017-05-03 15:07:24.92046	\N
+201	42	En aprobacion de bases	42	\N	5	2	12	2017-05-03 15:07:51.972927	2017-05-03 15:07:51.972927	\N
+202	43	Formulacion de consultas y obs.	43	\N	5	2	12	2017-05-03 15:08:44.754504	2017-05-03 15:08:44.754504	\N
+204	45	Integracion de bases	45	\N	5	2	12	2017-05-03 15:10:14.064443	2017-05-03 15:10:14.064443	\N
+203	44	Absolucion de consultas y obs.	44	\N	5	2	12	2017-05-03 15:09:46.638505	2017-05-03 15:12:56.27805	\N
+58	17	RECEPCION EXPEDIENTE DIRECCION PROCESO DE COMPRAS	17	\N	5	2	12	2017-03-19 04:46:18.56969	2017-05-03 15:34:03.960756	\N
+235	FC	Firma de contrato	7	\N	\N	2	10	2017-05-28 14:58:09.567362	2017-06-20 17:54:38.948809	\N
+171	35	remision de expediente a DEC	35	\N	5	2	12	2017-04-24 16:44:57.323898	2017-04-24 16:44:57.323898	\N
+64	22	Recepcion de expediente DEC	22	\N	6	2	12	2017-03-19 04:49:02.038985	2017-04-24 16:46:20.162219	\N
+139	02	calzado 2do semestre 2017	2	\N	\N	2	16	2017-04-17 13:20:59.497816	2017-04-17 13:20:59.497816	\N
+164	26	Vesturario desierto viene 2016	26	\N	\N	2	16	2017-04-18 20:42:39.391589	2017-04-18 20:42:39.391589	\N
+140	03	uniformes camuflados 2do semestre 2017	3	\N	\N	2	16	2017-04-17 13:21:22.163522	2017-04-17 13:21:22.163522	\N
+141	04	ropa de cama 2do semestre 2017	4	\N	\N	2	16	2017-04-17 13:21:49.949014	2017-04-17 13:21:49.949014	\N
+165	27	Ropa de cama viene 2016	27	\N	\N	2	16	2017-04-18 20:43:02.981568	2017-04-18 20:43:02.981568	\N
+142	05	colchones y almohadas 2do semestre 2017	5	\N	\N	2	16	2017-04-17 13:22:05.351522	2017-04-17 13:22:05.351522	\N
+145	08	aceites y lubricantes	8	\N	\N	2	16	2017-04-17 13:23:02.235018	2017-04-17 13:23:02.235018	\N
+146	09	equipo individual de campaña	9	\N	\N	2	16	2017-04-17 13:23:19.670085	2017-04-17 13:23:19.670085	\N
+147	10	combustibles	10	\N	\N	2	16	2017-04-17 13:23:41.58343	2017-04-17 13:23:41.58343	\N
+148	11	Baterias	11	\N	\N	2	16	2017-04-17 13:24:16.368225	2017-04-17 13:24:16.368225	\N
+197	36	Version	36	\N	1	2	12	2017-05-01 23:44:33.569334	2017-05-01 23:44:33.569334	\N
+20	SEBAT / FAP	Servcio de abastecimiento tecnico	1	\N	3	2	5	2017-03-19 03:21:43.58019	2017-04-25 15:13:13.611445	\N
+173	EDACI-FAP	escuela de aviacion civil	8	\N	3	2	5	2017-04-25 13:04:29.651453	2017-04-25 15:15:55.691325	\N
+149	12	LLantas	12	\N	\N	2	16	2017-04-17 13:24:41.958744	2017-04-17 13:24:41.958744	\N
+176	GRUP4-FAP	grupo aereo N°4	10	\N	3	2	5	2017-04-25 15:08:09.097339	2017-04-25 15:16:44.603392	\N
+205	SETRA-FAP	Servicio de transpote terrestre	19	\N	3	2	5	2017-05-04 14:04:20.974593	2017-05-04 14:04:40.880544	\N
+206	DIREC-FAP	Direccion de economia	18	\N	3	2	5	2017-05-04 14:07:15.589681	2017-05-04 14:07:15.589681	\N
+150	13	Raciones de campaña	13	\N	\N	2	16	2017-04-17 13:25:10.935891	2017-04-17 13:25:10.935891	\N
+151	14	Municion	14	\N	\N	2	16	2017-04-17 13:25:29.324409	2017-04-17 13:25:29.324409	\N
+152	15	Vehiculos de transporte terrestre	15	\N	\N	2	16	2017-04-17 13:25:41.144624	2017-04-17 13:26:24.821414	\N
+153	16	Vehiculos de seguridad	16	\N	\N	2	16	2017-04-17 13:26:50.265646	2017-04-17 13:27:16.657267	\N
+154	17	Armamento	17	\N	\N	2	16	2017-04-17 13:27:40.167321	2017-04-17 13:27:40.167321	\N
+155	18	Seguros de aviacion	18	\N	\N	2	16	2017-04-17 13:28:19.895888	2017-04-17 13:28:19.895888	\N
+156	19	Seguros maritimos y fluvial	19	\N	\N	2	16	2017-04-17 13:28:44.329535	2017-04-17 13:28:44.329535	\N
+157	20	Vesturario para altas 2018	20	\N	\N	2	16	2017-04-17 13:29:31.340145	2017-04-17 13:29:31.340145	\N
+158	21	calzado para altas 2018	21	\N	\N	2	16	2017-04-17 13:29:55.279096	2017-04-17 13:29:55.279096	\N
+159	22	Uniformes camuflados para altas 2018	22	\N	\N	2	16	2017-04-17 13:30:28.98245	2017-04-17 13:30:28.98245	\N
+160	23	Ropa de cama y otros para altas 2018	23	\N	\N	2	16	2017-04-17 13:31:01.999018	2017-04-17 13:31:01.999018	\N
+161	24	Colchones y almohadas para altas 2018	24	\N	\N	2	16	2017-04-17 13:31:37.721846	2017-04-17 13:31:44.41792	\N
+188	EFOPI-FAP	escuela de formacion de pilotos	16	\N	3	2	5	2017-04-25 17:28:05.096709	2017-04-25 17:28:15.495321	\N
+183	GRUP3-FAP	grupo aereo numero 3	15	\N	3	2	5	2017-04-25 16:48:54.754347	2017-04-25 17:28:28.11771	\N
+190	COMOPERAMA-MGP	comandacia general de operaciones de la amazonia	54	\N	2	2	5	2017-04-25 21:22:34.140416	2017-04-25 21:22:59.462151	\N
+191	JESEHIN-MGP		55	\N	2	2	5	2017-04-25 21:25:45.176751	2017-04-25 21:26:01.251936	\N
+193	COMFLOTFLU	comandacia de la flotilla	57	\N	2	2	5	2017-04-25 21:28:13.290704	2017-04-25 21:34:00.233801	\N
+211	31	servicio de telefonia movil	31	\N	\N	2	16	2017-05-05 21:18:43.061064	2017-05-05 21:18:43.061064	\N
+177	GRUP11-FAP	grupo aereo N°11	11	\N	3	2	5	2017-04-25 15:12:28.438757	2017-04-25 16:49:22.774722	\N
+175	GRUP42-FAP	grupo aereo numero 42	9	\N	3	2	5	2017-04-25 15:07:35.386513	2017-04-25 16:49:41.766927	\N
+167	31	Catalogacion	31	\N	3	2	12	2017-04-24 16:37:34.805387	2017-04-24 16:37:34.805387	\N
+143	SIEC N°001	Contratacion corporativa de SOAT	6	\N	\N	2	16	2017-04-17 13:22:24.017755	2017-05-29 13:33:16.812169	\N
+184	DISAMAR-MGP	direccion de salud de la marina	50	\N	2	2	5	2017-04-25 16:51:08.91661	2017-04-25 16:54:50.836468	\N
+209	29	Telefonia fija e internet asimetrico servicio	29	\N	\N	2	16	2017-05-05 21:17:35.583175	2017-05-05 22:01:01.437417	\N
+216	52	Ejecucion contractual suscripcion de contratoxxxxxx	52	\N	\N	2	12	2017-05-08 20:58:18.613531	2017-05-31 15:32:00.204503	\N
+185	COMFUINMAR-MGP	comandancia de la fuerza infanteria de marina	51	\N	2	2	5	2017-04-25 16:52:20.269006	2017-04-25 16:55:07.993933	\N
+217	53	Ejecucion contractual recepcion del bien o servicio	53	\N	6	2	12	2017-05-08 20:58:48.90039	2017-06-09 15:56:59.037208	\N
+220	32	Adquisicion de equipos del hup satelital	32	\N	\N	2	16	2017-05-09 15:55:47.946968	2017-05-09 15:55:47.946968	\N
+144	CP N°001	Contratacion corporativa de seguro vehicular	7	\N	\N	2	16	2017-04-17 13:22:48.674677	2017-05-29 13:36:50.670216	\N
+207	46	Solicita comite de seleccion	46	\N	5	2	12	2017-05-04 22:09:48.080472	2017-05-04 22:09:48.080472	\N
+208	47	Solicita aprobacion de bases	47	\N	5	2	12	2017-05-04 22:10:16.187683	2017-05-04 22:10:16.187683	\N
+223	56	Estado de expediente	56	\N	5	2	12	2017-05-11 14:15:11.944103	2017-05-11 14:15:11.944103	\N
+213	49	Desierto	49	\N	5	2	12	2017-05-08 16:34:46.732402	2017-05-08 16:34:46.732402	\N
+166	AS N°001	Adquisicion corporativa de uniformes camuflados	28	\N	\N	2	16	2017-04-18 20:43:32.828787	2017-05-29 13:39:16.215936	\N
+221	CCFFAA	Comando Conjunto de las Fuerzas Armadas	80	\N	1	2	5	2017-05-09 19:37:59.495373	2017-05-09 19:37:59.495373	\N
+222	DITEL-FAP	Direccion de telematica	20	\N	3	2	5	2017-05-09 19:38:41.830377	2017-05-09 19:39:14.850824	\N
+210	CP N°005	servicio corporativo de alquiler segmento satelital	30	\N	\N	2	16	2017-05-05 21:18:09.703003	2017-05-29 13:44:13.001343	\N
+168	32	Remision de expediente de inicio a DEM	32	\N	4	2	12	2017-04-24 16:38:23.812618	2017-06-08 19:49:07.595761	2
+227	58	Fecha estimada de remision de expediente de inicio	58	\N	1	2	12	2017-05-23 17:20:05.995437	2017-05-23 17:22:00.471267	\N
+214	50	Remision de expediente al OBAC 	50	\N	6	2	12	2017-05-08 20:56:47.899599	2017-05-31 15:28:43.36302	\N
+218	54	Ejecucion contractual pago del bien o servicio	54	\N	6	2	12	2017-05-08 20:59:15.90436	2017-06-09 15:57:23.065993	\N
+219	55	Ejecucion contractual liquidacion del contrato	55	\N	6	2	12	2017-05-08 20:59:45.183037	2017-06-09 15:57:36.71803	\N
+215	51	Ejecucion contractual etapa perfeccionamiento de contrato	51	\N	6	2	12	2017-05-08 20:57:47.369395	2017-05-31 14:48:50.051804	\N
+212	48	Expediente devuelto	48	\N	4	2	12	2017-05-08 16:32:26.658053	2017-06-08 19:50:19.411546	4
+169	33	Aprobacion de expediente de contratacion	33	\N	4	2	12	2017-04-24 16:41:39.901938	2017-06-08 19:58:21.152496	8
+170	34	remision de expediente a DPC	34	\N	4	2	12	2017-04-24 16:42:38.818659	2017-06-08 19:58:08.224483	9
+259	CP-4-2016	SEGUROS DE AERONAVES	59	\N	\N	2	16	2017-05-31 18:42:04.079892	2017-05-31 18:42:44.57935	\N
+245	AMC-23-2015	CENTRO DE MANTENIMIENTO AERONAUTICO DEL EJERCITO - DIVISION DE MANTENIMIENTO MAYOR - LA JOYA, AREQUIPA	45	\N	\N	2	16	2017-05-31 16:36:17.371806	2017-05-31 16:52:35.489133	\N
+246	AMC-24-2015	SERVICIO DE CONSULTORIA PARA LA SUPERVISION DE LA ELABORACION DEL EXPEDIENTE TECNICO Y EJECUCION DEL PROYECTO  CENTRO DE MANTENIMIENTO AERONAUTICO DEL EJERCITO, DIVISION DE MANTENIMIENTO MAYOR - LA JOYA, AREQUIPA	46	\N	\N	2	16	2017-05-31 16:37:49.210992	2017-05-31 16:53:11.344237	\N
+260	INTER-17-2016	ADQUISICION DE ARMAMENTO	60	\N	\N	2	16	2017-05-31 18:43:53.310189	2017-05-31 18:43:53.310189	\N
+248	LP-7 -8-2016	Adquisicion corporativa de vestuario y calzado altas 2017 FFAA	48	\N	\N	2	16	2017-05-31 17:01:32.899212	2017-05-31 17:03:27.640592	\N
+261	INTER-15-2016	ADQUISICION DE ARMAMENTO FUSIL DE ASALTO Y AMETRALLADORA	61	\N	\N	2	16	2017-05-31 18:44:37.054133	2017-05-31 18:44:37.054133	\N
+231	LP-9-2016	ADQUISICION DE UNIFORME CAMUFLADO DIGITALIZADO PARA PERSONAL DE ALTAS 2017 - MGP	33	\N	\N	2	16	2017-05-23 22:01:39.695261	2017-05-31 18:48:34.379303	\N
+267	CP N°002	Mantenimiento de motores y cajas de transmisión de patrulleras de costa y grupos electrógenos de patrulleras marítimas de la Marina de Guerra del Perú.	63	\N	\N	2	16	2017-06-09 13:20:41.022688	2017-06-09 13:20:41.022688	\N
+232	59	En Ejecucion Contractual	59	\N	6	2	12	2017-05-24 21:24:24.866579	2017-06-09 15:58:11.615889	\N
+228	Situacion DPC		6	\N	0	2	15	2017-05-23 21:10:08.698281	2017-05-23 21:10:08.698281	\N
+236	61	Ejecucion contractual suscripcion de contrato	61	\N	6	2	12	2017-05-28 17:03:34.92178	2017-06-09 15:58:26.84214	\N
+276	CE N°002-2015	Mejoramiento de la capaciodad de transporte para el soporte a las operaciones y acciones militares -  Purisuncho	70	\N	\N	2	16	2017-06-15 21:20:26.346973	2017-06-15 21:20:26.346973	\N
+262	LP-6-2016	ADQUISICION DE LUBRICANTES, GRASAS Y AFINES	62	\N	\N	2	16	2017-05-31 18:57:14.122055	2017-05-31 18:57:14.122055	\N
+43	2016	PROCESOS AF-2016	2	\N	0	2	11	2017-03-19 03:39:26.836053	2017-06-15 21:24:44.737024	1
+281	Convocado		1	\N	\N	2	17	2017-06-16 18:53:31.501021	2017-06-16 18:53:31.501021	\N
+282	Consentido		2	\N	\N	2	17	2017-06-16 18:53:46.003443	2017-06-16 18:53:46.003443	\N
+285	INTER-03-2015	Adquisicion de botes	76	\N	\N	2	16	2017-06-19 17:11:32.411304	2017-06-19 17:11:32.411304	\N
+264	63	Recepcion y revision de cotizaciones dem	63	\N	4	2	12	2017-06-07 19:58:10.882706	2017-06-08 19:47:36.727508	6
+265	64	Exposicion de cuadro comparativo dem	64	\N	4	2	12	2017-06-07 19:59:39.65934	2017-06-08 19:48:15.819434	7
+263	62	Revision del expediente dem	62	\N	4	2	12	2017-06-07 19:53:59.601133	2017-06-08 19:49:52.340449	3
+286	Adjudicado		4	\N	\N	2	17	2017-06-19 17:18:46.151674	2017-06-19 17:18:46.151674	\N
+289	INTER-14-2016	Adquisicion de equipos de seguridad para las patrullas del Ejército, Marina y FAP del CIOEC	79	\N	\N	2	16	2017-06-19 17:44:58.869477	2017-06-19 17:44:58.869477	\N
+288	INTER-13-2016	Adquisicion de accesorios de vestuario y kit de primeros auxilios para patrullas del ejercito, marina y FAP del CIOEC	78	\N	\N	2	16	2017-06-19 17:42:07.169836	2017-06-19 17:42:07.169836	\N
+268	66	Estado de expediente	66	\N	4	2	12	2017-06-09 19:38:13.68836	2017-06-09 19:42:05.542923	10
+290	INTER-003-2016	Adquisición de equipamiento para las fuerzas especiales 	80	\N	\N	2	16	2017-06-19 19:03:23.68685	2017-06-19 19:03:23.68685	\N
+270	INTER-7-2015	Servicio anual para unidades hovercraft modelo tdm-2000	64	\N	\N	2	16	2017-06-14 14:45:39.511359	2017-06-14 14:47:15.20315	\N
+252	INTER-4-2015	ADQUISICION DE EQUIPOS, REPUESTOS Y ACCESORIOS PARA UNIDADES HOVERCRAFT MODELO TDM - 2000	52	\N	\N	2	16	2017-05-31 17:46:25.290058	2017-05-31 17:46:25.290058	\N
+253	INTER-6-2015	ADQUISICION DE SIETE (7) VEHICULOS TACTICOS 4 X 4 BLINDADOS DE RECONOCIMIENTO, PARA EL BATALLON DE VEHICULOS TACTICOS DE LA FUERZA DE INFANTERIA DE MARINA	53	\N	\N	2	16	2017-05-31 17:47:38.00018	2017-05-31 17:47:38.00018	\N
+257	LP-2-2016	ADQUISICION DE VEHICULOS DE SEGURIDAD	57	\N	\N	2	16	2017-05-31 18:37:52.842657	2017-05-31 18:37:52.842657	\N
+258	SIE-1-2016	CONTRATACION DE SEGURO OBLIGATORIO DE ACCIDENTES DE TRANSITO - SOAT PARA LAS FUERZAS ARMADAS (EP.FAP,MGP)	58	\N	\N	2	16	2017-05-31 18:41:09.577265	2017-05-31 18:41:09.577265	\N
+271	RES N°002	Adquisicion de equipamiento optronico	65	\N	\N	2	16	2017-06-14 17:23:38.892685	2017-06-14 17:23:38.892685	\N
+272	LP-10 -2015	Adquisicion de vehiculos utilitarios para el batallon de vehiculos tacticos de la fuerza de infanteria de marina (cuatrimotos, motos, tubulares)	66	\N	\N	2	16	2017-06-14 20:17:29.073711	2017-06-14 20:18:25.006885	\N
+273	LP-9 -2015	Adquisicion de lubricantes, grasas y aditivos	67	\N	\N	2	16	2017-06-14 20:19:29.334639	2017-06-14 20:19:29.334639	\N
+274	CP-3-2015	Seguro de aeronaves	68	\N	\N	2	16	2017-06-14 20:20:15.85064	2017-06-14 20:20:15.85064	\N
+275	AS-5-2015	Seguro marítimo	69	\N	\N	2	16	2017-06-14 20:21:23.910556	2017-06-14 20:21:23.910556	\N
+269	67	Contrato remitido de OBAC	67	\N	6	2	12	2017-06-12 21:58:06.833214	2017-06-12 21:59:14.564502	\N
+277	LP-1-2016	Racion de combate	71	\N	\N	2	16	2017-06-16 15:53:25.895435	2017-06-16 15:53:42.480756	\N
+283	Desierto		3	\N	\N	2	17	2017-06-16 18:53:57.585192	2017-06-16 18:53:57.585192	\N
+238	LP N°005	Adquisición de diversas prendas de vestuario, calzado y otros para el personal de tropa del ejercito	35	\N	\N	2	16	2017-05-29 14:01:10.187764	2017-05-29 14:01:44.381208	\N
+241	LP N°006	Adquisición de casacas para el personal militar FAP	40	\N	\N	2	16	2017-05-29 14:07:01.580032	2017-05-29 14:07:01.580032	\N
+242	LP N°004	Uniformes camuflados multicam (pantalon-camisa-gorro) para alta de cadetes, alumnos, tropa, asimilados de oficiales y tecnicos y renovacion para el personal militar.	41	\N	\N	2	16	2017-05-29 14:09:14.3179	2017-05-29 14:09:14.3179	\N
+243	LP N°007	Vestuario para el personal civil	42	\N	\N	2	16	2017-05-29 14:10:01.284595	2017-05-29 14:10:17.158701	\N
+284	INTER-01-2016	Adquisicion de armamento	75	\N	\N	2	16	2017-06-16 18:57:58.103891	2017-06-16 18:57:58.103891	\N
+287	INTER-12-2016	Adquisicion de vestuarios táctico para patrullas del Ejército, Marina y FAP del CIOEC	77	\N	\N	2	16	2017-06-19 17:39:45.737458	2017-06-19 19:39:54.832103	\N
+234	s/d		0	\N	\N	2	16	2017-05-26 18:40:52.656962	2017-05-26 18:40:52.656962	\N
+278	AS-8-2016	Adquisicion de baterias	72	\N	\N	2	16	2017-06-16 15:56:24.368118	2017-06-16 15:56:24.368118	\N
+279	AS-9-2016	Adquisicion de llantas	73	\N	\N	2	16	2017-06-16 15:57:08.371706	2017-06-16 15:57:08.371706	\N
+280	CP-3-2016	servicio de telefonia movil	74	\N	\N	2	16	2017-06-16 15:57:53.801613	2017-06-16 15:57:53.801613	\N
+300	CE-008-2015	EQUIPAMIENTO FFEE (CORPORATIVO)	90	\N	\N	2	16	2017-06-19 22:03:31.046439	2017-06-20 21:01:07.584139	\N
+291	INTER-005-2016	Adquisición de equipos para apoyo al Vuelo	81	\N	\N	2	16	2017-06-19 19:14:52.35815	2017-06-19 19:14:52.35815	\N
+292	INTER-008-2016	Adquisición de uniformes tácticos y ropa interior MIL-SPEC para el personal del comando de inteligencia y operaciones especiales conjuntas (CIOEC)	82	\N	\N	2	16	2017-06-19 19:39:26.488112	2017-06-19 19:39:26.488112	\N
+293	INTER-009-2016	Adquisición de botas y calzado MIL SPEC, para el personal del comando de inteligencia y operaciones especiales conjuntas CIOEC	84	\N	\N	2	16	2017-06-19 19:43:31.828021	2017-06-19 19:43:31.828021	\N
+294	INTER-010-2016	Adquisicion de vestuarios y accesorios MIL SPEC para el personal de inteligencia y operaciones especiales conjuntas CIOEC	85	\N	\N	2	16	2017-06-19 19:44:55.453744	2017-06-19 19:44:55.453744	\N
+295	Nulo		5	\N	\N	2	17	2017-06-19 20:05:49.712507	2017-06-19 20:05:49.712507	\N
+296	INTER-004-2016	Adquisición de grasas aceites y lubricantes para aeronaves	86	\N	\N	2	16	2017-06-19 20:17:04.445949	2017-06-19 20:17:04.445949	\N
+297	CP-1-2015	SOAT (CORPORATIVO)	87	\N	\N	2	16	2017-06-19 21:59:36.134528	2017-06-19 21:59:36.134528	\N
+298	LP-6-2015	VEHÍCULOS DE SEGURIDAD (CORPORATIVO)	88	\N	\N	2	16	2017-06-19 22:00:19.734918	2017-06-19 22:00:19.734918	\N
+299	CE-001-2015	AERONAVES DE INSTRUCCIÓN PRIMARIA – EDACI (FAP)	89	\N	\N	2	16	2017-06-19 22:01:40.868923	2017-06-19 22:01:40.868923	\N
+162	Situacion DEC		4	\N	1	2	15	2017-04-17 13:57:00.979641	2017-05-29 17:22:09.202409	\N
+229	Situacion  DEM		7	\N	0	2	15	2017-05-23 21:10:27.15841	2017-05-23 21:10:27.15841	\N
+121	Procesos por Encargo		1	\N	0	2	15	2017-04-05 19:56:24.767171	2017-06-06 18:06:29.096878	\N
+130	Situacion Tramite Autorizacion		3	\N	0	2	15	2017-04-07 23:23:02.312452	2017-04-27 13:50:57.773621	\N
+182	Situacion Tramite Exclusion		5	\N	0	2	15	2017-04-25 16:40:17.616355	2017-04-27 13:51:35.208846	\N
+122	Procesos Corporativos		2	\N	0	2	15	2017-04-05 19:56:54.001218	2017-06-09 15:59:24.812223	\N
+230	Situacion GEX		8	\N	0	2	15	2017-05-23 21:10:41.800024	2017-05-23 21:10:41.800024	\N
+\.
+
+
+--
+-- Name: formulas_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('formulas_id_seq', 300, true);
+
+
+--
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY items (id, pac, obac, lista, ejecucion, modalidad, dependencia, tipo, descripcion, cantidad, certificado, fuente, admin_user_id, created_at, updated_at, rubro, seleccion, mesconvoca, cuadrante, periodo, expediente, observacion, exped, exped2) FROM stdin;
+1278	0289	3	4	4	1	1	2	adquisicion de grasas/ aceites y lubricantes para las diferentes aeronaves de las unidades aereas fap y para defensa aerea (radares)	49	1320255.53000000003	2	8	2017-04-20 00:00:00	2017-06-07 16:42:46.447152	1	9	2017-04-01	\N	3		FAP	8	3
+1777	21	1	1	4	2	21	1	SEGURO DE BIENES DE EMBARCACIONES FLUVIALES	\N	325658.359999999986	2	9	2017-06-19 20:38:48.368238	2017-06-19 20:39:06.038394	2	1	\N	\N	2	\N		0	2
+1782	10	6	1	4	1	80	1	CONTRATACION CORPORATIVA  DEL SERVICIO DE ALQUILER DE SEGMENTO  SATELITAL DEL PLIEGO 026 - MINISTERIO DE DEFENSA	1	460000	2	9	2017-06-19 22:06:16.785299	2017-06-19 22:06:16.785299	2	3	\N	\N	2	\N		0	2
+1784	07	6	1	4	1	80	1	CONTRATACION CORPORATIVA DEL SERVICIO DE TELEFONIA FIJA E INTERNET ASIMETRICO DEL PLIEGO 029 - MINISTERIO DE DEFENSA	1	64388	2	9	2017-06-19 22:08:34.481329	2017-06-19 22:08:34.481329	2	1	\N	\N	2	\N		0	2
+1786	29	6	1	4	1	80	1	CONTRATACION DE RACIONES DE CAMPAÑA ENVASADA	1	642000	2	9	2017-06-19 22:12:27.113277	2017-06-19 22:12:27.113277	1	5	\N	\N	2	\N		0	2
+1461	0065	3	1	4	1	20	1	servicio de telefonia fija uu/dd fap (2017-2019)	\N	1934754	5	8	2017-05-19 19:57:48.098625	2017-06-20 13:58:19.341531	2	1	2017-06-30	\N	2	29	CONCURSO PUBLICO A SER ADJUDICADO 2017- DISPONIBILIDAD PRESUPUESTAL REMITIDA RECIENTEMENTE	34	2
+1780	0101	2	1	4	1	42	1	SEGURO OBLIGATORIO ACCIDENTE DE TRANSITO	\N	517070.659999999974	2	6	2017-06-19 21:59:32.962562	2017-06-20 15:40:07.48266	2	3	\N	\N	1	\N		87	1
+1788	0764	3	1	4	1	19	1	Vehículo de seguridad (Corporativo)	\N	7905031.20000000019	1	8	2017-06-19 22:14:07.517983	2017-06-20 19:27:39.481474	2	5	\N	\N	1	\N	EP / MGP / FAP 	88	1
+1454	0164	2	1	4	1	\N	1	seguro vehicular	\N	2329800	\N	2	2017-05-18 19:14:46.122603	2017-05-31 18:49:04.135864	2	3	\N	\N	2			54	2
+1585	0367	3	0	3	0	0	0	culminacion del expediente tecnico y estudio definitivo de equipamiento/ mobiliario y construccion de instalaciones fijas de la base aerea san ramon	1	20851874.7199999988	3	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-05-30	0	3	 	version fap3005	0	3
+1151	0735	1	4	4	2	\N	2	adquisicion de repuestos para aeronaves de ala rotatoria de la aviacion del ejercito	1	4680000	5	9	2017-04-20 00:00:00	2017-05-16 14:03:07.130323	1	9	2017-04-01	\N	3		version2	0	3
+1381	1002	2	4	4	2	\N	2	adquisición de equipos, repuestos y accesorios para unidades hovercraft	\N	8318950.29999999981	2	6	2017-05-10 13:11:35.857637	2017-06-14 14:39:24.37654	1	10	\N	\N	1		PROCESO PROVIENE DEL 2015 publicado en MGP	52	1
+517	0011	3	1	4	4	4	1	adquisicion de vestuario para el egreso de cadetes, alumnos, licenciamiento de tropa, renovacion para el personal de cadetes y alumnos y zona desarrollo. (EXCLUIDO)	61	1429063.30000000005	2	8	2017-03-21 06:34:00	2017-06-08 18:10:56.185583	1	5	2017-04-01	\N	3		PROCESO EXCLUIDO EN EL PAC VERSIÓN 9	0	3
+1373	0564	3	1	4	1	4	1	adquisicion de vestuario para el alta de cadetes, alumnos, tropa, asimilados de oficiales y tecnicos y renovacion para el personal militar fap	\N	3138003.60000000009	2	2	2017-05-09 17:30:50.629744	2017-06-04 00:10:23.835456	1	5	2017-01-01	\N	2	01	CONTRATACION QUE CONTINUA PARA EL AF-2017 / LP-007-2016-ACFFAA-DC Y LP-008-2016-ACFFAA-DC	48	3
+1457	0496	2	1	4	1	\N	1	seguro maritimo y fluvial	\N	52861.0500000000029	\N	2	2017-05-18 19:32:58.243079	2017-06-04 00:11:58.819831	1	1	\N	\N	2			55	3
+1251	0330	2	4	4	3	53	2	servicio de capacitación para la tripulación y pilotos del programa fokker 50/60	1	207900	2	6	2017-04-26 22:11:03.186527	2017-05-24 13:47:23.08148	2	10	2017-05-30	\N	3			0	3
+1778	17	1	1	1	1	21	1	SEGURO DE VEHICULOS	\N	3671072.41000000015	2	9	2017-06-19 20:41:33.252825	2017-06-19 20:41:33.252825	2	\N	\N	\N	2	\N		0	2
+119	0018	1	1	4	1	21	1	seguro de vehiculos/	1	3240000	2	2	2017-03-21 06:34:00	2017-05-26 19:07:48.49571	2	3	2017-03-01	\N	3	07		7	3
+1019	0290	2	4	4	3	46	2	adquisicion de sistema satelital autoestabilizada banda ku	\N	454111.479999999981	2	6	2017-04-12 23:06:34.630146	2017-05-16 20:29:02.035339	1	9	2017-04-30	\N	3			0	3
+735	0010	2	0	2	0	0	1	adquisicion de articulos para despensas/	1	65000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+996	0262	2	\N	2	\N	57	1	adquisición de filtros para las unidades fluviales de la flotilla	54	100000	2	6	2017-04-06 22:39:07.441968	2017-04-25 22:19:24.368335	1	1	2017-04-30	\N	3			0	3
+1046	0061	3	4	4	3	1	2	reparacion u overhaul de bloques y accesorios para la flota b-737 	22	473000	2	8	2017-04-25 13:30:30.45271	2017-05-10 12:51:12.201079	2	10	2017-03-30	\N	3			0	3
+1787	06	6	1	4	1	80	1	CONTRATACION DE LA COBERTURA  DE SEGUROS VEHICULARES PARA EL CCFFAA	\N	80000	2	9	2017-06-19 22:14:01.612365	2017-06-19 22:14:01.612365	2	1	\N	\N	2	\N		0	2
+1555	0371	2	0	2	0	0	0	certificado para el servicio de mantenimiento de infraestructura de jedicap-5/	1	70000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1376	0359	3	1	4	1	7	1	alquiler del servicio de segmento satelital uu/dd-vraem (2016-2018) 	\N	1455600	2	8	2017-05-09 19:14:42.891192	2017-06-20 13:45:19.267178	2	3	2017-01-01	\N	3		CONTRATACION QUE CONTINUA PARA EL AF-2017 / CP N° 005-2016-ACFFAA-DPC	30	3
+1783	0017	3	1	4	1	18	1	Seguro SOAT (Corporativo)	\N	315000	2	8	2017-06-19 22:06:56.863085	2017-06-20 19:29:09.801188	2	3	\N	\N	1	\N	EP / MGP / FAP / MOMENTANEAMENTE SE ESTA CONSIDERANDO EL VALOR ADJUDICADO CORPORATIVO, DEBE SER IMPORTE POR OBAC	87	1
+1789	0770	3	4	4	2	8	2	Recuperación de la capacidad técnica operativa para la formación de la Reserva Aérea Militar EDACI-2015	\N	12836757.9100000001	2	8	2017-06-19 22:17:19.341563	2017-06-20 19:41:16.185829	1	10	\N	\N	1	\N	llenado de casilleros pendientes	89	1
+1612	0394	3	0	3	0	0	0	adquisición de repuestos y accesorios de avionica para la aeronave b737-200	1	328509	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1613	0395	3	0	3	0	0	0	adquisición de componentes/ repuestos y accesorios del sistema de avionica para las aeronave l-100-20	1	540615	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1614	0396	3	0	3	0	0	0	adquisicion de carne de pavo para el personal militar y civil de la fap	1	1361749.5	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-30	0	3	 	version fap3005	0	3
+1372	0103	3	1	4	1	4	1	vestuario y calzado para el personal militar fap 	\N	1748020.30000000005	2	2	2017-05-09 17:11:10.359799	2017-05-31 16:58:52.175057	1	1	2016-02-01	\N	2		CONTRATACION QUE CONTINUA EN EL AF-2017 COMO LP-004-2016-ACFFAA-DC Y LP-005-2016-ACFFAA-DC	47	2
+1615	0397	3	0	3	0	0	0	servicio de desarrollo de programa informatico de integracion y procesamiento de datos para el sistema supervision y control aereo fap - syca (devida)	1	200000	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1532	0377	2	0	2	0	0	0	servicio de transporte de carga de bienes y materiales para el area del vraem/	2	204075	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1533	0364	2	0	2	0	0	0	servicio internet satelital para plataformas e itinerantes de accion social pias/	1	281511.260000000009	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1534	0351	2	0	2	0	0	0	servicio y mantenimiento preventivo de las electrobombas de la base de infanteria de marina/	4	45000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1556	0339	2	0	2	0	0	0	adquisicion de repuestos para la division de ingenieria mecanica del bap angamos/	52	58915.1999999999971	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1568	0357	2	0	2	0	0	0	adquisición de pinturas para las dependencias que conforman el establecimiento naval terrestre de la comandancia general de operaciones de la amazonia/	9	47145.7200000000012	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-05-01	0	3	 	version7 mgp	0	3
+1569	0347	2	0	2	0	0	0	viveres e insumos para atenciones en actividades oficiales y protocolares segundo semestre/	180	399000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version7 mgp	0	3
+1570	0340	2	0	2	0	0	0	insumos químicos para las escuelas/	4	54462.6800000000003	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1616	0398	3	0	3	0	0	0	servicio de curso en simulador de vuelo para 04 pilotos de helicopteros mi-25/35p	1	101500	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	8	2017-05-30	0	3	 	version fap3005	0	3
+1617	0399	3	0	3	0	0	0	curso de simulador recurrent del avion an-32b	1	90037.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1460	0548	2	4	4	2	42	2	adquisicion equipamiento de campaña para el componente naval del comando especial del vraem	\N	207426.5	\N	6	2017-05-18 19:45:21.521164	2017-06-16 17:50:58.026899	1	10	\N	\N	2			56	2
+1458	0341	2	1	4	1	\N	1	adquisicion de vehiculos de seguridad	\N	5000000	\N	2	2017-05-18 19:38:07.609314	2017-06-05 14:31:35.681719	1	5	\N	\N	2			57	2
+1779	1061	1	1	4	1	24	1	ADQUISICION DE VEHICULOS DE SEGURIDAD	237	17993670.3500000015	5	9	2017-06-19 21:01:00.338914	2017-06-19 21:01:00.338914	1	5	\N	\N	2	\N		0	2
+1785	09	6	1	4	1	80	1	CONTRATACION CORPORATIVA DEL SERVICIO DE TELEFONIA MOVIL PARA EL PLIEGO 029 - MINISTERIO DE DEFENSA	1	156414	2	9	2017-06-19 22:10:23.748187	2017-06-19 22:10:23.748187	2	1	\N	\N	2	\N		0	2
+1781	0447	2	1	4	1	42	1	ADQUISICIÓN VEHÍCULOS DE SEGURIDAD	\N	11658372.0500000007	1	6	2017-06-19 22:01:41.83006	2017-06-20 15:41:03.239871	1	5	\N	\N	1	\N		88	1
+1790	9004	3	4	4	1	4	2	Equipamiento de las Fuerzas Especiales	\N	2522016.27000000002	\N	2	2017-06-19 22:20:56.16444	2017-06-20 21:01:42.69847	1	10	\N	\N	1	\N	momentaneámente se esta considerando el importe del corporativo	90	1
+1621	0403	3	0	3	0	0	0	contratacion del servicio de agente de venta de pasaje y apoyo a despacho de vuelo	10	182000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1622	0404	3	0	3	0	0	0	servicio de alquiler de toldos	1	40000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1623	0405	3	0	3	0	0	0	adquisicion de snacks para operaciones aereas	1	40000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-30	0	3	 	version fap3005	0	3
+1624	0406	3	0	3	0	0	0	entrenamiento simulador de vuelo curso recurrent para tripulante de  la aeronave  lj 36 a	1	66150	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1625	0407	3	0	3	0	0	0	servicio de racionamiento para el personal civil area administrativa	1	90650	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1444	0339	3	4	4	3	101	2	servicio de reparacion de  repuestos y partes de helicopteros mi-25/35p	12	1152403.5	2	8	2017-04-20 00:00:00	2017-05-25 13:57:39.012842	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1627	0409	3	0	3	0	0	0	adquisicion de dispositivos medicos (hospi)	9	228025	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-30	0	3	 	version fap3005	0	3
+1446	0325	3	4	3	3	100	2	entrenamiento en simulador de vuelo para las tripulaciones de las aeronaves del grup3	1	86946.929999999993	2	8	2017-04-20 00:00:00	2017-05-22 12:53:24.878907	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1535	0355	2	0	2	0	0	0	adquisición de materiales de seguridad para la flotilla de unidades fluviales/	36	50000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1536	0356	2	0	2	0	0	0	atenciones oficiales/ protocolares e institucionales en el area de san borja y callao/	1	202000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1537	0366	2	0	2	0	0	0	servicio de atenciones oficiales y celebraciones institucionales para conferencia regional de ex alumnos de la universidad marítima mundial/	1	160424.820000000007	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1526	0362	2	0	2	0	0	0	servicio de mantenimiento/ acondicionamiento y reparación de la embarcación fluvial lancha nanay ii/	1	113694	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1527	0373	2	0	2	0	0	0	adquisiciones de gas licuado de petroleo (glp)/	1	351219.359999999986	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-05-01	0	3	 	version7 mgp	0	3
+1791	0014	3	1	4	1	18	1	Seguro de Aeronaves (Corporativo)	\N	36870000	2	8	2017-06-20 19:33:31.741929	2017-06-20 19:34:04.327402	2	3	\N	\N	1	\N		68	1
+1792	0960	3	1	4	1	1	1	Lubricantes (Corporativo)	\N	363951.400000000023	2	8	2017-06-20 19:51:26.667215	2017-06-20 19:51:26.667215	1	5	\N	\N	1	\N		67	1
+1626	0408	3	0	3	0	0	0	contratación de servicio para el dictado de la   maestria en gestión pública/ para los oficiales alumnos del program alto mando	1	220000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1628	0410	3	0	3	0	0	0	adquisicion de reactivos de laboratorio clinico para pacientes discapacitados	63	300000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-30	0	3	 	version fap3005	0	3
+1629	0411	3	0	3	0	0	0	servicio de racionamiento (personal militar/ personal servicio militar voluntario/ personal civil)	4	290675.409999999974	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1586	0368	3	0	3	0	0	0	adquisición del repuesto brake assy (n/p: 5011640-1) aplicable a la flota   c-26b	1	189000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1630	0412	3	1	4	1	18	1	seguro de aviación	1	19416489.6099999994	2	8	2017-04-20 00:00:00	2017-06-08 17:57:39.559753	2	3	2017-05-30	\N	3	 	version fap3005	18	3
+1362	1134	1	1	4	1	25	1	servicio de alquiler de segmento satelital	1	6082279.20000000019	2	2	2017-05-05 21:29:22.686169	2017-06-06 15:26:23.590887	2	3	\N	\N	2	30	PROCESO QUE VIENE DEL AÑO 2016	30	3
+1587	0369	3	0	3	0	0	0	servicio de overhaul para helices aplicable a la flota c-26b	1	160500	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1588	0370	3	0	3	0	0	0	adquisicion de conjuntos mayores/ componentes y partes aplicables a los helicopteros mi-17/mi-171sh 	7	308726.059999999998	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1589	0371	3	0	3	0	0	0	adquisicion de materiales aeronauticos aplicables al helicoptero mi-17	15	19786.7799999999988	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1498	0701	1	0	1	0	0	0	adquisicion de ferreteria para la jbiene	58	50000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1590	0372	3	0	3	0	0	0	adquisicion de componentes y partes aplicables a los helicopteros mi-25/35	6	234041.100000000006	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1591	0373	3	0	3	0	0	0	adquisicion de componentes/ partes y repuestos aplicable a los helicopteros bell-212	7	57432.3000000000029	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1592	0374	3	0	3	0	0	0	servicio de overhaul al conjunto de ventilador n/p 8a-6311-00 aplicable al helicoptero mi17	1	46916.2099999999991	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+528	0022	3	1	4	4	19	1	adquisicion de llantas para vehiculos (EXCLUIDO)	62	161957.899999999994	2	8	2017-03-21 06:34:00	2017-06-08 18:10:13.51737	1	1	2017-05-01	\N	3	12		12	3
+1538	0341	2	0	2	0	0	0	mantenimiento sistema osmosis inversa/	1	87542	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1539	0376	2	0	2	0	0	0	adquisición de espadas para oficiales de procedencia universitaria/	1	169274	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1540	0337	2	0	2	0	0	0	servicio de mantenimiento y reparacion w5 de la maquina principal nro. 2 de la division de ingenieria mecanica del b.a.p. angamos/	1	70000	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1541	0338	2	0	2	0	0	0	servicio de acondicionamiento del sistema de iluminacion de submarinos clase angamos por iluminacion led/	1	100000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1542	0354	2	0	2	0	0	0	servicio de reparacion de grupo electrogeno n. 1 del bap caloyeras/	3	68310	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1543	0361	2	0	2	0	0	0	servicio de acondicionamiento de un sistema de proteccion de la red de media tension para el liceo naval francisco carrasco/	1	80448	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1544	0360	2	0	2	0	0	0	adquisición de piezas y elementos de instalacion electricas y electronicas para las dependencias y unidades fluviales/ auxiliares de la comandancia general de operaciones de la amazonia/	111	89350.3800000000047	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1545	0372	2	0	2	0	0	0	adquisición de gas natural vehicular (gnv)/	1	478800	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-05-01	0	3	 	version7 mgp	0	3
+1546	0374	2	0	2	0	0	0	adquisición de lubricantes/ grasas y afines area comoperama/	7	139717.399999999994	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1547	0334	2	0	2	0	0	0	adquisicion de repuestos y accesorios para el mantenimiento de los vehiculos transporte terrestre/	158	57700	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1548	0336	2	0	2	0	0	0	adquisicion de repuestos de ingenieria y construccion para mantenimiento de equipos de unidad submarina/	31	32920	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1549	0345	2	0	2	0	0	0	adquisicion de material de cocina para la plataforma itinerante de accion social con sostenibilidad lago titicaca i (piass-3120)/	82	56597	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version7 mgp	0	3
+1550	0350	2	0	2	0	0	0	adquisicion de racionamiento para el personal de la plataforma itinerante de accion social con sostenibilidad lago titicaca i (piass-3120)/	10	64800	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version7 mgp	0	3
+1551	0353	2	0	2	0	0	0	adquisicion de vestuario para el personal de la plataforma itinerante de accion social con sostenibilidad lago titicaca i (piass-3120)/	32	99435	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version7 mgp	0	3
+1552	0349	2	0	2	0	0	0	servicio de transmision de datos para la plataforma itinerante de accion social con sostenibilidad lago titicaca i (piass-3120)/	1	65000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version7 mgp	0	3
+1553	0378	2	0	2	0	0	0	servicio de mantenimiento y acondicionamiento de la infraestrutura de las oficinas de la comandancia general de operaciones de la amazonia/	1	301285.799999999988	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version7 mgp	0	3
+1554	0352	2	0	2	0	0	0	servicio de mantenimiento de casco/ grupo electrogeno y maquinas auxiliares de la plataforma itinerante de accion social con sostenibilidad lago titicaca i (piass-3120)/	1	135000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version7 mgp	0	3
+1562	0367	2	0	2	0	0	0	adquisicion de impresoras de carnet/	1	132000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1462	0682	2	1	4	1	\N	1	uniformes camuflados	\N	2036383.5	\N	2	2017-05-23 22:04:03.310103	2017-06-02 17:40:50.312552	1	5	\N	\N	3	33	PROVIENE DE LA LP N° 09-2016	33	3
+902	0177	2	1	4	1	42	1	adquisicion de raciones de combate año 2017/	1	1047723.59999999998	2	2	2017-01-03 00:00:00	2017-05-26 19:13:50.336335	1	5	2017-01-03	\N	3	13		13	3
+713	0011	6	1	4	2	\N	1	adquisicion de equipos del hub satelital/	1	1300000	2	2	2017-03-21 06:34:00	2017-05-26 19:20:29.054103	1	5	2017-02-01	\N	3	32		32	3
+121	0034	1	1	4	1	23	1	adquisicion coorporativa de uniformes camuflados digitalizados para las fuerzas armadas /	9	22972141.6400000006	2	2	2017-03-21 06:34:00	2017-05-29 18:23:20.552006	1	1	2017-02-01	\N	3	28		28	3
+1528	0344	2	0	2	0	0	0	curso de ingles para alumnos del citen/	1	1902690	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-05-01	0	3	 	version7 mgp	0	3
+1529	0370	2	0	2	0	0	0	adquisición de material de limpieza/	104	888623.020000000019	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version7 mgp	0	3
+1456	0495	2	1	4	1	\N	1	seguro de aeronaves	\N	864914.040000000037	\N	2	2017-05-18 19:30:38.981716	2017-06-04 00:10:43.128251	2	3	\N	\N	2			59	3
+1593	0375	3	0	3	0	0	0	adquisición de cintas fotograficas no perforada de 35 mm aplicable a los helicopteros mi-25/35	1	8280	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1594	0376	3	0	3	0	0	0	reparacion u overhaul de bloques y accesorios para la flota lj-36a 	3	126168	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1595	0377	3	0	3	0	0	0	adquisicion de accesorios para la aeronave lj-36a	40	786648.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1596	0378	3	0	3	0	0	0	adquisicion de partes/ repuestos y materiales para aeronaves de instrucción de procedencia americana 	109	346409.349999999977	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1597	0379	3	0	3	0	0	0	servicio de reparación u overhaul de bloques y accesorios para las flotas  tc-690b y pa-34	3	122730	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1598	0380	3	0	3	0	0	0	adquisición del accesorio fuel nozzle assembly (set of 10) aplicable a la flota tc-690b	1	38180.010000000002	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1599	0381	3	0	3	0	0	0	adquisición de material misceláneo para el mantenimiento de las diferentes aeronaves y equipos de apoyo terrestre que operan en el vraem	259	731889.550000000047	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1600	0382	3	0	3	0	0	0	adquisicion de productos quimicos para inspecciones programadas de los helicopteros mi-17 / mi-171sh	34	200982	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1601	0383	3	0	3	0	0	0	servicio de mantenimento de las escaleras de trabajo a todo costo aplicable a la aeronave l-100-20	1	35039.6399999999994	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1602	0384	3	0	3	0	0	0	servicio de mantenimiento de la planta de agua desmineralizada de oxigeno liquido/ plantas de poder y electricas aplicables a la aeronave c-27j	1	102200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1604	0386	3	0	3	0	0	0	adquisicion de partes/ repuestos y materiales para flota an-32b	2	64515	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1605	0387	3	0	3	0	0	0	adquisición de partes/ repuestos y material para la flota kt-1p	80	468966.489999999991	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1606	0388	3	0	3	0	0	0	adquisición de partes/ repuestos y material para la flota a-37b	100	1140978.75	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1607	0389	3	0	3	0	0	0	servicio de reparación u ovehaul de tren de aterrizaje (mg322001-01) par la flota kt-1p	1	245000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1603	0385	3	4	4	2	1	2	adquisicion de partes/ repuestos y materiales para las aeronaves c-26b / lj-36a / tc-690b / b-737-200/500 / l-100-20 / dhc-6-300 / pc-6	235	1296066.8600000001	2	8	2017-04-20 00:00:00	2017-06-08 17:50:23.214975	1	9	2017-05-30	\N	3	 		0	3
+1608	0390	3	1	4	2	1	1	adquisicion de grasas/ aceites y lubricantes para la operatividad y mantenimiento de vehiculos de las uu/dd fap	32	296414.469999999972	2	8	2017-04-20 00:00:00	2017-06-08 17:52:17.831631	1	1	2017-05-30	\N	3	 	version fap3005	0	3
+1575	0022	6	0	6	0	0	0	contratacion de kits de bienestar para operaciones psicologicas en el vraem	1	77500	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	1	1	2017-06-01	0	3		ccffaa2	0	3
+1455	0542	2	1	4	1	\N	1	seguro obligatorio de accidentes de transito soat	\N	378500	\N	2	2017-05-18 19:29:00.424064	2017-05-31 18:51:09.270664	2	6	\N	\N	2			58	2
+1530	0359	2	0	2	0	0	0	adquisición de pinturas y material de mantenimiento para las dependencias que conforman el establecimiento naval terrestre de la comandancia general de operaciones de la amazonia/	18	58622.4000000000015	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1531	0368	2	0	2	0	0	0	certificado para servicio de limpieza de la oficina de servicios generales de la direccion general de capitanias y guardacostas/	1	40000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1576	0023	6	0	6	0	0	0	contratacion de vacunas para el iii contingente de la compañía infanteria perú	2	245000	4	2	2017-05-30 00:00:00	2017-05-30 00:00:00	1	1	2017-06-01	0	3		ccffaa2	0	3
+1577	0024	6	0	6	0	0	0	contratacion de insumos/ material medico y de laboratorio para operaciones de ayuda humanitaria en el vraem	1	293850	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	1	1	2017-06-01	0	3		ccffaa2	0	3
+1429	0310	3	0	3	0	0	0	aquisicion de material de ferreteria, herramientas y material de seguridad para accion de emergencia y riesgos de desastres - du  0002-2017	3	814859.400000000023	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version10 fap	0	3
+1425	0326	3	4	4	3	100	2	entrenamiento en simulador de emergencias para pilotos del helicoptero bell 212	1	95199.5099999999948	2	8	2017-04-20 00:00:00	2017-05-25 13:54:08.785674	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1578	0025	6	0	6	0	0	0	contratacion del servicio de alquiler de camiones para operaciones de ayuda humanitaria en el vraem	1	380000	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	1	2017-06-01	0	3		ccffaa2	0	3
+1579	0026	6	0	6	0	0	0	contratacion del servicio de alquiler de segmento satelital para los institutos armados y ccffaa	1	1843445	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	3	2017-06-01	0	3		ccffaa2	0	3
+1580	0027	6	0	6	0	0	0	contratacion del servicio de comunicaciones spot para el cioec 	1	90000	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	1	2017-06-01	0	3		ccffaa2	0	3
+1581	0028	6	0	6	0	0	0	contratacion del servicio de telefonia satelital para el cioec	1	241936	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	1	2017-06-01	0	3		ccffaa2	0	3
+1582	0029	6	0	6	0	0	0	adquisicion de repuestos y accesorios para equipos de computo del ccffaa	1	71984	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	1	1	2017-06-01	0	3		ccffaa2	0	3
+1583	0030	6	0	6	0	0	0	contratacion del servicio de racionamiento para el personal del comando conjunto de las fuerzas armadas y fuerza especial conjunta	2	1125000	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	3	2017-06-01	0	3		ccffaa2	0	3
+1584	0031	6	0	6	0	0	0	contratacion del servicio de alquiler de buses para operaciones de la fuerza especial conjunta	1	268200	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	1	2017-06-01	0	3		ccffaa2	0	3
+1610	0392	3	0	3	0	0	0	adquisición de material para el programa de prevención contra la corrosión para la flota kt-1p	6	98683.2799999999988	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1611	0393	3	0	3	0	0	0	adquisición de componentes de avionica para la aeronave b737-500	1	339321.299999999988	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-05-30	0	3	 	version fap3005	0	3
+1618	0400	3	0	3	0	0	0	curso de simulador recurrent de cabina digital del avion l-100-20	1	336000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1619	0401	3	0	3	0	0	0	servicio en simulador de vuelo en dhc-6	1	141750	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-05-30	0	3	 	version fap3005	0	3
+1620	0402	3	0	3	0	0	0	contratacion delservicio de transporte de combustible clase iiia iquitos	1	45000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-30	0	3	 	version fap3005	0	3
+1426	0327	3	4	4	3	17	2	entrenamiento de vuelo real de emergencias para tripulantes del helicóptero bolkow (bo-105ls)	1	140700	2	8	2017-04-20 00:00:00	2017-05-25 13:54:53.577058	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1420	0328	3	4	4	3	14	2	entrenamiento en simulador de emergencias para tripulaciones de los helicopteros mi-17/171sh	1	532000	2	8	2017-04-20 00:00:00	2017-05-25 13:55:50.484255	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1414	0336	3	4	4	3	101	2	adquisicion de repuestos y accesorios para el mantenimiento mayor y menor de la aeronave an-32b	5	151627.5	2	8	2017-04-20 00:00:00	2017-05-25 13:56:25.645184	1	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1467	0752	1	0	1	0	0	0	adquisicion de espuma de afeitar para el vraem	1	284729.039999999979	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-06-01	0	3	 	modificacion4	0	3
+1468	0730	1	0	1	0	0	0	adquisicion de baterias	1	53100	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-06-01	0	3	 	modificacion4	0	3
+1469	0745	1	0	1	0	0	0	servicio de confección de uniformes de paseo	3	399938.599999999977	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1470	0738	1	0	1	0	0	0	adquisición de grasas y aceites de uso aeronautico	15	534387	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-06-01	0	3	 	modificacion4	0	3
+1471	0732	1	0	1	0	0	0	adquisicion de repuestos accesorios e insumos para vsat del vraem	2	211653	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1411	0345	3	0	3	0	0	0	adquisicion de utiles de aseo para el personal militar del vraem (clasico)	11	95758.7599999999948	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+1033	0299	2	\N	2	\N	48	1	actualización de licencias caris	1	265000	1	6	2017-04-21 18:40:45.634619	2017-04-25 22:05:30.314767	1	1	2017-04-30	\N	3			0	3
+1243	0306	2	4	4	2	42	2	servicio de inspeccion mayor 900 horas de un (01) motor t58-ge-402 del programa uh-3h	\N	1780000	1	6	2017-04-26 21:31:53.865617	2017-05-08 17:35:17.416731	2	9	2017-05-30	\N	3			0	3
+1415	0314	3	0	3	0	0	0	adquisicion de bienes diversos para la recuperacion de los simuladores cevirco	13	48000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+977	0543	1	1	4	1	21	1	seguro obligatorio de accidentes de transito (soat)	1	97000	2	2	2017-04-06 21:25:33.626677	2017-05-26 19:05:43.253581	2	6	2017-03-30	\N	3	06		6	3
+573	0077	3	1	4	2	4	1	adquisición de uniformes camuflado multicam (pantalon-camisa-gorro) para el alta de cadetes, alumnos, tropa, asimilados de oficiales y tecnicos y renovacion para el personal militar fap 	1	509025	2	2	2017-03-21 06:34:00	2017-05-29 14:15:39.312707	1	5	2017-03-01	\N	3			41	3
+979	0570	1	1	4	2	23	1	adquisicion de diversas prendas de vestuario, calzado y otros para el personal de tropa del ejercito 	18	9713266.09999999963	2	2	2017-04-06 21:47:43.840912	2017-05-29 14:23:02.001036	1	5	2017-03-30	\N	3			35	3
+1416	0335	3	0	3	0	0	0	viveres para el racionamiento del personal militar de los programas doctrinarios esfap y escop	162	64372.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+1417	0323	3	0	3	0	0	0	material para el pintado de perimetro interno  balpa y la pista de vuelo 	10	120000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+1419	0309	3	0	3	0	0	0	aquisicion de kits de primeros auxilios, mascarillas, maletines apaa equipado, dispositivos medicos para la implementacion de brigadas de rescate, de acuerdo d.u. 004-2017 y d.u. 002-2017 por atencion de lluvias y peligros 	7	251430	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version10 fap	0	3
+1421	0321	3	0	3	0	0	0	servicios de manimiento, acondicionamiento y reparacion de diversas instalaciones de la unidad	6	37000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1422	0350	3	0	3	0	0	0	adquisicion de ferulas rigidas para las brigadas de rescate	1	37700	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-05-01	0	3	 	version10 fap	0	3
+1423	0333	3	0	3	0	0	0	adquisición de espadas para el egreso de cadetes  (seint)	1	120000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+1424	0324	3	0	3	0	0	0	servicio especializado de asesoria para la formulacion del snip 25, para el proyecto de inversion publica: recuperacion de la capacidad movilidad eficaz con aeronaves de mediano alcance y mediana capacidad de carga de la fap-grup8	1	38000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+995	0261	2	\N	2	\N	42	1	adquisición de repuestos adicionales al kit de 24,00 horas para el diesel propulsor babor del bap "aguierr"	31	350000	2	6	2017-04-06 22:37:32.679638	2017-04-25 22:19:48.431437	1	1	2017-04-30	\N	3			0	3
+989	0256	2	\N	2	\N	42	1	servicio de reparación del cambio 150bhp para la escuela naval	1	50760	2	6	2017-04-06 22:19:44.463832	2017-04-25 22:21:57.971298	2	1	2017-04-30	\N	3			0	3
+1428	0308	3	0	3	0	0	0	adquisicion de raciones de campaña para las brigadas de 	1	59800	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version10 fap	0	3
+1413	0337	3	4	4	2	101	2	adquisicion de conjuntos mayores, componentes y partes aplicables a los helicopteros mi-17, mi-171sh	174	13972903.2300000004	2	8	2017-04-20 00:00:00	2017-05-25 14:52:02.349683	1	9	2017-05-01	\N	3		VERSION PAC 09	0	3
+1494	0711	1	0	1	0	0	0	adquisicion de textiles y acabados de textiles y carpas de comandos para el iestpe-ete	5	145931.940000000002	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	modificacion4	0	3
+1364	0007	6	1	4	1	\N	1	contratación corporativa del servicio de telefonía fija e internet asimétrico para el pliego 026-ministerio de defensa	1	64388	2	2	2017-05-05 21:37:43.152779	2017-06-19 16:17:22.194845	2	1	\N	\N	2	29		34	3
+1430	0331	3	0	3	0	0	0	adquisición de accesorios de vestuario para el egreso de cadetes, alumnos, licenciamiento de tropa, renovacion para el personal de cadetes, alumnos y zona de desarrollo (seint)	26	174751.299999999988	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+1035	0301	2	\N	2	\N	48	1	mantenimiento de maquinas principales y grupos electrogenos del b.a.p zimic	2	131500	1	6	2017-04-21 18:45:12.581051	2017-04-25 22:04:20.747035	2	1	2017-04-30	\N	3			0	3
+1244	0307	2	3	4	2	\N	2	adquisicion de equipamiento para el servicio de vigilancia y electrónica en el distrito de capitania 3 del dominio maritimo nacional	\N	80925000	6	6	2017-04-26 21:49:38.588286	2017-05-11 20:22:09.073324	2	9	2017-05-30	\N	3			0	3
+1034	0300	2	\N	2	\N	48	1	renovación de una (1) señal con correccion diferencial del bap zimic	1	40000	1	6	2017-04-21 18:42:54.142628	2017-04-25 22:04:48.697286	2	1	2017-04-30	\N	3			0	3
+1032	0298	2	\N	2	\N	42	1	adquisicion de telas para confeccion de uniformes negro de cadete	1	39900	2	6	2017-04-21 18:39:23.790574	2017-04-25 22:05:57.851965	1	1	2017-04-30	\N	3			0	3
+1245	0311	2	1	4	2	42	1	servicio de confeccion y acondicionamiento de sistema mage unidades submarinas	1	400000	1	6	2017-04-26 21:52:00.500875	2017-04-26 21:52:00.500875	2	3	2017-05-30	\N	3			0	3
+773	0048	2	0	2	0	0	1	adquisicion de autopartes para el sistema electrico de vehiculos de la flota de transporte escolar/	1	41429.5	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+1435	0320	3	0	3	0	0	0	servicios diversos para el daden grup2	6	61400	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1437	0322	3	0	3	0	0	0	servicio de pavimentado de pista manuel polo jimenez	3	45000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1439	0341	3	0	3	0	0	0	servicio de ampliacion para motor y transmisor aplicable a la aeronave mi-17/mi-171sh	2	389850	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1440	0344	3	0	3	0	0	0	reparacion de bloques del sistema avionico aplicables a los helicopteros mi-17 	4	221500.200000000012	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1441	0330	3	0	3	0	0	0	servicio de consultorias externas en ingenieria electrica y sanitaria - seing	2	126000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1442	0348	3	0	3	0	0	0	adquisicion viveres frescos para atenciones a bordo de las operaciones aereas de la unidad	112	303798	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version10 fap	0	3
+1443	0318	3	0	3	0	0	0	asesoria especializada en planificacion estrategica y revision y evaluacion y actualizacion de proyectos institucionales de la fap	1	144000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1448	0316	3	0	3	0	0	0	servicio de monitoreo satelital vraem-grup3 (2017-2018)	1	232806	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1449	0313	3	0	3	0	0	0	adquisicion de material pad (convenio marco)	3	37307.5	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-05-01	0	3	 	version10 fap	0	3
+1450	0312	3	0	3	0	0	0	adquisicion de licencias microsoft	7	1000000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version10 fap	0	3
+1451	0317	3	0	3	0	0	0	mantenimiento y reparacion de carpetas de las ii. ee. fap	1	70000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-07-01	0	3	 	version10 fap	0	3
+1482	0734	1	0	1	0	0	0	transporte terrestre de combustible  (turbo jet a-1)/ para las operaciones de desminado humanitario	1	52049.4000000000015	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	modificacion4	0	3
+1452	0315	3	0	3	0	0	0	mantenimiento de servidores para base de datos del modulo sistema de control aereo (vraem)	1	34000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1050	0134	3	4	4	3	1	2	servico de actualizacion  programa de mantenimiento  de la flota l-100-20	1	960000	2	8	2017-04-25 13:39:19.359148	2017-05-10 14:09:45.630572	2	10	2017-03-30	\N	3			0	3
+1394	0318	2	1	2	\N	42	1	suministro e instalacion de equipos de seguridad e instalacion de tierra	1	40000	2	6	2017-05-10 16:02:57.970709	2017-05-10 16:02:57.970709	1	1	\N	\N	3			0	3
+750	0025	2	1	4	1	44	1	seguro soat/	5	100000	2	2	2017-01-03 00:00:00	2017-05-26 19:06:29.886695	2	6	2017-01-04	\N	3	06		6	3
+850	0125	2	\N	2	\N	48	1	mantenimiento de grupos electrogenos principales y auxiliares bap. zimic /	1	50000	1	6	2017-01-03 00:00:00	2017-04-26 14:24:40.51671	2	1	2017-01-03	\N	3			0	3
+1393	0315	2	1	2	\N	\N	1	adquisicion de combustible para movilidades del centro generador de la estacion naval de paita	1	80000	1	6	2017-05-10 16:01:32.655053	2017-05-10 16:01:32.655053	1	6	\N	\N	3			0	3
+1558	0365	2	0	2	0	0	0	adquisición de pintura para la institucion/	113	551620.859999999986	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version7 mgp	0	3
+1559	0343	2	0	2	0	0	0	adquisicion de piezas y elementos para los sistemas electricos y electronicos del helicoptero mi-8t naval ht-452 del escuadron aeronaval de la amazonia/	39	111799.240000000005	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1560	0348	2	0	2	0	0	0	mantenimiento de equipos y sistemas de aire acondicionado de unidades de superficie/	5	800000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-05-01	0	3	 	version7 mgp	0	3
+1561	0358	2	0	2	0	0	0	adquisición de vestuario al personal de enfermeras del centro médico naval cmst/	1	80000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version7 mgp	0	3
+1571	0018	6	0	6	0	0	0	adquisicion de vestuario para el personal del cioec	25	496229.200000000012	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	1	5	2017-06-01	0	3		ccffaa2	0	3
+1572	0019	6	0	6	0	0	0	adquisicion de equipamiento de campaña para el personal del cioec	43	1335036.30000000005	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	1	5	2017-06-01	0	3		ccffaa2	0	3
+1573	0020	6	0	6	0	0	0	contratacion del servicio de renovacion de software data loss prevention	1	158900	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	1	2017-06-01	0	3		ccffaa2	0	3
+1574	0021	6	0	6	0	0	0	contratacion del servicio de renovacion de software vulnerability manager	1	90000	2	2	2017-05-30 00:00:00	2017-05-30 00:00:00	2	1	2017-06-01	0	3		ccffaa2	0	3
+1563	0335	2	0	2	0	0	0	servicio de mantenimiento de radar aereo 10s para el bap mariategui/	1	290000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1564	0346	2	0	2	0	0	0	maestría en logística y cadena de abastecimiento y suministros/	1	255600	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-05-01	0	3	 	version7 mgp	0	3
+1565	0375	2	0	2	0	0	0	adquisición de gases refrigerantes y gases carburantes para la comandancia general de operaciones del pacifico/	8	199496.600000000006	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-05-01	0	3	 	version7 mgp	0	3
+1566	0369	2	0	2	0	0	0	certificado para la contratacion de servicios de cobranzas de multas administrativas y recuperaciones de dicapi/	1	59700	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1567	0342	2	0	2	0	0	0	servicio de mantenimiento del telefono submarino del b.a.p. arica/	1	86800	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version7 mgp	0	3
+1418	0340	3	4	4	3	101	2	servicio de reparación, u overhaul de motores, reductores, conjuntos mayores, codificacion y calibraciòn de equipos aplicables a la flota mi-17 mi-171sh.	9	2361076.5	2	8	2017-04-20 00:00:00	2017-05-25 13:58:16.694983	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1412	0332	3	1	4	2	4	1	adquisición de camisas y blusas para el egreso de cadetes, alumnos, licenciamiento de tropa, renovacion para el personal de cadetes, alumnos y zona de desarrollo (seint)	4	191750	2	8	2017-04-20 00:00:00	2017-05-25 14:50:58.32103	1	1	2017-05-01	\N	3		VERSION PAC 09	0	3
+1495	0703	1	0	1	0	0	0	adquisicion de utiles de escritorio	79	441933	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-06-01	0	3	 	modificacion4	0	3
+806	0081	2	4	4	4	42	2	adquisicion de equipo de campana/	1	685903	2	2	2017-01-03 00:00:00	2017-05-26 19:10:31.915915	1	10	2017-01-03	\N	3	09		9	3
+1496	0720	1	0	1	0	0	0	adquisición de instrumentos musicales	17	64100	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1497	0721	1	0	1	0	0	0	adquisición de menaje 	17	46716.9599999999991	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1499	0725	1	0	1	0	0	0	adquisición de accesorios de vestuario para los cadetes de la emch cfb	2	38400	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1427	0311	3	0	3	0	0	0	adquisicion de vacunas contra la tifoidea, de acuerdo d.u. 004-2017 y d.u. 002-2017 	1	51642.9000000000015	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version10 fap	0	3
+763	0038	2	1	4	1	44	1	seguro de aviacion/	1	2932473.41999999993	2	6	2017-01-03 00:00:00	2017-06-05 19:12:27.601963	2	3	2017-01-09	\N	3	18		18	3
+1396	0320	2	1	2	\N	42	1	servicio de asesoria para el desarrollo de algoritmos de procesamiento para proyecto qhawax mk-1	1	113610	1	6	2017-05-10 16:06:16.783586	2017-05-10 16:06:16.783586	2	1	\N	\N	3			0	3
+1397	0322	2	1	2	\N	42	1	adquisicion de material para equipo scuba	1	52390	2	6	2017-05-10 16:09:05.776273	2017-05-10 16:09:05.776273	1	1	\N	\N	3			0	3
+1398	0323	2	1	2	\N	\N	1	contratacion de servicio de alquiler de vehiculo modelo van para transporte de personal en comisiones 	1	45000	1	6	2017-05-10 16:11:11.167957	2017-05-10 16:11:11.167957	2	1	\N	\N	3			0	3
+1399	0324	2	1	2	\N	42	1	servicio de desarrollo de software de integracion para proyecto ascota	1	63200	1	6	2017-05-10 16:12:51.795442	2017-05-10 16:12:51.795442	2	1	\N	\N	3			0	3
+1400	0325	2	1	2	\N	\N	1	contratacion del servicio de mantenimiento de la flota vehicular asignada a la estación naval de paita	1	88960	1	6	2017-05-10 16:18:41.718927	2017-05-10 16:18:41.718927	2	1	\N	\N	3			0	3
+1401	0326	2	1	2	\N	42	1	adquisicion de material electrico electronico proyecto kratos	1	130390	1	6	2017-05-10 16:20:12.584976	2017-05-10 16:20:12.584976	1	1	\N	\N	3			0	3
+1402	0329	2	1	2	\N	42	1	adquisicion de accesorios proyecto mesa tactica	1	72900	1	6	2017-05-10 16:22:16.459944	2017-05-10 16:22:16.459944	1	1	\N	\N	3			0	3
+1403	0331	2	1	2	\N	42	1	servicio de acondicionamiento del modulo de transmision de datos nave del proyecto ascolta	1	66000	1	6	2017-05-10 16:26:24.264108	2017-05-10 16:26:24.264108	2	1	\N	\N	3			0	3
+1404	0332	2	1	2	\N	50	1	adquisicion de una mesa de operaciones electrica	1	390000	2	6	2017-05-10 16:28:00.812058	2017-05-10 16:28:00.812058	1	1	\N	\N	3			0	3
+1047	0066	3	4	4	3	1	2	reparacion u overhaul de bloques y accesorios en apoyo a la flota kt-1p 	1	300000	2	8	2017-04-25 13:32:38.037174	2017-05-09 13:56:04.891811	2	10	2017-03-30	\N	3			0	3
+1431	0319	3	0	3	0	0	0	mejoramiento de la loza asfaltica del estacionamiento del cafap	1	65000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version10 fap	0	3
+1432	0349	3	0	3	0	0	0	adquisicion de viveres secos, aguas y gaseosas para atenciones a bordo de las operaciones aereas de la unidad	133	368934	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version10 fap	0	3
+1465	0696	1	0	1	0	0	0	adquisicion de armamento	2	3453901.81199999992	3	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	modificacion4	0	3
+1466	0733	1	0	1	0	0	0	adquisicion de equipos de radios uhf (hands free)	1	483167	3	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-06-01	0	3	 	modificacion4	0	3
+1472	0690	1	0	1	0	0	0	servicio de alquiler de vehiculos para el traslado de patrullas de apoyo a la 33a brigada de infanteria	1	34400	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1473	0731	1	0	1	0	0	0	servicio segmento satelital	1	736104	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-06-01	0	3	 	modificacion4	0	3
+1474	0746	1	0	1	0	0	0	adquisicion de accesorios y repuestos para el vraem	10	108756	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1475	0718	1	0	1	0	0	0	alquiler de máquinas y equipos de construcción y equipos necesarios para el mantenimiento de caballeriza c y d del regimiento de caballeria mdn - epr	1	38233	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1476	0749	1	0	1	0	0	0	adquisicion de jabon de tocador para el vraem	1	286813.440000000002	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-06-01	0	3	 	modificacion4	0	3
+1477	0728	1	0	1	0	0	0	contratacion del servicio de localizacion personal por gps satelital	1	482011.280000000028	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-05-01	0	3	 	modificacion4	0	3
+1478	0712	1	0	1	0	0	0	contratación del servicio de limpieza e higienización de las instalaciones del hmc	1	600000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-05-01	0	3	 	modificacion4	0	3
+1479	0726	1	0	1	0	0	0	material de ferreteria y otros	54	64652	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	modificacion4	0	3
+1480	0748	1	0	1	0	0	0	adquisicion de polos para uniforme de paseo	1	190000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+915	0190	2	\N	2	\N	42	1	servicio para mantenimiento del componente naval ce-vraem - mantenimiento de hovercraf y visores nocturnos/	1	379700	2	6	2017-01-03 00:00:00	2017-04-26 14:04:17.879021	2	1	2017-01-03	\N	3			0	3
+1481	0700	1	0	1	0	0	0	repuestos para mantenimiento de vehiculos	93	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-05-01	0	3	 	modificacion4	0	3
+1410	0334	3	1	4	2	4	2	adquisición de vestuario para el egreso de cadetes, alumnos, licenciamiento de tropa, renovacion para el personal de cadetes, alumnos y zona de desarrollo (seint)	8	399401	2	8	2017-04-20 00:00:00	2017-05-25 14:51:36.496248	1	1	2017-05-01	\N	3		VERSION PAC 09	0	3
+1434	0343	3	4	4	3	101	2	reparacion de bloques del sistema avionica aplicable a los helicopteros mi-17	3	109904.059999999998	2	8	2017-04-20 00:00:00	2017-05-25 13:58:49.029859	2	10	2017-05-01	\N	3		VERSION 09	0	3
+1436	0346	3	4	4	3	101	2	reparacion de bloques del sistema avionica aplicable a los helicopteros mi-171sh 	2	27945	2	8	2017-04-20 00:00:00	2017-05-25 13:59:17.941958	2	10	2017-05-01	\N	3		VERSION PAC 09	0	3
+1438	0329	3	4	4	2	101	2	adquisicion de vestuario calzado y accesorios de vestuario para el vraem	9	300394.780000000028	2	8	2017-04-20 00:00:00	2017-05-25 14:49:29.69209	1	9	2017-05-01	\N	3		VERSION PAC 09	0	3
+1433	0342	3	4	4	1	1	2	aduisicion de aceites, lubricantes, grasas de uso aeronautico 	22	476608.159999999974	2	8	2017-04-20 00:00:00	2017-06-08 16:48:16.664431	1	9	2017-05-01	\N	3		VERSION PAC 09	0	3
+1018	0287	2	1	4	1	42	1	adquisicion de vestuario para altas 2017 para el personal militar de las ffaa (PROCESO PROVIENE DE LA LP N° 08-2016)	\N	1127260.08000000007	2	6	2017-04-12 23:01:15.851233	2017-06-07 16:38:26.64944	1	1	2017-04-30	\N	3	01	PROCESO PROVIENE DE LA LP N° 08-2016	48	3
+1374	0203	3	4	4	2	3	2	adquisicion de equipo optronico (ci-fap-044-2016)	\N	1395132	3	2	2017-05-09 17:49:54.33206	2017-05-31 17:09:24.219306	1	10	2017-01-01	\N	2		CONTRATACION QUE CONTINUARA CON LA SEGUNDA CONVOCATORIA AF-2017 / PROCESO INTER 6-2016-DPC-ACFFAA	49	2
+1631	0753	1	0	1	0	0	0	alimentos para el personal de tropa del fuerte arica	16	392900.099999999977	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-30	0	3	 	ep5ta	0	3
+1716	0428	2	0	2	0	0	0	adquisición de cartas náuticas extranjeras/	162	50060	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+917	0192	2	\N	2	\N	42	1	suministro de material de repuestos para propulsión , generación eléctrica y equipos auxuliares del b.a.p union /	196	179839.25	1	6	2017-01-03 00:00:00	2017-04-26 14:02:49.578012	1	1	2017-01-03	\N	3			0	3
+916	0191	2	\N	2	\N	42	1	adquisicion de racionamiento organico - viveres secos para personal de comespita capipita comdespon-1 de abril 2017 a marzo 2018/	2	83227.679999999993	2	6	2017-01-03 00:00:00	2017-04-26 14:03:42.201481	1	6	2017-01-03	\N	3			0	3
+1666	1000	2	4	4	2	42	2	SERVICIO ANUAL PARA UNIDADES HOVERCRAFT MODELO TDM-2000	\N	1872000	\N	6	2017-06-14 14:51:15.226627	2017-06-14 14:51:15.226627	\N	10	\N	\N	1	\N		64	1
+1447	0347	3	4	4	2	101	2	adquisicion de equipamiento optronico 	3	1349053.55000000005	3	2	2017-04-20 00:00:00	2017-06-14 17:24:09.882346	1	9	2017-05-01	\N	3		VERSION PAC 09	65	3
+1632	0754	1	0	1	0	0	0	alimentos para el personal de tropa del fuerte arica	10	254328.329999999987	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-06-30	0	3	 	ep5ta	0	3
+1633	0755	1	0	1	0	0	0	adquisicion de municion	1	3347797.99000000022	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-30	0	3	 	ep5ta	0	3
+1634	0756	1	0	1	0	0	0	adquisicion de vehiculos de seguridad	3	9886708.66000000015	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-30	0	3	 	ep5ta	0	3
+1635	0757	1	0	1	0	0	0	alquiler de segmento satelital	1	4525104.90000000037	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-06-30	0	3	 	ep5ta	0	3
+1636	0758	1	0	1	0	0	0	servicio de limpieza e higienización de las instalaciones del hmc	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-30	0	3	 	ep5ta	0	3
+1637	0759	1	0	1	0	0	0	adquisicion de dispositivos medicos para los servicios medicos y uuhh	197	1711310.25	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-30	0	3	 	ep5ta	0	3
+1638	0760	1	0	1	0	0	0	adquisición de dispositivos médicos comunes para el servicio de farmacia central	11	294374.609999999986	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-06-30	0	3	 	ep5ta	0	3
+1639	0761	1	0	1	0	0	0	adquisición de dispositivos médicos de alta rotacion	237	1514668.19999999995	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-30	0	3	 	ep5ta	0	3
+1640	0762	1	0	1	0	0	0	adquisicion de materiales y dispositivos para procedimientos intervencionistas de cardiologia	23	398309.400000000023	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-30	0	3	 	ep5ta	0	3
+1641	0763	1	0	1	0	0	0	adquisicion de materiales de osteosintesis y dispositivos protesicos para traumatologia	34	335141.159999999974	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-30	0	3	 	ep5ta	0	3
+1642	0764	1	0	1	0	0	0	adquisición de material médico para oftalmología y para los diferentes servicios	31	249997.799999999988	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-30	0	3	 	ep5ta	0	3
+1643	0765	1	0	1	0	0	0	adquisición de reactivos para pruebas infecciosas con equipo de cesion en uso para los pacientes del hmc	6	299988	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-30	0	3	 	ep5ta	0	3
+1644	0766	1	0	1	0	0	0	adquisición de medicamentos del servicio de farmacia para los pacientes hospitalizados del hmc	58	242293.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-06-30	0	3	 	ep5ta	0	3
+1645	0767	1	0	1	0	0	0	adquisicion de material e insumos para los centros de salud del cosale	91	388920	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-30	0	3	 	ep5ta	0	3
+1667	0379	2	0	2	0	0	0	adquisicion de viveres secos y frescos e insumos de pan para el mejoramiento de rancho para el racionamiento del personal superior/ subalterno y de marineria de la capitanía de puerto de talara correspondiente a junio a diciembre del 2017/	38	55531.1999999999971	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1668	0380	2	0	2	0	0	0	adquisicion de mejoramiento de rancho y viveres frescos para racionamiento del personal de dotacion de capimado y personal destacado operaciones ribereñas correspondiente al periodo junio a diciembre/	69	41444.0899999999965	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1669	0381	2	0	2	0	0	0	adquisicion de viveres secos y frescos e insumos para el mejoramiento de rancho para el racionamiento del personal de capipime y patrulleras correspondiente a junio a diciembre del 2017/	69	46361.2799999999988	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1670	0382	2	0	2	0	0	0	adquisicion de viveres secos y frescos e insumos para el mejoramiento de rancho para el racionamiento del personal de capisala correspondiente a junio a diciembre del 2017/	65	51375.5199999999968	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1445	0338	3	4	4	2	101	2	adquisicion de componentes, repuestos y partes de helicopteros mi-25/35p	124	6168724.09999999963	2	8	2017-04-20 00:00:00	2017-05-25 14:52:47.193944	1	9	2017-05-01	\N	3		VERSION PAC 09	0	3
+1483	0698	1	0	1	0	0	0	suministro de alimentos para el personal de tropa de la tercera brigada blindada	5	146566	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	modificacion4	0	3
+1484	0714	1	0	1	0	0	0	adquisicion de alimentos para personas	3	133955.959999999992	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	modificacion4	0	3
+1673	0385	2	0	2	0	0	0	adquisicion de mejoramiento de rancho y verduras para racionamiento dotacion personal comesmole correspondiente periodo junio a diciembre 2017/	84	96310.820000000007	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1674	0386	2	0	2	0	0	0	adquisicion de material para edificios y estructuras para el area comzocuatro/	94	44996.8399999999965	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1675	0387	2	0	2	0	0	0	adquisicion de pinturas para las unidades de la fuerza de superficie/	9	139990.5	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1676	0388	2	0	2	0	0	0	servicio de adecuacion de dos equipos inversores de corriente directa a corriente alterna para sistema de sonar del b.a.p. arica/	1	119062.399999999994	4	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1677	0389	2	0	2	0	0	0	servicio de recorrido integral de la unidades rectificadoras n 1 y n 2 de carga de baterías de la planta cargadora de baterías de la estacion naval de submarinos/	1	140000	4	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1678	0390	2	0	2	0	0	0	contratacion de asesor en ejecucion de compaña de difusion e imagen institucional/	1	42000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1679	0391	2	0	2	0	0	0	reparacion de una (1) caldera auxiliar nro. 2 del b.a.p. tacna/	1	48000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1680	0392	2	0	2	0	0	0	adquisicion de espias para unidades de la fuerza de superficie/	2	121840	4	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1681	0393	2	0	2	0	0	0	adquisicion de baterias para el inverter del sistema de control de la propulsion y el sistema pre lubricacion de los diesel alternadores de popa del b.a.p. aguirre /	2	105550	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1609	0391	3	1	4	1	1	1	adquisicion de grasas/ aceites y lubricantes para la operatividad y mantenimiento de vehiculos de las uu/dd fap	30	183325.190000000002	2	8	2017-04-20 00:00:00	2017-06-08 17:59:56.685469	1	1	2017-05-30	\N	3	 	version fap3005	8	3
+1694	0406	2	0	2	0	0	0	adquisicion de un motor fuera de borda de 150 hp para la lancha lcf de los destacamentos navales del bima-1/	1	47500	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1695	0407	2	0	2	0	0	0	servicio de mantenimiento/ acondicionamiento y reparación de las estructuras del sistema de combustible de aviación para turbo a1/ en el destacamento naval chimbote/	1	53835	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1696	0408	2	0	2	0	0	0	adquisicion de antenas/ cables y conectores sistema de comunicaciones/	4	97944.8600000000006	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1697	0409	2	0	2	0	0	0	adquisicion de panetones de la dotacion especial de mejoramiento de rancho año 2017./	1	1161132.69999999995	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	5	2017-06-01	0	3	 	mgp 8	0	3
+1487	0691	1	0	1	0	0	0	decreto de urgencia nro 002-2017- repuestos para vehículos porta tropa man ep 396/ man ep 397/ man ep 347/ man ep 422/ man ep 302/ man ep 345/ don feng ep 20011 y don feng ep 20012	64	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-05-01	0	3	 	modificacion4	0	3
+1698	0410	2	0	2	0	0	0	adquisicion de viveres para la dotacion especial mejoramiento rancho año 2017./	3	274561.559999999998	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	6	2017-06-01	0	3	 	mgp 8	0	3
+914	0189	2	\N	2	\N	42	1	adquisicion de mejoramiento de rancho para las dependencias del area de lima y callao para el periodo abril 2017 a marzo 2018./	1158	7624771.63999999966	2	6	2017-01-03 00:00:00	2017-04-26 14:04:42.539849	1	5	2017-01-03	\N	3			0	3
+555	0059	3	4	4	3	1	2	adquisicion de repuestos y accesorios para la flota de aviones m-2000p/dp (DEVUELTO OBAC)	183	1638656	2	8	2017-03-21 06:34:00	2017-06-08 18:11:52.23895	1	10	2017-03-01	\N	3			0	3
+907	0182	2	\N	2	\N	46	1	adquisicion de repuestos electronicos, materiales y accesorios para equipamiento de comunicaciones vraem/	1	209320	2	6	2017-01-03 00:00:00	2017-04-26 14:07:47.838381	1	1	2017-01-03	\N	3			0	3
+1655	0360	3	1	3	1	19	1	adquisición de vehiculos de seguridad	1	2751870	5	8	2017-04-20 00:00:00	2017-06-09 14:51:10.398498	2	5	2017-06-01	\N	3	 	version fap11	16	3
+1671	0383	2	0	2	0	0	0	adquisiicon de viveres secos y frescos e insumos para el mejoramiento de rancho para el racionamiento del personal de capisco y pc san andres correspondiente a junio a diciembre del 2017./	43	46629.2799999999988	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1672	0384	2	0	2	0	0	0	adquisicion de viveres secos/ frescos e insumos para el mejoramiento de rancho para el personal de capizori correspondiente a junio a diciembre del 2017/	74	67574.3999999999942	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1682	0394	2	0	2	0	0	0	adquisicion de repuestos para el servicio de cambio de la volante del grupo electrogeno n. 1/	5	73123.2599999999948	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1683	0395	2	0	2	0	0	0	adquisición por reposición de un grupo electrógeno para el bap gauden/	1	61780.4700000000012	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1684	0396	2	0	2	0	0	0	curso de entrenamiento en simuladores de vuelo de aeronave b-200/	1	50998	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	10	2017-07-01	0	3	 	mgp 8	0	3
+1685	0397	2	0	2	0	0	0	mantenimiento preventivo de maquinas principales de los remolcadores huertas/ selendon y medina/	1	89397	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1686	0398	2	0	2	0	0	0	curso de entrenamiento en simulador de vuelo de aeronave sh-3d/	1	204102	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	10	2017-06-01	0	3	 	mgp 8	0	3
+1687	0399	2	0	2	0	0	0	adquisicion de protesis miolectrica para miembro superior derecho/	1	150000	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1688	0400	2	0	2	0	0	0	curso de entrenamiento en simulador de vuelo de aeronave ab-412/	1	144900	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	10	2017-06-01	0	3	 	mgp 8	0	3
+1717	0429	2	0	2	0	0	0	diagnostico para la implementacion de una organizacion de seguridad digital/	1	390000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-08-01	0	3	 	mgp 8	0	3
+1646	0351	3	0	3	0	0	0	adquisición de material de limpieza 	79	49596.2699999999968	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1647	0352	3	0	3	0	0	0	adquisicion de material de limpieza	51	34628.2099999999991	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+906	0181	2	\N	2	\N	42	1	adquisicion de vestuario especial para el bev. union/	18	380583	2	6	2017-01-03 00:00:00	2017-04-26 14:08:12.824739	1	1	2017-01-03	\N	3			0	3
+981	0250	2	\N	2	\N	42	1	adquisicion de absorvente granulado co2 (cal sodado) y insumo quimico para mantenimiento piscina	8	64800	2	6	2017-04-06 22:00:14.634128	2017-04-26 13:46:17.045879	1	1	\N	\N	3			0	3
+1488	0697	1	0	1	0	0	0	servicio de alquiler de vehiculos de transporte terrestre	1	90450	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	modificacion4	0	3
+1489	0693	1	0	1	0	0	0	contratación del suministro de alimentos bienes comunes para el personal de ooo/ tcos y so de la 31ra brigada de infanteria	5	73459.0800000000017	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-05-01	0	3	 	modificacion4	0	3
+1648	0353	3	0	3	0	0	0	adquisicion de productos quimicos para potabilizacion de agua	3	57645.1999999999971	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1490	0709	1	0	1	0	0	0	contratacion de servicio de internet para las instalaciones de la escuela superior de guerra del ejercito- escuela de post grado	1	46200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	modificacion4	0	3
+1513	0729	1	0	1	0	0	0	adquisicion de accesorios y repuestos (vraem)	2	138321	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1649	0354	3	0	3	0	0	0	servicio de pintado de paredes exteriores del contorno de la plaza de armas de la balp	1	258000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version fap11	0	3
+1650	0355	3	0	3	0	0	0	adquisicion de componentes para los instrumentos musicales de la banda militar	56	43310	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1651	0356	3	0	3	0	0	0	alquiler de toldos/ tribuna y sillas	2	40000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version fap11	0	3
+1652	0357	3	0	3	0	0	0	servicio de racionamiento del personal civil cmont	1	37555	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version fap11	0	3
+598	0102	3	0	3	0	0	1	viveres frescos 	126	100000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1653	0358	3	0	3	0	0	0	servicio de racionamiento del personal militar y civil cased	1	60021	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version fap11	0	3
+1718	0430	2	0	2	0	0	0	capacitacion en el uso de herramientas de un sistema de seguridad digital/	1	110000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-08-01	0	3	 	mgp 8	0	3
+1719	0431	2	0	2	0	0	0	servicio de alquiler de segmento satelital/	1	293674.770000000019	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1656	0361	3	0	3	0	0	0	adquisición de motocicletas	1	80000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1657	0362	3	0	3	0	0	0	adquisición de montacarga	1	94577	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1658	0363	3	0	3	0	0	0	adquisición de vestuario para alta  de cadetes/ alumnos/ tropa/ asimilados de oficiales y tecnicos y renovacion para el personal militar fap (acffaa)	10	610737.839999999967	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	version fap11	0	3
+1659	0364	3	0	3	0	0	0	adquisición de calzado para alta  de cadetes/ alumnos/ tropa/ asimilados de oficiales y tecnicos y renovacion para el personal militar fap (acffaa)	2	57050	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1660	0365	3	0	3	0	0	0	adquisicion de material de pintura clasica (integrado) 	1	91653.0500000000029	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version fap11	0	3
+1371	0649	2	4	4	2	\N	2	adquisición de armamento	\N	1121437.72999999998	\N	2	2017-05-09 16:51:11.711079	2017-06-04 00:09:35.360182	1	10	\N	\N	2	17	PROCESO PROVIENE CE N° 017-2016	60	3
+1382	0841	2	4	4	2	\N	2	adquisición de treinta (30) vehiculos portatropas (vpt) 6x6 para el batallón de vehiculos tacticos de la brigada anfibia de la fuerza de infanteria de marina	\N	20703960	\N	6	2017-05-10 13:15:21.434566	2017-06-14 14:41:06.705965	1	10	\N	\N	1		PROCESO PROVIENE DEL 2015 publicado en MGP	51	1
+1689	0401	2	0	2	0	0	0	adquisicion de accesorios y repuestos para las cadenas (grilletes) para el b.ap. gauden/	5	53524.8000000000029	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1690	0402	2	0	2	0	0	0	contratacion del servicio de reparacion del tablero electrico de fuerza del compresor tornillo de la planta de frio de la estacion naval de paita/	1	52862	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1691	0403	2	0	2	0	0	0	adquisicion de equipos individuales de campaña/	9	127930.919999999998	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	10	2017-06-01	0	3	 	mgp 8	0	3
+1692	0404	2	0	2	0	0	0	contratacion del servicio de reparacion y acondicionamiento del tablero de control de equipos de la planta de frio de la estacion naval de paita/	1	65000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1693	0405	2	0	2	0	0	0	servicio mantenimiento preventivo motores detroit diesel mtu/ mantenimiento integral grupos electrogenos olympian perkins y acondicionamiento puesta en marcha una planta agua potable en bap ucayali /	3	176584.679999999993	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1699	0411	2	0	2	0	0	0	adquisicion de equipos y materiales de comunicacion para implementacion de la central telefonica del buque multiproposito/	29	123883.539999999994	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1700	0412	2	0	2	0	0	0	adquisicion de materiales de telefonia satelital inmarsat c para el buque multiproposito/	8	83053.1000000000058	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1701	0413	2	0	2	0	0	0	adquisicion de camaras de video vigilancia/ equipamiento y materiales de instalacion para el buque multiproposito/	16	179105.359999999986	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1702	0414	2	0	2	0	0	0	adquisicion de equipamiento y materiales de conectividad para el buque multiproposito/	29	185959	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1703	0415	2	0	2	0	0	0	adquisicion de materiales para el mantenimiento de las estaciones vsat del vraem/	16	90731.6000000000058	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1704	0416	2	0	2	0	0	0	adquisición de equipos topograficos para la dirección de medio ambiente - dicapi/	2	190000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1705	0417	2	0	2	0	0	0	adquisicion de firewall de base de datos/	1	390416	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1706	0418	2	0	2	0	0	0	servicio de consultoria para el sistema de gestion de la calidad cambio de version de la direcccion general de capitanias y guardacostas/	1	49737	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	mgp 8	0	3
+1707	0419	2	0	2	0	0	0	adquisicion de material procedimiento automatico de datos (pad) para la direccion de hidrografia/	50	63699	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	7	2017-06-01	0	3	 	mgp 8	0	3
+1708	0420	2	0	2	0	0	0	servicio publicacion de edictos para efectuar notificaciones de papeletas de multas de la direccion general de capitanias y guardacostas/	1	35187.5999999999985	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	4	2017-06-01	0	3	 	mgp 8	0	3
+1709	0421	2	0	2	0	0	0	adquisición de equipo de amplificacion (hpa) para el hub del sistema satelital en banda ku/	1	302718.900000000023	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	4	2017-06-01	0	3	 	mgp 8	0	3
+1710	0422	2	0	2	0	0	0	adquisicion de vehiculos menores para la autoridad maritima/	1	216000	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	mgp 8	0	3
+1491	0699	1	0	1	0	0	0	adquisicion de material electrico para la 3ra brig com	48	87000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	modificacion4	0	3
+1492	0727	1	0	1	0	0	0	contratacion  del servicio de telefonia satelital 	1	157965.600000000006	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	modificacion4	0	3
+1711	0423	2	0	2	0	0	0	adquisición de componentes y accesorios para antenas autoestabilizadas en banda ku de las unidades navales/	8	354255	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	4	2017-06-01	0	3	 	mgp 8	0	3
+1712	0424	2	0	2	0	0	0	adquisición de azúcar rubia domestica para el racionamiento de las unidades y dependencias./	1	182920	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	4	2017-06-01	0	3	 	mgp 8	0	3
+1713	0425	2	0	2	0	0	0	adquisicion de viveres para la dotacion especial de mejoramiento de rancho año 2017/	4	2169163.20000000019	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	5	2017-06-01	0	3	 	mgp 8	0	3
+1714	0426	2	0	2	0	0	0	adquisicion de diesel para equipos de ingenieria y parque automotor a cargo de comesmole/	1	53356.7799999999988	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	6	2017-06-01	0	3	 	mgp 8	0	3
+1715	0427	2	0	2	0	0	0	adquisición de material de escritorio y de oficina/	63	39088	5	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	7	2017-06-01	0	3	 	mgp 8	0	3
+1493	0694	1	0	1	0	0	0	contratación del suministro de alimentos para el personal de ooo/ tcos y so de la 31ra brigada de infanteria	5	100490.919999999998	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	modificacion4	0	3
+1500	0724	1	0	1	0	0	0	adquisición de equipos médicos	4	75400	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1523	0735	1	0	1	0	0	0	adquisicion de repuestos para aeronaves de ala rotatoria de la aviacion del ejercito	1	4550000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-06-01	0	3	 	modificacion4	0	3
+1524	0750	1	0	1	0	0	0	adquisicion de pasta dental para el vraem	1	327667.679999999993	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-06-01	0	3	 	modificacion4	0	3
+1525	0707	1	0	1	0	0	0	contratacion de servicio de mantenimiento de los ascensores de la torre central del cge	11	80580	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1368	0098	3	1	4	1	1	1	adquisicion de lubricantes, grasas y afines	\N	344581	2	2	2017-05-09 16:26:25.26417	2017-05-31 18:57:58.987636	1	5	2016-03-30	\N	2		PROCESO DECLARADO DESIERTO / CONTINUA LA SEGUNDA CONVOCATORIA PARA EL AÑO 2017	62	2
+1501	0705	1	0	1	0	0	0	adquisicion de material pad	132	384412	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-06-01	0	3	 	modificacion4	0	3
+1502	0719	1	0	1	0	0	0	contratacion del servicio de mantenimiento de instrumentos musicales y repuestos	1	39400	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1503	0723	1	0	1	0	0	0	adquisición de prendas y accesorios para personal civil	23	70035	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1504	0715	1	0	1	0	0	0	adquisicion de repustos y accesorios para maquinaria pesada/ vehiculos de ingeniería y equipos menores (miscelaneos)	3	550476	4	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	modificacion4	0	3
+1505	0702	1	0	1	0	0	0	adquisicion de material sanitario para la jbiene	28	40000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1506	0717	1	0	1	0	0	0	mantenimiento/ reparación y acondicionamiento de edificios y estructuras (mano de obra)  de la caballeriza c y d del regimiento de caballería mdn - epr	1	144785	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1507	0708	1	0	1	0	0	0	contratacion de mantenimiento y reparacion de vehiculos para las uudd del cge	93	94265	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1508	0706	1	0	1	0	0	0	contratacion del servicio de pintado de los blocks de la villa militar matelini j/bienes	2	390000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	modificacion4	0	3
+1509	0751	1	0	1	0	0	0	adquisicion de cepillo dental para el vraem	1	107555.039999999994	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-06-01	0	3	 	modificacion4	0	3
+1510	0716	1	0	1	0	0	0	adquisicion de explosivos y similares	1	66200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1380	0284	3	4	4	2	1	2	adquisicion de materiales, partes y accesorios para las flotas de procedencia americana a-37b, l-100-20, b-737-200/528, lj-45xr, tc-690b, lj-36a, c-26b, bell-212	\N	2697774.91999999993	2	8	2017-05-09 22:28:37.486632	2017-05-10 14:26:38.763453	1	9	2017-04-30	\N	3		PAC VERSION 4	0	3
+945	0220	2	4	4	2	42	2	adquisición de material para el programa b200/	647	1142360.37999999989	2	6	2017-01-03 00:00:00	2017-05-12 17:39:15.07545	1	10	2017-01-03	\N	3			0	3
+1721	1440	1	2	4	2	24	2	ADQUISICION DE VEHÍCULOS DE APOYO DE COMBATE  POR ENCARGO A LA ACFFAA 	311	51228070.5600000024	3	9	2017-06-15 21:17:41.84408	2017-06-15 21:53:38.698335	1	10	2015-09-14	\N	1	\N		70	1
+1036	0302	2	\N	2	\N	48	1	adquiscion de material de escritorio	59	39088	1	6	2017-04-21 18:47:11.858464	2017-04-25 22:03:50.593676	1	1	2017-04-30	\N	3			0	3
+1023	0296	2	1	4	2	42	1	adquisicion de vestuario, ropa de cama y calzado para el personal altas y marineria af-2017	22	1337467.30000000005	2	4	2017-04-12 23:19:29.772383	2017-04-12 23:19:29.772383	1	5	2017-04-30	\N	3	\N	\N	0	3
+742	0017	2	1	4	1	44	1	seguro vehicular/	1	626205.199999999953	2	6	2017-01-03 00:00:00	2017-06-05 19:11:18.403555	2	3	2017-01-02	\N	3	07		7	3
+1723	0769	1	0	1	0	0	0	adquisicion de pasta dental	1	34821.0199999999968	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	7	2017-06-01	0	3	 	ep52	0	3
+1724	0770	1	0	1	0	0	0	adquisicion de utiles de aseo personal para personal del vraem	3	1500768	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	5	2017-06-01	0	3	 	ep52	0	3
+1726	0772	1	0	1	0	0	0	adquisicion de tela de lanilla v.o	1	399999	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	ep52	0	3
+1727	0773	1	0	1	0	0	0	servicio de confección de uniformes de paseo	3	399938.599999999977	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	2	1	2017-06-01	0	3	 	ep52	0	3
+1728	0774	1	0	1	0	0	0	adquisicion de alimentos para canes	1	240195.549999999988	2	2	2017-06-15 00:00:00	2017-06-15 00:00:00	1	1	2017-06-01	0	3	 	ep52	0	3
+1725	0771	1	1	1	2	23	1	adquisicion de vestuario para el personal de tropa del vraem	4	752654.949999999953	2	9	2017-06-15 00:00:00	2017-06-16 16:38:56.72128	1	6	2017-06-01	\N	3	 		0	3
+1722	0768	1	1	1	2	23	1	adquisicion de vestuario para el personal de tropa	4	830952.300000000047	2	9	2017-06-15 00:00:00	2017-06-16 17:06:26.154948	1	6	2017-06-01	\N	3	 		0	3
+1379	0988	1	1	4	2	26	1	supervision para la elaboracion del expediente tecnico y ejecucion de la obra referente al mantenimiento del centro aeronautico - pip - salkantay 	1	4018447	2	2	2017-05-09 20:41:27.035533	2017-05-31 16:40:52.939989	2	3	\N	\N	1		PROCESO QUE VIENE DE AÑO 2015	45	1
+872	0147	2	\N	2	\N	42	1	adquisicion de racionamiento del personal que presta servicio nocturno en el centro medico naval y perifericos correspondiente al 2017/	11	167174	2	6	2017-01-03 00:00:00	2017-04-26 14:16:47.062868	1	1	2017-01-02	\N	3			0	3
+1325	0288	3	0	3	0	0	0	adquisicion de material para pruebas abreviadas requeridas por las diferentes unidades y dependencias fap	3	36800	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1329	0266	3	0	3	0	0	0	adquisicion de material especializado para la realizacion de procesos galvanicos para los trenes de aterrizaje de la aeronave boeing	1	90000.1499999999942	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1730	0103	2	1	4	1	44	1	SEGURO DE AERONAVES	\N	57318518.7299999967	\N	6	2017-06-16 14:47:46.330918	2017-06-16 14:47:46.330918	\N	3	\N	\N	1	\N		68	1
+1734	0462	2	1	4	1	42	1	ADQUISICIÓN DE RACIONES DE COMBATE	\N	435600	\N	6	2017-06-16 16:03:08.420495	2017-06-16 16:03:08.420495	\N	5	\N	\N	2	\N		71	2
+1332	0038	3	0	3	0	0	0	servicio de mantenimiento y reparacion estructural del banco de cola aplicable aviones b 737 y b767	0	89000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	FAP	0	3
+1075	0286	3	4	4	3	1	2	servicio de reparacion de componentes del sistema de avionica aplicable a los helicopteros bell-212	5	128079	2	8	2017-04-25 21:05:33.26461	2017-05-10 13:43:37.028097	2	10	2017-04-30	\N	3			0	3
+1731	0933	2	1	4	1	42	1	ADQUISICIÓN DE LUBRICANTES, GRASAS Y ADITIVOS	\N	2539865.24000000022	\N	6	2017-06-16 14:49:24.288915	2017-06-16 14:49:24.288915	\N	5	\N	\N	1	\N		67	1
+1732	0843	2	1	4	2	42	1	ADQUISICIÓN DE VEHÍCULOS UTILITARIOS PARA EL BATALLÓN DE VEHÍCULOS TÁCTICOS DE LA FUERZA DE INFANTERÍA DE MARINA	\N	1862856	\N	6	2017-06-16 14:53:36.622035	2017-06-16 14:53:36.622035	\N	5	\N	\N	1	\N		66	1
+1733	0458	2	1	2	1	42	1	SEGURO MARITIMO	\N	174441.470000000001	\N	6	2017-06-16 14:55:44.125796	2017-06-16 14:55:44.125796	\N	1	\N	\N	1	\N		69	1
+1735	059	2	1	4	1	42	1	ADQUISICIÓN DE BATERIAS	\N	100000	\N	6	2017-06-16 16:05:28.754644	2017-06-16 16:05:28.754644	\N	1	\N	\N	2	\N		72	2
+1736	060	2	1	4	1	42	1	ADQUISICIÓN DE LLANTAS	\N	80000	\N	6	2017-06-16 16:06:54.620096	2017-06-16 16:06:54.620096	\N	1	\N	\N	2	\N		73	2
+1074	0267	3	4	4	3	2	2	adquisicion de una (01) bateria nickel cadmium n/p s282t002-1/018550-000 para la aeronave  del grup8	1	95020	4	8	2017-04-25 20:52:09.799898	2017-05-10 13:44:18.186179	1	10	2017-05-31	\N	3			0	3
+1072	0264	3	4	4	3	1	2	adquisición de válvulas anti-skid aplicable a la aeronave del grup8	1	331200	4	8	2017-04-25 20:39:20.692071	2017-05-10 13:46:36.784202	1	10	2017-05-31	\N	3			0	3
+1383	0842	2	4	4	2	\N	2	adquisicion de siete (7) vehiculos tacticos 4x4 blindados de reconocimiento para el batallón de vehiculos tacticos de la brigada de la fuerza de infantería de marina	\N	5577600	\N	6	2017-05-10 13:18:26.162978	2017-06-14 14:42:20.776567	1	10	\N	\N	1		PROCESO PROVIENE DEL 2015 publicado en MGP	53	1
+1739	0524	2	1	4	1	46	1	SERVICIO DE TELEFONÍA MOVIL	\N	2933212.08000000007	\N	6	2017-06-16 16:11:24.86913	2017-06-16 16:11:24.86913	2	3	\N	\N	2	\N		74	2
+1266	0242	3	0	3	0	0	0	pasajes aereos nacionales	1	250000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	7	2017-04-01	0	3	 	FAP	0	3
+1069	0258	3	4	4	3	2	2	servicio de reparación de accesorios y overhall de equipos de aviónica de las aeronaves de la divra	3	326890.559999999998	2	8	2017-04-25 20:29:49.528134	2017-05-10 13:50:16.128338	2	10	2017-06-30	\N	3			0	3
+1068	0257	3	4	4	3	2	2	adquisicion   de accesorios, repuestos y sensores del sistema de  aviónica aplicables a las aeronaves de la divra	3	267581.979999999981	2	8	2017-04-25 20:28:50.665579	2017-05-10 13:51:04.569413	1	10	2017-04-30	\N	3			0	3
+987	0254	2	\N	2	\N	58	1	adquisición de suministros para el mantenimiento de la unidad aeronaval del escuadron aeronaval de la amzonía	97	44494	2	6	2017-04-06 22:15:16.176767	2017-04-25 22:22:36.261023	1	1	2017-04-30	\N	3			0	3
+1271	0282	3	0	3	0	0	0	adquisicion de racionamiento del personal civil del area de lima	94	397999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1272	0112	3	0	3	0	0	0	asesoria en actualizacion y revision de manuales y silabo/ tramitacion ante dgac (edaci)	0	61741.25	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-02-01	0	3	 	FAP	0	3
+1077	0303	3	4	4	3	1	2	adquisición de partes, repuestos y material para la flota mi17/mi171sh	40	631442.020000000019	2	8	2017-04-25 21:13:39.708503	2017-05-10 20:16:28.779027	1	10	2017-04-30	\N	3			0	3
+1336	0234	3	0	3	0	0	0	adquisicion de materiales  y repuestos para overhaul de trenes de aterrizaje de la aeronave boeing	1	379500	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1338	0297	3	0	3	0	0	0	adquisicion de materiales de menaje para el comedor del seint	44	63360	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	FAP	0	3
+1067	0256	3	4	4	3	2	2	adquisicion  de partes, repuestos y material para el mantenimiento mayor de la aeronave de transporte del  grup8	1	44667.3899999999994	2	8	2017-04-25 20:26:52.542221	2017-05-10 13:51:44.509123	1	10	2017-04-30	\N	3			0	3
+1273	0240	3	0	3	0	0	0	adquisición de material de fumigacion	4	90000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+895	0170	2	\N	2	\N	42	1	adquisicion de insumos y empaques para panaderia/	39	312508.200000000012	1	6	2017-01-03 00:00:00	2017-04-26 14:11:07.769349	1	1	2017-01-03	\N	3			0	3
+728	0003	2	1	4	2	43	1	mantenimiento de motores y cajas de transmision de patrulleras de costa y grupos electrogenos de patrulleras maritimas/	1	1500000	1	6	2017-01-03 00:00:00	2017-06-09 13:23:12.39288	2	3	2017-01-04	\N	3			63	3
+1741	0095	2	4	4	1	42	2	ADQUISICIÓN DE ARMAMMENTO	\N	5693292	\N	6	2017-06-16 19:51:52.8363	2017-06-16 19:51:52.8363	1	10	\N	\N	2	\N		75	2
+1742	0536	2	4	4	1	42	2	ADQUISICIÓN DE ARMAMENTO	\N	3354252.14000000013	\N	6	2017-06-16 19:54:50.74994	2017-06-16 19:54:50.74994	1	10	\N	\N	2	\N		75	2
+1745	1022	1	1	4	1	21	1	SEGUROS DE AVIACION	1	16	2	9	2017-06-16 20:18:56.196879	2017-06-19 20:48:39.704257	2	3	\N	\N	2	\N		59	2
+1746	1136	1	1	4	1	25	1	SERVICIO DE TELEFONIA MOVIL	1	1066464	2	9	2017-06-16 20:22:01.181607	2017-06-16 20:23:50.649189	2	3	\N	\N	2	\N		74	2
+1744	1166	1	4	4	2	24	2	ADQUISICION DE MUNICION	1	3868113.02000000002	2	9	2017-06-16 20:11:21.713889	2017-06-19 20:51:22.079073	1	10	\N	\N	2	\N		0	2
+1743	1167	1	1	4	2	21	1	SEGURO FLUVIAL	1	47777.7699999999968	2	9	2017-06-16 19:58:43.814946	2017-06-19 20:54:48.804888	2	1	\N	\N	2	\N		69	2
+1378	0987	1	1	4	2	26	1	elaboracion del expediente tecnico, gasto de licencia de la obra y ejecucion de la obra referente al mantenimiento del centro aeronautico-pip-salkantay	1	96985153	2	2	2017-05-09 20:37:34.23869	2017-05-31 16:39:39.300709	1	5	\N	\N	1			46	1
+1007	0273	2	\N	2	\N	54	1	material de limpieza	55	117005.440000000002	2	6	2017-04-07 15:14:45.630536	2017-04-25 22:13:48.874949	1	1	2017-04-30	\N	3			0	3
+1747	1012	1	4	4	2	24	2	ADQUISICION DE MUNICION2	1	4092185.79999999981	2	9	2017-06-16 20:32:40.051901	2017-06-16 20:32:40.051901	1	10	\N	\N	2	\N		0	2
+1409	0738	1	4	4	1	22	2	adquisicion de grasas y aceites de uso aeronautico	1	1978758	5	2	2017-05-10 21:55:17.916638	2017-05-26 19:09:46.937689	1	10	\N	\N	3	08		8	3
+1339	0298	3	0	3	0	0	0	adquisicion de equipamiento para la linea de autoservicio del comedor del seint	10	40290	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	FAP	0	3
+1341	0235	3	1	3	\N	\N	1	limpieza al hospital central fap	1	657999.859999999986	1	8	2017-04-20 00:00:00	2017-05-04 18:26:43.244039	2	3	2017-05-01	\N	3		FAP	0	3
+958	0233	2	\N	2	\N	46	1	servicio anual de soporte tecnico para plataforma informatica institucional/	1	182500	1	6	2017-01-03 00:00:00	2017-04-25 21:57:18.686325	2	1	2017-01-04	\N	3			0	3
+825	0100	2	1	4	1	42	1	adquisicion corporativa de vestuario ropa de cama y otros/ (PROCESO PROVIENE DE LA LP N° 04-2016)	9	454856.549999999988	2	6	2017-01-03 00:00:00	2017-06-06 17:06:40.784285	1	1	2017-01-02	\N	3	27	Proceso Proviene LP N° 04-2016, Items desiertos	27	3
+1753	0872	2	4	4	2	42	2	ADQUISICIÓN DE BOTES	\N	480071	\N	6	2017-06-19 17:13:03.884951	2017-06-19 17:13:03.884951	1	10	\N	\N	1	\N		76	1
+1754	0577	3	4	4	2	4	2	ADQUISICIÓN DE VESTUARIO TÁCTICO PARA LAS PATRULLAS DEL EJÉRCITO, MARINA Y FAP DEL CIOEC	\N	112159.410000000003	2	8	2017-06-19 17:13:17.038654	2017-06-19 18:43:47.580373	1	10	\N	\N	2	\N	CI-153-FAP-2016 (SEINT)	77	2
+1749	0023	3	4	4	1	18	1	CONTRATACIÓN CORPORATIVA DE SEGUROS PARA VEHÍCULOS AUTOMOTORES DE LA FAP	1	1116260	2	8	2017-06-19 16:50:52.8568	2017-06-19 19:17:38.961701	2	3	\N	\N	2	\N	CP-001-2016	54	2
+882	0157	2	1	4	1	42	1	adquisicion de vehiculos de seguridad ano 2017/	3	2000000	2	2	2017-01-03 00:00:00	2017-05-26 19:14:14.682779	1	5	2017-01-03	\N	3	16		16	3
+1331	0279	3	1	4	1	19	1	adquisicion de llantas para vehiculos	49	161957.899999999994	2	8	2017-04-20 00:00:00	2017-05-26 19:55:09.249119	1	1	2017-05-31	\N	3	12	FAP	12	3
+1318	0214	3	0	3	0	0	0	mantenimiento de equipos de cocina	14	140000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	FAP	0	3
+1407	0645	2	4	4	2	42	2	adquisicion de armamento fusil de asalto scar-l calibre 5.56x45 mm std y ametralladora fn minimi (r) 5.56x45 mm otan	\N	2565084.70000000019	\N	2	2017-05-10 20:03:25.298946	2017-06-04 00:11:06.182254	1	10	\N	\N	2	17	PROCESO PROVIENE 2016	61	3
+1361	1135	1	1	4	1	25	1	contratación del servicio de telefonía fija e internet asimetrico	1	2281788	2	2	2017-05-05 21:26:00.83205	2017-06-19 16:18:02.633396	2	3	\N	\N	2	29	PROCESO QUE VIENE DE AÑO 2016	34	3
+1755	0579	3	4	4	2	4	2	ADQUISICIÓN DE EQUIPOS DE SEGURIDAD PARA LAS PATRULLAS DEL EJÉRCITO, MARINA Y FAP DEL CIOEC	\N	339451	2	8	2017-06-19 17:16:10.696903	2017-06-19 18:48:09.344946	1	10	\N	\N	2	\N	CI-155-FAP-2016 (SEINT)	79	2
+1751	0196	3	1	4	1	19	1	ADQUISICIÓN DE BATERÍAS PARA VEHÍCULOS	\N	49920.5	2	8	2017-06-19 16:59:11.435678	2017-06-19 19:08:53.261984	1	1	\N	\N	2	\N	AS-008-2016	72	2
+1752	0199	3	1	4	1	19	1	ADQUISICIÓN DE LLANTAS PARA VEHÍCULOS	\N	143854.140000000014	2	8	2017-06-19 17:01:17.916158	2017-06-19 19:11:28.81378	1	1	\N	\N	2	\N	AS-009-2016	73	2
+1750	0095	3	4	4	2	1	2	ADQUISICIÓN DE EQUIPOS PARA APOYO AL VUELO	\N	414594	2	8	2017-06-19 16:55:06.893704	2017-06-19 19:16:23.276442	1	10	\N	\N	2	\N	CI-FAP-027-2016 (SEBAT)	81	2
+1485	0710	1	0	1	0	0	0	contratacion de servicio de evaluacion externa con fines de acreditacion para la esge- epg	1	50000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	modificacion4	0	3
+1283	0270	3	0	3	0	0	0	valsartan 320mg	1	60400	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	FAP	0	3
+1756	0578	3	4	4	2	4	2	ADQUISICIÓN DE ACCESORIOS DE VESTUARIO Y KITS DE PRIMEROS AUXILIOS PARA LAS PATRULLAS DEL EJÉRCITO, MARINA Y FAP DEL CIOEC	\N	368	2	8	2017-06-19 18:41:14.842906	2017-06-19 18:41:14.842906	1	10	\N	\N	2	\N	INTER-13 / CI-154-FAP-2016 (SEINT)	78	2
+1762	0365	3	4	4	2	3	2	Adquisición de Equipamiento de las Fuerzas Armadas	\N	2280000	2	8	2017-06-19 19:07:04.85973	2017-06-19 19:07:04.85973	1	10	\N	\N	2	\N	CI-092-FAP-2016 (SEMAG)	80	2
+1760	992	1	1	4	1	23	1	ADQUISICION DE KIT DE PRENDAS PARA EL PERSONAL MILITAR	\N	15098506	2	9	2017-06-19 19:03:45.6016	2017-06-19 19:12:46.6842	1	5	\N	\N	2	\N		0	2
+1763	813	1	1	4	1	23	1	ADQUISICION DE CALZADOS PARA EL VRAEM	\N	3300000	2	9	2017-06-19 19:17:37.030754	2017-06-19 19:17:37.030754	1	5	\N	\N	2	\N		0	2
+1765	995	1	1	1	1	23	1	ADQUISICION DE VESTUARIO PARA EL VRAEM	\N	11519388.0199999996	2	9	2017-06-19 19:28:52.997588	2017-06-19 19:28:52.997588	1	5	\N	\N	2	\N		0	2
+1768	994	1	1	4	1	23	1	ADQUISICION DE PRENDAS Y ARTICULOS PARA EL PERSONAL DE TROPA II ETAPA	\N	4892389.37999999989	2	9	2017-06-19 19:39:18.90675	2017-06-19 19:39:18.90675	1	\N	\N	\N	2	\N		0	2
+1771	0491	3	4	4	2	4	2	Adquisición de Botas y Calzado MIL-SPEC para el personal del Comando de Inteligencia y Operaciones Conjuntas (CIOEC)	\N	345691.5	2	8	2017-06-19 20:01:00.452045	2017-06-19 20:01:00.452045	1	10	\N	\N	2	\N	CI-FAP-121-2016 (SEINT)	84	2
+1772	0350	3	4	4	1	1	2	Adquisición de Grasas, Aceites y Lubricantes para aeronaves	\N	409544.700000000012	2	8	2017-06-19 20:20:20.863624	2017-06-19 20:20:20.863624	1	10	\N	\N	2	\N		86	2
+1773	0097	3	4	4	1	1	2	Adquisiciones de Grasas, Aceites y Lubricantes para aeronaves	\N	1055419	2	8	2017-06-19 20:23:10.689701	2017-06-19 20:23:10.689701	1	10	\N	\N	2	\N	CI-FAP-029-2016 (SEBAT)	86	2
+1486	0713	1	0	1	0	0	0	adquisicion de material e insumos medicos	400	1411068.65999999992	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-05-01	0	3	 	modificacion4	0	3
+909	0184	2	\N	2	\N	46	1	licenciamiento de software de seguridad/	9	1136154.01000000001	1	6	2017-01-03 00:00:00	2017-04-26 14:07:15.372394	2	3	2017-01-03	\N	3			0	3
+957	0232	2	\N	2	\N	42	1	adquisicion de prendas complementarias y aseo para el personal altas af-2017/	14	110877.399999999994	2	6	2017-01-03 00:00:00	2017-04-25 21:57:48.987339	1	1	2017-01-03	\N	3			0	3
+1757	990	1	1	4	1	23	1	ADQUISICION DE PRENDAS PARA PERSONAL QUE SE LICENCIA	\N	6669233	2	9	2017-06-19 18:51:28.165258	2017-06-19 18:51:28.165258	1	5	\N	\N	2	\N		0	2
+1758	0202	3	4	4	1	3	2	Adquisición de Pístoilas, Fusiles y Ametralladoras para las Fuerzas Especiales	\N	399020.729999999981	3	8	2017-06-19 18:51:55.232859	2017-06-19 18:51:55.232859	1	10	\N	\N	2	\N	CI-FAP-043-2016 (SEMAG)	75	2
+1759	0368	3	1	4	1	19	1	Adquisición de Vehículos de seguridad	\N	2903985.31000000006	1	8	2017-06-19 18:57:01.70985	2017-06-19 18:58:17.802268	1	5	\N	\N	2	\N		79	2
+1761	991	1	1	4	1	23	1	ADQUISICION DE PRENDAS DE CAMA Y OTROS PARA EL VRAEM	\N	3504296.89999999991	2	9	2017-06-19 19:05:55.923652	2017-06-19 19:05:55.923652	1	5	\N	\N	2	\N		0	2
+1767	810	1	1	4	1	23	1	ADQUISICION DE PRENDAS, CALZADOS Y OTROS PARA EL PERSONAL MILITAR	\N	4940557.95999999996	2	9	2017-06-19 19:36:46.43816	2017-06-19 19:36:46.43816	1	5	\N	\N	2	\N		0	2
+1770	0490	3	4	4	2	4	2	Adquisición de Uniformes Tácticos y Ropa Interior MIL-SPEC para el personal del Comando de Inteligencia y Operaciones Especiales Conjuntas (CIOEC)	\N	330123	2	8	2017-06-19 19:57:35.801151	2017-06-19 19:57:35.801151	1	10	\N	\N	2	\N	CI-FAP-120-2016 (SEINT)	82	2
+1775	1021	1	4	4	1	23	2	ADQUISICION DE GRASAS Y ACEITES DE USO AERONAUTICO	\N	575373.5	2	9	2017-06-19 20:33:05.266692	2017-06-19 20:33:05.266692	1	10	\N	\N	2	\N		0	2
+1776	979	1	1	4	1	21	1	CONTRATACION DEL SERVICIO DE SEGURO OBLIGATORIO DE ACCIDENTES DE TRANSTIO - SOAT	\N	450000	2	9	2017-06-19 20:36:16.475844	2017-06-19 20:36:16.475844	2	6	\N	\N	2	\N		0	2
+362	0374	1	0	1	0	0	1	especerias en general/	1	51057.010000000002	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1239	0537	1	0	1	0	0	0	adquisicion de prendas diversas y otros para el personal de la eie	41	152200	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1240	0610	1	0	1	0	0	0	adquisicion de material para mantenimiento de instalaciones de la ii de	20	36000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1764	811	1	1	4	1	23	1	ADQUISICION DE OTROS BIENES DEL VRAEM	\N	2173197	2	9	2017-06-19 19:24:12.095628	2017-06-19 19:24:12.095628	1	5	\N	\N	2	\N		0	2
+1766		3	1	4	1	18	1	SEGUROS OBLIGATORIOS DE ACCIDENTE DE TRÁNSITO-SOAT	\N	294000	2	8	2017-06-19 19:32:41.127576	2017-06-19 19:32:41.127576	2	6	\N	\N	2	\N	SIE-1-2016	58	2
+1769	0492	3	4	4	2	4	2	Adquisición de Vestuario y Accesorios MIL-SPEC para el personal del Comando de Inteligencia y Operaciones Especiales Conjuntas (CIOEC)	\N	308263	2	8	2017-06-19 19:54:02.834434	2017-06-19 19:54:02.834434	1	10	\N	\N	2	\N	CI-FAP-122-2016 (SEINT)	85	2
+1774	814	1	1	4	1	23	1	ADQUISICION  DE RACION DE CAMPAÑA PARA EL VRAEM	\N	3300000	2	9	2017-06-19 20:29:03.756472	2017-06-19 20:29:03.756472	1	5	\N	\N	2	\N		0	2
+1081	0660	1	0	1	0	0	0	servicio de mantenimiento y reparacion de vehiculos para atencion de emergencias	2	179068	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	version2	0	3
+1295	0238	3	0	3	0	0	0	adquisicion de farmacos (subasta inversa)	11	771840.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	FAP	0	3
+1082	0614	1	0	1	0	0	0	adquisición de utiles de aseo para el personal de tropa de la 31ra brig inf	1	57708	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1083	0587	1	0	1	0	0	0	contratacion del servicio de mantenimiento y reparacion del sistema contraincendio de los helicopteros mi 171-shp	1	39500	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	2	2017-04-01	0	3	 	version2	0	3
+1288	0300	3	4	3	2	\N	2	adquisicion de repuesto para la aeronave c-26b (brake assy n/p 5011640	1	40478.8499999999985	2	8	2017-04-20 00:00:00	2017-05-22 10:50:10.463089	1	10	2017-04-01	\N	3		FAP	0	3
+1084	0618	1	0	1	0	0	0	adquisicion de repuestos y accesorios para vehiculos/ maquinarias y equipos	2	118806	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1085	0651	1	0	1	0	0	0	servicio de mantenimiento y reparacion de infraestructura del hospital militar divisionario-piura	1	120000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1161	0630	1	0	1	0	0	0	adquisicion material de limpieza	40	249998.899999999994	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1086	0549	1	0	1	0	0	0	servicio de mantenimiento de vehiculos de la 22 brig ing	1	102200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1087	0616	1	0	1	0	0	0	servicio de mantenimiento (mano de obra) para vehiculos del equipo mecanico de ingenieria	1	57632	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	version2	0	3
+1264	0301	3	4	3	\N	\N	2	adquisicion de partes/ repuestos y material para aeronaves an-32b	2	6936	2	8	2017-04-20 00:00:00	2017-05-22 10:51:15.289308	1	10	2017-04-01	\N	3		FAP	0	3
+1055	0179	3	4	4	3	11	2	servicio de simulador de vuelo de aeronave del gru11	1	52500	2	8	2017-04-25 16:11:25.691873	2017-05-10 14:04:35.588115	2	10	2017-05-30	\N	3			0	3
+1005	0271	2	\N	2	\N	50	1	adquisición de equipos para sala de operaciones	6	358000	2	6	2017-04-07 15:10:25.536285	2017-04-25 22:15:15.284103	1	1	2017-04-30	\N	3			0	3
+1088	0644	1	0	1	0	0	0	servicio educativo/diplomado en gestion publica para la v maestria en ciencias militares de la esge- epg	1	300000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	version2	0	3
+1090	0661	1	0	1	0	0	0	servicio de mantenimiento y reparacion de equipo mecanico para atencion de emergencias	2	284883.130000000005	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	version2	0	3
+905	0180	2	1	4	4	42	1	adquisicion de lubricantes para equipos de ingenieria/	8	99985	2	6	2017-01-03 00:00:00	2017-04-25 16:13:18.853106	1	1	2017-01-03	\N	3			0	3
+1385	0845	2	4	4	1	\N	2	ADQUISICION DE EQUIPO INDIVIDUAL, ESPECIAL Y COLECTIVO PARA LA BRIGADA ANFIBIA DE LA FUERZA DE INFANTERÍA DE MARINA	\N	2680950.60000000009	\N	6	2017-05-10 13:29:29.487914	2017-06-14 14:36:58.935931	1	10	\N	\N	1		PROCESO PROVIENE 2015	50	1
+1108	0534	1	0	1	0	0	0	contratacion del servicio de racionamiento para el personal de salud de guardia del hospital geriátrico y policlínico del ejercito cosale	1	116900	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1109	0669	1	0	1	0	0	0	repuestos y accesorios de vehículos/ para la atención de emergencias ante la ocurrencia de peligros en las zonas declaradas en emergencia en aplicación del du 002-2017	1	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+401	0418	1	0	1	0	0	1	suministro de alimentos y bebidas para el consumo humano/	56	148572	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1111	0600	1	0	1	0	0	0	adquisicion de sillas de ruedas	1	35000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	2	2017-04-01	0	3	 	version2	0	3
+1173	0631	1	0	1	0	0	0	servicio de alquiler de estrados y tribunas para actividades civico patrioticas	2	550000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-05-01	0	3	 	version2	0	3
+1174	0654	1	0	1	0	0	0	contratacion del servicio de transporte terrestre para practica de unidades del personal de cadetes de 4to año de la emch cfb	1	41288	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1175	0572	1	0	1	0	0	0	adquisicion de prendas para deporte y otros para el personal de tropa smv	1	150000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1176	0627	1	0	1	0	0	0	adquisicion de alimentos para personal militar del cge sie	17	156200.619999999995	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-05-01	0	3	 	version2	0	3
+1177	0632	1	0	1	0	0	0	contratacion del servicio de alquiler de equipo sonido amplificacion y ge diversas actividades civico patrioticas	3	166800	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1178	0570	1	0	1	0	0	0	adquisicion de diversas prendas de vestuario/ calzado y otros para el personal de tropa del ejercito	18	9713266.09999999963	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version2	0	3
+1183	0682	1	0	1	0	0	0	servicio de impresiones encuadernacion y empastado para las unidades del cge	144	246679	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version2	0	3
+1185	0624	1	0	1	0	0	0	contratacion del servicio de pintado de la villa militar de matellini jbiene	1	1110097	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-06-01	0	3	 	version2	0	3
+1186	0674	1	0	1	0	0	0	adquisicion de ataudes y otros articulos para serfun	7	59202	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1188	0561	1	0	1	0	0	0	adquisicion de emblemas y otros para uniformes de paseo	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+830	0105	2	1	4	1	42	1	adquisicion corporativa de uniformes camuflados digitalizados/	10	1957168.37000000011	2	2	2017-01-03 00:00:00	2017-05-29 18:23:05.871713	1	1	2017-01-02	\N	3	28	Proceso proviene LP N° 03-2016, Item desiertos	28	3
+1189	0675	1	0	1	0	0	0	adquisicion de carpa de campaña para 20 personas	1	326400	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1511	0740	1	0	1	0	0	0	contratacion del serevicio de capacitación en simulador de vuelo para aeronaves americanas y rusas	1	1069652.98999999999	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	9	2017-07-01	0	3	 	modificacion4	0	3
+1190	0568	1	0	1	0	0	0	adquisicion de overoles de tela  con cinta	1	398520	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1191	0636	1	0	1	0	0	0	servicio de alquiler de pantalla led	1	152390	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1079	0306	3	4	4	3	2	2	adquisicion de partes , repuestos y material de  avionica para aeronaves l100-20	1	60000	2	8	2017-04-25 21:18:20.399147	2017-05-10 20:19:08.33002	1	10	2017-04-30	\N	3			0	3
+1337	0280	3	1	4	2	4	1	adquisicion de vestuario para el personal militar fap del area de provincias	4	1811094	2	8	2017-04-20 00:00:00	2017-05-10 21:36:22.399356	1	5	2017-05-01	\N	3		FAP	0	3
+1250	0328	2	4	4	3	53	2	servicio de capacitación para la tripulacion y pilotos del programa b-200	1	81200	2	6	2017-04-26 22:08:36.264173	2017-05-24 13:46:37.897039	2	10	2017-05-30	\N	3			0	3
+1248	0321	2	1	4	2	42	1	adquisicion de material miscelaneo para las unidades aeronavales-confuavinav	514	800000	1	6	2017-04-26 22:02:40.365106	2017-04-26 22:02:40.365106	1	5	2017-05-30	\N	3			0	3
+956	0231	2	\N	2	\N	46	1	mantenimiento correctivo del sistema de autotracking de la antena maestra del hub satelital/	1	68000	1	6	2017-01-03 00:00:00	2017-04-25 21:58:10.581864	2	1	2017-01-04	\N	3			0	3
+953	0228	2	\N	2	\N	42	1	servicio de transporte terrestre area vraem/	2	225990	2	6	2017-01-03 00:00:00	2017-04-25 21:58:42.332537	2	1	2017-01-04	\N	3			0	3
+952	0227	2	\N	2	\N	42	1	adqusicion de utiles de aseo area vraem/	5	60190	2	6	2017-01-03 00:00:00	2017-04-25 21:59:21.492448	1	1	2017-01-03	\N	3			0	3
+926	0201	2	\N	2	\N	42	1	servicio mantenimiento capacidad de control de averias y lci/	8	169984.350000000006	2	6	2017-01-03 00:00:00	2017-04-26 14:00:38.462325	2	1	2017-01-03	\N	3			0	3
+923	0198	2	\N	2	\N	42	1	adquisicion de repuestos para radar de navegacion y carta electronica/	22	79498	1	6	2017-01-03 00:00:00	2017-04-26 14:01:12.092705	1	1	2017-01-03	\N	3			0	3
+921	0196	2	\N	2	\N	42	1	supervision de la obra ampliacion y mejoramiento de los servicios del arsenal naval en la base naval del callao/	1	350000	3	6	2017-01-03 00:00:00	2017-04-26 14:01:36.082479	\N	1	2017-01-03	\N	3			0	3
+924	0199	2	4	4	3	42	2	material sistemático y condicional para el programa fokker/	10	266861.700000000012	2	6	2017-01-03 00:00:00	2017-04-28 14:58:45.054212	1	10	2017-01-03	\N	3			0	3
+941	0216	2	4	4	3	42	2	adquisicion de repuestos sistematcos y condicionales para el programa ab-212/	3	44421.1900000000023	2	6	2017-01-03 00:00:00	2017-04-28 14:59:47.845473	1	10	2017-01-03	\N	3			0	3
+971	0246	2	\N	2	\N	42	1	adquisicion de pinturas y disolventes para el bap union/	20	179446.600000000006	1	6	2017-01-03 00:00:00	2017-04-26 13:47:02.257953	1	1	2017-01-03	\N	3			0	3
+970	0245	2	\N	2	\N	47	1	servicio de arrendamiento de vivienda para el capitan de puerto de la capitania de puerto pimentel/	1	33600	1	6	2017-01-03 00:00:00	2017-04-26 13:47:15.560205	2	2	2017-01-03	\N	3			0	3
+969	0244	2	\N	2	\N	47	1	servicio de mantenimiento de los equipos de radares de la oficina de tramar de capicala/	1	102868	1	6	2017-01-03 00:00:00	2017-04-26 13:48:19.541442	2	1	2017-01-04	\N	3			0	3
+968	0243	2	\N	2	\N	47	1	adquisicion de utiles de escritorio para las direcciones internas y oficinas de la dirección general de capitanias y guardacostas/	1	220000	1	6	2017-01-03 00:00:00	2017-04-26 13:48:36.205111	1	1	2017-01-04	\N	3			0	3
+1309	0040	3	0	3	0	0	0	servicio de mantenimiento preventivo y correctivo de la sub estacion n° 0 hasta la sub estacion n° 10	0	45000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-07-01	0	3	 	FAP	0	3
+1311	0213	3	0	3	0	0	0	adquisición de horno de convección de 20 bandejas	1	40000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-07-01	0	3	 	FAP	0	3
+1312	0052	3	0	3	0	0	0	recertificacion de certificado de seman-peru como organización de mantenimiento rbac 145 por la autoridad agencia nacional de aviacion civil anac brasil	0	21513.5999999999985	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	10	2017-07-01	0	3	 	FAP	0	3
+1313	0053	3	0	3	0	0	0	recertificacion de certificado de seman-peru como centro de mantenimiento aeronautico  e 418 por la direccion general de aeronautica civil dgac de chile	0	21211	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	10	2017-08-01	0	3	 	FAP	0	3
+1314	0041	3	0	3	0	0	0	adquisicion de grasas y lubricantes para los aviones comerciales	0	120405.899999999994	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-08-01	0	3	 	FAP	0	3
+967	0242	2	\N	2	\N	47	1	servicio de consultoria en elaboracion, revision e implementacion de instrumentos legales para el fortalecimiento del sistema de fiscalizacion ambiental./	1	110000	1	6	2017-01-03 00:00:00	2017-04-26 13:48:51.923032	2	1	2017-01-04	\N	3			0	3
+1386	0305	2	1	2	\N	42	1	adquisicion de repuestos para sondador acustico y del indicador de cavitación y nivel de ruido	1	140000	4	6	2017-05-10 15:22:08.206104	2017-05-10 15:22:08.206104	1	1	\N	\N	3			0	3
+1045	0064	3	4	4	3	1	2	reparacion u overhaul de bloques y accesorios para la flota a-37b	6	653284	2	8	2017-04-25 13:28:44.547612	2017-05-10 12:53:29.708486	2	10	2017-03-30	\N	3			0	3
+1080	0307	3	4	4	3	2	2	adquisicion de partes , repuestos y material de  avionica para aeronaves an-32b	1	112240	2	8	2017-04-25 21:20:05.017685	2017-05-11 19:19:14.39707	1	10	2017-04-30	\N	3			0	3
+1335	0295	3	0	3	0	0	0	servicio de mantenimiento preventivo y correctivo de 07 ascensores	1	105000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	FAP	0	3
+1192	0564	1	0	1	0	0	0	adquisicion de calzado para licenciados	1	399945	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1119	0650	1	0	1	0	0	0	adquisicion de reactivos de laboratorio para examen medico anual	23	124000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1120	0612	1	0	1	0	0	0	adquisicion de combustible turbo a-1	1	94007	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1121	0525	1	0	1	0	0	0	adquisicion de alimentos para personas	3	614901.020000000019	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-03-01	0	3	 	version2	0	3
+1122	0629	1	0	1	0	0	0	adquisicion material de limpieza para el mantenimiento del gimnasio cge 	38	70836	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1123	0526	1	0	1	0	0	0	papeleria en general/ utiles y materiales de escritorio	50	137382.959999999992	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+983	0552	1	1	4	2	23	1	adquisicion de vestuario y otros para el vraem	15	5642844.33999999985	2	2	2017-04-06 22:05:22.723041	2017-05-29 14:14:06.432984	1	5	2017-03-30	\N	3	\N		36	3
+1512	0742	1	0	1	0	0	0	adquisicion de botones dorados para uniformes de paseo	1	60000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1514	0744	1	0	1	0	0	0	adquisicion de tela de lanilla v.o	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1515	0743	1	0	1	0	0	0	adquisicion de charreteras de gala	1	157300	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1516	0722	1	0	1	0	0	0	adquisición de prendas y accesorios diversos para competencias deportivas	3	177126	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1517	0747	1	0	1	0	0	0	adquisicion de concentrado para ganado equino	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1518	0737	1	0	1	0	0	0	adquisicion de repuestos y accesorios para el ep-345 y ep-346	1	1485554	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-06-01	0	3	 	modificacion4	0	3
+1124	0551	1	0	1	0	0	0	servicio de recojo/ tratamiento y disposicion final de residuos solidos	1	129600	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-03-01	0	3	 	version2	0	3
+1125	0597	1	0	1	0	0	0	adquisicion de alimentos para personas	6	955407.089999999967	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-03-01	0	3	 	version2	0	3
+1126	0539	1	0	1	0	0	0	adquisicion de alimentos y bebidas para consumo humano	29	38296.5	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1127	0545	1	0	1	0	0	0	otros repuestos y accesorios	2	58000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1315	0047	3	0	3	0	0	0	adquisicion de accesorios/ componentes e insumos para laboratorio	0	41525	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-08-01	0	3	 	FAP	0	3
+1128	0541	1	0	1	0	0	0	suministro de insumos para impresión de brevetes militares	5	125491	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1131	0543	1	0	1	0	0	0	seguro obligatorio de accidentes de transito	5	97000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	6	2017-03-01	0	3	 	version2	0	3
+1132	0679	1	0	1	0	0	0	adquisicion de repuestos para helicoptero mi-17  1b	32	639083	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-03-01	0	3	 	version2	0	3
+1133	0591	1	0	1	0	0	0	adquisicion de material medico para el servicio de nefrologia	7	167956.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1134	0546	1	0	1	0	0	0	adquisicion de antivirus	1	432000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	3	2017-03-01	0	3	 	version2	0	3
+1137	0666	1	0	1	0	0	0	repuestos y accesorios de vehiculos	176	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-03-01	0	3	 	version2	0	3
+1193	0554	1	0	1	0	0	0	adquisicion equipos de panificacion para las gguu y uu del ejercito	6	632421.630000000005	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	version2	0	3
+1194	0565	1	0	1	0	0	0	adquisicion de ponchos y chalecos	2	291600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1195	0553	1	0	1	0	0	0	adquisicion de utiles de aseo para la iv de - vraem	11	2849547.39999999991	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	version2	0	3
+1196	0552	1	0	1	0	0	0	adquisicion de vestuario y otros para el vraem	15	5642844.33999999985	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	version2	0	3
+1197	0563	1	0	1	0	0	0	adquisicion de simbolos patrios	12	177040	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1198	0688	1	0	1	0	0	0	contratacion de servicio de ensamblaje y configuracion de un vehiculo aereo no tripulado drone/ servicio de soporte y actualizacion de telefonia ip y servicio de mantenimiento de un vehiculo cicte	3	106000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version2	0	3
+1204	0643	1	0	1	0	0	0	adquisicion de materiales para edificios y estructuras pa la ese y la 3ra brig ffeee	50	35099.1999999999971	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1205	0605	1	0	1	0	0	0	adquisicion de vehiculos de seguridad tipo c	1	110126	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1221	0536	1	0	1	0	0	0	suministro dearticulos de limpieza/ tocador y productos quimicos	108	189027.040000000008	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1223	0594	1	0	1	0	0	0	adquisicion de material insumos y reactivos para el servicio de laboratorio del hmc	1	2900000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version2	0	3
+1224	0625	1	0	1	0	0	0	contratacion del programa de alta direccion para la diedoce	1	154200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-05-01	0	3	 	version2	0	3
+1225	0648	1	0	1	0	0	0	serviciode internet satelital para la 33a brigada de infanteria	1	40000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1226	0683	1	0	1	0	0	0	contratacion del servicio de mantenimiento y reparacion de maquinarias y equipos para el cge	88	115920	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1227	0633	1	0	1	0	0	0	servicio de alquiler de sillas vestidas para diversas actividades civico patrioticas	1	110600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1519	0704	1	0	1	0	0	0	adquisicion de accesorios y repuestos para maquinarias y equipos para el cge	24	56650	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1520	0741	1	0	1	0	0	0	adquisición de material miselaneo e insumos para mantenimiento de aeronaves	225	914490.800000000047	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	modificacion4	0	3
+1228	0593	1	0	1	0	0	0	servicio integral de limpieza e higiene de las instalaciones del hmc	1	715577	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-05-01	0	3	 	version2	0	3
+1229	0656	1	0	1	0	0	0	contratación del servicio de mantenimiento de salones diversos	1	90000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1234	0628	1	0	1	0	0	0	servicios de mantenimiento de infraestructura construida ca cge	4	43295.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1235	0685	1	0	1	0	0	0	contratacion del servicio de mantenimiento de infraestructura construida del copere	13	110000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1236	0635	1	0	1	0	0	0	contratacion de tribunas toldos y graderias para la gran parada y desfile civico militar 	3	600000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-05-01	0	3	 	version2	0	3
+1237	0626	1	0	1	0	0	0	adquisicion de alimentos para personal militar del cge	21	278912.429999999993	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+238	0238	1	0	1	0	0	1	papeleria en general, utiles y material de oficina/	13	78974	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+239	0239	1	0	1	0	0	1	articulos de aseo, limpieza y tocador/	16	50242	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+747	0022	2	0	2	0	0	1	confeccion de platos recordatorios/	1	55000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+748	0023	2	0	2	0	0	1	adquisicion de repuestos para reparar caja de cambios de omnibus de la flota de transporte escolar/	1	45946	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+749	0024	2	0	2	0	0	1	servicio de alquiler de fotocopiadoras/	1	48000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+751	0026	2	0	2	0	0	1	mantenimiento preventivo y correctivo de los equipos de cocina/	1	80000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+757	0032	2	0	2	0	0	1	seguro de responsabilidad civil y accidentes personales (clubes)/	1	85000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+759	0034	2	0	2	0	0	1	servicio de mantenimiento de equipos de supervivencia y radiobaliza/	1	110000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-05	0	3	\N	\N	0	3
+760	0035	2	0	2	0	0	1	adquisicion de repuestos de alta rotacion para equipos de la red mareografica nacional geonica/	1	150000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-03	0	3	\N	\N	0	3
+761	0036	2	0	2	0	0	1	adquisicion de filtros de aceite, petroleo, aire, etc., para la flota de transporte escolar/	1	35376	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	2	2017-01-02	0	3	\N	\N	0	3
+762	0037	2	0	2	0	0	1	elaboracion del plan de manejo ambiental/	1	400000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	3	2017-01-03	0	3	\N	\N	0	3
+764	0039	2	0	2	0	0	1	servicio de mantenimiento, limpieza de pisos y servicios higienicos/	1	44800	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+765	0040	2	0	2	0	0	1	servicio de mantenimiento anual sistema oceanografico/	1	120000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-05	0	3	\N	\N	0	3
+766	0041	2	0	2	0	0	1	especialista en iso 9001 y 14001/	1	72000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+965	0240	2	\N	2	\N	46	1	servicio de alquiler de dispositivos moviles tipo tablets/	1	40000	1	6	2017-01-03 00:00:00	2017-04-26 13:49:20.355495	2	1	2017-01-05	\N	3			0	3
+1039	0249	2	\N	2	\N	46	1	servicio de alquiler de segmento satelital	1	214225.290000000008	2	6	2017-04-21 18:56:47.1579	2017-04-25 22:01:48.380469	2	4	2017-04-30	\N	3		CONTRATACIÓN DIRECTA, EL CONTRATO DEBERÁ REGIR HASTA QUE ENTRE EN VIGENCIA EL CONTRATO QUE ESTA A CARGO DE LA ACFFAA	0	3
+813	0088	2	\N	2	\N	47	1	adquisicion de repuestos para equipos de computo/	1	200900	1	6	2017-01-03 00:00:00	2017-04-26 14:38:39.356222	1	1	2017-01-02	\N	3			0	3
+1246	0316	2	1	4	2	42	1	servicio de acondicionamiento de un analizador multicanal de vibraciones propias, un analizador multicanal de ruido propio y un interceptador de emisiones de sonar para unidades submarinas clase angamo	1	707420	2	6	2017-04-26 21:55:51.459301	2017-04-26 21:55:51.459301	2	3	2017-05-30	\N	3			0	3
+1063	0247	3	4	4	3	16	2	entrenamiento en simulador de vuelo	2	92610	2	8	2017-04-25 17:31:22.695673	2017-05-09 21:05:19.369854	2	10	2017-04-30	\N	3			0	3
+1054	0178	3	4	4	3	10	2	curso entrenamiento en simulador de aeronave del grup4	1	59356.5	2	8	2017-04-25 15:10:05.559937	2017-05-10 14:06:58.138242	2	10	2017-04-30	\N	3			0	3
+1310	0216	3	0	3	0	0	0	evaluación externa para acreditación 	1	50000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-07-01	0	3	 	FAP	0	3
+767	0042	2	0	2	0	0	1	adquisicion de sistema de freno de omnibus de la flota de transporte escolar/	1	51749.5999999999985	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+768	0043	2	0	2	0	0	1	muebles para implementar la oficina de gestion del proyecto/	1	79163	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-03	0	3	\N	\N	0	3
+772	0047	2	0	2	0	0	1	asistente especialista en iso 9001 y 14001/	1	36000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+884	0159	2	1	4	1	42	1	adquisicion de baterias para vehiculos de flota liviana y flota pesada/	8	50000	2	2	2017-01-03 00:00:00	2017-05-26 19:11:16.866403	1	1	2017-01-03	\N	3	11		9	3
+893	0168	2	1	4	1	42	1	adquisicion de llantas para vehiculos de flota liviana y flota pesada/	13	50000	2	2	2017-01-03 00:00:00	2017-05-26 19:12:35.621542	1	1	2017-01-03	\N	3	12		12	3
+1521	0739	1	0	1	0	0	0	adquisición de repuestos para aeronaves agusta 109k	151	333113.719999999972	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	modificacion4	0	3
+1522	0736	1	0	1	0	0	0	adquisicion de repuestos para aeronaves de fabricacion americana y agusta 109k	1	2100000	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	9	2017-06-01	0	3	 	modificacion4	0	3
+774	0049	2	0	2	0	0	1	servicio para elaboracion de estudios de linea base y ex -post/	1	466000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	3	2017-01-05	0	3	\N	\N	0	3
+814	0089	2	\N	2	\N	48	1	adquisicion de maderas y derivados para el taller de carpinteria/	1	45000	1	6	2017-01-03 00:00:00	2017-04-26 14:38:23.594602	1	1	2017-01-03	\N	3			0	3
+775	0050	2	0	2	0	0	1	seguro pandi para el buque escuela a la vela union/	1	728280	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	2	2017-01-11	0	3	\N	\N	0	3
+776	0051	2	0	2	0	0	1	servicio de mantenimiento sistema ais/	1	370000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-05	0	3	\N	\N	0	3
+1014	0283	2	1	4	4	42	1	adquisicion de vestuario y ropa de cama para el personal vraem-2017	\N	714140.849999999977	2	6	2017-04-12 22:52:45.385287	2017-05-22 22:18:06.25351	1	5	2017-04-30	\N	3			0	3
+1015	0284	2	1	4	4	42	1	adquisicion de calzado para el personal vraem af-2017	\N	294108.299999999988	2	6	2017-04-12 22:54:09.933092	2017-05-22 22:19:08.271962	1	1	2017-04-30	\N	3			0	3
+1016	0285	2	1	4	4	42	1	adquisicion de camuflados para el personal vraem af-2017	\N	640050.849999999977	2	6	2017-04-12 22:55:40.492118	2017-05-22 22:19:58.311295	1	5	2017-04-30	\N	3			0	3
+1249	0327	2	4	4	3	42	2	servicio de overhaul de un (01) rotor de cola del programa sh-3d/uh-3h	1	218785	1	6	2017-04-26 22:06:25.67539	2017-04-26 22:06:25.67539	2	10	2017-05-30	\N	3			0	3
+777	0052	2	0	2	0	0	1	adquisicion de cabulleria/	1	61088	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-03	0	3	\N	\N	0	3
+778	0053	2	0	2	0	0	1	adquisicion de repuestos para sistema de embrague de omnibus de la flota de transporte escolar/	1	57734.3000000000029	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+779	0054	2	0	2	0	0	1	elaboracion de estudio de preinversion a nivel perfil del pip creacion del servicio educativo superior tecnologico publico naval citeni sede iquitos./	1	159300	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+783	0058	2	0	2	0	0	1	adquisicion de ataudes y urnas/	1	70422	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+784	0059	2	0	2	0	0	1	elaboracion de estudio de preinversion a nivel perfil del pip creacion del centro educativo naval teniente primero sergio gonzales, en la cuarta zona naval/	1	160716	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+787	0062	2	0	2	0	0	1	servicio de alquiler o mantenimiento de ataudes/	1	47315	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+791	0066	2	0	2	0	0	1	adquisicion de insumos quimicos/	1	43966	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+1147	0604	1	0	1	0	0	0	mejoramiento y remodelacion del pabellon mujeres	1	380000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+792	0067	2	0	2	0	0	1	elaboracion de estudio de preinversion a nivel perfil del pip. ampliacion del servicio de vivienda para personal superior en el area de lima y callao./	1	33134.4000000000015	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+795	0070	2	0	2	0	0	1	adquisicion de alimentos para los centros educativos navales/	5	317977.880000000005	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+810	0085	2	\N	2	\N	47	1	reestructuracion de la red de dicapi/	1	75415	1	6	2017-01-03 00:00:00	2017-04-26 14:39:17.0413	2	1	2017-01-02	\N	3			0	3
+796	0071	2	0	2	0	0	1	elaboracion de estudio de preinversion a nivel perfil del pip. creacion del servicio de habitabilidad para el personal superior y subalterno de la mgp en la cuarta zona naval, distrito de calleria /	1	99120	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+799	0074	2	0	2	0	0	1	adquisicion de viveres (arroz, azucar) para los centros educativos navales/	1	40285.6200000000026	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	6	2017-01-02	0	3	\N	\N	0	3
+1038	0304	2	\N	2	\N	42	1	servicio de recorrido, carena y mantenimiento de las unidades navales de la marina de guerra del perú	1	1955917.40999999992	\N	6	2017-04-21 18:51:55.92207	2017-04-25 22:02:21.218124	1	8	2017-04-30	\N	3			0	3
+233	0233	1	0	1	0	0	1	papeleria y material de escritorio/	53	100899.320000000007	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+1207	0665	1	0	1	0	0	0	adquisicion de repuestos para vehiculos	1	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+803	0078	2	0	2	0	0	1	elaboracion de estudio de preinversion a nivel factibilidad del pip. mejoramiento de los servicios de laboratorios de la escuela naval del peru/	1	273606	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+809	0084	2	0	2	0	0	1	elaboracion de estudio de preinversion a nivel factibilidad del pip. mejoramiento y ampliacion de los servicios de educacion de post grado de la escuela superior de guerra naval , codigo snip. 3008/	1	667573.199999999953	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	3	2017-01-05	0	3	\N	\N	0	3
+812	0087	2	0	2	0	0	1	elaboracion del estudio de preinversion a nivel perfil cme-13 del pip recuperacion y mejoramiento de las capacidades operativas y logisticas de la direccion general del material/	1	1006351.19999999995	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	3	2017-01-05	0	3	\N	\N	0	3
+142	0063	1	0	1	0	0	1	adquisición de material medico para el examen médico anual/	88	254412.140000000014	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+815	0090	2	0	2	0	0	1	elaboracion del estudio de preinversion a nivel perfil cme-13 del pip instalaciones portuarias marina de guerra del peru/	1	56951.5199999999968	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+808	0083	2	\N	2	\N	48	1	servicio de mantenimiento de los equipos de la imprenta de la dhn incluido accesorios y respuestos/	1	72250	1	6	2017-01-03 00:00:00	2017-04-26 14:39:40.122393	2	1	2017-01-03	\N	3			0	3
+807	0082	2	\N	2	\N	47	1	adquisicion de libros, formas y formatos/	1	70000	1	6	2017-01-03 00:00:00	2017-04-26 14:39:58.922872	1	1	2017-01-02	\N	3			0	3
+805	0080	2	\N	2	\N	48	1	adquisicion de material de construccion para el mantenimiento de la infraestructura de la dhn/	1	72120	1	6	2017-01-03 00:00:00	2017-04-26 14:40:32.746791	1	1	2017-01-03	\N	3			0	3
+801	0076	2	\N	2	\N	47	1	mantenimiento correctivo de movilidades/	1	200000	1	6	2017-01-03 00:00:00	2017-04-26 14:41:24.206726	2	1	2017-01-02	\N	3			0	3
+590	0094	3	1	4	1	19	1	servicio de seguro de vehiculo terrestre 	1	1487500	2	2	2017-03-21 06:34:00	2017-05-26 19:08:15.659735	2	3	2017-03-01	\N	3	07		7	3
+904	0179	2	\N	2	\N	46	1	adquisicion de pilas y baterias para equipamiento del combatiente/	1	47056	2	6	2017-01-03 00:00:00	2017-04-26 14:08:31.676938	1	1	2017-01-03	\N	3			0	3
+903	0178	2	\N	2	\N	46	1	adquisicion de equipos de comunicaciones internos comerciales banda civil para las bases modulares/	9	85028	2	6	2017-01-03 00:00:00	2017-04-26 14:08:52.032474	1	1	2017-01-03	\N	3			0	3
+901	0176	2	\N	2	\N	50	1	adquisicion de gases medicinales/	1	950000	2	6	2017-01-03 00:00:00	2017-04-26 14:09:23.840041	1	5	2017-01-04	\N	3			0	3
+900	0175	2	\N	2	\N	46	1	servicio anual de mantenimiento de arreglo de discos/	1	123960	2	6	2017-01-03 00:00:00	2017-04-26 14:09:40.87372	2	1	2017-01-04	\N	3			0	3
+897	0172	2	\N	2	\N	46	1	servicio de soporte tecnico y mantenimiento para servidores de virtualizacion/	1	224860.299999999988	2	6	2017-01-03 00:00:00	2017-04-26 14:10:34.609986	2	1	2017-01-03	\N	3			0	3
+896	0171	2	\N	2	\N	42	1	servicio para mantenimiento del componente naval ce-vraem - mantenimiento de hovercraf y visores nocturnos/	1	379700	2	6	2017-01-03 00:00:00	2017-04-26 14:10:50.647245	2	1	2017-01-03	\N	3			0	3
+894	0169	2	\N	2	\N	42	1	adquisicion gas licuado de petroleo (glp) comdestelsa/	3	39000	2	6	2017-01-03 00:00:00	2017-04-26 14:11:27.884739	1	6	2017-01-03	\N	3			0	3
+885	0160	2	\N	2	\N	42	1	servicio de reparacion,mantenimiento preventivo y correctivo de vehiculos flota liviana y flota pesada/	1	200000	2	6	2017-01-03 00:00:00	2017-04-26 14:12:44.70369	2	1	2017-01-03	\N	3			0	3
+951	0226	2	\N	2	\N	46	1	adquisicion de baterias para el hub principal modulo de comunicaciones de ancon/	1	122600.940000000002	1	6	2017-01-03 00:00:00	2017-04-26 13:53:34.7277	1	1	2017-01-03	\N	3			0	3
+1340	0058	3	0	3	0	0	0	implementacion stand fidae 2018	0	52500	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	10	2017-11-01	0	3	 	FAP	0	3
+1066	0255	3	4	4	3	2	2	adquisicion  de partes, repuestos y material para el mantenimiento mayor a la aeronave del grup8 	1	204143.5	2	8	2017-04-25 19:41:40.161679	2017-05-10 13:52:21.946257	1	10	2017-04-30	\N	3			0	3
+797	0072	2	\N	2	\N	47	1	adquisicion de uniformes color azul tipo gog/	1	79695	1	6	2017-01-03 00:00:00	2017-04-26 14:42:07.791085	1	1	2017-01-02	\N	3			0	3
+794	0069	2	\N	2	\N	48	1	servicio de mantenimiento de la infraestructura de la sede principal y estructuras de los faros del litoral/	1	258510	1	6	2017-01-03 00:00:00	2017-04-26 14:42:31.063458	2	1	2017-01-03	\N	3			0	3
+793	0068	2	\N	2	\N	43	1	adquisicion de material de lucha contra incendio/	1	80000	1	6	2017-01-03 00:00:00	2017-04-26 14:42:47.190255	1	1	2017-01-06	\N	3			0	3
+790	0065	2	\N	2	\N	48	1	adquisicion de un (1) receptor marino dgps y accesorios/	1	63000	1	6	2017-01-03 00:00:00	2017-04-26 14:43:11.06535	1	1	2017-01-03	\N	3			0	3
+789	0064	2	\N	2	\N	43	1	mantenimiento equipos de comunicacion estaciones radaricas/	1	75000	1	6	2017-01-03 00:00:00	2017-04-26 14:43:33.89014	2	1	2017-01-06	\N	3			0	3
+786	0061	2	\N	2	\N	48	1	adquisicion de cadenas y accesorios para el fondeo de boyas en todo el litoral/	1	77978	1	6	2017-01-03 00:00:00	2017-04-26 14:44:01.65737	1	1	2017-01-03	\N	3			0	3
+1061	0260	3	4	4	4	3	2	adquisicion de kits de inspecciones de n1 y n2 para los asientos de eyeccion mk-pe 16l	28	805605.040000000037	1	2	2017-04-25 17:13:42.253759	2017-06-02 20:26:11.692465	1	9	2017-05-30	\N	3			0	3
+1253	0296	3	0	3	0	0	0	adquisicion de merchandising	5	60180	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1058	0195	3	4	4	3	2	2	adquisición de equipo probador nav/com test set	1	73242	2	8	2017-04-25 16:46:08.885865	2017-05-10 13:59:02.366799	2	10	2017-05-31	\N	3			0	3
+785	0060	2	\N	2	\N	43	1	servicio de mantenimiento, soporte y reparacion, modulos asociados del sistema themis/	1	70000	1	6	2017-01-03 00:00:00	2017-04-26 14:44:27.385091	2	1	2017-01-06	\N	3			0	3
+818	0093	2	0	2	0	0	1	elaboracion del servicio por entregables relacionados a la ingenieria basica y anteproyecto arquitectonico para la formulacion del estudio a nivel perfil cme-13/	1	323644.5	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-05	0	3	\N	\N	0	3
+821	0096	2	4	4	4	42	2	adquisicion de repuestos sistematicos para la extension de recursos tecnicos de la aeronave an-32b/	1	639662.770000000019	2	6	2017-01-03 00:00:00	2017-06-06 13:26:20.317056	1	10	2017-01-02	\N	3			0	3
+842	0117	2	\N	2	\N	48	1	adquisicion de tres (3) linternas marinas/	1	193500	1	6	2017-01-03 00:00:00	2017-04-26 14:27:05.937682	1	1	2017-01-03	\N	3			0	3
+1021	0293	2	1	4	2	46	1	servicio de enlaces redundantes y transmision de datos	1	2800500	2	6	2017-04-12 23:10:55.120612	2017-04-20 18:10:50.969373	2	3	2017-06-30	\N	3			0	3
+841	0116	2	\N	2	\N	42	1	adquisicion de viveres secos, frescos, ingredientes para pan y mejoramiento de rancho para el personal de comdestelsa y comescruz de abril 2017 a marzo 2018/	93	336486.609999999986	2	6	2017-01-03 00:00:00	2017-04-26 14:27:22.073502	1	1	2017-01-02	\N	3			0	3
+111	0001	1	0	1	0	0	1	adquisicion material de limpieza/	82	740537.640000000014	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+112	0002	1	0	1	0	0	1	adquisicion de articulos diversos para actividades de bienestar jbiene/	3	351910	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+113	0003	1	0	1	0	0	1	contratacion del servicio de floreria y otros similares/	1	38950	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	2	2017-03-01	0	3	\N	\N	0	3
+114	0004	1	0	1	0	0	1	contratacion del servicio de alquiler de buses para actividades de bienestar/	1	140000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+1148	0673	1	0	1	0	0	0	abrigo de pvc	1	97200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+115	0007	1	0	1	0	0	1	adquisicion de utiles de escritorio /	83	2029045.98999999999	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+116	0014	1	0	1	0	0	1	adquisicion de material impreso para la sg cge/	1	37540	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	2	2017-03-01	0	3	\N	\N	0	3
+117	0016	1	0	1	0	0	1	adquisicion especial de mejoramiento de ranchop para el personal del ejercito a nivel nacional jbiene /	17	4325475	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-08-01	0	3	\N	\N	0	3
+128	0049	1	0	1	0	0	1	adquisicion de material de herrado/	1	75040	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+840	0115	2	\N	2	\N	48	1	adquisicion de repuestos para estaciones automaticas/	1	125000	1	6	2017-01-03 00:00:00	2017-04-26 14:27:38.713897	1	1	2017-01-03	\N	3			0	3
+122	0037	1	0	1	0	0	1	servicio de transporte de combustible para las unidades de lima y provincias - 1ra etapa/	1	429860	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-04-01	0	3	\N	\N	0	3
+960	0235	2	\N	2	\N	46	1	adquisicion de repuestos y accesorios para equipos de computo/	1	184510	5	6	2017-01-03 00:00:00	2017-04-26 13:50:57.868057	1	1	2017-01-03	\N	3			0	3
+955	0230	2	1	4	2	42	1	adquisición de suministro de lubricantes grasas y afines/	12	1270321.69999999995	5	4	2017-01-03 00:00:00	2017-04-12 22:03:43.486164	1	5	2017-01-04	\N	3	\N	\N	0	3
+123	0038	1	0	1	0	0	1	servicio de transporte de combustible para las unidades de lima y provincias - 2da etapa/	1	453160	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-06-01	0	3	\N	\N	0	3
+124	0039	1	0	1	0	0	1	adquisicion de alimentos para animales/	2	399576.390000000014	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+839	0114	2	\N	2	\N	42	1	adquisicion de racionamiento organico e insumos para el mejoramiento de rancho para la dotacion de combachi de abril 2017 a marzo 2018/	39	136270.029999999999	2	6	2017-01-03 00:00:00	2017-04-26 14:28:03.834488	1	1	2017-01-02	\N	3			0	3
+838	0113	2	\N	2	\N	48	1	adquisicion de dos (2) estaciones meteorologicas portatil automaticas/	1	65000	1	6	2017-01-03 00:00:00	2017-04-26 14:28:23.110155	1	1	2017-01-03	\N	3			0	3
+836	0111	2	\N	2	\N	48	1	adquisicion de modulos solares/	1	70200	1	6	2017-01-03 00:00:00	2017-04-26 14:29:02.922882	1	1	2017-01-03	\N	3			0	3
+835	0110	2	\N	2	\N	42	1	adquisicion de viveres secos, frescos, ingredientes para pan, verduras y mejoramiento de rancho para capibote de abril 2017 a marzo 2018/	1	107156.270000000004	2	6	2017-01-03 00:00:00	2017-04-26 14:29:23.357377	1	1	2017-01-02	\N	3			0	3
+833	0108	2	\N	2	\N	42	1	adquisicion de viveres secos, frescos (carnes) y verduras y tuberculos para el racionamiento del personal naval abril 2017 a marzo 2018/	11	7009593.79000000004	2	6	2017-01-03 00:00:00	2017-04-26 14:30:55.719078	1	6	2017-01-02	\N	3			0	3
+832	0107	2	\N	2	\N	48	1	adquisicion de repuestos para maquinas principales y grupo principal de las unidades y embarcaciones hidrograficas/	1	205426	1	6	2017-01-03 00:00:00	2017-04-26 14:31:12.011118	1	1	2017-01-03	\N	3			0	3
+144	0137	1	0	1	0	0	1	suministro de artículos de papeleria, utiles de oficina y consumibles para equipos de impresión/	2	821531.099999999977	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+1089	0529	1	0	1	0	0	0	servicio de mantenimiento de instalaciones militares	1	41784	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+831	0106	2	\N	2	\N	42	1	adquisicion de viveres secos, frescos (carnes) y verduras y tuberculos para el racionamiento del personal naval abril 2017 a marzo 2018/	23	17990776.0799999982	2	6	2017-01-03 00:00:00	2017-04-26 14:31:31.174007	1	5	2017-01-02	\N	3			0	3
+829	0104	2	\N	2	\N	48	1	adquisicion de repuestos para la modernizacion de la red oceano meteorologica/	1	390000	1	6	2017-01-03 00:00:00	2017-04-26 14:31:54.501959	1	1	2017-01-03	\N	3			0	3
+827	0102	2	\N	2	\N	48	1	servicio de mantenimiento preventivo y reparacion de flota liviana y pesada/	1	130000	1	6	2017-01-03 00:00:00	2017-04-26 14:32:13.036953	2	1	2017-01-03	\N	3			0	3
+826	0101	2	\N	2	\N	47	1	contratacion del servicio de cobranzas de multas administrativas y recuperaciones de dicapi/	1	200000	1	6	2017-01-03 00:00:00	2017-04-26 14:32:28.150778	2	1	2017-01-02	\N	3			0	3
+824	0099	2	\N	2	\N	47	1	servicio de arrendamiento de vivienda para el sub-jefe del distrito de capitania 1 meses marzo a diciembre 2017/	1	40000	1	6	2017-01-03 00:00:00	2017-04-26 14:32:44.066056	2	2	2017-01-02	\N	3			0	3
+1057	0182	3	4	4	3	12	2	entrenamiento en simulador de vuelos para tripulantes de aeronaves de la divra	2	83650	2	8	2017-04-25 16:39:12.616823	2017-05-10 13:59:50.915389	2	10	2017-07-30	\N	3			0	3
+823	0098	2	\N	2	\N	42	1	adquisicion de viveres secos, viveres frescos (verduras) e insumos para el mejoramiento de rancho para el personal de comzouno de abril 2017 a marzo 2018/	100	149368.029999999999	2	6	2017-01-03 00:00:00	2017-04-26 14:32:59.57737	1	1	2017-01-02	\N	3			0	3
+822	0097	2	\N	2	\N	47	1	adquisicion de servidor de alta capacidad/	1	60000	1	6	2017-01-03 00:00:00	2017-04-26 14:33:29.926817	1	1	2017-01-03	\N	3			0	3
+820	0095	2	\N	2	\N	48	1	adquisicion de material electrico y electronico/	1	99725	1	6	2017-01-03 00:00:00	2017-04-26 14:33:51.837786	1	1	2017-01-03	\N	3			0	3
+819	0094	2	\N	2	\N	47	1	servicio de proteccion de base de datos/	1	220660	1	6	2017-01-03 00:00:00	2017-04-26 14:37:19.427307	2	1	2017-01-03	\N	3			0	3
+817	0092	2	\N	2	\N	48	1	adquisicion de material e insumos de impresion para publicaciones, cartas y formatos diversos/	1	105153	1	6	2017-01-03 00:00:00	2017-04-26 14:37:41.080873	1	1	2017-01-03	\N	3			0	3
+816	0091	2	\N	2	\N	47	1	servicio de optimizacion de red e instalacion firewall y correo antispam/	1	245693.920000000013	1	6	2017-01-03 00:00:00	2017-04-26 14:37:57.555905	2	1	2017-01-02	\N	3			0	3
+125	0041	1	0	1	0	0	1	servicio de transporte de combustible aereo para lima y provincia/	1	102420	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+126	0046	1	0	1	0	0	1	adquisicion de bienes para el mantenimiento y reparacion de vehiculos de apoyo de combate/	1	580515	4	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+1052	0174	3	4	4	3	6	2	curso inicial y recurrent  en simulador de vuelo	3	388850	2	8	2017-04-25 14:59:19.859975	2017-04-25 14:59:19.859975	2	10	\N	\N	3			0	3
+1010	0276	2	\N	2	\N	54	1	adquisición de material electrico	39	34334.4499999999971	2	6	2017-04-07 15:52:56.421747	2017-04-25 22:12:55.714769	1	1	2017-04-30	\N	3			0	3
+1261	0268	3	0	3	0	0	0	adquisicion de pilas y baterias	11	55160	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+127	0048	1	0	1	0	0	1	adquisicon de productos farmaceuticos de uso veterinario/	1	66006	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+129	0050	1	0	1	0	0	1	adquisicion equipos agropecuarios para el care caraz/	1	37000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+130	0051	1	0	1	0	0	1	adquisicion de alimento balanceado para animales para el ca-lima/	1	73058.5	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+1094	0638	1	0	1	0	0	0	adquisición de equipos de seguridad para la movilización y atención de brigadasfrente a lluvias y peligros asociados	4	486000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1149	0573	1	0	1	0	0	0	contratacion del suministro de alimentos bienes comunes para el personal de tropa de la 31ra brig inf	11	1341092.76000000001	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-03-01	0	3	 	version2	0	3
+131	0052	1	0	1	0	0	1	adquisicion de fertilizantes, insecticidas y fungicidas de uso agricola para el care-tacna/	1	46990.5999999999985	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+132	0053	1	0	1	0	0	1	servicios diversos jornales/	1	36602	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+133	0054	1	0	1	0	0	1	adquisición de vacunas para las actividades previas de salud/	8	80300	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+1289	0243	3	0	3	0	0	0	pasajes terrestres nacionales	1	70000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1042	0068	3	4	4	3	2	2	adquisición de componentes y repuestos del sistema de aviónica de las flotas de instrucción	2	348801.539999999979	2	8	2017-04-25 13:17:52.655426	2017-05-10 12:57:53.709563	1	10	2017-04-30	\N	3			0	3
+1048	0074	3	4	4	3	2	2	servicio de reparación del sistema de aviónica de la flota mig-29	1	404402.5	2	8	2017-04-25 13:34:30.066508	2017-05-10 12:59:27.444694	2	10	2017-07-30	\N	3			0	3
+1049	0075	3	4	4	3	2	2	servicio de calibración de equipos de aviónica aplicables a la flota c-26b	1	99795	2	8	2017-04-25 13:37:15.098662	2017-05-10 14:15:42.572348	2	10	2017-07-30	\N	3			0	3
+1377	0285	3	4	4	2	1	2	adquisicion de repuestos y partes aplicables a los helicopteros bo-105ls	\N	1236010.20999999996	2	8	2017-05-09 20:28:03.525432	2017-05-10 19:01:05.978456	1	9	2017-04-30	\N	3			0	3
+847	0122	2	\N	2	\N	42	1	adquisicion de viveres secos, frescos e insumos para mejoramiento de rancho y refrigerio para comoperama de abril 2017 a marzo 2018/	130	2086949	2	6	2017-01-03 00:00:00	2017-04-26 14:25:39.0375	1	5	2017-01-02	\N	3			0	3
+134	0055	1	0	1	0	0	1	mantenimiento y reparación de centros de salud/	1	120000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+1150	0642	1	0	1	0	0	0	adquisicion de alimentos perecibles y no perecibles para personal militar de la 22 brig ing	11	80238.5099999999948	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1152	0640	1	0	1	0	0	0	adquisición de otros bienes para la movilización y atención de brigadasfrente a lluvias y peligros asociados	5	264600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1153	0641	1	0	1	0	0	0	repuestos y accesorios de vehiculos	176	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1155	0609	1	0	1	0	0	0	suministro de alimentos para el personal de tropa del servicio militar voluntario de la ii de	3	110202.169999999998	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1156	0598	1	0	1	0	0	0	adquiscion de articulos de aseo limpieza y tocador	1	68000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1157	0678	1	0	1	0	0	0	adquisicion de insumos aeronauticos	67	129437	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-03-01	0	3	 	version2	0	3
+954	0229	2	1	4	2	42	1	adquisición de suministro de lubricantes grasas y afines/	22	983220.560000000056	5	2	2017-01-03 00:00:00	2017-05-26 19:10:04.695542	1	5	2017-01-04	\N	3	08		8	3
+961	0236	2	1	4	1	42	1	adquisicion raciones de combate	1	158400	2	2	2017-01-03 00:00:00	2017-05-26 19:13:00.710946	1	1	2017-01-03	\N	3	13		13	3
+261	0261	1	\N	1	4	\N	1	adquisición de repuestos y accesorios para copiadoras, equipos, maquinarias y equipos de oficina y otros afines para la 31a brig inf/	13	95248.0399999999936	2	2	2017-03-21 06:34:00	2017-04-27 17:36:31.905022	1	7	2017-02-01	\N	3			0	3
+324	0330	1	\N	1	4	\N	1	actividades de bienestar para el personal/	29	50000	1	2	2017-03-21 06:34:00	2017-04-27 17:38:53.166556	1	1	2017-03-01	\N	3			0	3
+1027	0288	2	\N	2	\N	42	1	adquisicion de vestuario textiles y calzados para el personal altas af-2017	3	502864.099999999977	2	6	2017-04-20 20:44:45.999593	2017-04-25 22:08:29.408084	1	1	2017-04-30	\N	3			0	3
+1158	0680	1	0	1	0	0	0	contratacion del servicio de agenciamiento de pasajes aereos	1	42229	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-03-01	0	3	 	version2	0	3
+1160	0664	1	0	1	0	0	0	adquisicion de repuestos y accesorios para vehiculos y equipo mecánico para atención de emergencias	457	274385	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1162	0532	1	0	1	0	0	0	contratacion del servicio de refrigerio para el personal de economia del ejercito-oee	1	80000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1163	0577	1	0	1	0	0	0	contratación del servicio de transporte y traslado de carga de bienes y materiales para la 31ra brig inf	1	47330	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version2	0	3
+135	0056	1	0	1	0	0	1	manto y reparación de equipo y material hospitalario/	1	120000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+136	0057	1	0	1	0	0	1	mantenimiento y reparación de establecimiento de salud/	1	90001	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+137	0058	1	0	1	0	0	1	adquisicion de repuestos y accesorios de equipo médico/	42	41604	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+138	0059	1	0	1	0	0	1	servicio de mantenimiento de equipo médico/	1	34802	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	2	2017-03-01	0	3	\N	\N	0	3
+994	0260	2	\N	2	\N	42	1	supervision de obra para la construcción nueva base aeronaval del callao	1	8250969	2	6	2017-04-06 22:35:23.129641	2017-04-25 22:20:08.806998	2	4	2017-04-30	\N	3			0	3
+279	0279	1	0	1	0	0	1	adquisicion de mandarina para el ptsmv/	1	106989.119999999995	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-01-01	0	3	\N	\N	0	3
+139	0060	1	0	1	0	0	1	adquisición de material médico para examen médico de las escuelas de formación/	67	188229	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-01-01	0	3	\N	\N	0	3
+140	0061	1	0	1	0	0	1	adquisición de equipo médico (rayos x arco en c rodable)/	1	650150	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-01-01	0	3	\N	\N	0	3
+360	0372	1	0	1	0	0	1	alimentos para personas/	7	631761.670000000042	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+146	0139	1	0	1	0	0	1	servicio de transporte terrestre via emisión de pasajes a nivel nacional./	1	307225	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+147	0140	1	0	1	0	0	1	suministro de bienes de distribucion gratuita y otros/	2	103100	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+148	0141	1	0	1	0	0	1	servicio de mantenimiento, reparacion y acondicionamiento de instalaciones./	1	162543	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-09-01	0	3	\N	\N	0	3
+150	0143	1	0	1	0	0	1	servicio de mantenimiento y reparacion de vehiculos./	1	51799	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+151	0144	1	0	1	0	0	1	servicio de mantenimiento de equipos en general /	1	59473	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+154	0147	1	0	1	0	0	1	maestria en defensa y desarrollo nacional/	1	620000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	4	2017-03-01	0	3	\N	\N	0	3
+118	0017	1	\N	1	4	\N	1	servicio de transporte de carga a nivel nacional/	1	250000	2	2	2017-03-21 06:34:00	2017-04-27 17:30:13.408012	2	1	2017-03-01	\N	3			0	3
+1009	0275	2	\N	2	\N	50	1	adquisición de ventiladores de transporte	1	399000	2	6	2017-04-07 15:50:42.570567	2017-04-25 22:13:19.568919	1	1	2017-04-30	\N	3			0	3
+1093	0535	1	0	1	0	0	0	contratacion del servicio de instalaciones electricas mecanicas para el desarrollo de dispositivo de entrenamiento cicte/<br /><b>servicio</b>	1	105236	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+155	0148	1	0	1	0	0	1	programa de ingenieria electronica en las asignaturas de las redes de la informatica, monitorio de espectro electromagnetico y telecomunicaciones - esc com. /	1	96720	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+156	0149	1	0	1	0	0	1	servicio de capacitacion para alumnos del programa basico y superior de la esc intendencia (gestion publica)./	1	202500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+157	0150	1	0	1	0	0	1	curso en relaciones internacionales y politica exterior del peru- eie, eose./	1	64389	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-11-01	0	3	\N	\N	0	3
+1164	0556	1	0	1	0	0	0	servicio de transporte aereo para la iv de - vraem	1	1001832.75	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	3	2017-06-01	0	3	 	version2	0	3
+1203	0603	1	0	1	0	0	0	mejoramiento y remodelacion del pabellon tsm	1	380000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+203	0198	1	0	1	0	0	1	adquisicion de uniformes digitalizados y cinto de lona/	5	381450	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+1095	0663	1	0	1	0	0	0	adquisicion de lubricantes/ grasas y afines para vehiculos y equipo mecanico para atencion de emergencias	11	41671	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1096	0620	1	0	1	0	0	0	servicio de atenciones diversas para las reuniones de comando en el cge af-2017/	7	157200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1097	0590	1	0	1	0	0	0	adquisicion de utiles de escritorio y material pad	1	36415	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	7	2017-04-01	0	3	 	version2	0	3
+1098	0617	1	0	1	0	0	0	servicio de mantenimiento (mano de obra) para maquinarias y equipos de ingenieria	1	87010	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	version2	0	3
+1056	0180	3	4	4	3	12	2	entrenamiento de pilotos en simulador de vuelo de aeronave del grup6	1	251601	2	8	2017-04-25 16:19:57.888904	2017-05-10 14:03:20.432568	2	10	2017-03-30	\N	3			0	3
+1408	0306	1	4	1	1	22	2	adquisicion de grasas y aceites de uso aeronautico	1	1978758.71999999997	5	9	2017-05-10 21:25:21.058143	2017-05-10 21:25:21.058143	1	9	2017-05-31	\N	3		FALTA MODIF PAC Y REMISON DE EXPEDIENTE INICIO	0	3
+1099	0576	1	0	1	0	0	0	adquisición de repuestos y accesorios para copiadoras/ equipos/ maquinarias y equipos de oficina y otros afines para la 31a brig inf	13	103505	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1100	0689	1	0	1	0	0	0	suministro de alimentos para el consumo humano	9	751140	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	version2	0	3
+781	0056	2	\N	2	\N	43	1	servicio de telefonia movil iridium/	1	90000	1	6	2017-01-03 00:00:00	2017-04-26 14:45:26.072148	2	1	2017-01-06	\N	3			0	3
+180	0175	1	0	1	0	0	1	adquisicion de uniformes digitalizados/	3	131309.23000000001	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+1101	0538	1	0	1	0	0	0	suministro de bienes para mantenimiento de edificios/ estructuras/ instalaciones electricas y otros	286	364308	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1103	0619	1	0	1	0	0	0	suministro de articulos de cafeteria para consumo humano	30	177900.799999999988	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1105	0527	1	0	1	0	0	0	actividades conmemorativas del personal militar	8	60000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1106	0548	1	0	1	0	0	0	adquisicion de repuestos para el mantenimiento de vehiculos de la 22 brig ing	27	71000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+204	0199	1	0	1	0	0	1	adquisicion de maletin de aula tipo james bond/	1	70000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+206	0201	1	0	1	0	0	1	adquisicion de porte terno y porta kepi/	1	50000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+207	0202	1	0	1	0	0	1	adquisicion de maletas de viaje y maletas tipo cabinera para los alumnos del iespte-ete. /	1	200000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+240	0240	1	0	1	0	0	1	material para mantenimiento de edificios y estructuras (casas de servicios)/	20	105350	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+158	0151	1	0	1	0	0	1	servicio de capacitación para oficiales del programa basico y superior de operaciones sicologicas del ejército - curso training./	1	100237	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+159	0152	1	0	1	0	0	1	enseñanza en el idioma ingles a los alumnos de la escuela de inteligencia del ejercito - eie./	1	118150	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+993	0259	2	\N	2	\N	57	1	adquisicion de suministros (pinturas) para mantenimiento y reparación de las unidades fluviales de la flotilla	36	55000	2	6	2017-04-06 22:33:24.828793	2017-04-25 22:20:33.254643	1	1	2017-04-30	\N	3			0	3
+991	0258	2	\N	2	\N	42	1	mantenimiento de dos mil (2000) horas de una (1) comprensora de aire j.p sauer & sonhn	1	50000	1	6	2017-04-06 22:31:22.19551	2017-04-25 22:20:54.539113	2	1	2017-04-30	\N	3			0	3
+990	0257	2	\N	2	\N	42	1	elaboración expediente tecnico para el servico del tráfico maritimo del puerto del callao	1	79908	1	6	2017-04-06 22:28:40.57032	2017-04-25 22:21:14.681836	2	1	2017-05-30	\N	3			0	3
+160	0153	1	0	1	0	0	1	servicio de capacitacion en carreras profesionales tecnicas para los alumnos de la eie (promocion 2017 - 2019)./	1	172310	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+287	0287	1	0	1	0	0	1	adquisición material de escritorio/	41	59915	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+163	0156	1	0	1	0	0	1	servicio de preparacion de alimentos para el personal./	1	124130	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+164	0157	1	0	1	0	0	1	contratacion de seguros personales contra accidentes para alumnos de la eie./	1	47260	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-10-01	0	3	\N	\N	0	3
+145	0138	1	\N	1	4	\N	1	suministro de articulos de limpieza, tocador y productos quimicos/	2	198513	5	2	2017-03-21 06:34:00	2017-04-27 17:32:28.122418	1	1	2017-05-01	\N	3			0	3
+149	0142	1	\N	1	4	\N	1	adquisicion de alimentos y bebidas para consumo humano/	1	51547	5	2	2017-03-21 06:34:00	2017-04-27 17:32:50.606833	1	1	2017-03-01	\N	3			0	3
+153	0146	1	\N	1	4	\N	1	adquisicion de materiales y equipos para equitacion/	1	56850	2	2	2017-03-21 06:34:00	2017-04-27 17:33:24.770438	1	1	2017-06-01	\N	3			0	3
+161	0154	1	\N	1	4	\N	1	suministro de insumos para impresión de brevetes militares./	1	125491	1	2	2017-03-21 06:34:00	2017-04-27 17:33:44.834142	1	1	2017-03-01	\N	3			0	3
+162	0155	1	\N	1	4	\N	1	adquisicion de prendas diversas y otros para el personal de la eie./	2	157293	1	2	2017-03-21 06:34:00	2017-04-27 17:34:13.216066	1	1	2017-05-01	\N	3			0	3
+165	0158	1	\N	1	4	\N	1	adquisicion de dispositivos de almacenamiento portatil usb/	1	32768	2	2	2017-03-21 06:34:00	2017-04-27 17:34:33.956807	1	2	2017-03-01	\N	3			0	3
+166	0159	1	0	1	0	0	1	contratacion del servicio de transporte terrestre para el personal de cadetes de la emch cfb/	1	63150	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+169	0162	1	0	1	0	0	1	contratacion del servicio de mantenimiento de la cuadra de aspirantes de la emch cfb/	1	130000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+170	0163	1	0	1	0	0	1	contratacion del servicio de mantenimiento de la cuadra de cadetes pab i/	1	88000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+171	0164	1	0	1	0	0	1	contratacion del servicio de seguro contra accidentes/	1	130200	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+172	0165	1	0	1	0	0	1	contratación del servicio de mantenimiento de las aulas del pab c/	1	270000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+173	0168	1	0	1	0	0	1	contratación del servicio de equipos sanitarios para estada de vivac/	1	53203	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+516	0010	3	1	4	1	4	1	adquisicion de vestuario para el egreso de cadetes, alumnos, licenciamiento de tropa, renovacion para el personal de cadetes y alumnos y zona desarrollo 	36	1936185.39999999991	2	2	2017-03-21 06:34:00	2017-05-26 19:04:36.890241	1	5	2017-04-01	\N	3	01	EXPEDIENTE ENTREGADO A ESTUDIO DE MERACDO / CON OFICIO SE SOLICITO EL CAMBIO DE MODALIDAD	1	3
+1065	0254	3	4	4	3	2	2	adquisicion  de repuestos de avionica para aeronaves kt1	1	5402.81999999999971	2	8	2017-04-25 19:00:47.1832	2017-05-11 19:12:46.481716	1	10	2017-04-30	\N	3			0	3
+1265	0271	3	0	3	0	0	0	adquisicion de farmacos para reumatologia	2	121596.960000000006	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+175	0170	1	0	1	0	0	1	suministro de material pad por convenio marco /	14	151473.649999999994	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+176	0171	1	0	1	0	0	1	contratacion del servicio de internet/	1	48000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+361	0373	1	0	1	0	0	1	alimentos para personas/	6	338321.349999999977	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+177	0172	1	0	1	0	0	1	contratacion del servicio de mantenimiento de la pista de combate/	1	75000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+178	0173	1	0	1	0	0	1	adquisicion de colchon de resorte de 1 plz c/almohada/	1	72000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+179	0174	1	0	1	0	0	1	adquisicion de prendas diversas/	17	177782.200000000012	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+181	0176	1	0	1	0	0	1	adquisición de buzos y complementos para entrenamiento /	12	113180	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+183	0178	1	0	1	0	0	1	adquisicion de zapatillas deportivas /	2	74250	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+184	0179	1	0	1	0	0	1	adquisición de maletas, maletines y accesorios diversos /	9	219600	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+185	0180	1	0	1	0	0	1	adquisición de borceguí táctico y zapatos corfan /	2	116550	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+186	0181	1	0	1	0	0	1	adquisicion de articulos diversos para gnc/	2	169200	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+187	0182	1	0	1	0	0	1	adquisicion de mobiliario diverso /	5	231493	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+188	0183	1	0	1	0	0	1	adquisicion de repuestos y mantenimiento de vehiculos /	2	74687	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+189	0184	1	0	1	0	0	1	convenio educativo con universidad esan para la enseñanza de administracion al personal de cadetes de la emch cfb /	1	3058707	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	8	2017-03-01	0	3	\N	\N	0	3
+988	0255	2	\N	2	\N	59	1	servicio de mantenimiento, restauración y acondicionamiento de areas de la fuerza de operaciones especiales	1	398251	2	6	2017-04-06 22:17:27.618499	2017-04-25 22:22:16.860514	2	1	2017-04-30	\N	3			0	3
+1395	0319	2	1	2	\N	\N	1	contratacion del servicio de mantenimiento de infraestructura y loza concreto muelle de la estacion naval de paita	1	150000	1	6	2017-05-10 16:04:35.551251	2017-05-10 16:04:35.551251	2	1	\N	\N	3			0	3
+143	0136	1	\N	1	4	\N	1	suministro de bienes para mantenimiento de edificios, estructuras, instalaciones electricas y otros./	3	422302	5	2	2017-03-21 06:34:00	2017-04-27 17:31:42.440294	1	5	2017-04-01	\N	3			0	3
+190	0185	1	0	1	0	0	1	convenio educativo con centro idiomas de la universidad del pacifico para enseñanza de idioma ingles al personal de cadetes de la emch cfb /	1	1123950	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	8	2017-03-01	0	3	\N	\N	0	3
+191	0186	1	0	1	0	0	1	convenio educativo con universidad de ricardo palma para enseñanza de medicina al personal de cadetes de la emch cfb /	1	162743	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	8	2017-03-01	0	3	\N	\N	0	3
+241	0241	1	0	1	0	0	1	suministros de material de escritorio y utiles de oficina/	94	94449	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+192	0187	1	0	1	0	0	1	adquisicion de papeleria en general, utiles de escritorio y material pad - convenio marco/	45	106241	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+234	0234	1	0	1	0	0	1	material de limpieza/	1	97097	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+193	0188	1	0	1	0	0	1	servicio de transporte terrestre para las practicas pre profesional del personal de alumnos del iestpe-ete/	1	59003	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+194	0189	1	0	1	0	0	1	adquisicion de materiales diversos de enseñanza/	329	340000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+195	0190	1	0	1	0	0	1	adquisicion de material de aseo y limpieza/	41	102630	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+856	0131	2	0	2	0	0	1	adquisicion de insumos para mejoramiento de rancho area dicapi de abril 2017 a marzo 2018/	181	410485.869999999995	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	5	2017-01-02	0	3	\N	\N	0	3
+898	0173	2	\N	2	\N	50	1	servicio de asistencia medica para el personal naval en el extranjero/	1	65000	2	6	2017-01-03 00:00:00	2017-04-26 14:10:14.747714	2	1	2017-01-03	\N	3			0	3
+196	0191	1	0	1	0	0	1	adquisicion de medicinas/	91	50000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+197	0192	1	0	1	0	0	1	adquisicion de material odontologico, insumos y instrumentales/	64	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+198	0193	1	0	1	0	0	1	adquisicion de productos quimicos para mantenimiento de piscina/	7	38940	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+199	0194	1	0	1	0	0	1	adquisicion de articulos para mantenimiento salitrosas /	212	146250	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+200	0195	1	0	1	0	0	1	adquisicion de colchon/	1	300000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1004	0270	2	\N	2	\N	57	1	servicio de reparación integral de la maquina principal del b.a.p curaray	1	60649.6399999999994	1	6	2017-04-07 15:08:36.287942	2017-04-25 22:15:40.698645	2	1	2017-04-30	\N	3			0	3
+1002	0268	2	\N	2	\N	56	1	atenciones oficiales protocolares e institucionales en el área de san borja y callao segundo semestre	1	399000	1	6	2017-04-07 15:04:12.376548	2017-04-25 22:16:33.834852	1	1	2017-05-30	\N	3			0	3
+1274	0241	3	0	3	0	0	0	adquisicion de viveres y abarrotes por subasta inversa pacientes hospitalizados y guardias medicas	28	140845	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	FAP	0	3
+1275	0109	3	0	3	0	0	0	asesoria especializada instrucción y evaluacion academica en tierra (edaci)	0	61741.25	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-02-01	0	3	 	FAP	0	3
+935	0210	2	4	4	3	42	2	adquisicion de material para las inspecciones de la aeronave an-32b/	35	462062.210000000021	1	6	2017-01-03 00:00:00	2017-04-28 14:59:27.26131	1	10	2017-01-03	\N	3			0	3
+1001	0267	2	\N	2	\N	50	1	adquisición de monitores de signos vitales de 6 parametros	1	320000	2	6	2017-04-07 15:00:36.953794	2017-04-25 22:17:02.96267	1	1	2017-04-30	\N	3			0	3
+999	0265	2	\N	2	\N	55	1	servicio de reparación de ecosonda multihaz del servicio de hidrografía y navegación de la amzonía	1	130000	1	6	2017-04-07 14:48:59.914519	2017-04-25 22:18:09.489871	2	1	2017-04-30	\N	3			0	3
+1145	0670	1	0	1	0	0	0	cuerda estatica 3 mts	1	40500	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1020	0291	2	4	4	3	46	2	adquisición de equipos de comunicaciones para el buque escuela a vela b.a.p. union	\N	752935.569999999949	2	6	2017-04-12 23:08:26.856187	2017-05-16 20:30:40.446036	1	9	2017-04-30	\N	3			0	3
+1070	0261	3	4	4	3	3	2	servicio de calificacion y certificacion en mantenimiento de asientos de eyeccion mk-pe 16l y paracaidas psp nivel 2 y 3	1	505964.799999999988	1	8	2017-04-25 20:34:53.105743	2017-05-10 13:48:21.714626	2	10	2017-05-31	\N	3			0	3
+1187	0558	1	0	1	0	0	0	adquisicion de tela de lanilla v.o	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+295	0295	1	0	1	0	0	1	contratacion del servicio de agenciamiento de pasajes terrestres/	1	290000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+262	0262	1	0	1	0	0	1	adquisición de desinfectantes, detergentes y desodorantes, implementos y medios para aseo, material, repuestos y accesorios para tocador y cosmetología, entre otros afines para la 31a brig inf./	68	131299	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+264	0264	1	0	1	0	0	1	contratacion del servicio de mantenimiento, reparación y acondicionamiento de mobiliario y similares, de oficinas e instalaciones militares de la 31a brig inf./	1	43000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+266	0266	1	0	1	0	0	1	adquisición de piezas y elementos de instalaciones eléctricas y electrónica para la 31a brig inf./	95	161225	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+520	0014	3	1	4	2	1	1	adquisicion de material miscelaneo para las aeronaves de los grupos aereos de la fap y para defensa aerea 	771	997635.709999999963	2	8	2017-03-21 06:34:00	2017-05-09 19:53:33.784648	1	5	2017-04-01	\N	3			0	3
+998	0264	2	\N	2	\N	42	1	manteniemiento de diez mil (10,000) horas del grupo electrogeno n° 3 volvo penta	1	200000	1	6	2017-04-07 14:46:00.074653	2017-04-25 22:18:37.301385	2	1	2017-04-30	\N	3			0	3
+529	0023	3	1	4	1	19	1	adquisicion de baterias para vehiculos 	10	58991	2	2	2017-03-21 06:34:00	2017-05-26 19:10:54.54728	1	1	2017-05-01	\N	3	11		11	3
+574	0078	3	1	4	2	4	1	adquisicion de casacas para el personal militar fap 	1	1731877	2	2	2017-03-21 06:34:00	2017-05-29 14:15:14.098556	1	5	2017-03-01	\N	3	\N		40	3
+908	0183	2	1	4	2	42	1	adquisicion de casacas camufladas tipo ataacs y tipo selva/	2	130800	2	2	2017-01-03 00:00:00	2017-05-29 18:26:14.536562	1	1	2017-01-03	\N	3		PROVIENE DE LA LP N° 09-2016	0	3
+1276	0111	3	0	3	0	0	0	asesoria especializada en instrucción y simulador de vuelos (edaci)	0	61741.25	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-02-01	0	3	 	FAP	0	3
+269	0269	1	0	1	0	0	1	contratacion del servicio de mantenimiento y reparación de vehiculos de la 31a brig inf./	1	120426	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+270	0270	1	0	1	0	0	1	adquisición de suministros para mantenimiento y reparación para edificios y estructuras de la 31a brig inf./	92	534472.989999999991	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-05-01	0	3	\N	\N	0	3
+271	0271	1	0	1	0	0	1	adquisición materiales de construcción y otros elementos de mampostería, maderas y accesorios de madera en general, revestimiento y acabados, productos de concreto y otros materiales de construcción, accesorios y repuestos de máquinas, entre otros afines 	6	57799.0599999999977	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-05-01	0	3	\N	\N	0	3
+272	0272	1	0	1	0	0	1	mantenimiento, reparación y acondicionamiento de edificios y estructuras para las instalaciones de la 31a brig inf./	1	88235	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+273	0273	1	0	1	0	0	1	adquisicion de materiales para aseo, limpieza y tocador /	31	60000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+274	0274	1	0	1	0	0	1	adquisicion de consumibles (convenio marco)/	9	39047	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+275	0275	1	0	1	0	0	1	adquisicion de papeleria en general, utiles y materiales de oficina (convenio marco)/	37	81000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+276	0276	1	0	1	0	0	1	adquisicion de articulos para mejoramiento de rancho/	1	200000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+568	0072	3	4	4	3	2	2	adquisición de componentes y repuestos del sistema de aviónica de la flota mig-29 	1	1569958.17999999993	2	2	2017-03-21 06:34:00	2017-05-22 14:05:14.893312	1	10	2017-06-01	\N	3			0	3
+1022	0295	2	4	4	3	46	2	adquisicion de equipos de comunicaciones hf y v/uhf	1	721693.910000000033	2	6	2017-04-12 23:16:48.145824	2017-05-16 20:31:46.549888	1	9	2017-04-30	\N	3			0	3
+1107	0531	1	0	1	0	0	0	adquisicion de articulos diversos para oficinas de la sg cge	5	116216	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+277	0277	1	0	1	0	0	1	adquisicion de alimentos para el personal de tsmv (verduras, tuberculos y raices)/	4	914203.550000000047	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-01-01	0	3	\N	\N	0	3
+278	0278	1	0	1	0	0	1	adquisicion de leche y harina de trigo para panificacion para el ptsmv/	2	1300781.10000000009	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-01-01	0	3	\N	\N	0	3
+280	0280	1	0	1	0	0	1	adquisicion de vvss (menestras y aceite vegetal) para el personal de tsmv/	5	554498.770000000019	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-01-01	0	3	\N	\N	0	3
+281	0281	1	0	1	0	0	1	adquisicion de viveres frescos (verduras y frutas) para el personal de tsmv/	8	237589.640000000014	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-01-01	0	3	\N	\N	0	3
+282	0282	1	0	1	0	0	1	adquisicion de materiales para aseo, limpieza y tocador /	16	163008.200000000012	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+283	0283	1	0	1	0	0	1	adquisicion de respuestos y accesorios (convenio marco)/	17	15264	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+284	0284	1	0	1	0	0	1	adquisicion de papeleria en general, utiles y materiales de oficina (convenio marco)/	47	38170.3600000000006	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+286	0286	1	0	1	0	0	1	adquisición material de limpieza/	23	42904	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+288	0288	1	0	1	0	0	1	adquisición material pad (otros accesorios y repuestos)/	9	28606	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+289	0289	1	0	1	0	0	1	cantratacion del suministro de material de escritorio/	60	150000.570000000007	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+290	0290	1	0	1	0	0	1	contratacion del suministro de material de procesamiento automatico de datos/	11	110587.830000000002	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+291	0291	1	0	1	0	0	1	contratacion del servicio de asesoramiento tecnico en estructuras y sistemas de helicoptero mi-8 y mi-17/	1	108000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+292	0292	1	0	1	0	0	1	contratacion del servicio de asesoramiento tecnico en avionica, electricidad e instrumentos de aeronaves rusas/	1	108000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+293	0293	1	0	1	0	0	1	contratacion del servicio de asesoramiento tecnico en mantenimiento de aeronaves/	1	108000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+294	0294	1	0	1	0	0	1	contratacion del servicio de asesoramiento tecnico en mantenimiento de helicopteros agusta/	1	108000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+296	0296	1	0	1	0	0	1	contratacion del servicio de agenciamiento de pasajes aereos/	1	380000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+1199	0559	1	0	1	0	0	0	adquisicion de articulos para la pm	11	307432.320000000007	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1200	0560	1	0	1	0	0	0	adquisicion de polos de algodón para uniforme de paseo	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1201	0596	1	0	1	0	0	0	suministro de alimentos para personas	6	204314.799999999988	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	version2	0	3
+297	0297	1	0	1	0	0	1	contratacion del servicio de mantenimiento, reparacion y calibracion de equipos y componentes menores para los sitemas de mecanica hidraulica y avionica del helicóptero agusta 109k/	1	360000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+754	0029	2	0	2	0	0	1	servicio de mantenimiento de doce (12) ploteadores de la dhn/	1	79771	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+1024	0280	2	\N	2	\N	50	1	adquisicion de equipos para sala de rayos x	2	250000	2	6	2017-04-18 15:05:10.921358	2017-04-25 22:11:38.307809	1	1	2017-04-30	\N	3			0	3
+878	0153	2	\N	2	\N	48	1	actualizacion de licencia arcgis enterprise standard 10.4/	1	66000	1	6	2017-01-03 00:00:00	2017-04-26 14:14:42.699665	2	1	2017-01-03	\N	3			0	3
+1277	0110	3	0	3	0	0	0	asesoria especializada en instrucción y evaluacion academica en vuelo (edaci)	0	61741.25	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-02-01	0	3	 	FAP	0	3
+1043	0071	3	4	4	3	2	2	adquisición de componentes y repuestos del sistema de aviónica de la flota m-2000	1	211344	2	8	2017-04-25 13:21:07.551005	2017-05-10 14:18:17.566136	1	10	2017-05-30	\N	3			0	3
+267	0267	1	\N	1	4	\N	1	adquisicion de herramientas para la 31a brig inf./	19	79548	2	2	2017-03-21 06:34:00	2017-04-27 17:37:23.223585	1	1	2017-04-01	\N	3			0	3
+285	0285	1	\N	1	4	\N	1	servicio de pasajes y gastos de transporte para la ese y la 3a brig ffee/	1	70000	2	2	2017-03-21 06:34:00	2017-04-27 17:37:45.857813	2	1	2017-02-01	\N	3			0	3
+298	0298	1	\N	1	4	\N	1	adquisicion de insumos aeronauticos/	3	1200000	5	2	2017-03-21 06:34:00	2017-04-27 17:38:11.667661	1	5	2017-03-01	\N	3			0	3
+300	0305	1	0	1	0	0	1	contratacion del servicio de mantenimiento de visores nocturnos para aeronaves/	1	39950	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	2	2017-03-01	0	3	\N	\N	0	3
+302	0308	1	0	1	0	0	1	alimento para personas - bienes comunes/	13	188021.910000000003	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+303	0309	1	0	1	0	0	1	alimento para personas - clasico/	24	286660.619999999995	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+304	0310	1	0	1	0	0	1	fruta variada/	2	179715.899999999994	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+305	0311	1	0	1	0	0	1	papeleria en general /	39	323269	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+306	0312	1	0	1	0	0	1	repuestos y accesorios (material pad)/	9	123663.199999999997	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+307	0313	1	0	1	0	0	1	material de aseo, limpieza y tocador/	24	97817.8399999999965	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+308	0314	1	0	1	0	0	1	material de construcción y eléctrico/	2	198853	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+309	0315	1	0	1	0	0	1	manto de edificaciones y estructuras/	4	34500	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+1073	0265	3	4	4	3	2	2	adquisición de un (01) high speed data loading kit con n/p: 241-601241-000, aplicable aeronaves del grup8	1	52540	4	8	2017-04-25 20:49:20.169132	2017-05-10 13:45:11.482243	1	10	2017-05-31	\N	3			0	3
+1053	0177	3	4	4	3	9	2	servicio de simulador de vuelo en  aeronave del gru42	1	91700	2	8	2017-04-25 15:04:31.383542	2017-05-10 14:08:09.342756	2	10	2017-03-30	\N	3		INCLUIDO EN EL PLAN ANUAL DE LA FAP VERSIÓN 2	0	3
+1387	0308	2	1	2	\N	42	1	adquisicion de repuestos electricos y electronicos para diversos sistema de abordo del bap pisagua	1	187050	1	6	2017-05-10 15:26:56.28972	2017-05-10 15:26:56.28972	1	1	\N	\N	3			0	3
+310	0316	1	0	1	0	0	1	adquisicion de papeleria y utiles de escritorio/	39	113428	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+311	0317	1	0	1	0	0	1	adquisicion de otros accesorios y repuestos-material pad/	9	48384	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+312	0318	1	0	1	0	0	1	adquisicion de utiles de aseo, limpieza y tocador/	24	55552	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+313	0319	1	0	1	0	0	1	adquisicion de material para el mantenimiento de la infraestructura construida/	130	116360	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+314	0320	1	0	1	0	0	1	suministro de alimentos para el personal de tropa de la tercera brigada blindada/	9	1192625.29000000004	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-10-01	0	3	\N	\N	0	3
+315	0321	1	0	1	0	0	1	suministro de alimentos para el personal de tropa de la tercera brigada blindada/	8	617761	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-10-01	0	3	\N	\N	0	3
+316	0322	1	0	1	0	0	1	utiles de escritorio/	44	54400	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+317	0323	1	0	1	0	0	1	otros accesorios y repuestos/	4	32600	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+319	0325	1	0	1	0	0	1	papeleria en general-utiles de escritorios/	62	224381	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+320	0326	1	0	1	0	0	1	articulos de aseo, limpieza y tocador/	39	122287	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+321	0327	1	0	1	0	0	1	otros accesorios y repuestos- material pad/	5	63299	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+322	0328	1	0	1	0	0	1	servicio de transporte terrestre de combustible (flete)./	2	51499.0699999999997	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+527	0021	3	4	4	4	1	2	adquisicion de grasas, aceites y lubricantes para las diferentes aeronaves de las unidades aereas fap y para defensa aerea (radares) (EXCLUIDO)	74	1320259.25	2	8	2017-03-21 06:34:00	2017-06-08 18:09:00.977797	1	9	2017-04-01	\N	3		PROCESO EXCLUIDO EN INCLUIDO NUEVAMENTE EN LA VERSION 4 DEL PAC / NUEVO PAC 289  	0	3
+323	0329	1	0	1	0	0	1	material para mantenimiento de infraestructura y casas de servicio de la 6a brig blin /	106	102000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+246	0246	1	0	1	0	0	1	repuestos de vehiculos/	1	35815	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+325	0331	1	0	1	0	0	1	alimentos para el personal de tropa de la 6a brigada blindada/	13	866554.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+326	0332	1	0	1	0	0	1	alimentos para el personal de tropa de la 6a brigada blindada/	6	470608.799999999988	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+328	0334	1	0	1	0	0	1	contratacion para el suministro de alimento para animales/	2	1293246.92999999993	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-01-01	0	3	\N	\N	0	3
+329	0335	1	0	1	0	0	1	servicio de transporte terrestre de combustible para la 3ra brig cab /	1	75719.3999999999942	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+330	0336	1	0	1	0	0	1	contratacion para el suministro de material de limpieza/	40	64280.4000000000015	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+1279	0246	3	0	3	0	0	0	arreglos florales para ceremonias y honores funebres del personal fap	5	50000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1280	0304	3	0	3	0	0	0	servicio de reparación y overhaul de componentes para la flota mi-17/mi-171sh	2	32051.7999999999993	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	10	2017-04-01	0	3	 	FAP	0	3
+1281	0219	3	0	3	0	0	0	dictado de asignaturas para el programa alto mando 2017 (diploma alto mando y maestria en gestion publica)	24	220000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	FAP	0	3
+1144	0672	1	0	1	0	0	0	lentes protectores	1	48600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1217	0581	1	4	4	3	22	2	servicio de overhaul de componentes de aeronaves de fabricacion americana y europea	1	3135600	5	4	2017-04-20 00:00:00	2017-04-28 22:28:17.845842	2	9	2017-04-01	\N	3		version2	0	3
+332	0338	1	0	1	0	0	1	otros accesorios y repuestos/	10	39560	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+333	0339	1	0	1	0	0	1	suministro de material para rehabilitación de edificios y estructuras/	4	192676	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+334	0340	1	0	1	0	0	1	material de escritorio/	61	136845.899999999994	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+335	0341	1	0	1	0	0	1	material de aseo y limpieza/	20	34500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	2	2017-03-01	0	3	\N	\N	0	3
+336	0342	1	0	1	0	0	1	suministro de material de limpieza/	22	73625	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+337	0343	1	0	1	0	0	1	suministro de material para mantenimiento de infraestructura construida/	2	81671	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+338	0344	1	0	1	0	0	1	suministro papeleria y utiles de escritorio/	94	332786	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+339	0345	1	0	1	0	0	1	suministro de material pad/	24	94592.0099999999948	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+340	0346	1	0	1	0	0	1	contratacion del servicio de transporte combustible/	1	209000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+341	0347	1	0	1	0	0	1	suministro de material de construcción para edificios y estructuras para la 5a brigada de montaña/	81	115788	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+342	0348	1	0	1	0	0	1	suministro de material de limpieza para la 5a brigada de montaña/	43	50681	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+343	0349	1	0	1	0	0	1	suministro de material de escritorio para la 5a brigada de montaña/	76	77530	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+344	0350	1	0	1	0	0	1	suministro de otros accesorios y repuestos para la 5a brigada de montaña/	5	44405	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+345	0351	1	0	1	0	0	1	suministro de otros accesorios y repuestos para la 5a brig mont/	44	3675	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+1389	0310	2	1	2	\N	\N	1	adquiscion de amoniaco anhidro para la planta de frio de la estación naval de paita	1	55188	1	6	2017-05-10 15:50:14.965646	2017-05-10 15:50:14.965646	1	1	\N	\N	3			0	3
+1390	0312	2	1	2	\N	\N	1	contrataciones del servicio de asesoria legal para la estación naval de paita	1	36000	1	6	2017-05-10 15:52:24.670688	2017-05-10 15:52:24.670688	2	1	\N	\N	3			0	3
+1391	0313	2	1	2	\N	\N	1	mantenimiento y reparación de baños del edificio guisse y baño y cocina del edificio grau	1	85000	1	6	2017-05-10 15:54:34.565538	2017-05-10 15:54:34.565538	2	1	\N	\N	3			0	3
+1006	0272	2	\N	2	\N	42	1	adquisción de repuestos para el mantenimiento y reparación de los vehiculos de transporte administrativo	22	8787970	2	6	2017-04-07 15:12:53.691365	2017-04-25 22:14:47.360508	1	1	2017-04-30	\N	3			0	3
+346	0352	1	0	1	0	0	1	suministro de otros accesorios y repuestos para la 5a brig mont/	5	2100	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+349	0355	1	0	1	0	0	1	adquisicion de material de aseo y limpieza para la 33a brigada de infanteria/	30	173085.549999999988	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+350	0356	1	0	1	0	0	1	adquisicion de repuestos y accesorios de vehivulos administrativos para la 33a brigada de infanteria/	25	361895	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+351	0357	1	0	1	0	0	1	servicio de mantenimiento y reparacion de vehiculos administrativos para la 33a brigada de infanteria/	1	156838.920000000013	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+352	0362	1	0	1	0	0	1	adquisicion de material de electricidad, iluminacion y estructuras para la 33a brigada de infanteria/	54	217689.5	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+353	0363	1	0	1	0	0	1	adquisicion de material de construccion par la 33a brigada de infanteria/	157	325318.5	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+354	0364	1	0	1	0	0	1	adquisicion de mobiliario para la 33a brigada de infanteria/	5	52940	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-06-01	0	3	\N	\N	0	3
+355	0366	1	0	1	0	0	1	servicio de mantenimiento de computadoras para la 33a brigada deinfanteria/	1	49860	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+356	0368	1	0	1	0	0	1	suministro de alimentos (viveres frescos ) para el personal de la 33a brigada de infanteria/	11	355620.719999999972	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+357	0369	1	0	1	0	0	1	utiles de escritorio/	38	133200	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+596	0100	3	0	3	0	0	1	productos avicolas 	8	90000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1284	0249	3	0	3	0	0	0	mantenimiento/ reparacion y acondicionamiento de equipos de apoyo en tierra	1	73000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1286	0273	3	0	3	0	0	0	bromuro de pinaverio 50mg	1	57276	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+358	0370	1	0	1	0	0	1	material de limpieza aseo/	21	37476	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+359	0371	1	0	1	0	0	1	material de ferreteria mantenimiento de casa/	64	47850	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+363	0375	1	0	1	0	0	1	suministro de papeleria en general y utiles de oficina para la v de /	99	319867	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+367	0382	1	0	1	0	0	1	suministros de material de construcción y ferreteria para el mantenimiento de infraestructura construida para los entes generadores de la v de/	1	247384	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+368	0383	1	0	1	0	0	1	servicio de mantenimiento para los vehiculos de la v de/	1	36385	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+370	0385	1	0	1	0	0	1	suministro de viveres para el ptsmv de la v de/	11	1213190	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+371	0386	1	0	1	0	0	1	papeleria en general y utiles de escritorio/	72	36807	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+373	0390	1	0	1	0	0	1	contratacion del servicio de transporte y traslado de combustible y carburantes/	1	130000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+495	0512	1	0	1	0	0	1	adquisicion de sables y espadas/	4	380077	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+374	0391	1	0	1	0	0	1	adquisicion de alimentos (arroz pilado superior, azucar rubia comestible y huevos de gallina) para el personal de tsmv/	3	647295.630000000005	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+375	0392	1	0	1	0	0	1	contratación del servicio de fletes de combustible para la 5 brigada de montaña/	3	57358.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+376	0393	1	0	1	0	0	1	adquisicion de alimentos para el ptsmv de la 5a brigada de montaña (huevos de gallina)/	1	156868.049999999988	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+377	0394	1	0	1	0	0	1	transporte terrestre y fluvial de combustible/	2	212999.98000000001	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+378	0395	1	0	1	0	0	1	adquisicion de alimentos y bebidas para consumo humano para el ptsmv de la 18 brigada blindada/	31	1702310.89999999991	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-02-01	0	3	\N	\N	0	3
+379	0396	1	0	1	0	0	1	adquisicion de condecoraciones y presentes recordatorios para el cge/	56	864674.819999999949	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-04-01	0	3	\N	\N	0	3
+380	0397	1	0	1	0	0	1	contratacion del servicio de alimentacion para el personal militar y civil de la opre/	1	99050	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+381	0398	1	0	1	0	0	1	servicio de asesoria y asistencia legal en temas relacionados a denuncias penales demandas de la via civil conciliaciones arbitrajes y otros para sg cge/	1	54000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+382	0399	1	0	1	0	0	1	contratacion del servicio de instalacion de sistemas electricos y servicio de instalaciones electricas mecanicas para el desarrollo de dispositivo de entrenamiento cicte/	2	105236	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+383	0400	1	0	1	0	0	1	servicio de imagen institucional para la dinfe/	4	105217	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+384	0401	1	0	1	0	0	1	contratacion de servicios diversos para la dinfe/	7	66290	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+385	0402	1	0	1	0	0	1	servicio de defensa legal para el personal militar investigado o procesado por presunto delito de violacion de los ddhh/	9	365000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+425	0442	1	0	1	0	0	1	adquisicion de material medico para laboratorio central /	1	250000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+390	0407	1	0	1	0	0	1	contratacion del servicio de ensamblaje y configuracion de vehiculo aereo no tripulado drone cicte/	7	106000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+391	0408	1	0	1	0	0	1	adquisicion de glp para los calderos de la piscina y los calderos del gimnasio del cge/	1	61572	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+392	0409	1	0	1	0	0	1	contratacion del servicio de mantenimiento y reparacion de maquinarias y equipos de las uuff del ca-cge/	139	100347	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+393	0410	1	0	1	0	0	1	contratacion de mantenimiento y reparacion de vehiculos para las uudd del cge/	93	511200	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-04-01	0	3	\N	\N	0	3
+394	0411	1	0	1	0	0	1	adquisicion de utiles de escritorio /	79	395924.520000000019	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+395	0412	1	0	1	0	0	1	adquisicion de libros diarios y revistas/	14	44272	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+396	0413	1	0	1	0	0	1	adquisicion de bolsas de alimentos para personal militar , civil y discapacitado en situacion critica del ejercito /	45	128650.729999999996	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+397	0414	1	0	1	0	0	1	adquisicion de material electrico para las dependencias del ca cge/	49	42258.489999999998	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+398	0415	1	0	1	0	0	1	servicio de impresiones empastado encuadernado y otros para las dependencias del ca cge/	60	208034.329999999987	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+1287	0108	3	0	3	0	0	0	asesoria en reparacion de material aeronautico de la flota aeronaves del grup6	1	98000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1292	0220	3	0	3	0	0	0	mantenimiento de ascensor del cg-fap	1	33000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+299	0303	1	0	1	0	0	1	adquisicion de gases de uso industrial para aeronaves/	9	120000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+399	0416	1	0	1	0	0	1	contratacion del servicio de alimentacion para el personal militar y civil del sinte/	1	119357	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+242	0242	1	0	1	0	0	1	suministros de material de construccion /	200	98527	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+247	0247	1	0	1	0	0	1	alimento para animales -ganado equino/	2	1241505.76000000001	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-05-01	0	3	\N	\N	0	3
+248	0248	1	0	1	0	0	1	suministro de material de escritorio y útiles de oficina (por convenio marco)/	58	90944	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+249	0249	1	0	1	0	0	1	suministro de material de aseo, limpieza y tocador/	19	62448	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+407	0424	1	0	1	0	0	1	contratacion educativa, enseñanza del idioma extranjerpo (ingles) para los alumnos de la vi maestria/	1	95000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+408	0425	1	0	1	0	0	1	adquisicion de repuestos y accesorios/	22	17288.7999999999993	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-04-01	0	3	\N	\N	0	3
+409	0426	1	0	1	0	0	1	contratacion del servicio de transporte y traslado de carga/	1	62267	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+410	0427	1	0	1	0	0	1	suministros para mantenimiento y reparacion para edificios y estructuras/	43	115500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+541	0036	3	0	3	0	0	1	servicio de mantenimiento de la planta de procesos especiales y aguas residuales 	1	125000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+411	0428	1	0	1	0	0	1	papeleria en general, utiles y materiales de escritorio/	47	89000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+412	0429	1	0	1	0	0	1	otros repuestos y accesorios/	2	58000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+414	0431	1	0	1	0	0	1	contratación de servicio de mano de obra calificada incluyendo maestro de obra para el mantenimiento de la caballeriza c y d del regimiento de caballería mdn - epr/	1	135625	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+454	0471	1	0	1	0	0	1	adquisició de repuestos y accesorios de vehiculos para la 2da brigada de infantería/	2	49600	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+415	0432	1	0	1	0	0	1	adquisición de materiales de construccion para el mantenimiento de la caballeriza c y d del regimiento de caballeria mdn - epr/	1	210251	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+421	0438	1	0	1	0	0	1	suministro de bebidas rehidratantes y aimentos enlatados para el personal de la 33a brigada infanteria/	5	249652	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+423	0440	1	0	1	0	0	1	adquisicion de material medico para las diferentes unidades hospitalarias /	1	200000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+424	0441	1	0	1	0	0	1	adquisicion de productos quimicos medicinales para el hmc /	1	553515	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-05-01	0	3	\N	\N	0	3
+426	0443	1	0	1	0	0	1	servicio integral de limpieza e higiene de las instalaciones del hmc/	1	1115577	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-03-01	0	3	\N	\N	0	3
+427	0444	1	0	1	0	0	1	adquisicion de medicamentos para paciente con cuadraplejia espatica/	1	48000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+428	0445	1	0	1	0	0	1	adquisicion de medicamentos para la red de farmacia del personal militar /	1	1600000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-04-01	0	3	\N	\N	0	3
+429	0446	1	0	1	0	0	1	contratacion de servicios de examenes de rnm y tem para pacientes titulares del hmc/	1	200000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+431	0448	1	0	1	0	0	1	adquisicion de material insumos y reactivos para el servicio de laboratorio del hmc/	6	2899999.97999999998	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-04-01	0	3	\N	\N	0	3
+432	0449	1	0	1	0	0	1	adquisicion de reactivos de tamizaje y grupos sanguineos para el banco de sangre del hmc/	2	200000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+433	0450	1	0	1	0	0	1	adqusicion programada de protesis y ayuda biomecanicas etapa nro 01 para el 1er bimestre del hmc/	2	380000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+250	0250	1	0	1	0	0	1	suministro de material de construcción, ferretería y electricidad/	79	66178.5	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+434	0451	1	0	1	0	0	1	adqusicion programada de protesis etapa nro 02 para el 2do bimestre del hmc/	1	380000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+435	0452	1	0	1	0	0	1	adqusicion programada de protesis etapa nro 03 para el 3er bimestre del hmc/	1	380000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-06-01	0	3	\N	\N	0	3
+436	0453	1	0	1	0	0	1	adqusicion programada de protesis etapa nro 04 para el 4to bimestre del hmc/	3	380000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-07-01	0	3	\N	\N	0	3
+243	0243	1	0	1	0	0	1	suministros de material electrico /	45	37528	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+437	0454	1	0	1	0	0	1	adqusicion programada de protesis etapa nro 05 para el 5to bimestre del hmc/	1	380000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-07-01	0	3	\N	\N	0	3
+997	0263	2	\N	2	\N	42	1	elaboración de expediente tecnico ampliación y mejoramiento de las capacidades de la unidad hemodialisis del servicio de nefrologia del centro médico naval	1	107050	2	6	2017-04-07 14:41:49.352836	2017-04-25 22:19:05.745059	2	1	2017-05-30	\N	3			0	3
+141	0062	1	\N	1	4	\N	1	adquisición de reactivos para laboratorio/	17	124000	2	2	2017-03-21 06:34:00	2017-04-27 17:31:03.753072	1	4	2017-05-01	\N	3			0	3
+438	0455	1	0	1	0	0	1	suministro de alimentos para personas/	6	204314.799999999988	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-04-01	0	3	\N	\N	0	3
+1293	0291	3	0	3	0	0	0	servicio de flete por transporte terrestre de combustible clase iii y iii-a en las zonas del vraem	1	399720	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1294	0292	3	0	3	0	0	0	servicio de racionamiento  para el personal militar y tropa - cmont	1	57192.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+439	0456	1	0	1	0	0	1	adquisicion de alimentos para personas/	6	644941.819999999949	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+440	0457	1	0	1	0	0	1	adqusicion de material medico para los diversos servicios medicos y uuhh del hmc/	676	4953364.58999999985	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-04-01	0	3	\N	\N	0	3
+441	0458	1	0	1	0	0	1	adqusicion de insumos medicos qx para pacientes ambulatorios y hospitalizados del hmc/	153	1032783.73999999999	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-04-01	0	3	\N	\N	0	3
+442	0459	1	0	1	0	0	1	adquisicion de un resonador magnetico para el hospital militar central/	1	5000000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+443	0460	1	0	1	0	0	1	papeleria en general, utiles y materiales de escritorio/	50	137382.959999999992	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+444	0461	1	0	1	0	0	1	adquisición de suministros para matenimiento y reparación de edificios y estructuras de la 2da brigada de infantería/	198	443217	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+446	0463	1	0	1	0	0	1	contratación de servicio de mantenimiento de edificios y estructuras de la 2da brigada de infanteria/	17	60453	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+448	0465	1	0	1	0	0	1	adquisición de repuestos accesorios para la 2da brigada de infantería/	18	48630	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+449	0466	1	0	1	0	0	1	adquisición de cemento para la 2da brigada de infantería/	1	39925	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+1031	0297	2	\N	2	\N	42	1	adquisicion de utiles de tocados para el personal altas y marineria af-2017	8	269249.599999999977	2	6	2017-04-20 21:03:16.164651	2017-04-25 22:06:32.099582	1	1	2017-04-30	\N	3			0	3
+1012	0278	2	\N	2	\N	54	1	adquisición de material de escritorio	50	52614.6100000000006	1	6	2017-04-07 15:56:18.278871	2017-04-25 22:12:27.04475	1	1	2017-04-30	\N	3			0	3
+372	0387	1	0	1	0	0	1	material pad/	8	18500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+451	0468	1	0	1	0	0	1	adquisición de alimentos para personas para el personal de oficiales, tcos y ssoo de la 2da brigada de infantería./	3	160080.309999999998	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+452	0469	1	0	1	0	0	1	adquisicion de material de electricidad iluminacion y electronica /	27	100055	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+453	0470	1	0	1	0	0	1	servicio de mantenimiento de vehiculos de la 2da brigada de infanteria/	16	129200	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+455	0472	1	0	1	0	0	1	adqusición de accesorios y repuestos/	2	12346	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+457	0474	1	0	1	0	0	1	adquisición de combustible para el funcionamiento administrativo./	3	47769.1200000000026	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+458	0475	1	0	1	0	0	1	suministro de papeleria en general y utiles de oficina para los entes generadores de la v de/	49	37168	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+459	0476	1	0	1	0	0	1	suministro de material pad para los entes generadores de la v de/	3	39233	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+460	0477	1	0	1	0	0	1	adquisicion de vestuario, accesorios y prendas para los entes generadores de la v de/	1	56950	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+461	0478	1	0	1	0	0	1	adquisiciion de accesorios de seguridad para la v de/	1	36950	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+462	0479	1	0	1	0	0	1	servico de mantenimiento de vehiculos administrativo de la v de/	1	36385	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+463	0480	1	0	1	0	0	1	servicios de mantenimiento de las diferentes instalaciones de los entes generadores de la v de/	3	300085	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+464	0481	1	0	1	0	0	1	contratacion del servicio de evaluacion externa con fines de acreditación de la emch cfb/	1	60000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+465	0482	1	0	1	0	0	1	contratacion del servicio de examen toxiclogico y otros para los cadetes de la emch cfb/	1	48480	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+470	0487	1	0	1	0	0	1	suministro de material de impresiones diversas/	47	148263	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+471	0488	1	0	1	0	0	1	adquisición de libros diversos para acreditacion /	1	40000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+472	0489	1	0	1	0	0	1	adquisición de software para la emch - cfb/	1	216632	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+473	0490	1	0	1	0	0	1	adquisicion de alimentos y bebidas para consumo humano - viveres frescos/	3	66211	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1030	0294	2	\N	2	\N	46	1	servicio de television por cable	2	265987.080000000016	\N	6	2017-04-20 21:01:24.722241	2017-04-25 22:07:06.465296	2	1	2017-05-30	\N	3			0	3
+1028	0289	2	\N	2	\N	42	1	adquisicion de colchones para alumnos del citen	1	144094.720000000001	2	6	2017-04-20 20:48:30.069516	2017-04-25 22:08:07.689166	1	1	2017-04-30	\N	3			0	3
+251	0251	1	0	1	0	0	1	adquisicion de repuestos y accesorios (material pad)/	34	36849	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+474	0491	1	0	1	0	0	1	adquisicion de materiales de ferreteria, construccion, sanitario y electrico para la reparación y mantenimiento de las instalaciones de las bases de chorrillos, callao y urakuza/	240	300000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+205	0200	1	0	1	0	0	1	adquisicion bolsa de dormir/	1	42000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+475	0492	1	0	1	0	0	1	contratacion del servicio de simetria para el helicoptero mi-17 1b ep-610/	1	39950	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	2	2017-04-01	0	3	\N	\N	0	3
+978	0517	1	1	4	1	23	1	adquisición corporativa de calzado para las fuerzas armadas	6	2867145.04999999981	2	2	2017-04-06 21:39:55.754204	2017-05-29 18:29:57.14752	1	1	\N	\N	3	25	PROCESO QUE VIENE DE AÑO 2016	25	3
+1078	0305	3	4	4	3	2	2	adquisicion de partes, repuestos y material de  avionica para aeronave boeing 737-528	1	157081	2	8	2017-04-25 21:16:21.461993	2017-05-10 20:17:15.665151	1	10	2017-04-30	\N	3			0	3
+477	0494	1	0	1	0	0	1	contratacion del servicio de rastreo y monitoreo satelital para aeronaves/	1	224400	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+478	0495	1	0	1	0	0	1	adquisición de repuestos y miselaneos para avion ep-835/	17	300000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+479	0496	1	0	1	0	0	1	contratacion del servicio de ampliacion, reparacion y ovh de componentes de helicopteros rusos/	1	1500000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-04-01	0	3	\N	\N	0	3
+484	0501	1	0	1	0	0	1	adquisicion de diversas prendas de vestuario, calzado y otros para el personal de tropa del ejercito /	23	9795538.09999999963	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+485	0502	1	0	1	0	0	1	adquisicion de prendas de vestuario, para agremiles, oficiales, tecnicos y ssoo/	49	362833.400000000023	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+486	0503	1	0	1	0	0	1	adquisicion de pijama de popelina/	1	230920	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+490	0507	1	0	1	0	0	1	adquisicion de polo digitalizado manga larga y manga corta/	1	366702	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+491	0508	1	0	1	0	0	1	adquisicion diversas prendas de vestuario para unidades historicas/	11	328570	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+492	0509	1	0	1	0	0	1	adquisicion de uniformes y zapatos para unidades historicas/	14	314775	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+493	0510	1	0	1	0	0	1	adquisicion de vestuario para las escuelas de formacion/	29	389005.760000000009	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+494	0511	1	0	1	0	0	1	adquisicion de emblemas y otros para las escuelas de formacion/	33	322833	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+348	0354	1	\N	1	4	\N	1	adquisicion de material de pad para la 33a brigada de infanteria/	6	61556.7699999999968	2	2	2017-03-21 06:34:00	2017-04-27 17:39:20.36302	1	7	2017-03-01	\N	3			0	3
+496	0513	1	0	1	0	0	1	adquisicion de uniformes, capa y pantalones para las escuelas de formacion/	9	340460	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+497	0514	1	0	1	0	0	1	adquisicion de uniformes de lanilla y calzados para las escuelas de formacion/	6	329216	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+498	0515	1	0	1	0	0	1	adquisicion de vestuario para licenciados/	6	109524	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+501	0518	1	0	1	0	0	1	adquisicion de utiles de aseo/	3	342540	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+502	0519	1	0	1	0	0	1	adquisicion de jabon de tocador/	1	216876	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+505	0522	1	0	1	0	0	1	adquisicion de productos perecibles y no perecibles para el personal de tropa del smv de la 22a brigada de ingenieria/	7	448408.719999999972	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+506	0523	1	0	1	0	0	1	servicio de consultoria metereologica de transito aereo durante las operaciones de desminado humanitario af 2017/	1	112687.240000000005	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+507	0001	3	0	3	0	0	1	renovacion de licencias de seguridad 	1	150000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+508	0002	3	0	3	0	0	1	renovacion de licencias oracle 	1	60000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+509	0003	3	0	3	0	0	1	adquisicion de servidores 	1	70817.320000000007	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+510	0004	3	0	3	0	0	1	adquisicion de material especializado para proceso de pagos 	1	40000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+511	0005	3	0	3	0	0	1	asesoria para la administracion de oracle fusion middleware 	1	40000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+513	0007	3	0	3	0	0	1	servicio de internet dedicado uu.dd fap (2017-2019) 	1	623254	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-02-01	0	3	\N	\N	0	3
+514	0008	3	0	3	0	0	1	adquisición de material misceláneo para conectividad 	1	64500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+521	0015	3	0	3	0	0	1	adquisicion de gas licuado para calderos a las diferentes unidades de la fap 	1	610075.530000000028	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-02-01	0	3	\N	\N	0	3
+522	0016	3	0	3	0	0	1	servicio de transporte de flete de combustible clase iii y iii-a 	1	414513	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-02-01	0	3	\N	\N	0	3
+523	0017	3	0	3	0	0	1	adquisicion de productos quimicos para los diferentes grupos aereos de la fap 	79	245000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+524	0018	3	0	3	0	0	1	adquisicion de gas licuado para vehiculos de las diferentes unidades de la fap 	1	66394	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+525	0019	3	0	3	0	0	1	adquisicion de material para pruebas abreviadas 	4	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+526	0020	3	0	3	0	0	1	adquisicion de productos gaseosos para las diferentes unidades aereas de la fap 	10	46882	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+1222	0737	1	4	4	2	\N	2	adquisicion de repuestos y accesorios para el ep-345 y ep-346	1	1527998.39999999991	5	9	2017-04-20 00:00:00	2017-05-16 14:04:27.222836	2	9	2017-04-01	\N	3		version2	0	3
+1388	0309	2	1	2	\N	42	1	adquisicion de un (1) kit de repuestos para mantenimiento de maquinas principales de unidades submarina	1	120679	1	6	2017-05-10 15:48:22.301516	2017-05-10 15:48:22.301516	1	1	\N	\N	3			0	3
+1241	0667	1	0	1	0	0	0	servicio de mantenimiento/ reparacion y acondicionamiento de instalaciones del coede.	10	272233.979999999981	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+201	0196	1	0	1	0	0	1	adquisicion de calzado de vestir para los alumnos del iestpe-ete/	4	399900	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+1296	0276	3	0	3	0	0	0	adquisición de materiales diversos para la renovación del sistema eléctrico y techo del salón quiñones/ armeria/ operaciones de base y capellanía	57	53406	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+594	0098	3	0	3	0	0	1	carnes 	18	113200	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+533	0027	3	0	3	0	0	1	tintas para impresión en sistema offset 	6	38264.0500000000029	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+534	0028	3	0	3	0	0	1	matenimiento de equipos de impresiones en sistema offset 	1	44281.3199999999997	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+535	0029	3	0	3	0	0	1	adquisicion de material para el tratamiento anticorrosivo para aviones comerciales. 	1	54000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+597	0101	3	0	3	0	0	1	quesos y embutidos 	36	100000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+536	0030	3	0	3	0	0	1	adquisicion de productos quimicos 	1	240612	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+537	0031	3	0	3	0	0	1	adquisicion de equipos de proteccion personal 	1	150000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+538	0032	3	0	3	0	0	1	adquisicion de miscelaneos para trabajos galvanicos 	1	45538.9599999999991	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+539	0033	3	0	3	0	0	1	adquisicion de miscelaneos para reparacion de componentes aeronauticos 	1	90000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+540	0034	3	0	3	0	0	1	adquisicion de gases industriales y medicinal 	1	57363.6999999999971	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+542	0037	3	0	3	0	0	1	servicio de fotocopiado e impresiones 	1	60000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+543	0042	3	0	3	0	0	1	adquisicion de sellantes para aviones comerciales 	1	50000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-08-01	0	3	\N	\N	0	3
+544	0043	3	0	3	0	0	1	adquisicion de pinturas y adhesivos para aviones comerciales 	1	40000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-08-01	0	3	\N	\N	0	3
+545	0044	3	0	3	0	0	1	adquisicion de material compuesto para aviones comerciales 	1	60770	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-08-01	0	3	\N	\N	0	3
+546	0045	3	0	3	0	0	1	adquisicion de materia prima y estructural para aviones comerciales 	1	30000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-08-01	0	3	\N	\N	0	3
+553	0055	3	0	3	0	0	1	suscripcion de publicaciones tecnicas 	1	290718	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	10	2017-05-01	0	3	\N	\N	0	3
+554	0056	3	0	3	0	0	1	suscripcion de pagina web flight global 	1	19250	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	10	2017-05-01	0	3	\N	\N	0	3
+565	0069	3	0	3	0	0	1	adquisición de material miscelaneo del sistema de aviónica aeronave z-242l 	1	3602.90000000000009	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-04-01	0	3	\N	\N	0	3
+566	0070	3	0	3	0	0	1	adquisición de material miscelaneo del sistema de aviónica aeronave s-300 	1	7225.57999999999993	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-05-01	0	3	\N	\N	0	3
+572	0076	3	0	3	0	0	1	servicio de suscripción y actualización de datos de la aeronave r-172h 	1	1380	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	10	2017-06-01	0	3	\N	\N	0	3
+576	0080	3	0	3	0	0	1	adquisicion de viveres para el racionamiento del personal de planta (oficiales, tt.ss.oo y tropa) de esfap escop y cendo 	135	52036.8000000000029	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+318	0324	1	0	1	0	0	1	aseo limpieza y tocador/	21	34600	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	2	2017-02-01	0	3	\N	\N	0	3
+577	0081	3	0	3	0	0	1	adquisicion de viveres comunes para el racionamiento del personal de planta (oficiales, tt.ss.oo y tropa) de esfap escop y cendo 	28	45220.5999999999985	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+578	0082	3	0	3	0	0	1	adquisicion de viveres fresco y secos para el personal de oficiales, ttss, or14 y tropa 	128	143611.600000000006	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+579	0083	3	0	3	0	0	1	adquisicion de viveres secos y frescos para la alimentacion - actividades de bienestar (oficiales familiares y visitas) y servicios 	203	108965.5	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+580	0084	3	0	3	0	0	1	adquisicion de insumos quimicos para piscinas esmon 	7	47713.1999999999971	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+844	0119	2	\N	2	\N	48	1	adquisicion de filtros para maquinas principales y grupos electrogenos de las unidades y embarcaciones hidrograficas/	1	104640	1	6	2017-01-03 00:00:00	2017-04-26 14:26:32.026969	1	1	2017-01-03	\N	3			0	3
+581	0085	3	0	3	0	0	1	adquisicion de viveres diversos para el racionamiento del personal militar de la esmon 	99	67539.8999999999942	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+582	0086	3	0	3	0	0	1	adquisicion de uniformes para deportes y actividades culturales 	45	58279.5	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+558	0062	3	4	4	4	1	2	reparacion u overhaul de bloques y accesorios para la flota c-26b 	6	655000	2	8	2017-03-21 06:34:00	2017-05-11 20:02:53.772168	2	10	2017-03-01	\N	3			0	3
+561	0065	3	4	4	4	1	2	adquisicion de partes, repuestos y materiales para aeronaves de instrucción de procedencia americana 	585	348396.940000000002	2	8	2017-03-21 06:34:00	2017-05-11 20:07:27.683226	1	10	2017-03-01	\N	3			0	3
+563	0067	3	4	4	4	1	2	reparacion u overhaul de bloques y accesorios para las flotas tc-690b y pa-34 	5	179000	2	8	2017-03-21 06:34:00	2017-05-11 20:08:07.062026	2	10	2017-03-01	\N	3			0	3
+585	0089	3	0	3	0	0	1	mantenimiento de aire acondicionado del anfiteatro 	1	57000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+575	0079	3	4	4	2	3	2	adquisicion de pirocartuchos para flotas fap 	19	1000000	2	8	2017-03-21 06:34:00	2017-05-10 13:15:27.068184	1	10	2017-03-01	\N	3			0	3
+1392	0314	2	1	2	\N	42	1	servicio de reparación y mantenimiento para el equipamiento de los servicios de apoyo al personal	1	48800	2	6	2017-05-10 15:59:03.825577	2017-05-10 15:59:03.825577	2	1	\N	\N	3			0	3
+1040	0006	3	4	4	3	7	2	adquisición de cifrador de datos	1	72000	2	8	2017-04-25 13:04:59.138981	2017-05-10 12:50:42.820725	1	10	2017-04-30	\N	3			0	3
+518	0012	3	1	4	2	4	1	adquisicion de vestuario para el personal civil fap 	3	909000	2	2	2017-03-21 06:34:00	2017-05-29 14:16:06.767233	1	5	2017-04-01	\N	3			42	3
+1297	0218	3	0	3	0	0	0	adquisición de material deportivo	52	33420	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-07-01	0	3	 	FAP	0	3
+1267	0222	3	0	3	0	0	0	racionamiento para el personal militar de la cofap	1	60189.0999999999985	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1268	0278	3	0	3	0	0	0	adquisicion de material de ferreteria	1	71319.9400000000023	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1269	0221	3	0	3	0	0	0	mantenimiento de las instalaciones del cg-fap	5	54000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1270	0237	3	0	3	0	0	0	asesoria legal administrativa	1	50000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+592	0096	3	0	3	0	0	1	viveres para elaboracion del racionamiento personal militar y tropa 	79	38630.3000000000029	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+595	0099	3	0	3	0	0	1	pescados y mariscos 	23	120000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+599	0103	3	0	3	0	0	1	viveres secos 	153	100000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+253	0253	1	0	1	0	0	1	adquisicion de material de ferreteria, electrico y construccion/	134	52627	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+556	0060	3	4	4	3	1	2	adquisición de partes, repuestos y material para la flota mig-29 	122	1373852.64999999991	2	2	2017-03-21 06:34:00	2017-05-22 14:04:54.544788	1	10	2017-03-01	\N	3			0	3
+1064	0253	3	4	4	3	2	2	servicio de mantenimiento y reparación de tarjeta aplicable a las aeronaves del grup4	1	196765.170000000013	2	8	2017-04-25 17:34:25.455494	2017-05-09 21:07:22.942005	2	10	2017-04-30	\N	3			0	3
+1011	0277	2	\N	2	\N	50	1	adquisición de protesis modular inferior derecho bajo rodilla	1	50512.5	2	6	2017-04-07 15:54:44.566443	2017-04-25 22:12:43.696558	1	1	2017-04-30	\N	3			0	3
+949	0224	2	4	4	3	42	2	adquisicion de repuestos sistematico y condicional para la extension de recursos tecnicos de la aeronave an-32b/	68	649787.290000000037	2	6	2017-01-03 00:00:00	2017-04-28 15:00:46.556534	1	10	2017-01-03	\N	3			0	3
+1013	0279	2	1	4	2	46	1	servicio de internet dedicado	1	1100000	2	6	2017-04-07 17:14:39.678702	2017-04-20 18:09:05.172718	2	3	2017-05-30	\N	3			0	3
+1104	0579	1	4	4	3	22	2	servicio de actualizacion de equipos de navegacion de aeronaves de la aviacion del ejercito	1	1067490	5	4	2017-04-20 00:00:00	2017-04-28 22:25:32.80318	2	9	2017-04-01	\N	3		version2	0	3
+1215	0580	1	4	4	3	22	2	servicio de mantenimiento mayor de componentes de aeronaves de ala fija y rotatoria de la aviacion del ejercito	1	4680000	5	4	2017-04-20 00:00:00	2017-04-28 22:27:15.147643	2	9	2017-04-01	\N	3		version2	0	3
+254	0254	1	0	1	0	0	1	suministro de alimentos para el personal del tropa de la ii de/	1	40830.9400000000023	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-01-01	0	3	\N	\N	0	3
+600	0104	3	0	3	0	0	1	gas licuado de petroleo 	1	50000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-04-01	0	3	\N	\N	0	3
+601	0105	3	0	3	0	0	1	pasajes aereos internacionales 	1	825920	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-02-01	0	3	\N	\N	0	3
+602	0106	3	0	3	0	0	1	pasajes y gastos de transportes nacionales 	1	460000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-03-01	0	3	\N	\N	0	3
+603	0107	3	0	3	0	0	1	servicio de asesoria tecnica especializada en mantenimiento y reparacion de aeronaves m2000p/dp-grup4 	1	39960	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+604	0113	3	0	3	0	0	1	mantenimiento de vehiculos del sistema educativo escolar fap 	6	50000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+605	0114	3	0	3	0	0	1	servicio de mantenimiento de equipos electromecánicos 	1	69000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+899	0174	2	1	4	1	42	1	adquisicion de lubricantes marinos/	42	1697831.28000000003	2	2	2017-01-03 00:00:00	2017-05-29 18:25:41.44282	1	1	2017-01-03	\N	3	08	PROCESO PROVIENE DE LA LP N° 06-2016	8	3
+1060	0259	3	4	4	4	3	2	adquisicion de bancos, herramientas y equipos para la inspeccion de los asientos de eyeccion mk-pe 16l	118	2138984.31000000006	1	2	2017-04-25 17:10:55.535735	2017-06-02 20:25:55.150075	1	9	\N	\N	3			0	3
+929	0204	2	4	4	3	42	2	adquisicion de material sistematico y condicional para las aeronaves de los programas sh-3d/uh-3h/	85	597764.839999999967	1	6	2017-01-03 00:00:00	2017-04-28 14:59:06.698515	1	10	2017-01-03	\N	3			0	3
+608	0117	3	0	3	0	0	1	mantenimiento de equipo esfuerzo computarizado 	1	67730	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+609	0118	3	0	3	0	0	1	adquisicion de material de laboratorio para pacientes hospitalizados de tropa (conexos para pacientes tropa) 	1	71014.8099999999977	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+210	0205	1	0	1	0	0	1	servicio mantenimiento acondicionamiento para vvhh /	1	50000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+610	0119	3	0	3	0	0	1	adquisición de medicamentos 	20	1643303.62999999989	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+611	0120	3	0	3	0	0	1	adquisición de medicamentos (si) 	14	771840.459999999963	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+612	0121	3	0	3	0	0	1	adquisicion de vacunas 	6	550000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+613	0122	3	0	3	0	0	1	adquisición de material odontológico 	46	200000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+614	0123	3	0	3	0	0	1	adquisición de desinfectantes 	10	125000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+615	0124	3	0	3	0	0	1	adquisicion de material radiografico y laboratorio 	19	100000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+616	0125	3	0	3	0	0	1	adquisicion de material de fumigacion 	4	90000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+617	0126	3	0	3	0	0	1	adquisicion de material de potabilizacion 	12	82000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+618	0127	3	0	3	0	0	1	adquisicion de materiales de deteccion de drogas (metabolitos de marihuana derivados de coca y extasis) 	1	39780	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+620	0129	3	0	3	0	0	1	adquisicion de viveres secos (subasta inversa electronica) 	4	46950	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+623	0132	3	0	3	0	0	1	servicio de refrigerio para el personal mantenimiento del ema-806 	1	60000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+593	0097	3	0	3	0	0	1	bebidas y gaseosas 	21	50000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+627	0136	3	0	3	0	0	1	contratacion de los servicios de dictado de las diferentes asignaturas para los oficiales alumnos del programa alto mando 2017 	19	220000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	4	2017-03-01	0	3	\N	\N	0	3
+674	0183	3	0	3	0	0	1	servicio de mantenimiento y reparacion de instalaciones del alar1 	1	60000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+628	0137	3	0	3	0	0	1	contratacion para la evaluacion con fines de la renovacion de la acreditacion ante el sineace (evaluacion externa con fines de acreditacion del programa de post-grado , maestria en doctrina y administracion aero espacial-fuerza aerea del peru) 	1	52000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+630	0139	3	0	3	0	0	1	adquisicion de viveres frescos y secos 	167	90900	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+631	0140	3	0	3	0	0	1	adquisicion de presentes recordatorios para ceremonias protocolares 	9	80000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+632	0141	3	0	3	0	0	1	confeccion de arreglos y ofrendas florales para ceremonias 	6	45000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+633	0142	3	0	3	0	0	1	adquisicion de material pad 	3	330000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+634	0143	3	0	3	0	0	1	renovacion de licencias antivirus 	1	120000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+635	0144	3	0	3	0	0	1	adquisicion d equipos de computo (convenio marco) 	2	95000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+636	0145	3	0	3	0	0	1	adquisicion de víveres comunes personal miltar y tropa (s.i.e.) 	20	358559.659999999974	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+255	0255	1	0	1	0	0	1	suministro de articulos de limpieza para la ii de/	64	95001.9199999999983	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+256	0256	1	0	1	0	0	1	suministro de material electrico, iluminacion y electronica para la ii de/	35	34984.9300000000003	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+257	0257	1	0	1	0	0	1	suministro de papeleria y utiles de oficina para la ii division de ejercito/	153	203504	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+637	0146	3	0	3	0	0	1	adquisicion de pescado y embutidos 	6	42604.75	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+638	0147	3	0	3	0	0	1	adquisicion de pollo 	4	213783.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+639	0148	3	0	3	0	0	1	adquisicion de carnes rojas y mondongo	7	391484.200000000012	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+640	0149	3	0	3	0	0	1	adquisicion de frutas 	8	58155.0999999999985	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+641	0150	3	0	3	0	0	1	adquisicion de viveres secos y frescos 	100	329868.489999999991	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+642	0151	3	0	3	0	0	1	adquisición de pan 	1	66558	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+643	0152	3	0	3	0	0	1	adquisicion de repuestos y accesorios para vehículos 	312	64012.3000000000029	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+644	0153	3	0	3	0	0	1	adquisicion de repuestos de vehiculos 	220	36207.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+649	0158	3	0	3	0	0	1	adquisicion de viveres comunes para racionamiento personal militar y tropa 	17	62817.7300000000032	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+1184	0677	1	1	4	1	23	1	adquisición de raciones de campaña envasada	1	2475000	2	2	2017-04-20 00:00:00	2017-05-26 19:13:24.617866	1	5	2017-06-01	\N	3	13	version3	13	3
+650	0159	3	0	3	0	0	1	adquisicion de viveres frescos y secos para racionamiento personal militar y tropa 	67	98001.6699999999983	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+651	0160	3	0	3	0	0	1	adquisicion de carnes y productos hidrobiologicos para racionamiento personal militar y tropa 	11	123284.800000000003	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+652	0161	3	0	3	0	0	1	adquisicion de viveres frescos y secos (racionamiento del personal militar y tropa) 	89	142158.779999999999	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+653	0162	3	0	3	0	0	1	adquisicion de carnes para el racionamiento del personal militar y tropa 	17	171376.320000000007	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+654	0163	3	0	3	0	0	1	adquisicion de viveres para el personal militar y tropa (subasta inversa) 	20	147052.200000000012	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+655	0164	3	0	3	0	0	1	adquisición de víveres secos y frescos para el personal militar y tropa 	216	173238.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+656	0165	3	0	3	0	0	1	bienes comunes adquisición de víveres secos y frescos para el personal militar y tropa (sie) 	39	199312.98000000001	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+657	0166	3	0	3	0	0	1	adquisición de carne de res y pollo para el personal militar y tropa 	7	285145.840000000026	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+259	0259	1	0	1	0	0	1	papeleria en general, utiles y materiales de escritorio/	52	35063	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+1026	0282	2	\N	2	\N	46	1	adquisicion de materiales para conectividad	1	77952	2	6	2017-04-18 15:10:15.766579	2017-04-25 22:09:37.030725	1	1	2017-04-30	\N	3			0	3
+672	0181	3	0	3	0	0	1	servicio de curso en simulador de vuelo para 04 pilotos de helicopteros del grup2	1	101500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	8	2017-05-01	0	3	\N	\N	0	3
+676	0185	3	0	3	0	0	1	servicio de reparacion de modulos ty polvorines modulo no.3 	1	35435	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+684	0193	3	0	3	0	0	1	servicio de reparacion del techo del hangar 1003 tercer tramo 	1	178000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+1044	0073	3	4	4	3	2	2	adquisición de componentes y repuestos del sistema de aviónica de las flotas de combate, control y vigilancia	4	906704	2	8	2017-04-25 13:23:15.431931	2017-05-10 12:58:55.047104	1	10	2017-05-30	\N	3			0	3
+1405	0333	2	1	2	\N	42	1	adquisicion de gas licuado de petroleo (glp) para comescla periodo mayo a diciembre 2017	1	36792	2	6	2017-05-10 16:29:35.916794	2017-05-10 16:29:35.916794	1	6	\N	\N	3			0	3
+986	0253	2	\N	2	\N	42	1	implementación bases concreto para instalación de mastil	1	320000	1	6	2017-04-06 22:12:57.214186	2017-04-25 22:22:56.577974	2	1	2017-05-30	\N	3			0	3
+480	0498	1	4	4	3	22	2	contratacion de servicio de reparacion de componentes de aeronaves de instrucción	1	198000	5	4	2017-03-21 06:34:00	2017-04-07 15:47:57.34488	2	9	2017-04-01	\N	3	\N	\N	0	3
+985	0497	1	4	4	3	22	2	adquisicion de repuestos para aeronaves de instrucción	1	200000	5	4	2017-04-06 22:11:13.604956	2017-04-07 15:48:35.447338	1	9	2017-04-01	\N	3	\N	\N	0	3
+1037	0303	2	\N	2	\N	42	1	convenio para actividades de recorrido carena y mantenimiento de las unidades navales de la marina de guerra del perú	1	15051102	2	6	2017-04-21 18:49:50.641761	2017-04-25 22:03:06.322449	2	8	2017-04-30	\N	3			0	3
+853	0128	2	\N	2	\N	48	1	adquisicion de repuestos para sistema de monitoreo faros sismor aton/	1	63000	1	6	2017-01-03 00:00:00	2017-04-26 14:23:41.303679	1	1	2017-01-03	\N	3			0	3
+851	0126	2	\N	2	\N	42	1	adquisicion de viveres secos para la dotacion de comoperama de abril 2017 a marzo 2018/	6	602232.800000000047	2	6	2017-01-03 00:00:00	2017-04-26 14:24:18.719698	1	6	2017-01-02	\N	3			0	3
+848	0123	2	\N	2	\N	48	1	adquisicion de un (1) transpondedor ais aton/	1	110000	1	6	2017-01-03 00:00:00	2017-04-26 14:25:24.605852	1	1	2017-01-03	\N	3			0	3
+964	0239	2	\N	2	\N	46	1	servicio de internet para el sistema satelital mini-vsat trakphone 11 v/	1	325363	2	6	2017-01-03 00:00:00	2017-04-26 13:49:37.657176	2	1	2017-01-03	\N	3			0	3
+687	0196	3	0	3	0	0	1	adquisicion de papel bond en general 	5	317780.190000000002	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-04-01	0	3	\N	\N	0	3
+688	0197	3	0	3	0	0	1	adquisicion de utiles de oficina 	106	264795.270000000019	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-04-01	0	3	\N	\N	0	3
+689	0198	3	0	3	0	0	1	adquisicion de componentes especializados de comunicación para la grabadora de voz ecovox 	1	123000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+690	0199	3	0	3	0	0	1	servicio de asesoria especializada en auditoria financiera y control interno 	1	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+691	0200	3	0	3	0	0	1	servicio de asesoria de gestion estrategica de alta direccion 	1	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+685	0194	3	0	3	0	0	1	adquisicion de repuestos hard time para la aeronave boeing 	19	408866.400000000023	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-03-01	0	3	\N	\N	0	3
+769	0044	2	1	4	2	44	1	seguro maritimo/	1	180200	2	6	2017-01-03 00:00:00	2017-06-19 15:08:58.326553	2	3	2017-01-10	\N	3	19		19	3
+692	0201	3	0	3	0	0	1	servicio de asesoria especializada en contrataciones nacionales e internacionales y traducciones tecnicas en el campo aeronautico 	1	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+693	0202	3	0	3	0	0	1	servicio de asesoria especializada en administracion presupuestaria 	1	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+694	0203	3	0	3	0	0	1	asesoria en seguridad de la documentacion, asesoria documentaria, redaccion superior e implementacion de las normas legales en la pagina web de la institucion 	1	50000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+695	0204	3	0	3	0	0	1	servicio de asesoria especializada en prevencion e investigacion de accidentes 	1	55000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+726	0001	2	\N	2	\N	\N	1	servicio de mantenimiento de areas verdes/	1	168000	1	2	2017-01-03 00:00:00	2017-05-05 13:06:12.854848	2	1	2017-01-02	\N	3			0	3
+703	0001	6	0	6	0	0	1	contratacion del servicio de racionamiento para el personal del ccffaa y fec/	2	399000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-01-01	0	3	\N	\N	0	3
+591	0095	3	1	4	1	18	1	servicio de seguro obligatorio de accidente de transito 	5	388254	2	2	2017-03-21 06:34:00	2017-05-26 19:06:09.354285	2	6	2017-03-01	\N	3	06		6	3
+980	0516	1	1	4	2	23	1	adquisicion de vestuario, calzado y otros para las escuelas de formacion	49	1690166.6399999999	2	2	2017-04-06 21:57:17.284727	2017-05-29 14:14:40.915729	1	5	2017-03-30	\N	3			39	3
+1238	0528	1	0	1	0	0	0	mantenimiento de vehiculos	17	80100	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1298	0274	3	0	3	0	0	0	programa direccion general	1	48300	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-05-01	0	3	 	FAP	0	3
+1260	0236	3	0	3	0	0	0	asesoria especializada en la preparacion y analisis situacional para la migracion del personal civil a la ley servir y la formulacion del manual de perfil de puestos y el cuadro de puestos de la entidad	1	60000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1290	0272	3	0	3	0	0	0	citicolina 500mg	1	74977.3999999999942	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1291	0230	3	0	3	0	0	0	mantenimiento de vehículos para la lucha contra el terrorismo	10	45000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1328	0233	3	0	3	0	0	0	materiales aeronauticos para el mantenimiento retrazado para la aeronave 737-528	1	108633.600000000006	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1330	0252	3	0	3	0	0	0	adquisicion de materiales para trabajos estructurales 	5	376334.969999999972	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1112	0588	1	0	1	0	0	0	contratacion del servicio de mantenimiento/ reparacion y acondicionamiento de equipos de aire acondicionado 	1	38628	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	2	2017-04-01	0	3	 	version2	0	3
+1139	0575	1	0	1	0	0	0	adquisición de papeleria en general/ utiles y materiales de oficina para la 31a brig inf	83	211495	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1141	0668	1	0	1	0	0	0	suministro dse alimentos para el ptsmv de la 5ta brigada de montaña	2	435730.940000000002	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	version2	0	3
+1170	0687	1	0	1	0	0	0	adquisicion de alimentos y bebidas para consumo humano para actividades de bienestar - jbiene	7	300000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1247	0317	2	4	4	3	42	2	adquiscion de material electrico, electronico, sistematico y condicional para las aeronaves del programa ab-412 sp	181	517279.760000000009	1	6	2017-04-26 21:59:12.139034	2017-04-26 21:59:12.139034	1	10	2017-05-30	\N	3			0	3
+1071	0263	3	4	4	3	1	2	adquisicion de repuestos y accesorios para el mantenimiento mayor y menor de la aeronave del grup8	35	280937.880000000005	4	8	2017-04-25 20:36:59.480814	2017-05-10 13:47:26.212312	1	10	2017-04-30	\N	3			0	3
+1171	0567	1	0	1	0	0	0	adquisicion de botas de seguridad	1	388800	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1172	0684	1	0	1	0	0	0	adquisicion de insumos para la elaboracion de carnets para el copere	4	109500	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1179	0592	1	0	1	0	0	0	adquisicion de productos quimicos medicinales para el hmc	1	507692.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version2	0	3
+1180	0646	1	0	1	0	0	0	suministro de alimentos diversos (alimentos enlatados) para el personal de la 33a brigada infanteria	4	345146.109999999986	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1181	0562	1	0	1	0	0	0	adquisicion de vestuario para licenciado	2	328375	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1182	0557	1	0	1	0	0	0	servicio de confección de uniformes de paseo	1	399999	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	version2	0	3
+1129	0681	1	0	1	0	0	0	contratacion del servicio de overhaul exchange de componentes para helicopteros mi-17 1b	1	650000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-03-01	0	3	 	version2	0	3
+1130	0544	1	0	1	0	0	0	papeleria en general/ utiles y materiales de escritorio	47	89000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1231	0657	1	0	1	0	0	0	adquisición de equipos para red de informatica	1	47000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+120	0020	1	\N	1	4	\N	1	servicios similares -persona natural/	1	252000	2	2	2017-03-21 06:34:00	2017-04-27 17:30:37.158345	2	1	2017-03-01	\N	3			0	3
+962	0237	2	\N	2	\N	46	1	adquisicion de equipo servidor/	1	100000	1	6	2017-01-03 00:00:00	2017-04-26 13:50:37.515404	1	1	2017-01-03	\N	3			0	3
+828	0103	2	1	4	1	42	1	adquisicion corporativa de calzado /	5	399524.770000000019	2	2	2017-01-03 00:00:00	2017-05-29 18:31:54.983499	1	1	2017-01-02	\N	3	25	Proceso proviene LP N° 05-2016, Items desiertos	25	3
+1017	0286	2	1	4	1	42	1	adquisicion de calzado para altas 2017 para personal militar de las ffaa (PROCESO PROVIENE DE LA LP N° 07-2016)	\N	191656.799999999988	2	6	2017-04-12 22:58:38.194474	2017-06-07 16:39:44.79801	1	1	2017-04-30	\N	3	02	PROCESO PROVIENE DE LA LP N° 07-2016	48	3
+883	0158	2	\N	2	\N	48	1	adquisicion de cargadores electricos con transformadores bobinado de uso industrial para cargar baterias/	1	36000	1	6	2017-01-03 00:00:00	2017-04-26 14:13:33.737111	1	1	2017-01-03	\N	3			0	3
+167	0160	1	0	1	0	0	1	contratacion del servicio de alimentacion para el personal de la emch cfb/	1	259749	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+1003	0269	2	\N	2	\N	50	1	adquisición de equipos para unidad de cuidados intensivos	2	334000	2	6	2017-04-07 15:05:51.742815	2017-04-25 22:16:03.961015	1	1	2017-04-30	\N	3			0	3
+1000	0266	2	\N	2	\N	50	1	adquisición de una maquina de anestesia	1	399000	2	6	2017-04-07 14:52:27.473983	2017-04-25 22:17:41.284579	1	1	2017-04-30	\N	3			0	3
+331	0337	1	0	1	0	0	1	adquisicion de papeleria, utiles y maerial de oficina/	64	98558.1000000000058	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+364	0377	1	0	1	0	0	1	suministro de material electrico para la v de/	12	17342.7999999999993	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+365	0377	1	0	1	0	0	1	suministro de material electrico para la v de/	15	19675	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+366	0378	1	0	1	0	0	1	suministro de material pad para la v de/	34	111908	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+369	0384	1	0	1	0	0	1	suministro de alimentos para el ptsmv de la v de /	24	3267550	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-02-01	0	3	\N	\N	0	3
+400	0417	1	0	1	0	0	1	contratacion del serviciode agenciamiento de pasajes aereos internacionales cge/	1	371773.340000000026	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+402	0419	1	0	1	0	0	1	servicio de telefonia satelital para las operaciones de desminado humanitario/	1	65706	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+403	0420	1	0	1	0	0	1	seguro de vida para el personal de desminadores - dehume/	1	245700	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+404	0421	1	0	1	0	0	1	servicio de alquiler de vehiculos para el transporte de personal y carga/	1	121920	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+406	0423	1	0	1	0	0	1	contratacion educativa, maestria en gestion publica, pasantia e idioma extranjero (ingles) para los alumnos del xii pame de la esge-epg/	1	1323581	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	4	2017-02-01	0	3	\N	\N	0	3
+244	0244	1	0	1	0	0	1	suministros de alimentos y bebidas para consumo humano/	4	221156.399999999994	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+430	0447	1	0	1	0	0	1	adquisicion de reactivos metodo quimioluminiscencia con equipo en cesion de uso para banco de sangre del hmc/	1	300000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+466	0483	1	0	1	0	0	1	adquisición de pinturas matizadas y diversos /	5	87382.5	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+467	0484	1	0	1	0	0	1	suministro de material de limpieza diverso /	124	155839	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+468	0485	1	0	1	0	0	1	suministro de material electrico /	72	96309	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+515	0009	3	0	3	0	0	1	servicio de noticias nacional e internacional uu.dd fap-vraem (2017-2018) 	1	204864	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+519	0013	3	0	3	0	0	1	adquisicion de utiles de aseo para el personal de tropa 	3	158833.209999999992	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+846	0121	2	\N	2	\N	48	1	adquisicion de un (1) respondedor de radar (racon) para ilo/	1	150000	1	6	2017-01-03 00:00:00	2017-04-26 14:25:54.995007	1	1	2017-01-03	\N	3			0	3
+252	0252	1	0	1	0	0	1	adquisicion de material de escritorio y papeleria en general/	59	50876	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+209	0204	1	0	1	0	0	1	adquisicion de material electrico para las instalaciones del iestpe-ete /	21	45000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+606	0115	3	0	3	0	0	1	adquisicion de viveres y abarrotes para pacientes hospitalizados y guardias medicas 	5	471562	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+607	0116	3	0	3	0	0	1	adquisicion de viveres y abarrotes por subasta inversa pacientes hospitalizados y guardias medicas 	2	140845	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+645	0154	3	0	3	0	0	1	adquisicion de viveres comunes para racionamiento del personal militar y tropa 	29	260039.600000000006	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+646	0155	3	0	3	0	0	1	adquisicion de viveres frescos y secos para racionamiento del personal militar y tropa 	87	209561.75	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+647	0156	3	0	3	0	0	1	adquisicion de carnes, aves y productos hidrobiologicos para racionamiento del personal militar y tropa 	17	307595.25	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+648	0157	3	0	3	0	0	1	adquisicion de pan para acionamiento del personal militar y tropa 	1	35106.5999999999985	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+211	0206	1	0	1	0	0	1	servicio de enseñanza tecnico agropecuario para alumnos del iestpe-ete/	1	77000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+738	0013	2	0	2	0	0	1	servicio de transporte de combustible para unidades de guardacostas/	1	120000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+739	0014	2	0	2	0	0	1	confeccion de escudo marina de guerra del peru/	1	80000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+740	0015	2	0	2	0	0	1	adquisicion de llantas para omnibus de la flota de transporte escolar/	1	100364	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+741	0016	2	0	2	0	0	1	consultoria para determinar el monto de la contraprestacion mediante informe de valuacion comercial o tasacion para la concesion de predios propuestos por la institucion/	1	120000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+743	0018	2	0	2	0	0	1	menaje de comedor y cocina/	1	53000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+744	0019	2	0	2	0	0	1	servicio de alquiler de fotocopiadoras/	1	38000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+745	0020	2	0	2	0	0	1	alquiler maquinas fotocopiadoras para impresion, fotocopiado y escaneado/	1	48000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+746	0021	2	0	2	0	0	1	servicio de instalacion de verduguetes de patrulleras guardacostas/	1	170000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+716	0014	6	\N	4	\N	\N	1	contratacion del servicio de alquiler de buses para entrenamiento de la fuerza especial conjunta/	1	399900	2	4	2017-03-21 06:34:00	2017-05-22 13:22:49.893833	2	1	2017-04-01	\N	3			0	3
+755	0030	2	0	2	0	0	1	adquisicion de accesorios y repuestos para reparar motores de omnibus de la flota de transporte escolar/	1	57496	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+756	0031	2	0	2	0	0	1	servicio de gestores locales mejoramiento de la gestion en la prestacion de servicios/	1	799360	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	3	2017-01-03	0	3	\N	\N	0	3
+834	0109	2	\N	2	\N	48	1	adquisicion de dos (2) estaciones meteorologica marina para unidades navales/	1	100000	1	6	2017-01-03 00:00:00	2017-04-26 14:29:40.359776	1	1	2017-01-03	\N	3			0	3
+456	0473	1	0	1	0	0	1	transporte de combustible/	1	32991.6200000000026	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+843	0118	2	\N	2	\N	42	1	adquisicion de insumos para mejoramiento de rancho del personal comesgemar-la perla de abril 2017 a marzo 2018/	143	520854.929999999993	2	6	2017-01-03 00:00:00	2017-04-26 14:26:47.780839	1	5	2017-01-02	\N	3			0	3
+621	0130	3	0	3	0	0	1	adquisicion de material descartable 	38	61733	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+947	0222	2	\N	2	\N	43	1	adquisicion de ejes de propulsion para patrulleras de costa/	1	70000	2	6	2017-01-03 00:00:00	2017-04-26 13:54:59.902811	1	1	2017-01-04	\N	3			0	3
+1299	0294	3	0	3	0	0	0	recojo y eliminacion de residuos solidos hospitalarios	1	63360	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	FAP	0	3
+1300	0269	3	0	3	0	0	0	adquisición de accesorios y servicios complementarios asociados a su instalación en la aeronave boeing 737	1	2682375	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1301	0245	3	0	3	0	0	0	adquisicion de componentes y materiales aeronauticos	3	3239550	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1302	0293	3	0	3	0	0	0	adquisicion de papel toalla interfoliado y papel higienico para los pisos de hospitalizacion	1	46000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	FAP	0	3
+1305	0224	3	0	3	0	0	0	mejoramiento de la capacidad de soporte administrativo y operativo de escuadrón de comunicaciones y electrónica (ece-305) del grup3 (pip codigo snip 330819)	0	875220.219999999972	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-06-01	0	3	 	FAP	0	3
+1306	0223	3	0	3	0	0	0	elaboracion de expediente tecnico del pip codigo snip 330819 mejoramiento de la capacidad de soporte administrativo y operativo del escuadron de comunicaciones y electronica (ece-305) del grup3	1	35008.8099999999977	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1092	0659	1	0	1	0	0	0	pasajes y gastos de transporte	1	41311	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1076	0302	3	4	4	3	1	2	adquisición de partes, repuestos y material de avionica para aeronave boeing 737-500	3	47235.8199999999997	2	8	2017-04-25 21:08:58.75632	2017-04-25 21:08:58.75632	1	10	\N	\N	3			0	3
+1316	0035	3	0	3	0	0	0	servicio de agente de carga internacional	0	180000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-08-01	0	3	 	FAP	0	3
+1317	0057	3	0	3	0	0	0	convenio de arriendo fidae	0	67200	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	10	2017-11-01	0	3	 	FAP	0	3
+1319	0229	3	0	3	0	0	0	adquisicion de repuestos para vehiculos	1319	537934.069999999949	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	FAP	0	3
+1320	0227	3	0	3	0	0	0	adquisicion de material para planchado y pintado de vehiculos	32	109990	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+946	0221	2	\N	2	\N	43	1	adquisicion de herramientas/	1	40332	2	6	2017-01-03 00:00:00	2017-04-26 13:55:25.529928	1	1	2017-01-04	\N	3			0	3
+938	0213	2	0	2	0	0	1	evaluacion por competencias transversales para personal naval/	1	168680	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+939	0214	2	0	2	0	0	1	mantenimiento de maquina de la lavanderia/	1	70000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+944	0219	2	\N	2	\N	50	1	adquisicion de insumos de lavanderia para el centro medico naval cmst/	1	85000	1	6	2017-01-03 00:00:00	2017-04-26 13:55:55.007641	1	1	2017-01-04	\N	3			0	3
+943	0218	2	\N	2	\N	43	1	adquisicion de material de seguridad/	1	40000	2	6	2017-01-03 00:00:00	2017-04-26 13:56:12.943176	1	1	2017-01-04	\N	3			0	3
+942	0217	2	\N	2	\N	42	1	servicio de mantenimiento y reparacion de obuses cal. 122 mm/	1	83000	2	6	2017-01-03 00:00:00	2017-04-26 13:56:40.346146	2	1	2017-01-03	\N	3			0	3
+940	0215	2	\N	2	\N	50	1	servicio de asistencia medica internacional para el personal en comision viex - 2017/	1	166341.600000000006	2	6	2017-01-03 00:00:00	2017-04-26 13:57:01.318548	1	1	2017-01-03	\N	3			0	3
+936	0211	2	\N	2	\N	42	1	servicio de mantenimiento y reparacion de maquinaria pesada de ingenieria/	3	68080	2	6	2017-01-03 00:00:00	2017-04-26 13:58:18.322896	2	1	2017-01-03	\N	3			0	3
+934	0209	2	\N	2	\N	50	1	adquisicion de viveres para pacientes hospitalizados/	134	299999.700000000012	2	6	2017-01-03 00:00:00	2017-04-26 13:58:39.192134	1	1	2017-01-04	\N	3			0	3
+930	0205	2	\N	2	\N	43	1	adquisicion de sellos para las patrulleras de costa/	1	60000	2	6	2017-01-03 00:00:00	2017-04-26 13:59:55.028276	1	1	2017-01-04	\N	3			0	3
+959	0234	2	\N	2	\N	42	1	suministro de toldos para la cubierta toldilla y puente alto del bap. union/	1	135000	1	6	2017-01-03 00:00:00	2017-04-25 21:56:54.280411	1	1	2017-01-03	\N	3			0	3
+963	0238	2	\N	2	\N	46	1	licenciamiento para virtualizacion de servidores/	1	64716	1	6	2017-01-03 00:00:00	2017-04-26 13:50:07.054477	2	1	2017-01-04	\N	3			0	3
+1321	0239	3	0	3	0	0	0	adquisición de material odontológico	42	200000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1323	0228	3	0	3	0	0	0	adquisicion de material miscelaneo y herramientas para uso automotriz	176	134398.5	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1324	0283	3	0	3	0	0	0	adquisicion de racionamiento del personal civil del area de lima (subasta inversa	21	390757.140000000014	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	FAP	0	3
+1285	0244	3	0	3	0	0	0	asesoria en abastecimiento tecnico y contrataciones	1	47200	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1091	0662	1	0	1	0	0	0	adquisición de víveres secos para el ptsmv del coadne	8	262350.130000000005	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	version2	0	3
+1110	0622	1	0	1	0	0	0	adquisicion de articulos para mantenimiento de piscina del personal militar	7	116112	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1307	0212	3	0	3	0	0	0	adquisición de insumos medicos para proceso de admisión esofa-sanidad esofa-dental	108	77745.5	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-07-01	0	3	 	FAP	0	3
+1308	0299	3	0	3	0	0	0	adquisicion de equipos de cocina para el comedor del seint	4	129050	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	FAP	0	3
+1206	0589	1	0	1	0	0	0	contratacion del servicio de mantenimiento y reparacion de vehiculos administrativos de la aviacion del ejercito	1	90000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1208	0615	1	0	1	0	0	0	mantenimiento de los servicios higenicos de la pre-ete del iespte-ete.	1	100000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1209	0595	1	0	1	0	0	0	adqusicion de diversos tipos de protesis para el personal militar	1	1095000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-05-01	0	3	 	version2	0	3
+469	0486	1	0	1	0	0	1	suministro de material ferreteria /	380	317385.5	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+1210	0621	1	0	1	0	0	0	servicio de mantenimiento de los ascensores hmg	1	41581	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1211	0611	1	0	1	0	0	0	adquisicion de material para mantenimiento de instalaciones de la ii de	50	153725	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1212	0607	1	0	1	0	0	0	servicio de gastos legales y judiciales en saneamiento de terrenos del care-caraz	1	55000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+984	0252	2	\N	2	\N	58	1	adquisicion de repuestos y accesorios para el mantenimiento de la unidad aeronaval, del escuadron aeronaval de la amzonía	48	159600	2	6	2017-04-06 22:10:38.47025	2017-04-25 22:23:15.42852	1	1	2017-04-30	\N	3			0	3
+966	0241	2	\N	2	\N	46	1	adquisicion de equipos para la optimizacion de la red de datos de la direccion de hidrografia y navegacion/	1	60000	1	6	2017-01-03 00:00:00	2017-04-26 13:49:04.510532	1	1	2017-01-04	\N	3			0	3
+982	0251	2	\N	2	\N	42	1	adquisicion de viveres para rancho del personal naval del area de paita	117	118108.559999999998	2	6	2017-04-06 22:03:24.291938	2017-04-26 13:46:00.405301	1	4	\N	\N	3			0	3
+1213	0578	1	0	1	0	0	0	adquisicion de insumos de uso aeronautico (insumos importados/ pinturas e insumos nacionales)	206	1199983.19999999995	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-04-01	0	3	 	version2	0	3
+1216	0649	1	0	1	0	0	0	suministro de material de limpieza	33	35250	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1219	0686	1	0	1	0	0	0	adquisicion de electricidad/ iluminacion y electronica para las unidades del cge	155	92494	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+1220	0601	1	0	1	0	0	0	adquisicion de diversos formatos de las diferentes areas del hmc	1	37150	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	2	2017-04-01	0	3	 	version2	0	3
+1230	0655	1	0	1	0	0	0	contratacion del servicio de mantenimiento del pabellón c	1	172000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1232	0647	1	0	1	0	0	0	adquisicion de papel higienico para la 33a brigada de infanteria	1	53244	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1233	0634	1	0	1	0	0	0	servicio de alquiler de sshh super vip para diversas actividades civico patrioticas	1	52360	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+1146	0599	1	0	1	0	0	0	adquisicion de sillas de ruedas electricas y  mecanicas	1	390000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+770	0045	2	0	2	0	0	1	viveres e insumos para atenciones en actividades oficiales y protocolares primer semestre/	182	399000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+771	0046	2	0	2	0	0	1	mantenimiento de estaciones radaricas fijas zorritos, talara y evems/	1	60000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-05	0	3	\N	\N	0	3
+804	0079	2	\N	2	\N	47	1	adquisicion de material electrico/	1	80000	1	6	2017-01-03 00:00:00	2017-04-26 14:40:46.83083	1	1	2017-01-02	\N	3			0	3
+802	0077	2	\N	2	\N	48	1	servicio de limpieza y mantenimiento de edificios/	1	168825	1	6	2017-01-03 00:00:00	2017-04-26 14:41:06.500226	2	1	2017-01-03	\N	3			0	3
+1154	0671	1	0	1	0	0	0	botas de jebe  punta de acero 	1	129600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+798	0073	2	\N	2	\N	48	1	material anual de lavanderia/	1	49000	1	6	2017-01-03 00:00:00	2017-04-26 14:41:51.334939	1	1	2017-01-03	\N	3			0	3
+182	0177	1	0	1	0	0	1	adquisición de prendas de cama para los cadetes de la emch cfb/	5	159875	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+265	0265	1	0	1	0	0	1	contratacion del servicio de de mantenimiento, reparación y acondicionamiento de máquinas y equipos en general de la 31a brig inf./	1	42386	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+1202	0652	1	0	1	0	0	0	manto y reparación de equipo y material hospitalario de los centros de salud del cosale	1	60200	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+263	0263	1	\N	1	4	\N	1	adquisición de útiles menores de cocina y vajilla de comedor para la 31a brig inf./	19	98640	2	2	2017-03-21 06:34:00	2017-04-27 17:37:00.331118	1	1	2017-03-01	\N	3			0	3
+1218	0736	1	4	4	2	\N	2	adquisicion de repuestos para aeronaves de fabricacion americana y agusta 109k	1	2160000	5	9	2017-04-20 00:00:00	2017-05-16 14:03:50.742834	1	9	2017-04-01	\N	3		version2	0	3
+413	0430	1	0	1	0	0	1	adquisición de material electrico, iluminacion y electrónica./	46	421700	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+1029	0292	2	\N	2	\N	42	1	adquisición de lubricantes, grasas y afines para el b.a.p union para realizar el viaje de instrucción al extranjero	11	124124.699999999997	2	6	2017-04-20 20:59:34.447508	2017-04-25 22:07:43.414973	1	1	2017-04-30	\N	3			0	3
+858	0133	2	\N	2	\N	42	1	adquisicion de suministro de viveres secos para la cuarta zona naval y capipuca de abril 2017 a marzo 2018/	6	219024	2	6	2017-01-03 00:00:00	2017-04-26 14:22:25.260301	1	6	2017-01-02	\N	3			0	3
+857	0132	2	\N	2	\N	48	1	adquisicion de controladores electronicos (rtu) para sistema de monitoreo de faros sismor/	1	87200	1	6	2017-01-03 00:00:00	2017-04-26 14:22:42.968633	1	1	2017-01-03	\N	3			0	3
+1008	0274	2	1	4	2	46	1	servicio de telefonía movil satelital	1	1328000	2	6	2017-04-07 15:20:00.290142	2017-04-20 18:08:25.611076	2	3	\N	\N	3			0	3
+450	0467	1	0	1	0	0	1	adquisición alimentos para el personal de tropa 2da brigada de infanteria/	6	1033619	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-02-01	0	3	\N	\N	0	3
+476	0493	1	0	1	0	0	1	contratacion del servicio de mantenimiento, reparacion y calibración de equipo de apoyo en tierra para aeronaves/	1	300000	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+483	0500	1	0	1	0	0	1	alimentos para personas/	3	252288	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+202	0197	1	0	1	0	0	1	servicio de evaluacion externa para la acreditacion de las diferentes especialidades /	1	182354	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-06-01	0	3	\N	\N	0	3
+208	0203	1	0	1	0	0	1	adquisicion de vestuario y accesorios, mandiles, overoles para los alumnos del iespte-ete /	8	276550	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+586	0090	3	0	3	0	0	1	materiales y accesorios para sala de simulacion de vuelo 	3	50750	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+587	0091	3	0	3	0	0	1	servicio integral cambio y reposicion de alfombra para el piso del anfiteatro 	1	50130	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+588	0092	3	0	3	0	0	1	mantenimiento de sistema contraincendio 	1	47000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+589	0093	3	0	3	0	0	1	servicio de mantenimiento de ascensores del cg-fap 	1	87000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+619	0128	3	0	3	0	0	1	adquisicion viveres frescos, secos, aguas y gaseosas para atenciones a bordo de las operaciones aereas de la unidad 	2	672732	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+1142	0645	1	0	1	0	0	0	repuestos para mantenimiento de veh	96	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1143	0608	1	0	1	0	0	0	suministro de alimentos para el personal de tropa del servicio militar voluntario de la ii de	2	309707.739999999991	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	6	2017-04-01	0	3	 	version2	0	3
+1165	0540	1	0	1	0	0	0	adquisicion de productos hipicos	6	56850	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-06-01	0	3	 	version2	0	3
+231	0231	1	0	1	0	0	1	alimentos para personas/	6	1338881.52000000002	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-02-01	0	3	\N	\N	0	3
+1168	0658	1	0	1	0	0	0	adquisición de equipos para vigilancia 	2	84250	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+1169	0676	1	0	1	0	0	0	adquisicion de botones dorados para uniformes de paseo	1	600000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-06-01	0	3	 	version2	0	3
+704	0002	6	0	6	0	0	1	contratacion del servicio de alquiler de fotocopiadoras para el ccffaa/	1	168000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-01-01	0	3	\N	\N	0	3
+737	0012	2	0	2	0	0	1	alquiler de dos viviendas para el personal superior de la base naval de chimbote/	1	36000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	2	2017-01-02	0	3	\N	\N	0	3
+215	0210	1	0	1	0	0	1	servicio de enseñanza tecnico mecanico telematica, ciencias de la comunicación para alumnos /	1	60000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+1367	0363	2	1	4	1	\N	1	servicio de alquiler segmento satelital	\N	1869601.72999999998	\N	6	2017-05-08 15:10:19.325077	2017-06-06 17:15:40.986186	1	3	\N	\N	3	30	PROVIENE CP N° 05-2016	30	3
+1366	0562	2	1	4	1	\N	1	servicio de telefonia fija	\N	4465162.5	\N	2	2017-05-08 15:07:55.282267	2017-06-19 16:17:41.303015	2	3	\N	\N	2	29		34	3
+214	0209	1	0	1	0	0	1	servicio de enseñanza tecnico mecanico de armamento y municion, mecanico de vehiculo automotriz, mecanico de equipo pesado para alumnos /	1	70000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+216	0211	1	0	1	0	0	1	servicio de enseñanza tecnico de gastronomia, para alumnos del iestpe-ete/	1	55258	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+217	0212	1	0	1	0	0	1	servicio de enseñanza tecnico geomatica, para alumnos del iestpe-ete/	1	70000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+218	0213	1	\N	1	4	\N	1	servicio de enseñanza en el programa de logistica, para sub oficiales/	1	141450	2	2	2017-03-21 06:34:00	2017-04-27 17:34:50.067559	2	1	2017-05-01	\N	3			0	3
+227	0227	1	\N	1	4	\N	1	mantenimiento, reparación y acondicionamiento de máquinas yequipos en gral de la i de/	1	44896	2	2	2017-03-21 06:34:00	2017-04-27 17:35:42.765304	2	1	2017-06-01	\N	3			0	3
+245	0245	1	\N	1	4	\N	1	papeleria en general, utiles y material/	113	38357	2	2	2017-03-21 06:34:00	2017-04-27 17:36:12.185453	1	7	2017-03-01	\N	3			0	3
+219	0214	1	0	1	0	0	1	servicio de enseñanza en el programa de administracion, para tecnicos de segunda del ejercito (integracion)/	1	141450	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+788	0063	2	4	4	4	42	2	adquisicion de armamento/	1	894092	2	2	2017-01-03 00:00:00	2017-05-26 19:15:01.532216	1	10	2017-03-30	\N	3	17		17	3
+220	0215	1	0	1	0	0	1	servicio de enseñanza en el programa de gestion publica, para tecnicos de primera y tecnicos jefes del ejercito (perfeccionamiento superior)/	1	141415	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+221	0219	1	0	1	0	0	1	adquisicion de suministros para el mantenimiento y reparacion de las instalaciones de la esge-epg/	1	43093	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+237	0237	1	0	1	0	0	1	adquisicion de gas licuado de petroleo/	1	114261.199999999997	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+752	0027	2	0	2	0	0	1	atenciones oficiales, protocolares e institucionales en el area san borja y callao primer semestre/	1	399000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+753	0028	2	0	2	0	0	1	servicio mantenimiento diversos a los sistemas auxiliares de las patrulleras de costa/	1	145000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+758	0033	2	0	2	0	0	1	presentes institucionales y protocolares/	2	200000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	0	1	2017-01-02	0	3	\N	\N	0	3
+800	0075	2	4	4	4	42	2	adquisicion de equipo de patrulla/	1	1234077	2	6	2017-01-03 00:00:00	2017-04-25 16:10:31.4051	1	10	2017-01-03	\N	3			0	3
+837	0112	2	\N	2	\N	42	1	adquisicion de viveres secos, frescos, ingredientes para pan, verduras y mejoramiento de rancho para capilo de abril 2017 a marzo 2018/	1	102521.199999999997	2	6	2017-01-03 00:00:00	2017-04-26 14:28:39.027685	1	1	2017-01-02	\N	3			0	3
+168	0161	1	0	1	0	0	1	contratacion del servicio de pintado de instalaciones /	1	80000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+347	0353	1	0	1	0	0	1	adquisicion de material de escritorio para la 33a brigada de infanteria/	121	327155.729999999981	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+388	0405	1	0	1	0	0	1	adquisicion de material pad/	132	369018.969999999972	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	4	2017-03-01	0	3	\N	\N	0	3
+1062	0226	3	4	4	3	1	2	reparacion u overhaul de bloques y accesorios para la flota  de la divra	5	375689.960000000021	2	8	2017-04-25 17:24:13.893429	2017-04-28 20:06:44.885124	2	10	2017-04-30	\N	3			0	3
+717	0015	6	0	6	0	0	1	contratacion del servicio de television por cable para el ccffaa/	1	38000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-01-01	0	3	\N	\N	0	3
+868	0143	2	0	2	0	0	1	adquisicion de alimentos para canes adultos y cachorros correspondiente al 2017/	2	199998	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+910	0185	2	\N	2	\N	42	1	adquisicion de calzado especial para el bev. union/	1	92140	2	6	2017-01-03 00:00:00	2017-04-26 14:06:51.231127	1	1	2017-01-03	\N	3			0	3
+706	0004	6	1	4	1	\N	1	contratacion de cobertura de seguros vehiculares para el ccffaa/	1	33000	2	2	2017-03-21 06:34:00	2017-05-26 19:07:16.710914	2	1	2017-05-01	\N	3	07		7	3
+1159	0530	1	4	4	3	27	2	curso de desarrollo de liderazco de 63 cadetes y 02 oficiales en el fuerte benning columbus ga estados unidos de america 	1	1343000	2	4	2017-04-20 00:00:00	2017-04-28 22:47:19.416958	2	10	2017-03-01	\N	3		version2	0	3
+1254	0215	3	0	3	0	0	0	adquisición de maletines	1	36000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1255	0281	3	0	3	0	0	0	adquisicion de un (01) equipo gps rover pp/rtk con chip de 440 canales rastreo simultaneo de señales satelitales con accesorios	1	53650	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+503	0520	1	0	1	0	0	1	adquisicion de pasta dental/	1	194172	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+504	0521	1	0	1	0	0	1	servicio de transporte combustible flete vraem - terrestre/	1	81700	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+547	0046	3	0	3	0	0	1	adquisicion de productos quimicos 	37	243525	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-08-01	0	3	\N	\N	0	3
+232	0232	1	0	1	0	0	1	alimentos para personas/	3	456628.030000000028	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-02-01	0	3	\N	\N	0	3
+548	0048	3	0	3	0	0	1	adquisicion de repuestos para la reparacion de la maleta de prueba del sistema de generacion de oxigeno 	1	10787.0400000000009	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-04-01	0	3	\N	\N	0	3
+659	0168	3	0	3	0	0	1	adquisicion de viveres secos 	33	92625.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+705	0003	6	0	6	0	0	1	contratacion de suministro de combustible para los vehiculos del ccffaa/	2	112318	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-01-01	0	3	\N	\N	0	3
+707	0005	6	0	6	0	0	1	contratacion del servicio de internet para el ccffaa/	1	58800	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+708	0006	6	0	6	0	0	1	contratacion del servicio de mantenimiento de los vehiculos del ccffaa/	1	100000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-02-01	0	3	\N	\N	0	3
+709	0007	6	0	6	0	0	1	adquisicion de complemento de racionamiento para el personal del ccffaa/	2	264000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-09-01	0	3	\N	\N	0	3
+710	0008	6	0	6	0	0	1	contratacion de material de limpieza para el ccffaa/	1	105000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+260	0260	1	0	1	0	0	1	adquisición de papeleria en general, utiles y materiales de oficina para la 31a brig inf./	83	224372	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+875	0150	2	0	2	0	0	1	adquisicion de insumos para mejoramiento de rancho ordinario y especial para persupe, persuba, marineria y alumnos de combarval de abril 2017 a marzo 2018/	157	296733.330000000016	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+877	0152	2	0	2	0	0	1	adquisicion de combustible para vehiculos, area comesmole/	1	49704	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	6	2017-01-02	0	3	\N	\N	0	3
+1252	0287	3	4	3	3	\N	2	adquisicion de accesorios aplicable a la maleta de balance dimanico para los helicopteros bell-212	1	23800	2	8	2017-04-20 00:00:00	2017-05-22 10:45:33.130385	1	10	2017-04-01	\N	3		FAP	0	3
+1256	0248	3	0	3	0	0	0	mantenimiento y reparacion de los ambientes de sanidad	1	45000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1257	0039	3	0	3	0	0	0	servicio de estudio de analisis y estructura de costo por los servicios que brinda el seman	0	180000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+711	0009	6	0	6	0	0	1	adquisicion de una (1) camioneta suv 4 x 4/	1	148500	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+301	0307	1	\N	1	4	\N	1	combustible turbo a1/	1	464520	2	2	2017-03-21 06:34:00	2017-04-27 17:38:31.055393	1	5	2017-03-01	\N	3			0	3
+1258	0217	3	0	3	0	0	0	adquisición de colchones y almohadas	2	80000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1259	0251	3	0	3	0	0	0	adquisicion de material de ferreteria y pinturas	91	47436	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+718	0016	6	0	6	0	0	1	adquisicion de utiles de escritorio/	10	6663.8100000000004	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-01-01	0	3	\N	\N	0	3
+845	0120	2	\N	2	\N	42	1	adquisicion racionamiento organico para la dotacion de comesmole y capimole de abril 2017 a marzo 2018/	18	230749.470000000001	2	6	2017-01-03 00:00:00	2017-04-26 14:26:10.762537	1	1	2017-01-02	\N	3			0	3
+719	0017	6	\N	6	\N	\N	1	adquisicion de material pad/	3	23275.8300000000017	2	2	2017-03-21 06:34:00	2017-03-24 02:00:57.429078	1	7	2017-01-01	0	3	\N	\N	0	3
+699	0208	3	1	3	\N	\N	1	asesoria pruebas quimicas de bajos y altos explosivos del material clase vv-a y v-da 	1	65000	2	8	2017-03-21 06:34:00	2017-05-02 10:45:37.424924	2	1	2017-03-01	\N	3			0	3
+714	0012	6	\N	6	\N	\N	1	contratacion del servicio de renovación del upgrade del sistema backup del blade center del ccffaa/	1	80000	2	2	2017-03-21 06:34:00	2017-04-21 20:09:53.473283	2	1	2017-04-01	\N	3			0	3
+701	0210	3	4	3	\N	15	2	entrenamiento de simulador de vuelo para las tripulaciones de las aeronaves del grup3 	1	86946.929999999993	2	8	2017-03-21 06:34:00	2017-05-02 10:42:28.799658	2	8	2017-05-01	\N	3			0	3
+698	0207	3	4	3	\N	\N	1	asesoria tecnico especializad en mantenimiento, calibracion y reparacion de radares tps-70(gruda) 	1	35000	2	8	2017-03-21 06:34:00	2017-05-02 11:27:02.033964	2	1	2017-03-01	\N	3			0	3
+727	0002	2	0	2	0	0	1	alquiler de vivienda para el jefe del estado mayor de la comandancia de la primera zona naval/	1	50400	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	2	2017-01-02	0	3	\N	\N	0	3
+919	0194	2	\N	2	\N	43	1	adquisicion de materiales para mantenimiento/	1	60000	2	6	2017-01-03 00:00:00	2017-04-26 14:02:03.476233	1	1	2017-01-04	\N	3			0	3
+871	0146	2	\N	2	\N	48	1	mantenimiento de maquinas principales del bap. carrillo /	1	250000	1	6	2017-01-03 00:00:00	2017-04-26 14:17:45.030692	2	1	2017-01-03	\N	3			0	3
+870	0145	2	\N	2	\N	42	1	adquisicion de racionamiento para el personal brigada azul y oro, medicos residentes, internos de salud y medicos civiles de guardia correspondiente al 2017/	28	391560	2	6	2017-01-03 00:00:00	2017-04-26 14:18:05.983215	1	1	2017-01-02	\N	3			0	3
+1025	0281	2	\N	2	\N	42	1	adquisición de gas envasado 45/10 kg para atencion liceos navales y uu/dd area lima y callao	2	53183	2	6	2017-04-18 15:08:26.10736	2017-04-25 22:10:27.93359	1	6	2017-04-30	\N	3			0	3
+869	0144	2	\N	2	\N	48	1	servicio de traslado del tren de fondeo de las boyas separadoras/	1	80000	1	6	2017-01-03 00:00:00	2017-04-26 14:18:33.55268	2	1	2017-01-03	\N	3			0	3
+1282	0277	3	0	3	0	0	0	servicio de alquiler de segmento satelital uu/dd fap-vraem	1	510000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	4	2017-04-01	0	3	 	FAP	0	3
+1326	0225	3	0	3	0	0	0	transporte de flete de combustible clase iii	1	75016.8000000000029	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	FAP	0	3
+1327	0275	3	0	3	0	0	0	adquisicion de viveres para los cadetes cursos escom	59	33294	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+1113	0571	1	0	1	0	0	0	adquisicion de uniformes de gala y calzado para oficiales ascendidos	6	209780	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+859	0134	2	\N	2	\N	48	1	adquisicion de diez (10) boyas tipo lapicero/	1	145000	1	6	2017-01-03 00:00:00	2017-04-26 14:22:04.120541	1	1	2017-01-03	\N	3			0	3
+1114	0606	1	0	1	0	0	0	insummos para actividades de salud publica/<br 	1	58810	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+1115	0639	1	0	1	0	0	0	adquisición de herramientas para la movilización y atención de brigadasfrente a lluvias y peligros asociados	5	289900	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1116	0623	1	0	1	0	0	0	contratacion del servicio de mantenimiento de infraestructura construida de la s-cge	7	116112	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-04-01	0	3	 	version2	0	3
+1117	0613	1	0	1	0	0	0	adquisicion de repuestos y accesorios para vehiculos militares de la i de/	1	75600	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	4	2017-04-01	0	3	 	version2	0	3
+1118	0586	1	0	1	0	0	0	contratacion del servicio de mantenimiento y reparacion de baterias del helicoptero ep-592	1	39000	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	2	2017-04-01	0	3	 	version2	0	3
+811	0086	2	\N	2	\N	48	1	adquisicion de material de suministros/	1	126910	1	6	2017-01-03 00:00:00	2017-04-26 14:39:03.756568	1	1	2017-01-03	\N	3			0	3
+729	0004	2	0	2	0	0	1	adquisicion de software para digitalizacion de areas geograficas (puertos) para el simulador carta electronica wecdis/	1	480708	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	5	2017-01-03	0	3	\N	\N	0	3
+730	0005	2	0	2	0	0	1	servicio de impresion del informativo monitor/	1	80000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+880	0155	2	\N	2	\N	48	1	actualizacion de licencias caris hips-sips y caris base editor/	1	99800	1	6	2017-01-03 00:00:00	2017-04-26 14:14:09.978922	2	1	2017-01-03	\N	3			0	3
+849	0124	2	0	2	0	0	1	adquisicion de insumos para el mejoramiento de rancho ordinario y especial para la dotacion area dicemena de abril 2017 a marzo 2018/	92	479254.929999999993	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	5	2017-01-02	0	3	\N	\N	0	3
+852	0127	2	0	2	0	0	1	adquisicion de insumos para el mejoramiento de rancho ordinario y especial para la dotacion area combaca de abril 2017 a marzo 2018/	170	2058881.60000000009	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	5	2017-01-02	0	3	\N	\N	0	3
+863	0138	2	0	2	0	0	1	adquisicion de insumos para el mejoramiento de rancho ordinario y especial para la dotacion del area la punta de abril 2017 a marzo 2018/	184	740881.069999999949	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	5	2017-01-02	0	3	\N	\N	0	3
+866	0141	2	\N	2	\N	42	1	adquisicion de insumos de mejoramiento de rancho ordinario y especial para dotacion combaim de abril 2017 a marzo 2018/	107	1324205.12000000011	2	6	2017-01-03 00:00:00	2017-04-26 14:19:32.389712	1	5	2017-01-02	\N	3			0	3
+780	0055	2	1	4	2	44	1	seguro casco y maquinaria para buque escuela a la vela union/	1	1250000	2	4	2017-01-03 00:00:00	2017-04-12 21:14:29.049349	2	3	2017-01-10	\N	3	\N	\N	0	3
+715	0013	6	0	6	0	0	1	contratacion del servicio de alquiler de buses para operaciones de la fuerza especial conjunta/	1	641600	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-05-01	0	3	\N	\N	0	3
+549	0049	3	0	3	0	0	1	adquisicion de materia prima para confeccion de tuberias y mangueras para reparacion de aeronaves militares 	1	6896	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	10	2017-04-01	0	3	\N	\N	0	3
+550	0050	3	0	3	0	0	1	curso engine run up and taxi b 737 	1	25600	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	10	2017-05-01	0	3	\N	\N	0	3
+551	0051	3	0	3	0	0	1	recertificación de licencia como estación de reparación seman-perú otorgada por la federal aviatión administratión f a a 	1	173355.899999999994	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	10	2017-10-01	0	3	\N	\N	0	3
+552	0054	3	0	3	0	0	1	recertificacion de seman-peru por la autoridad aeronautica easa para el proceso de overhaul de trenes de aterrizaje y servicios especializados 	1	181892	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	10	2017-11-01	0	3	\N	\N	0	3
+682	0191	3	0	3	0	0	1	adquisicion de materiales para trabajos de mantenimiento preventivo y correctivo de las instalaciones del seman 	1	296447	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+867	0142	2	\N	2	\N	48	1	mantenimiento de maquinas principales del bap. carrasco /	1	90000	1	6	2017-01-03 00:00:00	2017-04-26 14:19:06.349526	2	1	2017-01-03	\N	3			0	3
+658	0167	3	0	3	0	0	1	adquisicion de carnes y derivados 	12	130078.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+696	0205	3	0	3	0	0	1	servicio de asesoria especializada para la operacionalizacion del sistema adminstracion (siga) 	1	39000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+702	0211	3	4	4	3	15	2	entrenamiento de simulador de vuelo para las tripulaciones 	2	240099.299999999988	2	8	2017-03-21 06:34:00	2017-05-10 20:14:51.739252	2	10	2017-06-01	\N	3			0	3
+912	0187	2	1	4	2	44	1	seguro casco y maquinaria para buque oceanografico bap carrasco/	1	1250000	1	6	2017-01-03 00:00:00	2017-04-18 21:43:42.808997	2	3	2017-01-03	\N	3			0	3
+864	0139	2	\N	2	\N	48	1	servicio de certificacion y clase para el bap. carrasco /	1	80000	1	6	2017-01-03 00:00:00	2017-04-26 14:20:20.063804	2	1	2017-01-03	\N	3			0	3
+862	0137	2	\N	2	\N	42	1	adquisicion de insumos para el mejoramiento de rancho ordinario y especial area citen de abril 2017 a marzo 2018/	123	1845009.30000000005	2	6	2017-01-03 00:00:00	2017-04-26 14:20:41.185707	1	5	2017-01-02	\N	3			0	3
+861	0136	2	\N	2	\N	48	1	adquisicion de baterias primarias, secundarias y gelificadas/	1	363920	1	6	2017-01-03 00:00:00	2017-04-26 14:21:29.736663	1	1	2017-01-03	\N	3			0	3
+855	0130	2	4	4	4	48	2	adquisicion de sistema de navegacion de carta nautica electronica/	1	157000	1	6	2017-01-03 00:00:00	2017-04-25 16:12:40.657074	1	10	2017-01-03	\N	3			0	3
+1135	0602	1	0	1	0	0	0	adquisicion de material insumos e instrumental  medico para las diferentes unidades hospitalarias 	1	380000	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+1136	0550	1	0	1	0	0	0	servicio de limpieza e higienizacion de las instalaciones del hospital militar geriatrico y residencia geriatrica (ule)	1	195144	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-03-01	0	3	 	version2	0	3
+1303	0262	3	0	3	0	0	0	servicio de reparacion/ overhaul y prueba en banco de componentes para la inspeccion check c  y inspeccion y/o overhaul de componentes de los trenes de aterrizaje de la aeronave boeing 737-528 fap 356	2	244146.115500000014	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	10	2017-05-01	0	3	 	FAP	0	3
+1138	0574	1	0	1	0	0	0	contratacion del suministro de alimentos  para el personal de la 31ra brig inf	1	56958.3300000000017	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	5	2017-03-01	0	3	 	version2	0	3
+1102	0582	1	4	4	3	22	2	servicio de overhaul de componentes de helicoptero agusta 109k	1	921499.199999999953	5	9	2017-04-20 00:00:00	2017-05-08 14:11:12.39385	2	9	2017-04-01	\N	3		version2	0	3
+1140	0524	1	0	1	0	0	0	papeleria en general/ utiles y material	60	35357	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-03-01	0	3	 	version2	0	3
+174	0169	1	0	1	0	0	1	suministro de material de escritorio por convenio marco /	82	276433	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+1304	0290	3	1	3	2	\N	1	adquision de materiales de limpieza para las diferentes unidades de la fap (area de lima)	18	398939.059999999998	2	8	2017-04-20 00:00:00	2017-05-22 10:48:18.798581	1	1	2017-05-01	\N	3		FAP	0	3
+1166	0637	1	0	1	0	0	0	contratacion de servicio diversos para la instalaciones del dinve cge	6	49872	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	2	1	2017-05-01	0	3	 	version2	0	3
+152	0145	1	0	1	0	0	1	servicio de atención de eventos y ceremonias militares./	1	170000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+1167	0653	1	0	1	0	0	0	adquisicion de material e insumos medicos para examen medico a postulantes al consurso de asimilacion procedencia universitaria y pefsoe/<br 	63	155680	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	version2	0	3
+697	0206	3	0	3	0	0	1	asesoria tecnico especializada en mantenimiento, calibracion y reparacion de radares (grup6) 	1	98000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+700	0209	3	4	4	2	8	2	simulador de vuelo para tripulaciones de piper pa-44 	1	1200638	2	2	2017-03-21 06:34:00	2017-05-29 14:16:42.572222	1	10	2017-03-01	\N	3			44	3
+1333	0231	3	0	3	0	0	0	adquisicion de material  miscelaneo para el lavado/ tratamiento anticorrosivo y pintado de aeronaves	142	67460.5	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-05-01	0	3	 	FAP	0	3
+1334	0232	3	0	3	0	0	0	adquisicion de repuestos para la inspeccion check c de la aeronave boeing 	1	354194.802000000025	1	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	10	2017-05-01	0	3	 	FAP	0	3
+1214	0542	1	0	1	0	0	0	suministro de bienes de distribucion gratuita y otros	66	89946.7400000000052	5	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	version2	0	3
+782	0057	2	\N	2	\N	48	1	servicio de renovacion de tres (03) senales seastar para dgps submetrico marinas/	1	65000	1	6	2017-01-03 00:00:00	2017-04-26 14:44:56.428271	2	1	2017-01-03	\N	3			0	3
+937	0212	2	\N	2	\N	43	1	adquisicion de helices para patrulleras de costa/	1	70000	2	6	2017-01-03 00:00:00	2017-04-26 13:57:56.574917	1	1	2017-01-04	\N	3			0	3
+268	0268	1	0	1	0	0	1	adquisicion de repuestos y accesorios para vehiculos de la 31a brig inf./	42	203212	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+386	0403	1	0	1	0	0	1	servicio de seguridad y vigilancia para las villas militares de la guarnicion de lima/	1	673585.319999999949	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	3	2017-03-01	0	3	\N	\N	0	3
+387	0404	1	0	1	0	0	1	adquisicion de articulos diversos para consumo humano para el cge/	16	127459	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+389	0406	1	0	1	0	0	1	adquisicion de material pad/	131	861969.270000000019	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	5	2017-03-01	0	3	\N	\N	0	3
+416	0433	1	0	1	0	0	1	contratación de servicio de alquiler de herramientas y equipos para el mantenimiento de caballeriza c y d del regimiento de caballeria mdn - epr/	1	53518	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+417	0434	1	0	1	0	0	1	servicio de mantenimiento de las instalaciones de la 33a brigada de infanteria/	1	245313	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+881	0156	2	\N	2	\N	48	1	actualizacion de licencias hypack/	1	41450	1	6	2017-01-03 00:00:00	2017-04-26 14:13:50.610343	2	1	2017-01-03	\N	3			0	3
+418	0435	1	0	1	0	0	1	servicio de trasporte de combustible para el funcionamiento de la 33a brigada de infanteria/	1	43000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+419	0436	1	0	1	0	0	1	suministro de alimentos diversos parael personal de la 33a brigada infanteria/	13	82989	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-04-01	0	3	\N	\N	0	3
+420	0437	1	0	1	0	0	1	suministro de alimentos para el personal de la 33a brigada infanteria/	20	181264.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+422	0439	1	0	1	0	0	1	adquisicion de utiles de escritorio y material pad/	1	37000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-04-01	0	3	\N	\N	0	3
+445	0462	1	0	1	0	0	1	adquisición de materiales de limpieza para la 2da brigada de infanteria /	30	121020.300000000003	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+447	0464	1	0	1	0	0	1	adquisicion de suministros para mantenimiento de construccion/	16	53668	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+487	0504	1	0	1	0	0	1	adquisicion de ropa interior para la tsmv/	1	276000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+488	0505	1	0	1	0	0	1	adquisicion de ropa interior termica (ccoñe paccha)/	1	283620	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+489	0506	1	0	1	0	0	1	adquisicion de polo digitalizado manga corta/	1	356454	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+327	0333	1	0	1	0	0	1	frutas variadas /	1	64004.9499999999971	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-01-01	0	3	\N	\N	0	3
+530	0024	3	0	3	0	0	1	insumos para fotocopiadoras 	28	97706.570000000007	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+531	0025	3	0	3	0	0	1	adquisicion de materiales de escritorio 	67	41111.0999999999985	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+532	0026	3	0	3	0	0	1	material auxiliar para trabajos de impresiones 	19	40928.4599999999991	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+559	0063	3	4	4	4	1	2	reparacion u overhaul de bloques y accesorios para la flota lj-36a 	4	915000	2	8	2017-03-21 06:34:00	2017-05-11 20:07:10.830742	2	10	2017-03-01	\N	3			0	3
+622	0131	3	0	3	0	0	1	adquisicion de combustible de gas propano a granel para atenciones a bordo (subasta inversa) 	1	40000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+865	0140	2	\N	2	\N	48	1	adquisicion de menaje/	1	35000	1	6	2017-01-03 00:00:00	2017-04-26 14:19:51.961377	1	1	2017-01-03	\N	3			0	3
+664	0173	3	0	3	0	0	1	servicio de mantenimiento, reparacion de maquinarias y equipos de la unidad 	6	59811.5	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-09-01	0	3	\N	\N	0	3
+666	0175	3	0	3	0	0	1	servicio de limpieza y conservacion supervisada a todo costo de instalaciones del alar2 	1	135000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+667	0176	3	0	3	0	0	1	adquisicion de equipos de aire acondicionado 	5	48000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+258	0258	1	0	1	0	0	1	suministro de insumos para impresoras y fotocopiadoras de la ii division de ejercito/	4	32507	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+675	0184	3	0	3	0	0	1	remodelacion de baños del personal civil 	1	58000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+860	0135	2	\N	2	\N	42	1	adquisicion de viveres frescos (carnes) e insumos de mejoramiento de rancho de comzotres de abril 2017 a marzo 2018/	80	153873.23000000001	2	6	2017-01-03 00:00:00	2017-04-26 14:21:46.012332	1	1	2017-01-02	\N	3			0	3
+731	0006	2	0	2	0	0	1	servicio de alquiler de maquinas fotocopiadoras multifuncionales/	1	70000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+732	0007	2	0	2	0	0	1	adquisicion de lubricantes, grasas y afines para la flota de transporte escolar/	1	74429	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+733	0008	2	0	2	0	0	1	auditoria contable y financiera para la supervision del cumplimiento de las clausulas contractuales de los predios concesionados de la institucion/	1	170000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+212	0207	1	0	1	0	0	1	servicio de enseñanza del idima de ingles basico para los alumnos del iespte -ete /	1	164000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+213	0208	1	0	1	0	0	1	servicio de enseñanza tecnico de ingenieria para alumnos del iestpe-ete/	1	60000	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+973	0248	2	\N	2	\N	42	1	suministro e instalacion de madera teca en la cubierta del puente alto del bap union/	1	180000	1	6	2017-01-03 00:00:00	2017-04-26 13:46:32.76892	2	1	2017-01-03	\N	3			0	3
+972	0247	2	\N	2	\N	42	1	suministro de materiales para maniobras del bap union/	11	199299	1	6	2017-01-03 00:00:00	2017-04-26 13:46:47.628069	1	1	2017-01-03	\N	3			0	3
+734	0009	2	0	2	0	0	1	acondicionamiento del area de habitabilidad de los alumnos/	1	80000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+736	0011	2	0	2	0	0	1	limpieza de vidrios exteriores e interiores de edificios/	1	60000	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-02	0	3	\N	\N	0	3
+222	0220	1	0	1	0	0	1	servicio de mantenimiento, reparacion y acondicionamiento a las instalaciones de la esge-epg/	1	61439	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+223	0223	1	0	1	0	0	1	adquisicion de papeleria, utiles y materiales de oficina/	101	44696	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-02-01	0	3	\N	\N	0	3
+224	0224	1	0	1	0	0	1	adquisicion de suministro para manto y reparacion de edificios estructuras para la i de/	114	59700	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-06-01	0	3	\N	\N	0	3
+225	0225	1	0	1	0	0	1	adquisición de repuestos y accesorios de vehículos para la i de/	34	54177	5	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+226	0226	1	0	1	0	0	1	adquisicion de materiales de construccion y otros elementos de mamposteria y madera en gral. para la i de/	18	52200	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-06-01	0	3	\N	\N	0	3
+228	0228	1	0	1	0	0	1	adquisicion de implementos de aseo limpieza y tocador para la i de/	30	84695	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-04-01	0	3	\N	\N	0	3
+229	0229	1	0	1	0	0	1	papeleria en general y utiles de escritorio de la ide/	117	163855	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+230	0230	1	0	1	0	0	1	adquisicion de repuestos y accesorios para la ide/	38	119080	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	7	2017-03-01	0	3	\N	\N	0	3
+235	0235	1	0	1	0	0	1	material de ferreteria para mantenimiento y reparacion de la infraestructura construida/	1	44687	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+583	0087	3	0	3	0	0	1	adqusicion de colchones y almohadas 	2	33750	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+584	0088	3	0	3	0	0	1	adquisicion de materiales, insumos, instrumentales y accesorios medicos 	107	55831.3000000000029	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-02-01	0	3	\N	\N	0	3
+624	0133	3	0	3	0	0	1	servicio aeroportuarios especializado sea 	1	68000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-05-01	0	3	\N	\N	0	3
+626	0135	3	0	3	0	0	1	programa alta direccion 	1	116550	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	4	2017-04-01	0	3	\N	\N	0	3
+629	0138	3	0	3	0	0	1	adquisicion de carnes diversas y afines 	41	94934.6999999999971	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+660	0169	3	0	3	0	0	1	adquisicion de viveres frescos 	54	196707.200000000012	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+661	0170	3	0	3	0	0	1	adquisicion de viveres secos mod. subasta inversa 	3	164638.5	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	6	2017-03-01	0	3	\N	\N	0	3
+662	0171	3	0	3	0	0	1	adquisicion de alimentos para canes 	2	68510	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+663	0172	3	0	3	0	0	1	servicio de mantenimiento, acondicionamiento y reparacion de las diferentes instalaciones 	1	120000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-10-01	0	3	\N	\N	0	3
+677	0186	3	0	3	0	0	1	adquisicion de material de ferreteria, construccion y pintura 	1	60000	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+236	0236	1	0	1	0	0	1	transporte de combustibles (fletes)/	1	32410	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	4	2017-03-01	0	3	\N	\N	0	3
+911	0186	2	0	2	0	0	1	seguro (p&i) pandi para el buque oceanografico bap carrasco/	1	223720	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	2	2017-01-03	0	3	\N	\N	0	3
+913	0188	2	0	2	0	0	1	adquisicion de alimentos para el hospedaje naval/	1	39510	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-03	0	3	\N	\N	0	3
+992	0499	1	4	4	3	22	2	contratacion del servicio de mantenimiento técnico y programa especial de aeronaves	1	650000	5	4	2017-04-06 22:32:58.122847	2017-04-07 15:47:17.325045	2	9	2017-04-01	\N	3	\N	\N	0	3
+1262	0250	3	0	3	0	0	0	adquisicion de viveres  para el personal militar de seguridad de punta lobos (semag)	96	45640	2	2	2017-04-20 00:00:00	2017-04-20 00:00:00	1	1	2017-04-01	0	3	 	FAP	0	3
+678	0187	3	0	3	0	0	1	servicio especializado en asesoria en regulaciones aeronauticas e instrucción de vuelo 	1	246965	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-03-01	0	3	\N	\N	0	3
+679	0188	3	0	3	0	0	1	mantenimiento y reparacion de vehiculos 	44	47657.4499999999971	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	2	1	2017-04-01	0	3	\N	\N	0	3
+680	0189	3	0	3	0	0	1	adquisicion de repuestos accesorios y materiales para mantenimiento y recarga de extintores 	39	170048	2	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-05-01	0	3	\N	\N	0	3
+681	0190	3	0	3	0	0	1	adquisicion de repuestos y accesorios para vehiculos asignados a la compañía de ingenieria peru desplegada en republica sudafricana 	89	90423	4	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+683	0192	3	0	3	0	0	1	adquisicion de alimentos para el personal que labora en el seman 	2	361706.400000000023	1	4	2017-03-21 06:34:00	2017-03-21 18:34:00	1	1	2017-03-01	0	3	\N	\N	0	3
+854	0129	2	\N	2	\N	42	1	adquisicion de vivieres frescos (carnes), viveres frescos (verduras), viveres secos y mejoramiento de rancho para el personal de comzocuatro y capipuca deabril 2017 a marzo 2018/	111	1093961.21999999997	2	6	2017-01-03 00:00:00	2017-04-26 14:23:19.292227	1	5	2017-01-02	\N	3			0	3
+879	0154	2	0	2	0	0	1	adquisicion de combustible para parque automotor y equipos de ingenieria area comzotres/	2	78111.6000000000058	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	6	2017-01-02	0	3	\N	\N	0	3
+886	0161	2	0	2	0	0	1	adquisicion de prendas complementarias para el personal altas af-2017/	5	33071	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	2	2017-01-02	0	3	\N	\N	0	3
+887	0162	2	0	2	0	0	1	adquisicion de tela para confeccion de uniforme negro de parada de cadete/	1	39900	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	2	2017-01-02	0	3	\N	\N	0	3
+888	0163	2	0	2	0	0	1	adquisicion de utiles y material de aseo para altas af-2017/	8	37938.4000000000015	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	2	2017-01-02	0	3	\N	\N	0	3
+889	0164	2	0	2	0	0	1	adquisicion de distintivos y accesorios personal altas af-2017/	41	359538.5	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+890	0165	2	0	2	0	0	1	adquisicion de equipamiento para el servicio de vigilancia y electronica en el distrito de capitania 3 del dominio maritimo nacional/	1	83166000	6	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	10	2017-01-02	0	3	\N	\N	0	3
+891	0166	2	0	2	0	0	1	adquisicion de insumos de mejoramiento de rancho y refrigerio de grumetes para la dotacion de jeceoes de abril 2017 a marzo 2018/	86	77320.5299999999988	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-02	0	3	\N	\N	0	3
+892	0167	2	0	2	0	0	1	adquisicion de racionamiento organico y especial para comespita, capipita y comdespon 1 abril 2017 a marzo 2018/	1	728686.849999999977	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	5	2017-01-02	0	3	\N	\N	0	3
+918	0193	2	\N	2	\N	42	1	adquisicion de repuestos para mantenimiento y reparación de los vehículos tacticos/	61	93244	2	6	2017-01-03 00:00:00	2017-04-26 14:02:27.406755	1	1	2017-01-03	\N	3			0	3
+876	0151	2	\N	2	\N	48	1	actualizacion y soporte de licencia de software geomatica 2016 de pci geomatics/	1	38000	1	6	2017-01-03 00:00:00	2017-04-26 14:15:00.569369	2	1	2017-01-03	\N	3			0	3
+874	0149	2	\N	2	\N	48	1	actualizacion de software ns 3000 a ns 4000 ecs/	1	55500	1	6	2017-01-03 00:00:00	2017-04-26 14:15:21.336623	2	1	2017-01-03	\N	3			0	3
+873	0148	2	\N	2	\N	48	1	mantenimiento de maquinas principales del bap. zimic /	1	55000	1	6	2017-01-03 00:00:00	2017-04-26 14:16:09.185818	2	1	2017-01-03	\N	3			0	3
+920	0195	2	0	2	0	0	1	contratacion del servicio de transporte de combustible y material diverso para comzocuatro 2017/	1	40000	5	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+922	0197	2	0	2	0	0	1	mantenimiento de las áreas de habitabilidad del personal del iestpn-citen/	1	166000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+925	0200	2	0	2	0	0	1	servicio de mantenimiento de la obra viva del hangar flotante de la unidad hovercraft/	1	86698	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-03	0	3	\N	\N	0	3
+927	0202	2	0	2	0	0	1	servicio de agenciamiento de pasajes aéreos internacionales para el cumplimiento del plan de viajes y comisiones programadas dela marina de guerra del perú/	1	1100800	5	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	3	2017-01-03	0	3	\N	\N	0	3
+928	0203	2	0	2	0	0	1	servicio de alquiler de equipos multifuncionales y duplicadoras/	1	60000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+950	0225	2	\N	2	\N	42	1	adquisición de combustible diesel b-5 y gasohol 95 octanos para parque automotor y equipos de ingenieria area comzouno/	2	277807.960000000021	2	6	2017-01-03 00:00:00	2017-04-26 13:53:55.348645	1	6	2017-01-03	\N	3			0	3
+931	0206	2	0	2	0	0	1	adquisicion de insumos quimicos para la quinta zona naval/	5	70000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-03	0	3	\N	\N	0	3
+932	0207	2	0	2	0	0	1	adquisicion de material de condecoraciones, medallas y distintivos navales/	59	288689.320000000007	2	2	2017-01-03 00:00:00	2017-01-03 00:00:00	1	1	2017-01-04	0	3	\N	\N	0	3
+933	0208	2	0	2	0	0	1	mantenimiento preventivo de electrobomba/	1	64000	1	2	2017-01-03 00:00:00	2017-01-03 00:00:00	2	1	2017-01-04	0	3	\N	\N	0	3
+948	0223	2	\N	2	\N	46	1	servicio de mantenimiento e instalacion de banco de baterias y puesta en marcha ups/	1	45000	1	6	2017-01-03 00:00:00	2017-04-26 13:54:40.66953	2	1	2017-01-04	\N	3			0	3
+\.
+
+
+--
+-- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('items_id_seq', 1793, true);
+
+
+--
+-- Data for Name: phases; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY phases (id, nomenclatura, descripcion, moneda, valor, admin_user_id, created_at, updated_at, expediente) FROM stdin;
+1	AS-SM-4-2017-ACFFAA-1	SERVICIO DE ALIMENTACIÓN PARA EL PERSONAL DE LA AGENCIA DE COMPRAS DE LAS FUERZAS ARMADAS	1	86190	2	2017-04-20 00:00:00	2017-04-20 00:00:00	0
+15	AS-SM-2-2017-ACFFAA-1	SERVICIO DE LIMPIEZA INTEGRAL DE LAS INSTALACIONES DE LA AGENCIA DE COMPRAS DE LAS FUERZAS ARMADAS	1	152146.679999999993	2	2017-04-20 00:00:00	2017-04-20 00:00:00	0
+13	RES-PROC-1-2017-DPC-ACFFAA-1	ADQUISICIÓN DE UN SIMULADOR DE VUELO PARA TRIPULACIONES DE PIPER PA-44	2	230252	2	2017-04-20 00:00:00	2017-06-19 15:14:57.948386	44
+16	LP-SM-1-2017-DPC-ACFFAA-1	ADQUISICIÓN DE UNIFORMES PARA LAS ESCUELAS DE FORMACIÓN DEL EJÉRCITO DEL PERÚ	1	120794	2	2017-04-21 00:00:00	2017-06-19 15:25:23.376152	39
+8	AS-SM-3-2017-DPC-ACFFAA-1	ADQUISICIÓN CORPORATIVA DE CALZADO PARA LAS FUERZAS ARMADAS	1	864039	2	2017-04-20 00:00:00	2017-06-19 15:26:39.107597	25
+17	AS-SM-1-2017-ACFFAA-DPC-1	ADQUISICION CORPORATIVA DE UNIFORMES CAMUFLADOS DIGITALIZADOS	1	24442941.0599999987	2	2017-04-21 00:00:00	2017-06-20 17:05:12.045646	28
+11	LP-SM-4-2017-DPC-ACFFAA-1	ADQUISICIÓN DE UNIFORMES CAMUFLADO MULTICAM (PANTALON-CAMISA-GORRO) PARA EL ALTA  DE CADETES, ALUMNOS, TROPA, ASIMILADOS DE OFICIALES Y TECNICOS Y RENOVACION PARA EL PERSONAL MILITAR FAP	1	787252.5	2	2017-04-20 00:00:00	2017-06-14 17:16:24.037007	41
+10	LP-SM-6-2017-DPC-ACFFAA-1	ADQUISICION DE CASACAS PARA EL PERSONAL MILITAR FAP	1	1824720	2	2017-04-20 00:00:00	2017-06-14 17:16:39.797192	40
+9	LP-SM-7-2017-DPC-ACFFAA-1	ADQUISICION DE VESTUARIO PARA EL PERSONAL CIVIL FAP	1	876960.660000000033	2	2017-04-20 00:00:00	2017-06-14 17:16:51.832441	42
+7	LP-SM-5-2017-DPC-ACFFAA-1	ADQUISICION DE VESTUARIO, CALZADO Y OTROS PARA EL PERSONAL DE TROPA DEL EJERCITO	1	9703175.40000000037	2	2017-04-20 00:00:00	2017-06-14 17:17:18.656358	35
+6	CP-SM-1-2017-DPC-ACFFAA-1	CONTRATACIÓN CORPORATIVA DE SEGURO VEHICULAR PARA LAS OBAC´S	1	1554074.18999999994	2	2017-04-20 00:00:00	2017-06-14 17:17:37.625344	7
+5	SIE-SIE-1-2017-DPC-ACFFAA-1	SEGURO OBLIGATORIO DE ACCIDENTES DE TRANSITO	1	820731.739999999991	2	2017-04-20 00:00:00	2017-06-14 17:17:56.946514	6
+2	CP-SM-2-2017-DPC-ACFFAA-1	Mantenimiento de motores y cajas de transmisión de patrulleras de costa y grupos electrógenos de patrulleras marítimas de la Marina de Guerra del Perú	1	1499500	2	2017-04-20 00:00:00	2017-06-14 17:18:47.774785	63
+14	LP-SM-3-2017-DPC-ACFFAA-1	ADQUISICIÓN DE CALZADO PARA LAS ESCUELAS DE FORMACIÓN DEL EJÉRCITO DEL PERÚ	1	495177.150000000023	2	2017-04-20 00:00:00	2017-06-14 17:20:23.944308	39
+12	LP-SM-2-2017-DPC-ACFFAA-1	ADQUISICIÓN DE VESTUARIO PARA LAS ESCUELAS DE FORMACIÓN DEL EJÉRCITO DEL PERÚ	1	689074.869999999995	2	2017-04-20 00:00:00	2017-06-14 17:20:40.684386	39
+4	RES-PROC-2-2017-DPC-ACFFAA-1	ADQUISICION DE EQUIPAMIENTO OPTRONICO	2	388776.239999999991	2	2017-04-20 00:00:00	2017-06-14 17:24:26.67172	65
+3	LP-SM-8-2017-DPC-ACFFAA-1	ADQUISICION DE VESTUARIO Y OTROS PARA EL VRAEM	1	4833164.66999999993	2	2017-04-20 00:00:00	2017-06-22 14:23:01.040746	36
+19	CONCURSO PUBLICO Nº 006-2016-ACFFAA-DPC	SERVICIO CORPORATIVO DE TELEFONIA FIJA E INTERNET ASIMETRICO PARA LAS FFAA Y CCFFAA	1	7726951.74000000022	\N	2017-06-16 17:06:07.906113	2017-06-16 17:07:56.872565	34
+\.
+
+
+--
+-- Name: phases_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('phases_id_seq', 19, true);
+
+
+--
+-- Data for Name: pieces; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY pieces (id, codigo, descripcion, estado, moneda, presupuestado, referencial, adjudicado, postor, phase_id, admin_user_id, created_at, updated_at, cantidad) FROM stdin;
+39	07	Item paquete 7: Polo digitalizado amapat manga corta y larga	1	1	\N	1101774.23999999999	\N		3	\N	2017-06-19 20:18:05.619542	2017-06-19 20:18:05.619542	\N
+54	01	Item 1: Servicio Corporativo de Telefonía fija e Internet asimétrico para las FFAA y CCFFAA	4	1	\N	7726951.74000000022	7725451.05999999959	Buena Pro: Telefónica del Perú SAA	19	\N	2017-06-20 14:31:02.382753	2017-06-20 14:31:02.382753	\N
+2	02	Item paquete 2: Manta térmica y poncho impermeable camuflado	3	1	\N	727400.160000000033	\N		17	\N	2017-06-19 17:18:43.368558	2017-06-20 16:49:06.515074	\N
+55	04	Item paquete 4: Pantalón corto camuflado digitalizado	4	1	\N	2221312.5	2194387.5	Buena Pro: CONSORCIO CREATIVIDAD TEXTIL - CORPORACION IND. INDEPENDENCIA	17	\N	2017-06-20 16:54:35.4416	2017-06-20 16:54:35.4416	\N
+40	08	Item paquete 8: Botas de combate negro y beige (tipo jungla)	1	1	\N	1823809.30000000005	\N		3	\N	2017-06-19 20:19:34.972016	2017-06-19 20:19:34.972016	\N
+13	04	Item paquete 4: Chompas	1	1	\N	37645	\N		12	\N	2017-06-19 19:29:34.67307	2017-06-19 19:29:34.67307	\N
+12	03	Item paquete 3: Calcetines, medias y pantalonetas	1	1	\N	40869	\N		12	\N	2017-06-19 19:28:50.939848	2017-06-19 19:29:54.64432	\N
+11	02	Item paquete 2: Camisa de lanilla beige m/corta y m/larga	1	1	\N	171522	\N		12	\N	2017-06-19 19:26:24.708412	2017-06-19 19:30:07.833675	\N
+10	01	Item paquete 1: Blusa de lanilla beige y celeste m/corta, y camisa blanca civil	1	1	\N	68364	\N		12	\N	2017-06-19 19:25:26.748134	2017-06-19 19:30:20.001711	\N
+14	05	Item paquete 5: Conjunto sastre y corbata	1	1	\N	37510.5800000000017	\N		12	\N	2017-06-19 19:31:23.736891	2017-06-19 19:31:23.736891	\N
+15	06	Item paquete 6: Colcha y sabana	1	1	\N	62453.8000000000029	\N		12	\N	2017-06-19 19:31:59.666129	2017-06-19 19:31:59.666129	\N
+16	07	Item paquete 7: Frazada	1	1	\N	53105	\N		12	\N	2017-06-19 19:33:11.137668	2017-06-19 19:33:11.137668	\N
+17	08	Item paquete 8: Pijama y pantalon civil	1	1	\N	34144.6999999999971	\N		12	\N	2017-06-19 19:34:13.014857	2017-06-19 19:34:13.014857	\N
+18	09	Item paquete 9: Pantalón de lanilla masculino	\N	1	\N	85968.3000000000029	\N		12	\N	2017-06-19 19:35:15.349532	2017-06-19 19:35:15.349532	\N
+19	10	Item paquete 10: Correa y guantes	1	1	\N	49532.489999999998	\N		12	\N	2017-06-19 19:36:15.210024	2017-06-19 19:36:15.210024	\N
+20	11	Item paquete 11: Toalla	1	1	\N	47960	\N		12	\N	2017-06-19 19:37:02.307928	2017-06-19 19:37:02.307928	\N
+6	01	Item paquete 1 Botas de combate negro	1	1	\N	269090.25	\N		14	\N	2017-06-19 19:11:28.402087	2017-06-19 19:39:06.227423	\N
+7	02	Item paquete 2 : Zapato de cuero blanco y negro unisex	1	1	\N	46210	\N		14	\N	2017-06-19 19:21:02.288497	2017-06-19 19:39:21.34895	\N
+8	03	Item paquete 3: Zapato negro de alto brillo unisex	1	1	\N	135094.399999999994	\N		14	\N	2017-06-19 19:22:10.089587	2017-06-19 19:39:32.35113	\N
+9	04	Item paqute 4: Zapatillas y sandalias	1	1	\N	44782.5	\N		14	\N	2017-06-19 19:23:04.002361	2017-06-19 19:39:52.139994	\N
+21	01	Item paquete 1: Sombrero tipo jungla camuflado y uniforme camuflado (chaqueta y pantalón)	1	1	\N	787252.5	\N		11	\N	2017-06-19 19:42:01.042247	2017-06-19 19:42:01.042247	\N
+29	08	Item paquete 8: Sandalia tipo yanke	1	1	\N	345098	\N		7	\N	2017-06-19 20:02:53.709378	2017-06-19 20:02:53.709378	\N
+28	07	Item paquete 7: Calzoncillo tipo boxer	1	1	\N	201656	\N		7	\N	2017-06-19 20:02:01.881976	2017-06-19 20:03:02.020379	\N
+27	06	Item paquete 6: Pantalón corto, sombrero tipo jungla y uniforme camuflado	1	1	\N	3260530	\N		7	\N	2017-06-19 20:01:01.531192	2017-06-19 20:03:12.541851	\N
+26	05	Item paquete 5: Poncho impermeable camuflado	1	1	\N	66590	\N		7	\N	2017-06-19 19:58:56.954343	2017-06-19 20:03:24.924268	\N
+25	04	Item paquete 4: Guantes de acrilico 	1	1	\N	42580.9800000000032	\N		7	\N	2017-06-19 19:58:12.097363	2017-06-19 20:03:34.649738	\N
+24	03	Itema paquete 3: Sabana bramante	1	1	\N	403537.919999999984	\N		7	\N	2017-06-19 19:57:26.053773	2017-06-19 20:03:42.889717	\N
+30	09	Item paquete 9: Zapatilla de lona	1	1	\N	309015	\N		7	\N	2017-06-19 20:04:48.318515	2017-06-19 20:04:48.318515	\N
+31	10	Item paquete 10: Botas de combate negro y beige	1	1	\N	3339570	\N		7	\N	2017-06-19 20:05:59.098626	2017-06-19 20:05:59.098626	\N
+32	11	Item paquete 11: Botas de combate tipo sierra negro y beige	1	1	\N	1082250	\N		7	\N	2017-06-19 20:06:53.055526	2017-06-19 20:06:53.055526	\N
+33	01	Item paquete 1: Sabana de bramante verde olivo	1	1	\N	448462.979999999981	\N		3	\N	2017-06-19 20:07:55.365333	2017-06-19 20:07:55.365333	\N
+34	02	Item paquete 2: Guantes acrílico marrón adobe	1	1	\N	32769	\N		3	\N	2017-06-19 20:08:57.246785	2017-06-19 20:08:57.246785	\N
+35	03	Item paquete 3: Poncho impermeable camuflado (Pacipat)	1	1	\N	423272	\N		3	\N	2017-06-19 20:11:11.790231	2017-06-19 20:11:11.790231	\N
+36	04	Item paquete 4: Pantaloneta corta unisex (negro)	1	1	\N	188793.149999999994	\N		3	\N	2017-06-19 20:12:21.697728	2017-06-19 20:12:21.697728	\N
+37	05	Item paquete 5: funda para colchón (verde olivo)	1	1	\N	622395	\N		3	\N	2017-06-19 20:13:33.083354	2017-06-19 20:13:33.083354	\N
+38	06	Item paquete 6: Tapones de oidos	1	1	\N	95072	\N		3	\N	2017-06-19 20:14:46.190937	2017-06-19 20:14:46.190937	\N
+41	09	Item paquete 9: sandalias de baño negra	1	1	\N	96817	\N		3	\N	2017-06-19 20:20:31.755864	2017-06-19 20:20:31.755864	\N
+23	02	Item paquete 2: Pasamontaña y chompa de cuello Jorge Chavez	5	1	\N	345597.260000000009	\N		7	\N	2017-06-19 19:56:34.142709	2017-06-19 20:21:51.714293	\N
+22	01	Item paquete 1; Medias de deporte y reforzadas	5	1	\N	306392.239999999991	\N		7	\N	2017-06-19 19:55:32.798561	2017-06-19 20:22:05.990376	\N
+43	02	Item paquete 2: Zapatilla de cuero, zapatilla de lona y sandalias tipo llanque	1	1	\N	2127684	\N		8	\N	2017-06-19 20:26:27.406819	2017-06-19 20:26:27.406819	\N
+42	01	Item paquete 1: botas de alta montaña, bota de combate tipo sierra color beige y botas de combate color beige.	4	1	\N	864039	864000	Buena pro Item 1. Cia WELCO Peruano	8	\N	2017-06-19 20:24:41.36036	2017-06-19 20:29:29.070979	\N
+44	01	Item 1: Seguro de vehículos automotores y autonomos de hidrocarburos: a todo riesgo y responsabilidad civil	1	2	\N	1554074.18999999994	\N		6	\N	2017-06-19 20:34:22.503715	2017-06-19 20:34:22.503715	\N
+45	01	Itema paquete 1: Automóviles, camionetas rurales y station vagón (hasta 9 asientos)	4	1	\N	162336.160000000003	37056	Buena Pro : Rímac Seguros y Reaseguros	5	\N	2017-06-19 20:44:23.716211	2017-06-19 20:44:23.716211	\N
+46	02	Item paquete 2: Camionetas Rurales (Mas de 9 asientos), Pick Up y Ambulancia     Minibuses y vehículos militares en general (más de 9 hasta 20 asientos).	4	1	\N	143109.540000000008	29800	Buena Pro: MAPFRE Perú Compañía de Seguros y Reaseguros S.A.	5	\N	2017-06-19 20:47:13.880291	2017-06-19 20:47:13.880291	\N
+47	03	iTEM PAQUETE 3: Buses y Vehículos militares en general (más de 20 asientos).	4	1	\N	165251.200000000012	25600	Buena Pro: Rímac Seguros y Reaseguros	5	\N	2017-06-19 21:12:30.433353	2017-06-19 21:12:30.433353	\N
+48	04	Item paquete 4: Camiones, Cisternas, Grúas, remolques, tractores, volquetes, montacargas y vehículos especiales.	4	1	\N	207849.839999999997	78600	Buena Pro: Rímac Seguros y Reaseguros	5	\N	2017-06-19 21:14:10.681579	2017-06-19 21:14:10.681579	\N
+49	05	Itema paquete 5: Motocicletas, cuatrimotos y vehículos similares.	4	1	\N	112185	19440	Buena Pro: Rímac Seguros y Reaseguros	5	\N	2017-06-19 21:15:48.695811	2017-06-19 21:15:48.695811	\N
+50	01	Itema paquete 1: casaca para uniforme 	4	1	\N	120794.399999999994	112860	Buena Pro: Darkev Negociaciones SAC	16	\N	2017-06-19 21:20:27.107633	2017-06-19 21:20:27.107633	\N
+51	02	Item paquete 2: Capotin / casaca camuflado 	3	1	\N	103356	\N		16	\N	2017-06-19 21:21:57.411403	2017-06-19 21:21:57.411403	\N
+52	03	Item paquete 3: Uniforme camuflado	3	1	\N	281664	\N		16	\N	2017-06-19 21:22:46.226672	2017-06-19 21:22:46.226672	\N
+53	01	Item paquete 1: Casaca militatr color azul	1	1	\N	1824720	\N		10	\N	2017-06-19 21:24:14.471042	2017-06-19 21:24:14.471042	\N
+5	02	Item paquete 2 : Pantalón 45% lana azul marino	1	1	\N	404600	\N		9	\N	2017-06-19 17:25:02.69723	2017-06-19 21:25:07.034476	\N
+4	01	Item paquete 1: Blusa y camisa civil manga larga blanco	1	1	\N	472360.659999999974	\N		9	\N	2017-06-19 17:23:52.537571	2017-06-19 21:25:23.099781	\N
+1	01	Item paquete 1: Casaca y pantalón impermeable digitalizado	3	1	\N	3125475	\N	Darkev Negociaciones SAC	17	\N	2017-06-19 17:15:41.208668	2017-06-20 16:47:58.804612	\N
+3	03	Item paquete 3: Capotin / casaca camuflado digitalizado	4	1	\N	1252454.39999999991	1199990	Buena Pro: CONSORCIO CREATIVIDAD TEXTIL - CORPORACION IND. INDEPENDENCIA	17	\N	2017-06-19 17:19:39.21625	2017-06-20 16:51:21.221452	\N
+56	05	Item paquete 5: Sombrero y mosquitero camuflado y digitalizado	4	1	\N	2310579	2109990	Buena Pro: CONSORCIO CREATIVIDAD TEXTIL - CORPORACION IND. INDEPENDENCIA	17	\N	2017-06-20 16:56:32.684517	2017-06-20 16:56:32.684517	\N
+57	06	Item paquete 6: Uniforme camuflado digitalizado	4	1	\N	14805720	14524685	Buena Pro: CONSORCIO CREATIVIDAD TEXTIL - CORPORACION IND. INDEPENDENCIA	17	\N	2017-06-20 16:58:06.635874	2017-06-20 16:58:06.635874	\N
+\.
+
+
+--
+-- Name: pieces_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pieces_id_seq', 57, true);
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY products (id, nombre, descripcion, orden, obs, admin_user_id, created_at, updated_at) FROM stdin;
+3	Lista		3	\N	\N	2017-03-19 03:15:29.662059	2017-03-19 04:51:05.755419
+4	Modalidad		4	\N	\N	2017-03-19 03:19:28.972145	2017-03-19 04:51:19.405342
+5	Dependencia	UU.DD.OBACS (dependencia OBAC´s)	5	\N	\N	2017-03-19 03:21:13.746678	2017-03-19 04:51:33.631009
+7	Moneda		7	\N	\N	2017-03-19 03:29:17.069599	2017-03-19 04:52:05.066981
+8	fuente	fuente de financiamiento	8	\N	\N	2017-03-19 03:31:36.303616	2017-03-19 03:31:36.303616
+9	rubro	bien o servicio	9	\N	\N	2017-03-19 03:33:49.89738	2017-03-19 03:33:49.89738
+10	Proceso		10	\N	\N	2017-03-19 03:34:57.380074	2017-03-19 03:34:57.380074
+11	periodo		11	\N	\N	2017-03-19 03:38:08.778567	2017-03-19 03:38:08.778567
+12	actividad		12	\N	\N	2017-03-19 04:37:51.518031	2017-03-19 04:37:51.518031
+1	Institución		1	\N	\N	2017-03-18 20:22:30.749603	2017-03-19 04:53:49.978187
+13	Cuadrante		13	\N	\N	2017-03-21 14:34:53.182876	2017-03-21 14:34:53.182876
+14	Seleccion	Procedimiento de seleccion	14	\N	\N	2017-03-21 21:00:10.747983	2017-03-21 21:00:10.747983
+6	Tipo	tipo de Mercado	6	\N	\N	2017-03-19 03:27:08.83815	2017-03-28 19:25:27.066212
+15	Grafico		15	\N	\N	2017-04-05 19:55:53.710923	2017-04-05 19:55:53.710923
+16	Expediente		16	\N	\N	2017-04-17 13:19:08.359286	2017-04-17 13:19:08.359286
+17	Estado	Convocado, consentido,desierto,adjudicado	17	\N	\N	2017-06-16 18:53:18.424387	2017-06-19 17:18:30.164506
+\.
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('products_id_seq', 17, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY schema_migrations (version) FROM stdin;
+20170318123551
+20170318123555
+20170318133127
+20170318190647
+20170319013710
+20170319030012
+20170319030658
+20170319061038
+20170321050247
+20170322014708
+20170322015247
+20170416162118
+20170418201938
+20170505152847
+20170524213728
+20170526174942
+20170611151923
+20170612175222
+20170612185205
+20170612211804
+20170616161651
+20170616164034
+\.
+
+
+--
+-- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY active_admin_comments
+    ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: activities_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY activities
+    ADD CONSTRAINT activities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY admin_users
+    ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY ar_internal_metadata
+    ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: details_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY details
+    ADD CONSTRAINT details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: formulas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY formulas
+    ADD CONSTRAINT formulas_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: items_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: phases_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY phases
+    ADD CONSTRAINT phases_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pieces_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pieces
+    ADD CONSTRAINT pieces_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY schema_migrations
+    ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
+
+
+--
+-- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
+
+
+--
+-- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
+
+
+--
+-- Name: index_activities_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_activities_on_admin_user_id ON activities USING btree (admin_user_id);
+
+
+--
+-- Name: index_activities_on_phase_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_activities_on_phase_id ON activities USING btree (phase_id);
+
+
+--
+-- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING btree (email);
+
+
+--
+-- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING btree (reset_password_token);
+
+
+--
+-- Name: index_details_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_details_on_admin_user_id ON details USING btree (admin_user_id);
+
+
+--
+-- Name: index_details_on_item_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_details_on_item_id ON details USING btree (item_id);
+
+
+--
+-- Name: index_formulas_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_formulas_on_admin_user_id ON formulas USING btree (admin_user_id);
+
+
+--
+-- Name: index_formulas_on_product_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_formulas_on_product_id ON formulas USING btree (product_id);
+
+
+--
+-- Name: index_items_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_items_on_admin_user_id ON items USING btree (admin_user_id);
+
+
+--
+-- Name: index_phases_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_phases_on_admin_user_id ON phases USING btree (admin_user_id);
+
+
+--
+-- Name: index_pieces_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_pieces_on_admin_user_id ON pieces USING btree (admin_user_id);
+
+
+--
+-- Name: index_pieces_on_phase_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_pieces_on_phase_id ON pieces USING btree (phase_id);
+
+
+--
+-- Name: index_products_on_admin_user_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX index_products_on_admin_user_id ON products USING btree (admin_user_id);
+
+
+--
+-- Name: fk_rails_001c240b02; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY details
+    ADD CONSTRAINT fk_rails_001c240b02 FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- Name: fk_rails_1fc017427b; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pieces
+    ADD CONSTRAINT fk_rails_1fc017427b FOREIGN KEY (phase_id) REFERENCES phases(id);
+
+
+--
+-- Name: fk_rails_340d74e02b; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY formulas
+    ADD CONSTRAINT fk_rails_340d74e02b FOREIGN KEY (product_id) REFERENCES products(id);
+
+
+--
+-- Name: fk_rails_74004916b6; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY formulas
+    ADD CONSTRAINT fk_rails_74004916b6 FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- Name: fk_rails_9ccb7f1401; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY activities
+    ADD CONSTRAINT fk_rails_9ccb7f1401 FOREIGN KEY (phase_id) REFERENCES phases(id);
+
+
+--
+-- Name: fk_rails_aac5ec5de5; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY activities
+    ADD CONSTRAINT fk_rails_aac5ec5de5 FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- Name: fk_rails_b168afcbed; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT fk_rails_b168afcbed FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- Name: fk_rails_b36b352276; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT fk_rails_b36b352276 FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- Name: fk_rails_bcecc158f3; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY phases
+    ADD CONSTRAINT fk_rails_bcecc158f3 FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- Name: fk_rails_e2c1c0fe64; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY details
+    ADD CONSTRAINT fk_rails_e2c1c0fe64 FOREIGN KEY (item_id) REFERENCES items(id);
+
+
+--
+-- Name: fk_rails_e9a461dba2; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pieces
+    ADD CONSTRAINT fk_rails_e9a461dba2 FOREIGN KEY (admin_user_id) REFERENCES admin_users(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

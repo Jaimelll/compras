@@ -1092,7 +1092,7 @@ if @alabels.length <=29 and @alabels.length>0 then
          column("Avance") do
             "Procesos/(PACs)"
          end
-         column("Procesos en Adjudicados") do
+         column("Procesos Adjudicados y Desiertos") do
 
            @conta=0
            @activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
@@ -1107,7 +1107,7 @@ if @alabels.length <=29 and @alabels.length>0 then
             link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
 
-         column("Procesos en Curso") do
+         column("Calendario de Procesos Convocados y Buena Pro (BP) ") do
            @conta=0
            @activities.where("importe IS  NULL or importe=0").each do |activ|
              if activ.expediente>0 then
