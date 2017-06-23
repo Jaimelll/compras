@@ -25,6 +25,7 @@ when 3
  when 4
    @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
    @items= Item.where(ejecucion:4,exped2:params[:param2])
+              .where("modalidad<3")
         .order('tipo,modalidad,exped,obac,pac')
   when 5
        @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
