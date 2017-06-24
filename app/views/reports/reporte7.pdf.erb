@@ -126,7 +126,7 @@
 
 
 
-      <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact).count>0 then %>
+      <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact).count>0 or @vdetact21==1 then %>
 
         <% @vdetact= @vdetalle.where(item_id:variable.id).where(actividad: @vpact)%>
 
@@ -141,7 +141,7 @@
          </tr>
 
         <tbody>
-
+  <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact).count>0  then %>
 
           <% @vdetact.each do |deta| %>
 
@@ -164,7 +164,9 @@
 
        </tr>
         <% end %>
- <% if @vdetact21=1 then %>
+<% end %>
+
+ <% if @vdetact21==1 then %>
        <% @vdetact2.each do |deta2| %>
 
 

@@ -1090,7 +1090,7 @@ if @alabels.length <=29 and @alabels.length>0 then
         @activities=Phase.joins(:activities).where("activities.actividad=20" )
 
          column("Avance") do
-            "Procesos/(PACs)"
+            "Calendario Procesos/(PACs)"
          end
          column("Procesos Adjudicados y Desiertos") do
 
@@ -1107,7 +1107,7 @@ if @alabels.length <=29 and @alabels.length>0 then
             link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
 
-         column("Calendario de Procesos Convocados y Buena Pro (BP) ") do
+         column(" Convocados  ") do
            @conta=0
            @activities.where("importe IS  NULL or importe=0").each do |activ|
              if activ.expediente>0 then

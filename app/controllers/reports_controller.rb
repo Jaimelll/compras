@@ -147,8 +147,8 @@ def comment4
   @vopc=params[:param1].to_i
   case @vopc
    when 1
-     @tit1="Calendario de Procesos Convocados y Buena Pro (BP)"
-     "Procesos Adjudicados con Buena Pro Consentida"
+     @tit1="Procesos Convocados"
+     
 
      @activities=Phase.joins(:activities).where("activities.actividad=20
      and (importe IS  NULL or importe=0)" )
