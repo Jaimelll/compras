@@ -69,7 +69,7 @@
      <tr> <td> <h4>INTERNACIONALES POR ENCARGO:</h4> </td> </tr>
 
       <% end %>
-
+<%  @vpact=[18,20,56,13,58,61,62,63,64,65,66,300]%>
 
 
 
@@ -101,17 +101,15 @@
 
   <% if Phase.where(expediente:variable.exped).count>0 then %>
 
-          <% @vdetact2=Phase.find_by(expediente:variable.exped).activities
-                    .order('activities.pfecha ')
-          .where("activities.actividad=18 or
-            activities.actividad=20 or activities.actividad=56 or
-            activities.actividad=13 or activities.actividad=58 or
-            activities.actividad=61 or activities.actividad=62 or
-            activities.actividad=63 or activities.actividad=64 or
-            activities.actividad=65 or activities.actividad=66 or
-            activities.actividad=300")%>
 
-              <% if @vdetact2.count>0 %>
+          <% @vdetact2=Phase.find_by(expediente:variable.exped).activities
+          .where(actividad: Formula
+          .where(product_id:12,cantidad:@vactcanti).select('orden'))
+                  .where(actividad: @vpact)
+                    .order('activities.pfecha ')%>
+
+
+              <% if @vdetact2.sum(:actividad)>0 %>
                    <% @vdetact21=1 %>
               <% else %>
                   <% @vdetact21=0 %>
@@ -128,21 +126,9 @@
 
 
 
-      <% if @vdetalle.where(item_id:variable.id).where("details.actividad=18 or
-        details.actividad=20 or details.actividad=56 or
-        details.actividad=13 or details.actividad=58 or
-        details.actividad=61 or details.actividad=62 or
-        details.actividad=63 or details.actividad=64 or
-        details.actividad=65 or details.actividad=66 or
-        details.actividad=300").count>0 then %>
+      <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact).count>0 then %>
 
-        <% @vdetact= @vdetalle.where(item_id:variable.id).where("details.actividad=18 or
-          details.actividad=20 or details.actividad=56 or
-          details.actividad=13 or details.actividad=58 or
-          details.actividad=61 or details.actividad=62 or
-          details.actividad=63 or details.actividad=64 or
-          details.actividad=65 or details.actividad=66 or
-          details.actividad=300")%>
+        <% @vdetact= @vdetalle.where(item_id:variable.id).where(actividad: @vpact)%>
 
       <table width="800" border="1">
 
