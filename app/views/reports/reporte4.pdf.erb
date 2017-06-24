@@ -93,7 +93,7 @@
 
 
 
-<% if Piece.where(phase:activity.id.to_s).count>0 then %>
+<% if Piece.where(phase:activity.id.to_s).count>0 and  @vopc<3 then  %>
 <table width="800" border="1">
 
   <br>
@@ -102,8 +102,9 @@
 
       <th >Item </th>
       <th >Estado</th>
+      <% if   @vopc==2 then %>
       <th >Postor</th>
-
+        <% end %>
    </tr>
 
   <tbody>
@@ -133,9 +134,11 @@
           <td VALIGN=top ALIGN=center> s/d </td>
       <% end %>
 
+<% if   @vopc==2 then %>
 
+         <td VALIGN=top ALIGN=left><%= pite.postor %></td>
 
-
+  <% end %>
 
  </tr>
 

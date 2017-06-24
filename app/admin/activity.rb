@@ -29,8 +29,13 @@ filter :pfecha
 index :title => "Lista de Actividades Procesos"  do
 
 column("Actividad", :sortable => :phase_id) do |activity|
+  n2=Formula.where(product_id:12,orden:activity.actividad).
+          select('cantidad as dd').first.dd
   n1=Formula.where(product_id:12,orden:activity.actividad).
-          select('descripcion as dd').first.dd.capitalize
+          select('descripcion as dd').first.dd.capitalize+
+           "-----"+
+            "#{Formula.where(product_id:10,orden:n2).
+                     select('nombre as dd').first.dd}"
 
                     link_to "#{n1} ",  admin_phase_activity_path(params[:phase_id],activity)
 end
@@ -219,6 +224,17 @@ sidebar "Datos del Proceso" do
            select('nombre as dd').first.dd.capitalize
       n4=Phase.where(id:  params[:phase_id]).
                     select('valor as dd').first.dd.to_s
+     n32=Formula.where(product:16,orden:n11).
+               select('orden as dd').first.dd
+       @vobac=" "
+      if n32>0 then
+       Item.where(exped:n32).order('obac').each do |nobac|
+        @sobac=Formula.where(product_id:1,orden:nobac.obac)
+        .select('nombre as dd').first.dd
+         @vobac=@vobac+ @sobac+"-"+nobac.pac+","
+         end
+         end
+
 
   ul do
     li "PROCESO :   "+nn
@@ -226,7 +242,19 @@ sidebar "Datos del Proceso" do
     li "MONEDA :  "+n3
     li "VALOR ESTIMADO :"+  number_with_delimiter(n4, delimiter: ",").to_s
     li "EXPEDIENTE :  "+n31
+    li "OBAC-PAC :  "+ @vobac
   end# de ul
+
+
+
+
+
+
+
+
+
+
+
 
 
 end# de if
