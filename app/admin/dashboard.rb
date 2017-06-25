@@ -392,7 +392,7 @@ end #terminar el if de  la cadena phase
 # fin phase del 280 al 392************************************************************
 if  @nconta1==1 and   @vlog==false then
       @vlog=false
-   if (@vproc==@iproce or @iproce==100) and  @vproc>@ulvproc2 then
+   if (@vproc==@iproce or @iproce==100 or (@iproce==2 and @vproc<=2)) and  @vproc>@ulvproc2 then
     @vlog=true
    end
 end
@@ -1107,7 +1107,7 @@ if @alabels.length <=29 and @alabels.length>0 then
             link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
 
-         column(" Convocados  ") do
+         column("Calendario de Procesos Convocados y Buena Pro (BP) ") do
            @conta=0
            @activities.where("importe IS  NULL or importe=0").each do |activ|
              if activ.expediente>0 then
