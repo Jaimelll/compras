@@ -30,19 +30,20 @@ scope :Todos, :default => true do |phases|
 end
 
 scope :AF_2017, :default => true do |phases|
-@vaf2=Item.where(ejecucion:4,exped2:3).select('exped')
+@vaf2=Item.where(ejecucion:4,exped2:3).select('distinct exped')
+
      phases.where(expediente:@vaf2)
      .where.not(expediente:0).order('id')
 end
 
 scope :AF_2016, :default => true do |phases|
-@vaf2=Item.where(ejecucion:4,exped2:2).select('exped')
+@vaf2=Item.where(ejecucion:4,exped2:2).select('distinct exped')
      phases.where(expediente:@vaf2)
       .where.not(expediente:0).order('id')
 end
 
 scope :AF_2015, :default => true do |phases|
-@vaf2=Item.where(ejecucion:4,exped2:1).select('exped')
+@vaf2=Item.where(ejecucion:4,exped2:1).select('distinct exped')
      phases.where(expediente:@vaf2)
       .where.not(expediente:0).order('id')
 end
