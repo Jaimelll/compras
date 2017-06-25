@@ -238,11 +238,12 @@ sidebar "Datos del Proceso" do
 
   ul do
     li "PROCESO :   "+nn
+    li "EXPEDIENTE :  "+n31
+    li "OBAC-PAC :  "+ @vobac
     li "DESCRIPCION : "+n2
     li "MONEDA :  "+n3
     li "VALOR ESTIMADO :"+  number_with_delimiter(n4, delimiter: ",").to_s
-    li "EXPEDIENTE :  "+n31
-    li "OBAC-PAC :  "+ @vobac
+
   end# de ul
 
 

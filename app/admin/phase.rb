@@ -24,6 +24,35 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente
 
 
 menu priority: 5, label: "Procesos"
+
+scope :Todos, :default => true do |phases|
+     phases.order('id')
+end
+
+scope :AF_2017, :default => true do |phases|
+@vaf2=Item.where(ejecucion:4,exped2:3).select('exped')
+     phases.where(expediente:@vaf2)
+     .where.not(expediente:0).order('id')
+end
+
+scope :AF_2016, :default => true do |phases|
+@vaf2=Item.where(ejecucion:4,exped2:2).select('exped')
+     phases.where(expediente:@vaf2)
+      .where.not(expediente:0).order('id')
+end
+
+scope :AF_2015, :default => true do |phases|
+@vaf2=Item.where(ejecucion:4,exped2:1).select('exped')
+     phases.where(expediente:@vaf2)
+      .where.not(expediente:0).order('id')
+end
+
+
+
+
+
+
+
 filter :nomenclatura
 filter :descripcion
 filter :expediente, :as => :select, :collection =>
