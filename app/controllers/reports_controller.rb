@@ -148,7 +148,7 @@ def comment4
   case @vopc
    when 1
      @tit1="Procesos Convocados"
-     
+
 
      @activities=Phase.joins(:activities).where("activities.actividad=20
      and (importe IS  NULL or importe=0)" )
@@ -157,7 +157,7 @@ def comment4
       phases.moneda as moneda,phases.valor as valor ")
        .order("pfecha")
      when 2
-       @tit1= "Procesos Adjudicados y Desiertos"
+       @tit1= "Procesos Adjudicados, Buena Pro y Desiertos"
 
        @activities=Phase.joins(:activities).where("activities.actividad=20
        and importe IS NOT NULL and importe>0" )

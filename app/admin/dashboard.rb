@@ -1089,10 +1089,10 @@ if @alabels.length <=29 and @alabels.length>0 then
       table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
         @activities=Phase.joins(:activities).where("activities.actividad=20" )
 
-         column("Avance") do
-            "Calendario Procesos/(PACs)"
+         column("Calendario") do
+            "Procesos/(PACs)"
          end
-         column("Procesos Adjudicados y Desiertos") do
+         column("Adjudicados BP y Desiertos") do
 
            @conta=0
            @activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
@@ -1107,7 +1107,7 @@ if @alabels.length <=29 and @alabels.length>0 then
             link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
 
-         column("Calendario de Procesos Convocados y Buena Pro (BP) ") do
+         column("Convocados") do
            @conta=0
            @activities.where("importe IS  NULL or importe=0").each do |activ|
              if activ.expediente>0 then
@@ -1124,7 +1124,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
          end
 
-         column("Total") do
+         column("Total Procesos") do
            @conta=0
            @activities.each do |activ|
              if activ.expediente>0 then
