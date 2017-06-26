@@ -946,8 +946,8 @@ if @alabels.length <=29 and @alabels.length>0 then
                                            select('actividad as dd').first.dd
 
 
-                                          if  Phase.where(expediente:ite.exped).count>0 and Phase.find_by(expediente:ite.exped).activities.count>0 then
-                                           @vactiv2=Phase.find_by(expediente:ite.exped).activities
+                                          if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
+                                           @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
                                                      .order('activities.pfecha DESC,activities.id DESC').
                                                      select('activities.actividad as dd').first.dd
                                                 if    @vactiv2>  @vactiv then
