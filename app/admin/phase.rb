@@ -20,8 +20,8 @@ ActiveAdmin.register Phase do
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente
-
+permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
+              :admin_user_id
 
 menu priority: 5, label: "Procesos"
 
@@ -108,7 +108,7 @@ form :title => 'Edicion Procesos' do |f|
  f.input :expediente, :input_html => { :style =>  'width:60%'}, :as => :select, :collection =>
    Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
 
-
+f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
   f.actions
 
 

@@ -14,7 +14,8 @@ ActiveAdmin.register Piece do
 
 
 permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
-             :referencial, :adjudicado,:estado, :postor,:phase_id
+             :referencial, :adjudicado,:estado, :postor,:phase_id,
+             :admin_user_id
 
 filter :descripcion
 index :title => "Lista de Items"  do

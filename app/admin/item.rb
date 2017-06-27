@@ -79,6 +79,24 @@ action_item :view, only: :show do
        @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
           items.where("obac > 3").where(exped2:@vaf).order('pac')
      end
+     scope :AF_2017, :default => true do |items|
+
+          items.where(ejecucion:4,exped2:3).order('pac')
+     end
+
+     scope :AF_2016, :default => true do |items|
+
+          items.where(ejecucion:4,exped2:2).order('pac')
+     end
+
+     scope :AF_2015, :default => true do |items|
+
+          items.where(ejecucion:4,exped2:1).order('pac')
+     end
+
+
+
+
 
 
 
