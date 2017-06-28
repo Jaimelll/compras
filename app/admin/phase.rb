@@ -25,9 +25,7 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
 
 menu priority: 5, label: "Procesos"
 
-scope :Todos, :default => true do |phases|
-     phases.order('id')
-end
+
 
 scope :AF_2017, :default => true do |phases|
 @vaf2=Item.where(ejecucion:4,exped2:3).select('distinct exped')
@@ -48,9 +46,18 @@ scope :AF_2015, :default => true do |phases|
       .where.not(expediente:0).order('id')
 end
 
+scope :Todos, :default => true do |phases|
+     phases.order('id')
+end
+scope :Todos, :default => true do |phases|
+     phases.order('id')
+end
 
+scope :OGA, :default => true do |phases|
 
-
+     phases
+      .where(expediente:0).order('id')
+end
 
 
 

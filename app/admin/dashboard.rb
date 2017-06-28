@@ -1144,7 +1144,7 @@ if @alabels.length <=29 and @alabels.length>0 then
           end #activ
           @le=@activities.count.to_s
 
-            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 3)
+            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
 
 
          end
