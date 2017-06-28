@@ -944,13 +944,22 @@ if @alabels.length <=29 and @alabels.length>0 then
                                           .order('pfecha DESC,id DESC')
                                          .where(item_id:ite.id).
                                            select('actividad as dd').first.dd
+                                           @vactivfec= Detail
+                                             .order('pfecha DESC,id DESC')
+                                            .where(item_id:ite.id).
+                                              select('pfecha as dd').first.dd
 
 
                                           if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
                                            @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
                                                      .order('activities.pfecha DESC,activities.id DESC').
                                                      select('activities.actividad as dd').first.dd
-                                                if    @vactiv2>  @vactiv then
+                                            @vactiv2fec=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                               .order('activities.pfecha DESC,activities.id DESC').
+                                                               select('activities.pfecha as dd').first.dd
+
+
+                                                if    @vactiv2fec>  @vactivfec then
                                                    @vactiv=@vactiv2
                                                 end
                                           end
