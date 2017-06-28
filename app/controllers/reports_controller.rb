@@ -151,7 +151,7 @@ def comment4
 
 
      @activities=Phase.joins(:activities).where("activities.actividad=20
-     and (importe IS  NULL or importe=0)" )
+     and (importe IS  NULL or importe=0)" ).where('expediente>0')
        .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
       phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
       phases.moneda as moneda,phases.valor as valor ")
@@ -160,7 +160,7 @@ def comment4
        @tit1= "Procesos Adjudicados, Buena Pro y Desiertos"
 
        @activities=Phase.joins(:activities).where("activities.actividad=20
-       and importe IS NOT NULL and importe>0" )
+       and importe IS NOT NULL and importe>0" ).where('expediente>0')
          .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
         phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
         phases.moneda as moneda,phases.valor as valor ")
@@ -168,7 +168,7 @@ def comment4
        when 3
          @tit1="Relacion de Procesos "
 
-         @activities=Phase.joins(:activities).where("activities.actividad=20 " )
+         @activities=Phase.joins(:activities).where("activities.actividad=20 " ).where('expediente>0')
            .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
           phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
           phases.moneda as moneda,phases.valor as valor ")

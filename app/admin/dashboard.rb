@@ -1096,7 +1096,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
   #  end
       table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
-        @activities=Phase.joins(:activities).where("activities.actividad=20" )
+        @activities=Phase.where("expediente>0" ).joins(:activities).where("activities.actividad=20" )
 
          column("Calendario") do
             "Procesos/(PACs)"

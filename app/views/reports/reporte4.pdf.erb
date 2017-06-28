@@ -172,15 +172,17 @@
       <% else %>
       <td VALIGN=top ALIGN=right><%= "s/d "   %></td>
       <% end %>
+<% @vreff=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0 and adjudicado is not null').sum(:referencial)%>
 
-
-        <td VALIGN=top  ALIGN =right colspan="1"><%= number_with_delimiter(activity.valor.to_i, delimiter: ",") %></td>
-
-
-
+  <%  if @vreff>0 then %>
+        <td VALIGN=top  ALIGN =right colspan="1"><%= number_with_delimiter(@vreff.to_i, delimiter: ",") %></td>
+  <%  else %>
+    
+      <td VALIGN=top  ALIGN =right colspan="1"><%= number_with_delimiter( Phase.where(id:activity.id.to_s).sum(:valor).to_i, delimiter: ",") %></td>
+  <%  end %>
       <%  if @vopc>=2 then %>
 
-          <% @vbpro=Activity.where(actividad:20,phase_id:activity.id.to_s).sum(:importe)%>
+          <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)%>
 
         <% if @vbpro >0 then %>
 
