@@ -144,13 +144,17 @@ end
 
 
 def comment4
+  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf2=Item.where(ejecucion:4,exped2:@vaf).select('distinct exped')
+
   @vopc=params[:param1].to_i
   case @vopc
    when 1
      @tit1="Procesos Convocados"
 
 
-     @activities=Phase.joins(:activities).where("activities.actividad=20
+     @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
+     .joins(:activities).where("activities.actividad=20
      and (importe IS  NULL or importe=0)" ).where('expediente>0')
        .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
       phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
@@ -159,7 +163,8 @@ def comment4
      when 2
        @tit1= "Procesos Adjudicados, Buena Pro y Desiertos"
 
-       @activities=Phase.joins(:activities).where("activities.actividad=20
+       @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
+       .joins(:activities).where("activities.actividad=20
        and importe IS NOT NULL and importe>0" ).where('expediente>0')
          .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
         phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
@@ -168,7 +173,8 @@ def comment4
        when 3
          @tit1="Relacion de Procesos "
 
-         @activities=Phase.joins(:activities).where("activities.actividad=20 " ).where('expediente>0')
+         @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
+         .joins(:activities).where("activities.actividad=20 " ).where('expediente>0')
            .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
           phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
           phases.moneda as moneda,phases.valor as valor ")

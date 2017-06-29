@@ -186,6 +186,7 @@ end
 
 @vproceso=[]
 
+#*******************************************************************
 
 @vitem.each do |item|
 
@@ -257,8 +258,15 @@ case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.
 
   @vlog=false
 
+if @deta1.count==0 then
+
+  object = Detail.new(:actividad => 36, :pfecha=> @vinicio,
+   :item_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
+   :updated_at => @vinicio,:tipo =>'automatico')
+  object.save
 
 
+end
 
 @deta1.each do |detail|
 
@@ -559,9 +567,9 @@ end
 
 
 
+end #terminia  item
+#termina item***********************************************
 
-#termina item
-end
 
 
 if @conta>0 then
@@ -937,20 +945,98 @@ if @alabels.length <=29 and @alabels.length>0 then
                             @vpac6=[]
                             @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3")
                             @itep.each do |ite|
-                                      if Detail
-                                        .order('pfecha DESC,id DESC')
-                                        .where(item_id:ite.id).count>0 then
-                                        @vactiv= Detail
-                                          .order('pfecha DESC,id DESC')
-                                         .where(item_id:ite.id).
+
+
+                              case  @vaf1
+                                 when 1
+
+                                    @deta3=Detail.where("details.pfecha>='2015/01/01' and
+                                     details.pfecha<='2015/12/31' and details.pfecha<=current_date").
+                                    where(item_id:ite.id).
+                                    order('details.pfecha DESC,details.id DESC')
+
+
+                                  when 2
+
+                                     @deta3=Detail.where("details.pfecha>='2016/01/01' and
+                                      details.pfecha<='2016/12/31' and details.pfecha<=current_date").
+                                      where(item_id:ite.id).
+                                     order('details.pfecha DESC,details.id DESC')
+
+
+                                   when 3
+
+                                      @deta3=Detail.where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
+                                      where(item_id:ite.id).
+                                      order('details.pfecha DESC,details.id DESC')
+
+
+                                end #termina case
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                      if @deta3.count>0 then
+                                        @vactiv= @deta3.
                                            select('actividad as dd').first.dd
-                                           @vactivfec= Detail
-                                             .order('pfecha DESC,id DESC')
-                                            .where(item_id:ite.id).
+                                           @vactivfec= @deta3.
                                               select('pfecha as dd').first.dd
 
 
-                                          if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
+                                          if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and
+                                            Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
+
+                                            case @vaf1
+                                            when 1
+
+                                                    @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                      .where("activities.pfecha>='2015/01/01' and
+                                                       activities.pfecha<='2015/12/31' and activities.pfecha<=current_date").
+                                                      order('activities.pfecha DESC,activities.id DESC')
+
+
+                                                when 2
+
+                                                      @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                          .where("activities.pfecha>='2016/01/01' and
+                                                           activities.pfecha<='2016/12/31' and activities.pfecha<=current_date").
+                                                          order('activities.pfecha DESC,activities.id DESC')
+
+
+
+                                                 when 3
+
+
+
+                                                    @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                     .where("activities.pfecha>='2017/01/01' and activities.pfecha<=current_date")
+                                                     .order('activities.pfecha DESC,activities.id DESC')
+
+                                              end #termina case
+
+
+
+
+
+
+
+
+
+
                                            @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
                                                      .order('activities.pfecha DESC,activities.id DESC').
                                                      select('activities.actividad as dd').first.dd
@@ -1096,55 +1182,58 @@ if @alabels.length <=29 and @alabels.length>0 then
 
   #  end
       table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
-        @activities=Phase.where("expediente>0" ).joins(:activities).where("activities.actividad=20" )
+
+        @vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
+        @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
+        .joins(:activities).where("activities.actividad=20" )
 
          column("Calendario") do
             "Procesos/(PACs)"
          end
          column("Adjudicados BP y Desiertos") do
 
-           @conta=0
+           @contav=0
            @activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
-                @conta=  @conta+1
+                @contav=  @contav+1
               end #item
             end #if
           end #activ
          @le=@activities.where("importe IS NOT NULL and importe>0").count.to_s
 
-            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
+            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
          end
 
          column("Convocados") do
-           @conta=0
+           @contav=0
            @activities.where("importe IS  NULL or importe=0").each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
-                @conta=  @conta+1
+                @contav=  @contav+1
               end #item
             end #if
           end #activ
           @le=@activities.where("importe IS  NULL or importe=0").count.to_s
 
-            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
+            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
 
 
 
          end
 
          column("Total Procesos") do
-           @conta=0
+           @contav=0
            @activities.each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
-                @conta=  @conta+1
+                @contav=  @contav+1
               end #item
             end #if
           end #activ
           @le=@activities.count.to_s
 
-            link_to "#{@le}"+"/("+"#{@conta}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
+            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
 
 
          end
@@ -1158,9 +1247,10 @@ if @alabels.length <=29 and @alabels.length>0 then
                     end# de columns
 
                     column do
-                    panel "Grafico del Estado de los Procesos PAC" do
+                    panel "Grafico del Estado de PAC" do
+                    
                        li do
-                         if @conta>0 then
+                         if @conta>0  then
                          strong { image_tag @bar}
                         end
                           end
