@@ -102,10 +102,9 @@
   <% if Phase.where(expediente:variable.exped).count>0 then %>
 
 
+
           <% @vdetact2=Phase.find_by(expediente:variable.exped).activities
-          .where(actividad: Formula
-          .where(product_id:12,cantidad:@vactcanti).select('orden'))
-                  .where(actividad: @vpact)
+                    .where(actividad: @vpact)
                     .order('activities.pfecha ')%>
 
 
@@ -168,6 +167,10 @@
 
  <% if @vdetact21==1 then %>
        <% @vdetact2.each do |deta2| %>
+<% if Formula.where(product_id:12,orden:deta2.actividad).select('cantidad as dd').first.dd=@vactcanti.to_i then%>
+
+
+
 
 
     <tr>
@@ -188,7 +191,7 @@
 
     </tr>
 
-
+<% end %>
 
 
 

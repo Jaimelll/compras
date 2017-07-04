@@ -102,7 +102,7 @@ filter :nombre
 filter :descripcion
 filter :cantidad
 filter :numero
-
+filter :orden
 
 
       index do

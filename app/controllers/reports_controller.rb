@@ -196,6 +196,7 @@ def comment4
 
 
 def comment7
+  @vactcanti=params[:param3]
   @vpacv=params[:param5]
   @titproc=params[:param4].to_s
   #@numproc=params[:param3].to_i
