@@ -99,7 +99,7 @@ permit_params  :nombre, :descripcion,  :orden,
       end
 
 filter :nombre
-filter :orden
+filter :descripcion
 filter :cantidad
 filter :numero
 
