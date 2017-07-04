@@ -69,7 +69,7 @@
      <tr> <td> <h4>INTERNACIONALES POR ENCARGO:</h4> </td> </tr>
 
       <% end %>
-<%  @vpact=[18,20,56,13,58,61,62,63,64,65,66,67,300]%>
+<%  @vpact=[18,20,56,13,58,61,62,63,64,65,66,67,300,35]%>
 
 
 
@@ -107,13 +107,17 @@
                     .where(actividad: @vpact)
                     .order('activities.pfecha ')%>
 
+                  <%@vdetact21=0 %>
+                  <% @vdetact2.each do |deta3| %>
+                  <%aa=@vactcanti.to_i %>
+                  <%bb= Formula.where(product_id:12,orden:deta3.actividad).select('cantidad as dd').first.dd %>
 
-              <% if @vdetact2.sum(:actividad)>0 %>
-                   <% @vdetact21=1 %>
-              <% else %>
-                  <% @vdetact21=0 %>
-              <% end %>
+                  <% if aa==bb then%>)
 
+                 <% @vdetact21=1 %>
+
+                 <% end %>
+                 <% end %>
  <% else %>
 
              <% @vdetact21=0 %>
@@ -167,13 +171,16 @@
 
  <% if @vdetact21==1 then %>
        <% @vdetact2.each do |deta2| %>
-<% if Formula.where(product_id:12,orden:deta2.actividad).select('cantidad as dd').first.dd=@vactcanti.to_i then%>
+         <%aa=@vactcanti.to_i %>
+        <%bb= Formula.where(product_id:12,orden:deta2.actividad).select('cantidad as dd').first.dd %>
+
+     <% if aa==bb then%>
 
 
 
 
 
-    <tr>
+       <tr>
 
 
 
