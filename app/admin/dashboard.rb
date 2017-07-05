@@ -1240,6 +1240,129 @@ if @alabels.length <=29 and @alabels.length>0 then
       end
   end
 
+#########################################
+@vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+#periodo
+@vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
+
+
+   table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
+           @vxper2=[0,0,0,0,0,0,0]
+          # @vpresu2=[0,0,0,0,0,0,0]
+           @vpro5=[]
+           @vpro6=[]
+
+@vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
+
+@procp=Phase.where(expediente:@vaf2).where.not(expediente:0).order('id')
+
+           @procp .each do |proceso|
+
+
+             case  @vaf1
+                when 1
+
+                   @deta4=Activity.where("pfecha>='2015/01/01' and
+                    pfecha<='2015/12/31' and pfecha<=current_date").
+                   where(phase_id:proceso.id).
+                   order('pfecha DESC,id DESC')
+
+
+                 when 2
+
+                    @deta4=Activity.where("pfecha>='2016/01/01' and
+                    pfecha<='2016/12/31' and pfecha<=current_date").
+                   where(phase_id:proceso.id).
+                   order('pfecha DESC,id DESC')
+
+
+
+                  when 3
+
+                     @deta4=Activity.where("pfecha>='2017/01/01' and
+                   pfecha<=current_date").
+                   where(phase_id:proceso.id).
+                   order('pfecha DESC,id DESC')
+
+
+               end #termina case
+
+
+
+
+
+
+
+
+                    if @deta4.count>0 then
+                       @vactiv3= @deta4.select('actividad as dd').first.dd
+                       @vactivfec3= @deta4.select('pfecha as dd').first.dd
+
+                     @vdir=Formula.where(product_id:12,orden:@vactiv3).
+                           select('cantidad as dd').first.dd
+
+                       @vxper2[@vdir]=@vxper2[@vdir]+ 1
+                #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
+
+                        case @vdir
+                          when 5
+                            @vpro5.push(proceso.id)
+                          when 6
+                            @vpro6.push(proceso.id)
+
+                       end #case
+
+
+                     end# de if 1
+              end
+      column("Avance") do |formula|
+              "Procesos"
+      end
+
+      column("DPC") do |formula|
+        @dpc=  formula.orden
+        @vpas=5
+        @titproc1="CONTRATOS DPC"
+        @le= @vxper2[5]
+        link_to "#{@le}",
+        reports_comment5_path(format: :pdf,
+        :param3=> @vpas,
+        :param4=> @titproc1,:param5=> @vpro5)
+
+       end
+
+       column("DEC") do |formula|
+         @dpc=  formula.orden
+         @vpas=6
+         @titproc1="CONTRATOS DPC"
+         @le= @vxper2[6]
+         link_to "#{@le}",
+         reports_comment5_path(format: :pdf,
+         :param3=> @vpas,
+         :param4=> @titproc1,:param5=> @vpro6)
+
+
+
+       end
+       column("TOTAL") do |formula|
+        @vxper2[5]+  @vxper2[6]
+
+       end
+
+
+
+
+
+
+
+end
+end
+
+
+
+#########################################
+
 
 
 

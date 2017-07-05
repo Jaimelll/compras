@@ -192,6 +192,27 @@ def comment4
   end
 
 
+  def comment5
+    @vactcanti=params[:param3]
+    @vpacv=params[:param5]
+    @titproc=params[:param4].to_s
+    #@numproc=params[:param3].to_i
+    @vper=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+
+  @vdetalle= Activity.where(actividad: Formula
+  .where(product_id:12,cantidad:params[:param3]).select('orden'))
+  .order('pfecha')
+
+
+    @items=Phase.where(id:@vpacv)
+
+  respond_to do |format|
+
+  format.html
+  format.json
+  format.pdf{render template: 'reports/reporte5.pdf.erb', pdf:'detalle'}
+  end
+    end
 
 
 
