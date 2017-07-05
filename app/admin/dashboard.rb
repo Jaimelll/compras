@@ -1088,7 +1088,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                        column("GEX") do |formula|
 
                          @titproc1="GESTION DE EXPEDIENTES"
-                         @vpas=1
+                         @vpas=2
                          @dpcl=   @vxper[0]+ @vxper[1]+ @vxper[2]
                                link_to "#{@dpcl} ",
                                 reports_comment7_path(format: :pdf,
@@ -1248,7 +1248,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                     column do
                     panel "Grafico del Estado de PAC" do
-                    
+
                        li do
                          if @conta>0  then
                          strong { image_tag @bar}
