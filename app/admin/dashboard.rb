@@ -1323,7 +1323,7 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
       column("DPC") do |formula|
         @dpc=  formula.orden
         @vpas=5
-        @titproc1="CONTRATOS DPC"
+        @titproc1="PROCESOS DPC"
         @le= @vxper2[5]
         link_to "#{@le}",
         reports_comment5_path(format: :pdf,
@@ -1335,7 +1335,7 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
        column("DEC") do |formula|
          @dpc=  formula.orden
          @vpas=6
-         @titproc1="CONTRATOS DPC"
+         @titproc1="PROCESOS DEC"
          @le= @vxper2[6]
          link_to "#{@le}",
          reports_comment5_path(format: :pdf,
