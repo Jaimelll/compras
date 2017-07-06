@@ -1190,31 +1190,18 @@ if @alabels.length <=29 and @alabels.length>0 then
          column("Calendario") do
             "Procesos/(PACs)"
          end
-         column("Adjudicados BP y Desiertos") do
-
+         column("en Convocatoria") do
            @contav=0
-           @activities.where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
+           @activities.where("activities.actividad=20" )
+           .where("importe IS  NULL or importe=0").each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
                 @contav=  @contav+1
               end #item
             end #if
           end #activ
-         @le=@activities.where("importe IS NOT NULL and importe>0").count.to_s
-
-            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
-         end
-
-         column("Convocados") do
-           @contav=0
-           @activities.where("importe IS  NULL or importe=0").each do |activ|
-             if activ.expediente>0 then
-             Item.where(exped:activ.expediente).each do
-                @contav=  @contav+1
-              end #item
-            end #if
-          end #activ
-          @le=@activities.where("importe IS  NULL or importe=0").count.to_s
+          @le=@activities.where("activities.actividad=20" )
+          .where("importe IS  NULL or importe=0").count.to_s
 
             link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
 
@@ -1222,16 +1209,37 @@ if @alabels.length <=29 and @alabels.length>0 then
 
          end
 
-         column("Total Procesos") do
+
+
+         column("Adjudicados") do
+
            @contav=0
-           @activities.each do |activ|
+           @activities.where("activities.actividad=20" )
+           .where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
                 @contav=  @contav+1
               end #item
             end #if
           end #activ
-          @le=@activities.count.to_s
+         @le=@activities.where("activities.actividad=20" )
+         .where("importe IS NOT NULL and importe>0").count.to_s
+
+            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
+         end
+
+
+
+         column("Total Convocados") do
+           @contav=0
+           @activities.where("activities.actividad=20" ).each do |activ|
+             if activ.expediente>0 then
+             Item.where(exped:activ.expediente).each do
+                @contav=  @contav+1
+              end #item
+            end #if
+          end #activ
+          @le=@activities.where("activities.actividad=20" ).count.to_s
 
             link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
 
