@@ -206,6 +206,7 @@ def comment4
 
 
   def comment5
+    @vpaso1=params[:param2]
     @vactcanti=params[:param3]
     @vpacv=params[:param5]
     @titproc=params[:param4].to_s
@@ -217,7 +218,7 @@ def comment4
   .order('pfecha')
 
 
-    @items=Phase.where(id:@vpacv)
+    @items=Phase.where(id:@vpacv).order('nomenclatura')
 
   respond_to do |format|
 

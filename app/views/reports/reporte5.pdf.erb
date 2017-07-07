@@ -46,7 +46,7 @@
 
         <td VALIGN=top ALIGN=center><h5><%= @conta.to_s+".-" %></h5></td>
 
-            
+
 
 
         <td  VALIGN=top ALIGN=center><h5><%= variable.nomenclatura %></h5></td>
@@ -59,7 +59,8 @@
         <td  VALIGN=top ALIGN=center ><h5><%= variable.descripcion.capitalize %></h5>
 
 
-          <% if @vdetalle.where(phase_id:variable.id).where(actividad: @vpact).count>0  then %>
+
+          <% if @vdetalle.where(phase_id:variable.id).where(actividad: @vpact).count>0 and @vpaso1.to_i==0 then %>
 
             <% @vdetact= @vdetalle.where(phase_id:variable.id).where(actividad: @vpact)%>
 
@@ -100,11 +101,10 @@
             <% end %>
 
             <tbody>
-      <% end %>
+
 
   </table>
-
-
+  <% end %>
 
 
 

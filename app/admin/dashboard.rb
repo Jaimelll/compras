@@ -1374,11 +1374,13 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
                             @vpro6.push(proceso.id)
 
                        end #case
-                       
+
                        case @vdir
-                       when 5,6
+                         when 5,6
                            @vprot.push(proceso.id)
-                        end
+                       end
+
+
 
                      end# de if 1
               end
@@ -1388,38 +1390,41 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
       column("DPC") do |formula|
         @dpc=  formula.orden
+        @vpaso=0
         @vpas=5
         @titproc1="PROCESOS DPC"
         @le= @vxper2[5]
         link_to "#{@le}",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
-        :param4=> @titproc1,:param5=> @vpro5)
+        :param4=> @titproc1,:param5=> @vpro5,:param2=> @vpaso)
 
        end
 
        column("DEC") do |formula|
          @dpc=  formula.orden
+           @vpaso=0
          @vpas=6
          @titproc1="PROCESOS DEC"
          @le= @vxper2[6]
          link_to "#{@le}",
          reports_comment5_path(format: :pdf,
          :param3=> @vpas,
-         :param4=> @titproc1,:param5=> @vpro6)
+         :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
 
 
 
        end
        column("TOTAL") do |formula|
          @dpc=  formula.orden
+           @vpaso=1
          @vpas=[5,6]
          @titproc1="Relacion de Procesos"
          @le= @vxper2[5]+  @vxper2[6]
          link_to "#{@le}",
          reports_comment5_path(format: :pdf,
          :param3=> @vpas,
-         :param4=> @titproc1,:param5=> @vprot)
+         :param4=> @titproc1,:param5=> @vprot,:param2=> @vpaso)
 
 
 
