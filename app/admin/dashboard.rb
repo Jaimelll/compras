@@ -1313,6 +1313,7 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
           # @vpresu2=[0,0,0,0,0,0,0]
            @vpro5=[]
            @vpro6=[]
+           @vprot=[]
 
 @vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
 
@@ -1373,7 +1374,11 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
                             @vpro6.push(proceso.id)
 
                        end #case
-
+                       
+                       case @vdir
+                       when 5,6
+                           @vprot.push(proceso.id)
+                        end
 
                      end# de if 1
               end
@@ -1407,7 +1412,20 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
        end
        column("TOTAL") do |formula|
-        @vxper2[5]+  @vxper2[6]
+         @dpc=  formula.orden
+         @vpas=[5,6]
+         @titproc1="Relacion de Procesos"
+         @le= @vxper2[5]+  @vxper2[6]
+         link_to "#{@le}",
+         reports_comment5_path(format: :pdf,
+         :param3=> @vpas,
+         :param4=> @titproc1,:param5=> @vprot)
+
+
+
+
+
+
 
        end
 
