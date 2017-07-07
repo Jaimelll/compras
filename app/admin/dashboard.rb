@@ -1185,12 +1185,37 @@ if @alabels.length <=29 and @alabels.length>0 then
 
         @vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
         @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
-        .joins(:activities).where("activities.actividad=20" )
+        .joins(:activities)
 
          column("Calendario") do
             "Procesos/(PACs)"
          end
-         column("en Convocatoria") do
+
+         column("en curso") do
+           @contav=0
+           @activi2= @activities.where("activities.actividad=20" )
+           .select('activities.phase_id')
+           @activitie2=Phase.where.not(id:@activi2) .joins(:activities).where('actividad=34')
+
+           @activitie2.each do |activ|
+
+             if activ.expediente>0 then
+             Item.where(exped:activ.expediente).each do
+                @contav=  @contav+1
+              end #item
+            end #if
+          end #activ
+          @le=@activitie2.count.to_s
+
+            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 4)
+
+
+
+         end
+
+
+
+         column(" Convocados") do
            @contav=0
            @activities.where("activities.actividad=20" )
            .where("importe IS  NULL or importe=0").each do |activ|
@@ -1230,16 +1255,44 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
 
-         column("Total Convocados") do
-           @contav=0
-           @activities.where("activities.actividad=20" ).each do |activ|
+         column("Total ") do
+
+           @contavc=0
+           @activi2= @activities.where("activities.actividad=20" )
+           .select('activities.phase_id as aa')
+           @activitie2=Phase.where.not(expediente:0,id:@activi2) .joins(:activities).where('actividad=34')
+
+           @activitie2.each do |activ|
+
+             if activ.expediente>0 then
+             Item.where(exped:activ.expediente).each do
+                @contavc=  @contavc+1
+              end #item
+            end #if
+           end #activ
+           @lec=@activitie2.count
+
+
+
+
+
+
+
+           @activities.where("activities.actividad=20" )
+            .where("importe IS  NULL or importe=0")
+           .each do |activ|
              if activ.expediente>0 then
              Item.where(exped:activ.expediente).each do
                 @contav=  @contav+1
               end #item
             end #if
           end #activ
-          @le=@activities.where("activities.actividad=20" ).count.to_s
+          @le=(@activities.where("activities.actividad=20" ).count+
+          @lec).to_s
+            @contav= @contav+@contavc
+
+
+
 
             link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
 

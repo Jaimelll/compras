@@ -180,6 +180,19 @@ def comment4
           phases.moneda as moneda,phases.valor as valor ")
            .order("pfecha")
 
+         when 4
+           @tit1="Procesos en curso"
+
+           @activi2= Phase.where.not(expediente:0).where(expediente:@vaf2)
+           .joins(:activities).where("activities.actividad=20" )
+           .select('activities.phase_id')
+
+           @activities=Phase.where.not(id:@activi2)
+           .joins(:activities).where('actividad=34')
+           .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
+            phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
+            phases.moneda as moneda,phases.valor as valor ")
+             .order("pfecha")
    end
 
   respond_to do |format|

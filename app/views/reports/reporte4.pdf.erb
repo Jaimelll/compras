@@ -24,7 +24,7 @@
        <th>Moneda</th>
         <th>Referencial</th>
 
-      <%  if @vopc>=2 then %>
+      <%  if @vopc==2 or  @vopc==3 then %>
        <th>Adjudicado</th>
 
        <%  end%>
@@ -94,7 +94,7 @@
 
 
 
-<% if Piece.where(phase:activity.id.to_s).count>0 and  @vopc<3 then  %>
+<% if Piece.where(phase:activity.id.to_s).count>0 and  (@vopc<3 or @vopc==4)  then  %>
 <table width="800" border="1">
 
   <br>
@@ -177,10 +177,10 @@
   <%  if @vreff>0 then %>
         <td VALIGN=top  ALIGN =right colspan="1"><%= number_with_delimiter(@vreff.to_i, delimiter: ",") %></td>
   <%  else %>
-    
+
       <td VALIGN=top  ALIGN =right colspan="1"><%= number_with_delimiter( Phase.where(id:activity.id.to_s).sum(:valor).to_i, delimiter: ",") %></td>
   <%  end %>
-      <%  if @vopc>=2 then %>
+      <%   if @vopc==2 or  @vopc==3 then %>
 
           <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)%>
 
@@ -200,24 +200,38 @@
 
   </tbody>
   </table>
-    <% if @vopc>=2 then  %>
-    <%@sref= 0 %>
-    <%@sadj=0 %>
+    <% if @vopc==2  then  %>
+    <%@srefs= 0 %>
+    <%@sadjs=0 %>
+    <%@srefd= 0 %>
+    <%@sadjd=0 %>
   <% @activities.each do |activity2| %>
+    <% if activity2.moneda==1  then  %>
 
-    <%@sref= @sref+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial) %>
-    <%@sadj= @sadj+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado) %>
-
-
+    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial) %>
+    <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado) %>
+    <% end %>
+      <% if activity2.moneda==2  then  %>
+      <%@srefd= @srefd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial) %>
+      <%@sadjd= @sadjd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado) %>
+     <% end %>
       <% end %>
 
-  <h3>ACUMULADO:</h3>
+  <h3>ACUMULADO SOLES:</h3>
 
-    <h4>REFERENCIAL =  <%= number_with_delimiter(@sref.to_i, delimiter: ",") %> </h4>
+    <h4>REFERENCIAL =  <%= number_with_delimiter(@srefs.to_i, delimiter: ",") %> </h4>
 
-    <h4>ADJUDICADO =  <%= number_with_delimiter(@sadj.to_i, delimiter: ",") %> </h4>
+    <h4>ADJUDICADO =  <%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %> </h4>
 
-    <h4>AHORRO =  <%= number_with_delimiter((@sref-@sadj).to_i, delimiter: ",") %> </h4>
+    <h4>AHORRO =  <%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %> </h4>
+
+    <h3>ACUMULADO DOLARES:</h3>
+
+      <h4>REFERENCIAL =  <%= number_with_delimiter(@srefd.to_i, delimiter: ",") %> </h4>
+
+      <h4>ADJUDICADO =  <%= number_with_delimiter(@sadjd.to_i, delimiter: ",") %> </h4>
+
+      <h4>AHORRO =  <%= number_with_delimiter((@srefd-@sadjd).to_i, delimiter: ",") %> </h4>
 
       <% end %>
 
