@@ -105,7 +105,8 @@
       <th >Estado</th>
       <% if   @vopc==2 then %>
       <th >Postor Ganador</th>
-        <% end %>
+            <% end %>
+      <th >Monto</th>
    </tr>
 
   <tbody>
@@ -140,6 +141,13 @@
          <td VALIGN=top ALIGN=left><%= pite.postor %></td>
 
   <% end %>
+  <% if   pite.estado==2  or pite.estado==4 then %>
+  <td VALIGN=top  ALIGN=right ><%= number_with_delimiter(pite.adjudicado.to_i, delimiter: ",") %></td>
+
+    <% else %>
+
+      <td VALIGN=top  ALIGN=right ><%= number_with_delimiter(pite.referencial.to_i, delimiter: ",") %></td>
+    <% end %>
 
  </tr>
 
