@@ -177,13 +177,26 @@ form :title => 'Edicion Item'  do |f|
                        select('nombre as dd').first.dd.capitalize
                   n4=Phase.where(id:  params[:phase_id]).
                                 select('valor as dd').first.dd.to_s
+                 n32=Formula.where(product:16,orden:n11).
+                           select('orden as dd').first.dd
+                   @vobac=" "
+                  if n32>0 then
+                   Item.where(exped:n32).order('obac').each do |nobac|
+                    @sobac=Formula.where(product_id:1,orden:nobac.obac)
+                    .select('nombre as dd').first.dd
+                     @vobac=@vobac+ @sobac+"-"+nobac.pac+","
+                     end
+                     end
+
 
               ul do
                 li "PROCESO :   "+nn
+                li "EXPEDIENTE :  "+n31
+                li "OBAC-PAC :  "+ @vobac
                 li "DESCRIPCION : "+n2
                 li "MONEDA :  "+n3
                 li "VALOR ESTIMADO :"+  number_with_delimiter(n4, delimiter: ",").to_s
-                li "EXPEDIENTE :  "+n31
+
               end# de ul
 
 

@@ -111,7 +111,7 @@ form :title => 'Edicion Procesos' do |f|
  f.input :moneda, :as => :select, :collection =>
           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
 
- f.input :valor,:label => 'Valor estimado DPC', :as => :string, :input_html => { :style =>  'width:30%'}
+ f.input :valor,:label => 'Valor Referencial', :as => :string, :input_html => { :style =>  'width:30%'}
  f.input :expediente, :input_html => { :style =>  'width:60%'}, :as => :select, :collection =>
    Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
 
@@ -140,7 +140,7 @@ show :title => ' Proceso'  do
                 "s/d"
             end
         end
-        row "Valor estimado PAC" do |phase|
+        row "Valor Referencial" do |phase|
 
            number_with_delimiter(phase.valor, delimiter: ",")
 
