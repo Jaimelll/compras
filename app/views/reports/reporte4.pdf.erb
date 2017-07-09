@@ -9,37 +9,35 @@
 </head>
 
   <% if @activities.length>0 then %>
-<table>
+<table >
 
 
 
-    <tr>
-      <th>N°</th>
+    <tr >
+      <th style="font-size:90%;">N°</th>
 
-       <th>Fecha Conv</th>
-       <th>Fecha BP</th>
-       <th>Nomenclatura</th>
-       <th>OBAC</th>
-       <th>Descripcion</th>
-       <th>Moneda</th>
-        <th>Referencial</th>
+       <th style="font-size:90%;">Fecha Conv</th>
+       <th style="font-size:90%;">Fecha BP</th>
+       <th style="font-size:90%;">Nomenclatura</th>
+       <th style="font-size:90%;">OBAC</th>
+       <th colspan="3">Descripcion</th>
+       <th style="font-size:90%;">Moneda</th>
+        <th style="font-size:90%;">Referencial</th>
 
       <%  if @vopc==2 or  @vopc==3 then %>
-       <th>Adjudicado</th>
+       <th style="font-size:90%;">Adjudicado</th>
 
        <%  end%>
 
-      <th colspan="3"></th>
+
     </tr>
 
 
   <tbody>
     <%  @conta=0 %>
     <% @activities.each do |activity| %>
-        <tr>
+        <tr style="font-size:90%;">
           <% @conta=@conta+1 %>
-
-
 
 
 
@@ -88,82 +86,7 @@
 
 
 
-        <td VALIGN=top ALIGN=center><%= activity.descripcion.underscore.capitalize %>
-
-
-
-
-
-<% if Piece.where(phase:activity.id.to_s).count>0 and  (@vopc<3 or @vopc==4)  then  %>
-<table width="800" border="1">
-
-  <br>
- </tr>
-    <tr>
-
-      <th >Item </th>
-      <th >Estado</th>
-      <% if   @vopc==2 then %>
-      <th >Postor Ganador</th>
-            <% end %>
-      <th >Monto</th>
-   </tr>
-
-  <tbody>
-
-
-    <% Piece.where(phase:activity.id.to_s).each do |pite| %>
-
-
- <tr>
-
-
-
-
-
-
-
-         <td VALIGN=top ALIGN=left><%= pite.descripcion %></td>
-           <% if pite.estado and pite.estado>0 then %>
-
-            <td VALIGN=top ALIGN=center><%= Formula.where(product_id:17, orden:pite.estado).
-             select('nombre as dd').first.dd %></td>
-
-
-       <% else %>
-
-
-          <td VALIGN=top ALIGN=center> s/d </td>
-      <% end %>
-
-<% if   @vopc==2 then %>
-
-         <td VALIGN=top ALIGN=left><%= pite.postor %></td>
-
-  <% end %>
-  <% if   pite.estado==2  or pite.estado==4 then %>
-  <td VALIGN=top  ALIGN=right ><%= number_with_delimiter(pite.adjudicado.to_i, delimiter: ",") %></td>
-
-    <% else %>
-
-      <td VALIGN=top  ALIGN=right ><%= number_with_delimiter(pite.referencial.to_i, delimiter: ",") %></td>
-    <% end %>
-
- </tr>
-
-
-
-  <% end %>
-</tbody>
-
-
-
- </table>
-
-<% end %>
-
-
-
+        <td VALIGN=top ALIGN=center colspan="3"><%= activity.descripcion.underscore.capitalize %>
 
 
 
@@ -176,7 +99,7 @@
 
 
         <% if activity.moneda>0 and activity.moneda then %>
-      <td VALIGN=top   ALIGN=right><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
+      <td VALIGN=top   ALIGN=center><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
       <% else %>
       <td VALIGN=top ALIGN=right><%= "s/d "   %></td>
       <% end %>
@@ -203,11 +126,104 @@
           <% end %>
 
       </tr>
+      <% if Piece.where(phase:activity.id.to_s).count>0 and  (@vopc<3 or @vopc==4)  then  %>
+
+
+
+
+
+
+
+
+
+          <tr style="font-size:80%;">
+            <th colspan="2"> </th>
+            <th colspan="3" >Item </th>
+            <th colspan="1" >Estado</th>
+
+            <% if   @vopc==2 then %>
+            <th colspan="2"  >Postor Ganador</th>
+
+             <th colspan="1"> </th>
+            <% end %>
+            <th ALIGN=left >Monto</th>
+
+             <th colspan="1"> </th>
+
+         </tr>
+
+
+
+          <% Piece.where(phase:activity.id.to_s).each do |pite| %>
+
+
+       <tr style="font-size:70%;">
+
+
+
+
+                <td colspan="2"></td>
+
+
+               <td VALIGN=top ALIGN=left colspan="3" ><%= pite.descripcion %></td>
+                 <% if pite.estado and pite.estado>0 then %>
+
+                  <td VALIGN=top ALIGN=center colspan="1" ><%= Formula.where(product_id:17, orden:pite.estado).
+                   select('nombre as dd').first.dd %></td>
+
+
+             <% else %>
+
+
+                <td VALIGN=top ALIGN=center colspan="1" > s/d </td>
+            <% end %>
+
+      <% if   @vopc==2 then %>
+
+               <td VALIGN=top ALIGN=left colspan="3" ><%= pite.postor.capitalize %></td>
+
+        <% end %>
+
+        <% if   pite.estado==2  or pite.estado==4 then %>
+        <td VALIGN=top    ><%= number_with_delimiter(pite.adjudicado.to_i, delimiter: ",") %></td>
+
+          <% else %>
+
+        <td VALIGN=top   ><%= number_with_delimiter(pite.referencial.to_i, delimiter: ",") %></td>
+
+
+                 <td colspan="1"> </td>
+
+          <% end %>
+
+       </tr>
+
+
+
+        <% end %>
+
+
+
+      <% end %>
+
+
+
+
+
+
+
+
+
+
+
 
     <% end %>
 
   </tbody>
   </table>
+
+
+
     <% if @vopc==2  then  %>
     <%@srefs= 0 %>
     <%@sadjs=0 %>
@@ -225,21 +241,25 @@
      <% end %>
       <% end %>
 
-  <h3>ACUMULADO SOLES:</h3>
 
-    <h4>REFERENCIAL =  <%= number_with_delimiter(@srefs.to_i, delimiter: ",") %> </h4>
 
-    <h4>ADJUDICADO =  <%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %> </h4>
+    <h3 >.</h3>
+  <h3 style="font-size:85%;">ACUMULADO SOLES:</h3>
 
-    <h4>AHORRO =  <%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %> </h4>
+    <h4 style="font-size:85%;">REFERENCIAL =  <%= number_with_delimiter(@srefs.to_i, delimiter: ",") %> </h4>
 
-    <h3>ACUMULADO DOLARES:</h3>
+    <h4 style="font-size:85%;">ADJUDICADO =  <%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %> </h4>
 
-      <h4>REFERENCIAL =  <%= number_with_delimiter(@srefd.to_i, delimiter: ",") %> </h4>
+    <h4 style="font-size:85%;">AHORRO =  <%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %> </h4>
+      <h3 >.</h3>
 
-      <h4>ADJUDICADO =  <%= number_with_delimiter(@sadjd.to_i, delimiter: ",") %> </h4>
+    <h3 style="font-size:85%;">ACUMULADO DOLARES:</h3>
 
-      <h4>AHORRO =  <%= number_with_delimiter((@srefd-@sadjd).to_i, delimiter: ",") %> </h4>
+      <h4 style="font-size:85%;">REFERENCIAL =  <%= number_with_delimiter(@srefd.to_i, delimiter: ",") %> </h4>
+
+      <h4 style="font-size:85%;">ADJUDICADO =  <%= number_with_delimiter(@sadjd.to_i, delimiter: ",") %> </h4>
+
+      <h4 style="font-size:85%;">AHORRO =  <%= number_with_delimiter((@srefd-@sadjd).to_i, delimiter: ",") %> </h4>
 
       <% end %>
 

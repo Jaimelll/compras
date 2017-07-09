@@ -171,7 +171,7 @@ def comment4
         phases.moneda as moneda,phases.valor as valor ")
          .order("pfecha")
        when 3
-         @tit1="Relacion de Procesos "
+         @tit1="Relacion de Procesos Convocados"
 
          @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
          .joins(:activities).where("activities.actividad=20 " ).where('expediente>0')

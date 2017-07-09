@@ -1293,8 +1293,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
 
-
-            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
+          link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
 
 
          end
