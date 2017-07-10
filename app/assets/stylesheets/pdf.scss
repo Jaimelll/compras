@@ -9,3 +9,8 @@ td,th{
 table, tr, td, tbody, thead, tfoot {
   page-break-inside: avoid !important;
 }
+th {
+    background-color: black;
+    color: white;
+    font-family: cursive;
+}
