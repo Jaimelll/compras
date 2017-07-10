@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/activeadmin/activeadmin
-  revision: 86b4c6615ce77ac2925cff3fd3028befddff0dee
+  revision: 36e65d56e9f46145e3f71671e3b3b12d57a1f3c4
   specs:
     activeadmin (1.0.0)
       arbre (>= 1.1.1)
@@ -89,7 +89,7 @@ GEM
     has_scope (0.7.1)
       actionpack (>= 4.1, < 5.2)
       activesupport (>= 4.1, < 5.2)
-    i18n (0.8.5)
+    i18n (0.8.6)
     inherited_resources (1.7.2)
       actionpack (>= 3.2, < 5.2.x)
       has_scope (~> 0.6)

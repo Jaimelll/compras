@@ -16,8 +16,15 @@
     <tr style="font-size:90%;">
       <th >N°</th>
 
-       <th >Fecha Conv</th>
-       <th >Fecha BP</th>
+           <th >Fecha Conv</th> 
+
+        <%  if @vopc==4 then %>
+         <th >Ingreso DPC</th>
+       <%  else%>
+          <th >Fecha BP</th>
+        <%  end%>
+
+
        <th >Nomenclatura</th>
        <th >OBAC</th>
        <th colspan="3">Descripcion</th>
