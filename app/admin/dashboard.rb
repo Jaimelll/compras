@@ -1174,7 +1174,7 @@ if @alabels.length <=29 and @alabels.length>0 then
           end #end de panel
 
 
-  panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
+  panel  "V.- CALENDARIO DE PROCESOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
   #  ul do
 
   #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
@@ -1191,7 +1191,7 @@ if @alabels.length <=29 and @alabels.length>0 then
             "Procesos/(soles)"
          end
 
-         column("en curso") do
+         column("actos preparatorios") do
 
            @activi2= @activities.where("activities.actividad=20" )
            .select('activities.phase_id as aa')
