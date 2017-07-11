@@ -721,7 +721,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                               column("EN ACFFAA ") do |formula|
                               @auto=  formula.orden
-                              @tita1="Procesos en ACFFAA - PERIODO"
+                              @tita1="PACs en ACFFAA - PERIODO"
                               @vopc1=4
 
                             @le1=  Item.where(ejecucion:4,exped2:formula.orden)
@@ -745,7 +745,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                                 @auto=  formula.orden
-                                @tita1="Procesos en OBAC - PERIODO"
+                                @tita1="PACs en OBAC - PERIODO"
                                 @vopc1=5
 
                               @le1=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
@@ -1174,7 +1174,7 @@ if @alabels.length <=29 and @alabels.length>0 then
           end #end de panel
 
 
-  panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf + " - 'Procesos/(PACs)'" do
+  panel  "V.- CALENDARIO DE PROCESOS CONVOCADOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
   #  ul do
 
   #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
@@ -1188,26 +1188,21 @@ if @alabels.length <=29 and @alabels.length>0 then
         .joins(:activities)
 
          column("Calendario") do
-            "Procesos/(PACs)"
+            "Procesos/(soles)"
          end
 
          column("en curso") do
-           @contav=0
+
            @activi2= @activities.where("activities.actividad=20" )
-           .select('activities.phase_id')
+           .select('activities.phase_id as aa')
+
            @activitie2=Phase.where.not(id:@activi2) .joins(:activities).where('actividad=34')
+              @contavu1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
+              @contavu=number_with_delimiter(@contavu1.to_i, delimiter: ",")
 
-           @activitie2.each do |activ|
+          @leu=@activitie2.count.to_s
 
-             if activ.expediente>0 then
-             Item.where(exped:activ.expediente).each do
-                @contav=  @contav+1
-              end #item
-            end #if
-          end #activ
-          @le=@activitie2.count.to_s
-
-            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 4)
+            link_to "#{@leu}"+"/("+"#{@contavu}"+")", reports_comment4_path(format: :pdf,  :param1=> 4)
 
 
 
@@ -1216,19 +1211,18 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
          column(" Convocados") do
-           @contav=0
-           @activities.where("activities.actividad=20" )
-           .where("importe IS  NULL or importe=0").each do |activ|
-             if activ.expediente>0 then
-             Item.where(exped:activ.expediente).each do
-                @contav=  @contav+1
-              end #item
-            end #if
-          end #activ
-          @le=@activities.where("activities.actividad=20" )
-          .where("importe IS  NULL or importe=0").count.to_s
 
-            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
+           @activitie2= @activities.where("activities.actividad=20" )
+            .where("importe IS  NULL or importe=0")
+
+            @contavc1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
+            @contavc=number_with_delimiter(@contavc1 .to_i, delimiter: ",")
+
+          @lec=@activitie2.count.to_s
+
+
+
+            link_to "#{@lec}"+"/("+"#{@contavc}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
 
 
 
@@ -1238,62 +1232,61 @@ if @alabels.length <=29 and @alabels.length>0 then
 
          column("Adjudicados") do
 
-           @contav=0
+           @contava1=0
            @activities.where("activities.actividad=20" )
-           .where("pfecha<current_date and importe IS NOT NULL and importe>0").each do |activ|
-             if activ.expediente>0 then
-             Item.where(exped:activ.expediente).each do
-                @contav=  @contav+1
-              end #item
-            end #if
+           .where("importe IS NOT NULL and importe>0").each do |activ|
+
+
+                @contava1=  @contava1+Piece.where(phase_id:activ.id,moneda:1).sum(:adjudicado)+
+                Piece.where(phase_id:activ.id,moneda:2).sum(:adjudicado)*3.3
+
+
           end #activ
-         @le=@activities.where("activities.actividad=20" )
+          @contava=number_with_delimiter(@contava1
+          .to_i, delimiter: ",")
+
+         @lea=@activities.where("activities.actividad=20" )
          .where("importe IS NOT NULL and importe>0").count.to_s
 
-            link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
+            link_to "#{@lea}"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
+         end
+
+         column("Desiertos") do
+
+           @contava2=0
+           @vdes=[]
+           @activities.where("activities.actividad=20" )
+           .where("importe IS NOT NULL and importe>0").each do |activ|
+
+
+                @contava2=  @contava2+Piece.where(phase_id:activ.id,moneda:1,estado:3).sum(:referencial)+
+                Piece.where(phase_id:activ.id,moneda:2,estado:3).sum(:referencial)*3.3
+
+              if  Piece.where(phase_id:activ.id,estado:3).count>0 then
+                                  @vdes.push(activ.id)
+               end
+
+          end #activ
+          @contava=number_with_delimiter(@contava2
+          .to_i, delimiter: ",")
+
+
+
+            link_to "-"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,
+             :param1=> 5,  :param2=> @vdes)
          end
 
 
 
          column("Total ") do
 
-           @contavc=0
-           @activi2= @activities.where("activities.actividad=20" )
-           .select('activities.phase_id as aa')
-           @activitie2=Phase.where.not(expediente:0,id:@activi2) .joins(:activities).where('actividad=34')
+        @let=(@leu.to_i+@lec.to_i+@lea.to_i).to_s
 
-           @activitie2.each do |activ|
+       @contavt1= @contavu1+@contavc1+@contava1+@contava2
+       @contavt=number_with_delimiter(@contavt1
+       .to_i, delimiter: ",")
 
-             if activ.expediente>0 then
-             Item.where(exped:activ.expediente).each do
-                @contavc=  @contavc+1
-              end #item
-            end #if
-           end #activ
-           @lec=@activitie2.count
-
-
-
-
-
-
-
-           @activities.where("activities.actividad=20" )
-            .where("importe IS  NULL or importe=0")
-           .each do |activ|
-             if activ.expediente>0 then
-             Item.where(exped:activ.expediente).each do
-                @contav=  @contav+1
-              end #item
-            end #if
-          end #activ
-          @le=(@activities.where("activities.actividad=20" ).count+
-          @lec).to_s
-            @contav= @contav+@contavc
-
-
-
-          link_to "#{@le}"+"/("+"#{@contav}"+")", reports_comment4_path(format: :pdf, :orientation  => 'Landscape',   :param1=> 3)
+          link_to "#{@let}"+"/("+"#{@contavt}"+")", reports_comment4_path(format: :pdf, :param1=> 3)
 
 
          end

@@ -16,7 +16,7 @@
     <tr style="font-size:90%;">
       <th >N°</th>
 
-           <th >Fecha Conv</th> 
+           <th >Fecha Conv</th>
 
         <%  if @vopc==4 then %>
          <th >Ingreso DPC</th>
@@ -133,7 +133,7 @@
           <% end %>
 
       </tr>
-      <% if Piece.where(phase:activity.id.to_s).count>0 and  (@vopc<3 or @vopc==4)  then  %>
+      <% if Piece.where(phase:activity.id.to_s).count>0 and !( @vop==3)  then  %>
 
 
 
@@ -157,9 +157,9 @@
 
 
           <% Piece.where(phase:activity.id.to_s).each do |pite| %>
+          <% unless @vopc==5 and !(pite.estado==3) %>
 
-
-       <tr style="font-size:70%;" >
+        <tr style="font-size:70%;" >
 
 
 
@@ -200,7 +200,7 @@
 
        </tr>
 
-
+        <% end %>
 
         <% end %>
 

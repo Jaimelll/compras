@@ -193,6 +193,17 @@ def comment4
             phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
             phases.moneda as moneda,phases.valor as valor ")
              .order("pfecha")
+
+           when 5
+             @tit1= "Procesos  Desiertos"
+
+             @activities=Phase.where.not(expediente:0).where(expediente:@vaf2,id:params[:param2])
+             .joins(:activities).where("activities.actividad=20
+             and importe IS NOT NULL and importe>0" ).where('expediente>0')
+               .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
+              phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
+              phases.moneda as moneda,phases.valor as valor ")
+               .order("pfecha")
    end
 
   respond_to do |format|

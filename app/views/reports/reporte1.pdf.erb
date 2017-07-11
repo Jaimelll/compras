@@ -77,14 +77,14 @@
   </tbody>
 
 </table>
-<h3>Procesos = <%=   @conta %></h3>
+<h3>PACs = <%=   @conta %></h3>
 <h3>Total(Soles) = <%=   number_with_delimiter(@items.where(tipo:1).sum(:certificado).to_i, delimiter: ",") %></h3>
 
 <br>
 <% else %>
 <br>
 <br>
- <td> No hay procesos Nacionales en esta Lista  </td>
+ <td> No hay PACs Nacionales en esta Lista  </td>
  <br>
  <br>
 <% end %>
@@ -165,14 +165,14 @@
   </tbody>
 
 </table>
-<h3>Procesos = <%=   @conta %></h3>
+<h3>PACs = <%=   @conta %></h3>
 <h3>Total(Soles) = <%=   number_with_delimiter(@items.where(tipo:2).sum(:certificado).to_i, delimiter: ",") %></h3>
 <br>
 <br>
 <% else %>
 <br>
 <br>
- <td> No hay procesos Internacionales en esta Lista  </td>
+ <td> No hay PACs Internacionales en esta Lista  </td>
  <br>
  <br>
 <% end %>
