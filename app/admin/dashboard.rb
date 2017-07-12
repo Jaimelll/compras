@@ -712,7 +712,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                      column do
                        panel  "I.- HISTORIAL PERIODOS  - 'PAC/(SOLES)'" do
-                         table_for Formula.where(product_id:11).order('orden')  do
+                         table_for Formula.where(product_id:11).where('orden>1').order('orden')  do
 
 
                               column("Periodos" ) do |formula|
@@ -927,11 +927,132 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                      end # de table for Mercado
                                    end # panel mercado
+                                   @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                                   @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+
+                                   panel  "IV.- CALENDARIO DE PROCESOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
+                                   #  ul do
+
+                                   #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
+                                     #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
+
+                                   #  end
+                                       table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
+
+                                         @vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
+                                         @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
+                                         .joins(:activities)
+
+                                          column("Calendario") do
+                                             "Procesos/(soles)"
+                                          end
+
+                                          column("actos preparatorios") do
+
+                                            @activi2= @activities.where("activities.actividad=20" )
+                                            .select('activities.phase_id as aa')
+
+                                            @activitie2=Phase.where.not(id:@activi2) .joins(:activities).where('actividad=34')
+                                               @contavu1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
+                                               @contavu=number_with_delimiter(@contavu1.to_i, delimiter: ",")
+
+                                           @leu=@activitie2.count.to_s
+
+                                             link_to "#{@leu}"+"/("+"#{@contavu}"+")", reports_comment4_path(format: :pdf,  :param1=> 4)
 
 
-                 @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-                 @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-                 panel  "IV.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
+
+                                          end
+
+
+
+                                          column(" Convocados") do
+
+                                            @activitie2= @activities.where("activities.actividad=20" )
+                                             .where("importe IS  NULL or importe=0")
+
+                                             @contavc1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
+                                             @contavc=number_with_delimiter(@contavc1 .to_i, delimiter: ",")
+
+                                           @lec=@activitie2.count.to_s
+
+
+
+                                             link_to "#{@lec}"+"/("+"#{@contavc}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
+
+
+
+                                          end
+
+
+
+                                          column("Adjudicados") do
+
+                                            @contava1=0
+                                            @activities.where("activities.actividad=20" )
+                                            .where("importe IS NOT NULL and importe>0").each do |activ|
+
+
+                                                 @contava1=  @contava1+Piece.where(phase_id:activ.id,moneda:1).sum(:adjudicado)+
+                                                 Piece.where(phase_id:activ.id,moneda:2).sum(:adjudicado)*3.3
+
+
+                                           end #activ
+                                           @contava=number_with_delimiter(@contava1
+                                           .to_i, delimiter: ",")
+
+                                          @lea=@activities.where("activities.actividad=20" )
+                                          .where("importe IS NOT NULL and importe>0").count.to_s
+
+                                             link_to "#{@lea}"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
+                                          end
+
+                                          column("Desiertos") do
+
+                                            @contava2=0
+                                            @vdes=[]
+                                            @activities.where("activities.actividad=20" )
+                                            .where("importe IS NOT NULL and importe>0").each do |activ|
+
+
+                                                 @contava2=  @contava2+Piece.where(phase_id:activ.id,moneda:1,estado:3).sum(:referencial)+
+                                                 Piece.where(phase_id:activ.id,moneda:2,estado:3).sum(:referencial)*3.3
+
+                                               if  Piece.where(phase_id:activ.id,estado:3).count>0 then
+                                                                   @vdes.push(activ.id)
+                                                end
+
+                                           end #activ
+                                           @contava=number_with_delimiter(@contava2
+                                           .to_i, delimiter: ",")
+
+
+
+                                             link_to "-"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,
+                                              :param1=> 5,  :param2=> @vdes)
+                                          end
+
+
+
+                                          column("Total ") do
+
+                                         @let=(@leu.to_i+@lec.to_i+@lea.to_i).to_s
+
+                                        @contavt1= @contavu1+@contavc1+@contava1+@contava2
+                                        @contavt=number_with_delimiter(@contavt1
+                                        .to_i, delimiter: ",")
+
+                                           link_to "#{@let}"+"/("+"#{@contavt}"+")", reports_comment4_path(format: :pdf, :param1=> 3)
+
+
+                                          end
+                                       end
+                                   end
+
+
+
+
+                 panel  "V.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
 
 
                     table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1174,124 +1295,6 @@ if @alabels.length <=29 and @alabels.length>0 then
           end #end de panel
 
 
-  panel  "V.- CALENDARIO DE PROCESOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
-  #  ul do
-
-  #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
-    #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
-
-  #  end
-      table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
-
-        @vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
-        @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
-        .joins(:activities)
-
-         column("Calendario") do
-            "Procesos/(soles)"
-         end
-
-         column("actos preparatorios") do
-
-           @activi2= @activities.where("activities.actividad=20" )
-           .select('activities.phase_id as aa')
-
-           @activitie2=Phase.where.not(id:@activi2) .joins(:activities).where('actividad=34')
-              @contavu1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
-              @contavu=number_with_delimiter(@contavu1.to_i, delimiter: ",")
-
-          @leu=@activitie2.count.to_s
-
-            link_to "#{@leu}"+"/("+"#{@contavu}"+")", reports_comment4_path(format: :pdf,  :param1=> 4)
-
-
-
-         end
-
-
-
-         column(" Convocados") do
-
-           @activitie2= @activities.where("activities.actividad=20" )
-            .where("importe IS  NULL or importe=0")
-
-            @contavc1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
-            @contavc=number_with_delimiter(@contavc1 .to_i, delimiter: ",")
-
-          @lec=@activitie2.count.to_s
-
-
-
-            link_to "#{@lec}"+"/("+"#{@contavc}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
-
-
-
-         end
-
-
-
-         column("Adjudicados") do
-
-           @contava1=0
-           @activities.where("activities.actividad=20" )
-           .where("importe IS NOT NULL and importe>0").each do |activ|
-
-
-                @contava1=  @contava1+Piece.where(phase_id:activ.id,moneda:1).sum(:adjudicado)+
-                Piece.where(phase_id:activ.id,moneda:2).sum(:adjudicado)*3.3
-
-
-          end #activ
-          @contava=number_with_delimiter(@contava1
-          .to_i, delimiter: ",")
-
-         @lea=@activities.where("activities.actividad=20" )
-         .where("importe IS NOT NULL and importe>0").count.to_s
-
-            link_to "#{@lea}"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
-         end
-
-         column("Desiertos") do
-
-           @contava2=0
-           @vdes=[]
-           @activities.where("activities.actividad=20" )
-           .where("importe IS NOT NULL and importe>0").each do |activ|
-
-
-                @contava2=  @contava2+Piece.where(phase_id:activ.id,moneda:1,estado:3).sum(:referencial)+
-                Piece.where(phase_id:activ.id,moneda:2,estado:3).sum(:referencial)*3.3
-
-              if  Piece.where(phase_id:activ.id,estado:3).count>0 then
-                                  @vdes.push(activ.id)
-               end
-
-          end #activ
-          @contava=number_with_delimiter(@contava2
-          .to_i, delimiter: ",")
-
-
-
-            link_to "-"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,
-             :param1=> 5,  :param2=> @vdes)
-         end
-
-
-
-         column("Total ") do
-
-        @let=(@leu.to_i+@lec.to_i+@lea.to_i).to_s
-
-       @contavt1= @contavu1+@contavc1+@contava1+@contava2
-       @contavt=number_with_delimiter(@contavt1
-       .to_i, delimiter: ",")
-
-          link_to "#{@let}"+"/("+"#{@contavt}"+")", reports_comment4_path(format: :pdf, :param1=> 3)
-
-
-         end
-      end
-  end
 
 #########################################
 @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
