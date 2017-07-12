@@ -711,12 +711,12 @@ if @alabels.length <=29 and @alabels.length>0 then
               columns do
 
                      column do
-                       panel  "I.- HISTORIAL PERIODOS  - 'PAC/(SOLES)'" do
+                       panel  "I.- HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).where('orden>1').order('orden')  do
 
 
                               column("Periodos" ) do |formula|
-                                formula.nombre
+                                formula.descripcion
                               end
 
                               column("EN ACFFAA ") do |formula|
