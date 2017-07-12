@@ -947,7 +947,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                              "Procesos/(soles)"
                                           end
 
-                                          column("actos preparatorios") do
+                                          column("actos previos") do
 
                                             @activi2= @activities.where("activities.actividad=20" )
                                             .select('activities.phase_id as aa')
@@ -1007,30 +1007,30 @@ if @alabels.length <=29 and @alabels.length>0 then
                                              link_to "#{@lea}"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
                                           end
 
-                                          column("Desiertos") do
+                                      #    column("Desiertos") do
 
-                                            @contava2=0
-                                            @vdes=[]
-                                            @activities.where("activities.actividad=20" )
-                                            .where("importe IS NOT NULL and importe>0").each do |activ|
-
-
-                                                 @contava2=  @contava2+Piece.where(phase_id:activ.id,moneda:1,estado:3).sum(:referencial)+
-                                                 Piece.where(phase_id:activ.id,moneda:2,estado:3).sum(:referencial)*3.3
-
-                                               if  Piece.where(phase_id:activ.id,estado:3).count>0 then
-                                                                   @vdes.push(activ.id)
-                                                end
-
-                                           end #activ
-                                           @contava=number_with_delimiter(@contava2
-                                           .to_i, delimiter: ",")
+                                      #      @contava2=0
+                                      #      @vdes=[]
+                                      #      @activities.where("activities.actividad=20" )
+                                      #      .where("importe IS NOT NULL and importe>0").each do |activ|
 
 
+                                        #         @contava2=  @contava2+Piece.where(phase_id:activ.id,moneda:1,estado:3).sum(:referencial)+
+                                        #         Piece.where(phase_id:activ.id,moneda:2,estado:3).sum(:referencial)*3.3
 
-                                             link_to "-"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,
-                                              :param1=> 5,  :param2=> @vdes)
-                                          end
+                                        #       if  Piece.where(phase_id:activ.id,estado:3).count>0 then
+                                        #                           @vdes.push(activ.id)
+                                        #        end
+
+                                        #   end #activ
+                                        #   @contava=number_with_delimiter(@contava2
+                                        #   .to_i, delimiter: ",")
+
+
+
+                                      #       link_to "-"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,
+                                    #          :param1=> 5,  :param2=> @vdes)
+                                      #    end
 
 
 
@@ -1038,7 +1038,8 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                          @let=(@leu.to_i+@lec.to_i+@lea.to_i).to_s
 
-                                        @contavt1= @contavu1+@contavc1+@contava1+@contava2
+                                        @contavt1= @contavu1+@contavc1+@contava1
+                                        #+@contava2
                                         @contavt=number_with_delimiter(@contavt1
                                         .to_i, delimiter: ",")
 
