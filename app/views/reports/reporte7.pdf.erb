@@ -99,11 +99,11 @@
         <td  VALIGN=top ALIGN=center ><h5><%= variable.descripcion.capitalize %></h5>
 
 
-  <% if Phase.where(expediente:variable.exped).count>0 then %>
+  <% if Phase.where.not(expediente:0).where(expediente:variable.exped).count>0 then %>
 
 
 
-          <% @vdetact2=Phase.find_by(expediente:variable.exped).activities
+          <% @vdetact2=Phase.where.not(expediente:0).find_by(expediente:variable.exped).activities
                     .where(actividad: @vpact)
                     .order('activities.pfecha ')%>
 
