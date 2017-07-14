@@ -318,7 +318,7 @@ form :title => 'Edicion PACs' do |f|
              Formula.where(product_id:8).map{|u| [u.descripcion, u.orden]}
         #f.input :ccp , :label => 'No certificado presupuestal', :input_html => { :style =>  'width:30%'}
         #f.input :cpr , :label => 'No constacia de prevision de recurso', :input_html => { :style =>  'width:30%'}
-        f.input :objeto, :as => :select, :collection =>
+        f.input :rubro,:label => 'objeto', :as => :select, :collection =>
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
         f.input :exped2, :label => 'Año Fiscal', :as => :select, :collection =>
                     Formula.where(product_id:11).map{|u| [u.nombre, u.orden]}
@@ -471,7 +471,7 @@ form :title => 'Edicion PACs' do |f|
                           "s/d"
                       end
                   end
-                  row :objeto do |item|
+                  row "objeto" do |item|
                       if item.rubro and item.rubro>0 then
 
                          Formula.where(product_id:9, orden:item.rubro).
