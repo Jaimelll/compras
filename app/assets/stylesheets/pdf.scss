@@ -6,7 +6,7 @@ table {
  }
 
 tr{
-  border-bottom: 1px solid #000;
+
    border-top:  1px solid #000;
 
 }
@@ -28,4 +28,9 @@ th.detl{
   background-color: black;
   color: white;
 
+}
+
+h3,h4{
+  border-bottom: 0;
+  border-top: 0;
 }
