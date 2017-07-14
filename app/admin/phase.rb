@@ -21,7 +21,7 @@ ActiveAdmin.register Phase do
 #   permitted
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
-              :admin_user_id
+              :admin_user_id, :periodo
 
 menu priority: 5, label: "Procesos"
 
@@ -114,6 +114,8 @@ form :title => 'Edicion Procesos' do |f|
  f.input :valor,:label => 'Valor Referencial', :as => :string, :input_html => { :style =>  'width:30%'}
  f.input :expediente, :input_html => { :style =>  'width:60%'}, :as => :select, :collection =>
    Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
+ f.input :periodo, :as => :select, :collection =>
+    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
 
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
   f.actions
@@ -155,6 +157,15 @@ show :title => ' Proceso'  do
                else
                    "s/d"
                end
+          end
+          row :periodo do |phase|
+             if  phase.periodo and  phase.periodo>0 then
+                Formula.where(product_id:11, orden: phase.periodo).
+                 select('nombre as dd').first.dd
+             else
+                   "s/d"
+             end
+
           end
   end #de attributes_table
 
