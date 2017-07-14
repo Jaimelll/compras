@@ -939,8 +939,8 @@ if @alabels.length <=29 and @alabels.length>0 then
                                    #  end
                                        table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
 
-                                         @vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
-                                         @activities=Phase.where.not(expediente:0).where(expediente:@vaf2)
+
+                                         @activities=Phase.where.not(expediente:0).where(periodo:@vaf1)
                                          .joins(:activities)
 
                                           column("Calendario") do
@@ -1311,9 +1311,9 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
            @vpro6=[]
            @vprot=[]
 
-@vaf2=Item.where(ejecucion:4,exped2:@vaf1).select('distinct exped')
 
-@procp=Phase.where(expediente:@vaf2).where.not(expediente:0).order('id')
+
+@procp=Phase.where(periodo:@vaf1).where.not(expediente:0).order('id')
 
            @procp .each do |proceso|
 
