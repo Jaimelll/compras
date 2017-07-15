@@ -938,120 +938,205 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                                    #  end
                                        table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
+##################
+@vxper2=[0,0,0,0,0,0,0]
+@vxper3=[0,0,0,0]
+@contavus=[0,0,0,0]
+@tcambio=3.3
+# @vpresu2=[0,0,0,0,0,0,0]
+@vpro5=[]
+@vpro6=[]
+@vprot=[]
+
+@vconv1=[]# actos previos
+@vconv2=[]# convocados
+@vconv3=[]# adjudicados
+@vconvt=[]# total
+
+@procp=Phase.where(periodo:@vaf1).where.not(expediente:0).order('id')
+
+@procp .each do |proceso|
 
 
-                                         @activities=Phase.where.not(expediente:0).where(periodo:@vaf1)
-                                         .joins(:activities)
+  case  @vaf1
+     when 1
 
-                                          column("Calendario") do
-                                             "Procesos/(soles)"
-                                          end
-
-                                          column("actos previos") do
-
-                                            @activi2= @activities.where("activities.actividad=20" )
-                                            .select('activities.phase_id as aa')
-
-                                            @activitie2=Phase.where.not(id:@activi2) .joins(:activities).where('actividad=34')
-                                               @contavu1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
-                                               @contavu=number_with_delimiter(@contavu1.to_i, delimiter: ",")
-
-                                           @leu=@activitie2.count.to_s
-
-                                             link_to "#{@leu}"+"/("+"#{@contavu}"+")", reports_comment4_path(format: :pdf,  :param1=> 4)
+        @deta4=Activity.where("pfecha>='2015/01/01' and
+         pfecha<='2015/12/31' and pfecha<=current_date").
+        where(phase_id:proceso.id).
+        order('pfecha DESC,id DESC')
 
 
+      when 2
 
-                                          end
-
-
-
-                                          column(" Convocados") do
-
-                                            @activitie2= @activities.where("activities.actividad=20" )
-                                             .where("importe IS  NULL or importe=0")
-
-                                             @contavc1=@activitie2.where(moneda:1).sum(:valor)+ @activitie2.where(moneda:2).sum(:valor)*3.3
-                                             @contavc=number_with_delimiter(@contavc1 .to_i, delimiter: ",")
-
-                                           @lec=@activitie2.count.to_s
-
-
-
-                                             link_to "#{@lec}"+"/("+"#{@contavc}"+")", reports_comment4_path(format: :pdf,  :param1=> 1)
+         @deta4=Activity.where("pfecha>='2016/01/01' and
+         pfecha<='2016/12/31' and pfecha<=current_date").
+        where(phase_id:proceso.id).
+        order('pfecha DESC,id DESC')
 
 
 
-                                          end
+       when 3
+
+          @deta4=Activity.where("pfecha>='2017/01/01'").
+        where(phase_id:proceso.id).
+        order('pfecha DESC,id DESC')
+
+
+    end #termina case
 
 
 
-                                          column("Adjudicados") do
-
-                                            @contava1=0
-                                            @activities.where("activities.actividad=20" )
-                                            .where("importe IS NOT NULL and importe>0").each do |activ|
-
-
-                                                 @contava1=  @contava1+Piece.where(phase_id:activ.id,moneda:1).sum(:adjudicado)+
-                                                 Piece.where(phase_id:activ.id,moneda:2).sum(:adjudicado)*3.3
-
-
-                                           end #activ
-                                           @contava=number_with_delimiter(@contava1
-                                           .to_i, delimiter: ",")
-
-                                          @lea=@activities.where("activities.actividad=20" )
-                                          .where("importe IS NOT NULL and importe>0").count.to_s
-
-                                             link_to "#{@lea}"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,  :param1=> 2)
-                                          end
-
-                                      #    column("Desiertos") do
-
-                                      #      @contava2=0
-                                      #      @vdes=[]
-                                      #      @activities.where("activities.actividad=20" )
-                                      #      .where("importe IS NOT NULL and importe>0").each do |activ|
-
-
-                                        #         @contava2=  @contava2+Piece.where(phase_id:activ.id,moneda:1,estado:3).sum(:referencial)+
-                                        #         Piece.where(phase_id:activ.id,moneda:2,estado:3).sum(:referencial)*3.3
-
-                                        #       if  Piece.where(phase_id:activ.id,estado:3).count>0 then
-                                        #                           @vdes.push(activ.id)
-                                        #        end
-
-                                        #   end #activ
-                                        #   @contava=number_with_delimiter(@contava2
-                                        #   .to_i, delimiter: ",")
 
 
 
-                                      #       link_to "-"+"/("+"#{@contava}"+")", reports_comment4_path(format: :pdf,
-                                    #          :param1=> 5,  :param2=> @vdes)
-                                      #    end
+
+
+         if @deta4.count>0 then
+            @vactiv3= @deta4.where("pfecha<=current_date").select('actividad as dd').first.dd
+         #   @vactivfec3= @deta4.select('pfecha as dd').first.dd
+
+          @vdir=Formula.where(product_id:12,orden:@vactiv3).
+                select('cantidad as dd').first.dd
+
+            @vxper2[@vdir]=@vxper2[@vdir]+ 1
+     #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
+           @vconv=0
+        if @deta4.where(actividad:20).count>0 then
+              @vconv=2
+            if @deta4.where(actividad:20).sum(:importe)>0 then
+              @vconv=3
+            end
+        else
+              @vconv=1
+        end
 
 
 
-                                          column("Total ") do
 
-                                         @let=(@leu.to_i+@lec.to_i+@lea.to_i).to_s
+        case @vconv
+          when 1
+            @vconv1.push(proceso.id)
+            @vxper3[1]=@vxper3[1]+1
+            if proceso.moneda==1 and proceso.valor then
+               @contavus[1]=  @contavus[1]+proceso.valor
+            end
+            if proceso.moneda==2  and proceso.valor then
+               @contavus[1]=  @contavus[1]+proceso.valor*@tcambio
+            end
 
-                                        @contavt1= @contavu1+@contavc1+@contava1
-                                        #+@contava2
-                                        @contavt=number_with_delimiter(@contavt1
-                                        .to_i, delimiter: ",")
-
-                                           link_to "#{@let}"+"/("+"#{@contavt}"+")", reports_comment4_path(format: :pdf, :param1=> 3)
-
-
-                                          end
-                                       end
-                                   end
+         when 2
+            @vconv2.push(proceso.id)
+              @vxper3[2]=@vxper3[2]+1
+              if proceso.moneda==1  and proceso.valor then
+                 @contavus[2]=  @contavus[2]+proceso.valor
+              end
+              if proceso.moneda==2  and proceso.valor then
+                 @contavus[2]=  @contavus[2]+proceso.valor*@tcambio
+              end
 
 
 
+          when 3
+            @vconv3.push(proceso.id)
+              @vxper3[3]=@vxper3[3]+1
+
+              @contavus[3]=  @contavus[3]+Piece.where(phase_id:proceso.id,moneda:1).sum(:adjudicado)+
+              Piece.where(phase_id:proceso.id,moneda:2).sum(:adjudicado)*3.3
+
+
+        end #case
+
+        case @vconv
+        when 1,2,3
+           @vconvt.push(proceso.id)
+           @vxper3[0]=@vxper3[0]+1
+
+
+
+        end
+
+
+
+             case @vdir
+               when 5
+                 @vpro5.push(proceso.id)
+               when 6
+                 @vpro6.push(proceso.id)
+
+              end #case
+
+            case @vdir
+              when 5,6
+                @vprot.push(proceso.id)
+            end
+
+
+
+          end# de if 1
+
+
+end# del each
+
+
+##################
+
+column("Calendario") do
+   "Procesos/(soles)"
+end
+
+column("actos previos") do |formula|
+  @dpc=  formula.orden
+  @titproc1="Procesos en Actos Previos"
+  @vopc=4
+
+
+ link_to "#{@vxper3[1]}"+"/("+"#{number_with_delimiter(@contavus[1].to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv1, :param4=>  @titproc1)
+
+ end
+
+ column("convocados") do |formula|
+   @dpc=  formula.orden
+   @titproc1="Procesos Convocados"
+   @vopc=1
+
+
+link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
+reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2, :param4=>  @titproc1)
+
+  end
+
+
+  column("Adjudicados") do |formula|
+    @dpc=  formula.orden
+    @titproc1="Procesos Adjudicados"
+    @vopc=2
+
+
+  link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3, :param4=>  @titproc1)
+
+   end
+
+   column("Total") do |formula|
+     @dpc=  formula.orden
+     @titproc1="Relacion de Procesos"
+     @vopc=3
+     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
+
+   link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
+   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt, :param4=>  @titproc1)
+
+    end
+
+
+
+
+
+end #de table
+
+end #panel
 
                  panel  "V.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
 
@@ -1305,81 +1390,7 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
    table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
-           @vxper2=[0,0,0,0,0,0,0]
-          # @vpresu2=[0,0,0,0,0,0,0]
-           @vpro5=[]
-           @vpro6=[]
-           @vprot=[]
 
-
-
-@procp=Phase.where(periodo:@vaf1).where.not(expediente:0).order('id')
-
-           @procp .each do |proceso|
-
-
-             case  @vaf1
-                when 1
-
-                   @deta4=Activity.where("pfecha>='2015/01/01' and
-                    pfecha<='2015/12/31' and pfecha<=current_date").
-                   where(phase_id:proceso.id).
-                   order('pfecha DESC,id DESC')
-
-
-                 when 2
-
-                    @deta4=Activity.where("pfecha>='2016/01/01' and
-                    pfecha<='2016/12/31' and pfecha<=current_date").
-                   where(phase_id:proceso.id).
-                   order('pfecha DESC,id DESC')
-
-
-
-                  when 3
-
-                     @deta4=Activity.where("pfecha>='2017/01/01' and
-                   pfecha<=current_date").
-                   where(phase_id:proceso.id).
-                   order('pfecha DESC,id DESC')
-
-
-               end #termina case
-
-
-
-
-
-
-
-
-                    if @deta4.count>0 then
-                       @vactiv3= @deta4.select('actividad as dd').first.dd
-                       @vactivfec3= @deta4.select('pfecha as dd').first.dd
-
-                     @vdir=Formula.where(product_id:12,orden:@vactiv3).
-                           select('cantidad as dd').first.dd
-
-                       @vxper2[@vdir]=@vxper2[@vdir]+ 1
-                #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
-
-                        case @vdir
-                          when 5
-                            @vpro5.push(proceso.id)
-                          when 6
-                            @vpro6.push(proceso.id)
-
-                       end #case
-
-                       case @vdir
-                         when 5,6
-                           @vprot.push(proceso.id)
-                       end
-
-
-
-                     end# de if 1
-              end
       column("Avance") do |formula|
               "Procesos"
       end

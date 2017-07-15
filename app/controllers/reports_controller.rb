@@ -144,67 +144,16 @@ end
 
 
 def comment4
-  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+@tit1=params[:param4].to_s
+@vopc=params[:param1].to_i
+@vprov=params[:param2]
 
 
-  @vopc=params[:param1].to_i
-  case @vopc
-   when 1
-     @tit1="Procesos Convocados"
+
+           @activities=Phase.where(id:@vprov)
 
 
-     @activities=Phase.where.not(expediente:0).where(periodo:@vaf)
-     .joins(:activities).where("activities.actividad=20
-     and (importe IS  NULL or importe=0)" ).where('expediente>0')
-       .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
-      phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
-      phases.moneda as moneda,phases.valor as valor ")
-       .order("pfecha")
-     when 2
-       @tit1= "Procesos Adjudicados, Buena Pro y Desiertos"
-
-       @activities=Phase.where.not(expediente:0).where(periodo:@vaf)
-       .joins(:activities).where("activities.actividad=20
-       and importe IS NOT NULL and importe>0" ).where('expediente>0')
-         .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
-        phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
-        phases.moneda as moneda,phases.valor as valor ")
-         .order("pfecha")
-       when 3
-         @tit1="Relacion de Procesos Convocados"
-
-         @activities=Phase.where.not(expediente:0).where(periodo:@vaf)
-         .joins(:activities).where("activities.actividad=20 " ).where('expediente>0')
-           .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
-          phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
-          phases.moneda as moneda,phases.valor as valor ")
-           .order("pfecha")
-
-         when 4
-           @tit1="Procesos en curso"
-
-           @activi2= Phase.where.not(expediente:0).where(periodo:@vaf)
-           .joins(:activities).where("activities.actividad=20" )
-           .select('activities.phase_id')
-
-           @activities=Phase.where.not(id:@activi2)
-           .joins(:activities).where('actividad=34')
-           .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
-            phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
-            phases.moneda as moneda,phases.valor as valor ")
-             .order("pfecha")
-
-           when 5
-             @tit1= "Procesos  Desiertos"
-
-             @activities=Phase.where.not(expediente:0).where(periodo:@vaf,id:params[:param2])
-             .joins(:activities).where("activities.actividad=20
-             and importe IS NOT NULL and importe>0" ).where('expediente>0')
-               .select("phases.id as id, activities.pfecha as pfecha,phases.expediente  as expediente,
-              phases.nomenclatura  as nomenclatura,phases.descripcion as descripcion,
-              phases.moneda as moneda,phases.valor as valor ")
-               .order("pfecha")
-   end
 
   respond_to do |format|
 
@@ -214,6 +163,11 @@ def comment4
 
   end
   end
+
+
+
+
+
 
 
   def comment5
