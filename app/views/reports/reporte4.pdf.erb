@@ -42,6 +42,7 @@
 
   <tbody>
     <%  @conta=0 %>
+    <% @vcert=[] %>
     <% @activities.each do |activity| %>
 
         <tr style="font-size:80%;"  class="detl" >
@@ -83,10 +84,13 @@
         <td ><%= activity.nomenclatura[0,@an] %></td>
 
         <% @vobac=" " %>
+
         <% if activity.expediente>0 then %>
        <% Item.where(exped:activity.expediente).each do |nobac| %>
        <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
        <% @vobac=@vobac+ @sobac+"-" %>
+
+       <% @vcert.push(nobac.id) %>
        <% end %>
        <% end %>
        <td  ><%= @vobac %></td>
@@ -261,16 +265,18 @@ Formula.where(product_id:7,orden:activity.moneda)
         <h4>RESUMEN DE AHORRO EN SOLES</h4>
         </thead>
         <tr>
-
+          <th>PRESUPUESTADO</th>
           <th>REFERENCIAL</th>
           <th>ADJUDICADO</th>
           <th>AHORRO</th>
         </tr>
         <tr>
 
+          <td><%= number_with_delimiter(Item.where(id:@vcert.uniq).sum(:certificado).to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter(@srefs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %></td>
+
         </tr>
 
           <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
