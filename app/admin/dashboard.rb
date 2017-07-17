@@ -1053,7 +1053,7 @@ if @alabels.length <=29 and @alabels.length>0 then
               @vxper3[3]=@vxper3[3]+1
 
               @contavus[3]=  @contavus[3]+Piece.where(phase_id:proceso.id,moneda:1).sum(:adjudicado)+
-              Piece.where(phase_id:proceso.id,moneda:2).sum(:adjudicado)*3.3
+              Piece.where(phase_id:proceso.id,moneda:2).sum(:adjudicado)*@tcambio
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
               Phase.where(id:proceso.id).update_all( pp:@vpp )
@@ -1105,7 +1105,8 @@ column("actos previos") do |formula|
 
 
  link_to "#{@vxper3[1]}"+"/("+"#{number_with_delimiter(@contavus[1].to_i, delimiter: ",")}"+")",
-  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv1, :param4=>  @titproc1)
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv1,
+  :param3=>  @tcambio, :param4=>  @titproc1)
 
  end
 
@@ -1116,7 +1117,8 @@ column("actos previos") do |formula|
 
 
 link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
-reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2, :param4=>  @titproc1)
+reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
+  :param3=>  @tcambio, :param4=>  @titproc1)
 
   end
 
@@ -1128,7 +1130,8 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2, :para
 
 
   link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
-  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3, :param4=>  @titproc1)
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
+  :param3=>  @tcambio, :param4=>  @titproc1)
 
    end
 
@@ -1139,7 +1142,8 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2, :para
      @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
 
    link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
-   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt, :param4=>  @titproc1)
+   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
+    :param3=>  @tcambio, :param4=>  @titproc1)
 
     end
 

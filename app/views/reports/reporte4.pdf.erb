@@ -20,7 +20,7 @@
        <th ></th>
        <%  @idpc=34%>
       <%  else%>
-      <th >Fecha Conv</th>
+      <th >Presentacion Propuestas</th>
       <th >Fecha BP</th>
        <%  @idpc=19%>
      <%  end%>
@@ -44,7 +44,7 @@
     <%  @conta=0 %>
     <% @activities.each do |activity| %>
 
-        <tr style="font-size:80%;"   >
+        <tr style="font-size:80%;"  class="detl" >
 
           <% @conta=@conta+1 %>
 
@@ -143,15 +143,15 @@
 
           <tr style="font-size:80%;"  class="last">
             <th colspan="2"> </th>
-            <th colspan="3" class="detl" >Item </th>
-            <th colspan="1" class="detl" >Estado</th>
+            <th colspan="3" >Item </th>
+            <th colspan="1"  >Estado</th>
 
             <% if   @vopc==2 then %>
-            <th colspan="2"  class="detl" >Postor Ganador</th>
+            <th colspan="2"  >Postor Ganador</th>
 
-             <th colspan="1" class="detl"> </th>
+             <th colspan="1" > </th>
             <% end %>
-            <th  class="detl" >Monto</th>
+            <th  >Monto</th>
 
              <th colspan="1"> </th>
 
@@ -241,36 +241,32 @@
     <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado) %>
     <% end %>
       <% if activity2.moneda==2  then  %>
-      <%@srefd= @srefd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial) %>
-      <%@sadjd= @sadjd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado) %>
+      <%@srefd= @srefd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*@tcambio %>
+      <%@sadjd= @sadjd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado)*@tcambio %>
      <% end %>
       <% end %>
+      <%@srefs= @srefs+@srefd  %>
+      <%@sadjs= @sadjs+ @sadjd%>
 
 
       <table>
         <thead>
-        <h4>RESUMEN DE AHORRO</h4>
+        <h4>RESUMEN DE AHORRO EN SOLES</h4>
         </thead>
         <tr>
-          <th>MONEDA</th>
+
           <th>REFERENCIAL</th>
           <th>ADJUDICADO</th>
           <th>AHORRO</th>
         </tr>
         <tr>
-          <td>Soles</td>
+
           <td><%= number_with_delimiter(@srefs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %></td>
         </tr>
-        <tr>
-          <td>Dolares</td>
-          <td><%= number_with_delimiter(@srefd.to_i, delimiter: ",") %></td>
-          <td><%= number_with_delimiter(@sadjd.to_i, delimiter: ",") %> </td>
-          <td> <%= number_with_delimiter((@srefd-@sadjd).to_i, delimiter: ",") %></td>
-        </tr>
-        <tr>
-          <td colspan="4">Soles y dolares</td>
+      
+          <td colspan="4">Tipo de cambio=<%= @tcambio %></td>
 
         </tr>
       </table>

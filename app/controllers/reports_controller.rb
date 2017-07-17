@@ -145,11 +145,11 @@ end
 
 def comment4
 
-@tit1=params[:param4].to_s
+
 @vopc=params[:param1].to_i
 @vprov=params[:param2]
-
-
+@tcambio=params[:param3].to_f
+@tit1=params[:param4].to_s
 
            @activities=Phase.where(id:@vprov).order('pp')
 
