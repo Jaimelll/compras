@@ -111,13 +111,17 @@
 
       <td >Soles</td>
 
-<% @vreff=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0 and adjudicado is not null').sum(:referencial)%>
+<% @vreff=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*
+Formula.where(product_id:7,orden:activity.moneda)
+      .select('cantidad as dd').first.dd.to_i/100.to_f%>
 
   <%  if @vreff>0 then %>
         <td  colspan="1"><%= number_with_delimiter(@vreff.to_i, delimiter: ",") %></td>
   <%  else %>
 
-      <td colspan="1"><%= number_with_delimiter( Phase.where(id:activity.id.to_s).sum(:valor).to_i, delimiter: ",") %></td>
+      <td colspan="1"><%= number_with_delimiter( Phase.where(id:activity.id.to_s).sum(:valor)*
+      Formula.where(product_id:7,orden:activity.moneda)
+            .select('cantidad as dd').first.dd.to_i/100.to_f, delimiter: ",") %></td>
   <%  end %>
       <%   if @vopc==2 or  @vopc==3 then %>
 
