@@ -151,7 +151,7 @@ def comment4
 
 
 
-           @activities=Phase.where(id:@vprov)
+           @activities=Phase.where(id:@vprov).order('pp')
 
 
 

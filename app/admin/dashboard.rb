@@ -1024,6 +1024,13 @@ if @alabels.length <=29 and @alabels.length>0 then
             if proceso.moneda==2  and proceso.valor then
                @contavus[1]=  @contavus[1]+proceso.valor*@tcambio
             end
+            if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
+            @vpp=Activity.where(phase_id:proceso.id,actividad:34)
+            .select('pfecha as dd').first.dd
+            Phase.where(id:proceso.id).update_all( pp:@vpp )
+            else
+            Phase.where(id:proceso.id).update_all( pp:Time.now )
+            end
 
          when 2
             @vconv2.push(proceso.id)
@@ -1035,6 +1042,10 @@ if @alabels.length <=29 and @alabels.length>0 then
                  @contavus[2]=  @contavus[2]+proceso.valor*@tcambio
               end
 
+              @vpp=Activity.where(phase_id:proceso.id,actividad:20)
+              .select('pfecha as dd').first.dd
+              Phase.where(id:proceso.id).update_all( pp:@vpp )
+
 
 
           when 3
@@ -1043,7 +1054,9 @@ if @alabels.length <=29 and @alabels.length>0 then
 
               @contavus[3]=  @contavus[3]+Piece.where(phase_id:proceso.id,moneda:1).sum(:adjudicado)+
               Piece.where(phase_id:proceso.id,moneda:2).sum(:adjudicado)*3.3
-
+              @vpp=Activity.where(phase_id:proceso.id,actividad:20)
+              .select('pfecha as dd').first.dd
+              Phase.where(id:proceso.id).update_all( pp:@vpp )
 
         end #case
 
