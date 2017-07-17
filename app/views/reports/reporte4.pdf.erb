@@ -86,7 +86,7 @@
         <% if activity.expediente>0 then %>
        <% Item.where(exped:activity.expediente).each do |nobac| %>
        <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
-       <% @vobac=@vobac+"-"+ @sobac %>
+       <% @vobac=@vobac+ @sobac+"-" %>
        <% end %>
        <% end %>
        <td  ><%= @vobac %></td>
@@ -247,26 +247,40 @@
       <% end %>
 
 
+      <table>
+        <thead>
+        <h4>RESUMEN DE AHORRO</h4>
+        </thead>
+        <tr>
+          <th>MONEDA</th>
+          <th>REFERENCIAL</th>
+          <th>ADJUDICADO</th>
+          <th>AHORRO</th>
+        </tr>
+        <tr>
+          <td>Soles</td>
+          <td><%= number_with_delimiter(@srefs.to_i, delimiter: ",") %></td>
+          <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
+          <td><%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %></td>
+        </tr>
+        <tr>
+          <td>Dolares</td>
+          <td><%= number_with_delimiter(@srefd.to_i, delimiter: ",") %></td>
+          <td><%= number_with_delimiter(@sadjd.to_i, delimiter: ",") %> </td>
+          <td> <%= number_with_delimiter((@srefd-@sadjd).to_i, delimiter: ",") %></td>
+        </tr>
+        <tr>
+          <td colspan="4">Soles y dolares</td>
 
-    <h3 >.</h3>
-  <h3 style="font-size:85%;">ACUMULADO SOLES:</h3>
-
-    <h4 style="font-size:85%;">REFERENCIAL =  <%= number_with_delimiter(@srefs.to_i, delimiter: ",") %> </h4>
-
-    <h4 style="font-size:85%;">ADJUDICADO =  <%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %> </h4>
-
-    <h4 style="font-size:85%;">AHORRO =  <%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %> </h4>
-      <h3 >.</h3>
-
-    <h3 style="font-size:85%;">ACUMULADO DOLARES:</h3>
-
-      <h4 style="font-size:85%;">REFERENCIAL =  <%= number_with_delimiter(@srefd.to_i, delimiter: ",") %> </h4>
-
-      <h4 style="font-size:85%;">ADJUDICADO =  <%= number_with_delimiter(@sadjd.to_i, delimiter: ",") %> </h4>
-
-      <h4 style="font-size:85%;">AHORRO =  <%= number_with_delimiter((@srefd-@sadjd).to_i, delimiter: ",") %> </h4>
+        </tr>
+      </table>
 
       <% end %>
+
+
+
+
+
 
 
 
