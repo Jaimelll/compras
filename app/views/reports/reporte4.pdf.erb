@@ -108,11 +108,9 @@
 
 
 
-        <% if activity.moneda>0 and activity.moneda then %>
-      <td ><%= Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd %></td>
-      <% else %>
-      <td ><%= "s/d "   %></td>
-      <% end %>
+
+      <td >Soles</td>
+
 <% @vreff=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0 and adjudicado is not null').sum(:referencial)%>
 
   <%  if @vreff>0 then %>
@@ -123,7 +121,9 @@
   <%  end %>
       <%   if @vopc==2 or  @vopc==3 then %>
 
-          <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)%>
+          <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)*
+          Formula.where(product_id:7,orden:activity.moneda)
+                .select('cantidad as dd').first.dd.to_i/100.to_f%>
 
         <% if @vbpro >0 then %>
 
@@ -190,11 +190,15 @@
         <% end %>
 
         <% if   pite.estado==2  or pite.estado==4 then %>
-        <td ><%= number_with_delimiter(pite.adjudicado.to_i, delimiter: ",") %></td>
+        <td ><%= number_with_delimiter(pite.adjudicado*
+        Formula.where(product_id:7,orden:pite.moneda)
+              .select('cantidad as dd').first.dd.to_i/100.to_f, delimiter: ",") %></td>
 
           <% else %>
 
-        <td ><%= number_with_delimiter(pite.referencial.to_i, delimiter: ",") %></td>
+        <td ><%= number_with_delimiter(pite.referencial*
+        Formula.where(product_id:7,orden:pite.moneda)
+              .select('cantidad as dd').first.dd.to_i/100.to_f, delimiter: ",") %></td>
 
 
                  <td colspan="1"> </td>
@@ -235,18 +239,17 @@
     <%@srefd= 0 %>
     <%@sadjd=0 %>
   <% @activities.each do |activity2| %>
-    <% if activity2.moneda==1  then  %>
 
-    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial) %>
-    <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado) %>
-    <% end %>
-      <% if activity2.moneda==2  then  %>
-      <%@srefd= @srefd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*@tcambio %>
-      <%@sadjd= @sadjd+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado)*@tcambio %>
-     <% end %>
+
+    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*
+    Formula.where(product_id:7,orden:activity2.moneda)
+          .select('cantidad as dd').first.dd.to_i/100.to_f %>
+
+    <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado)*
+    Formula.where(product_id:7,orden:activity2.moneda)
+          .select('cantidad as dd').first.dd.to_i/100.to_f %>
+
       <% end %>
-      <%@srefs= @srefs+@srefd  %>
-      <%@sadjs= @sadjs+ @sadjd%>
 
 
       <table>
@@ -265,8 +268,12 @@
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %></td>
         </tr>
-      
-          <td colspan="4">Tipo de cambio=<%= @tcambio %></td>
+
+          <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
+                .select('cantidad as dd').first.dd.to_i/100.to_f%>
+                ;Tipo de cambio Euro=<%= Formula.where(product_id:7,orden:3)
+                      .select('cantidad as dd').first.dd.to_i/100.to_f%>
+              </td>
 
         </tr>
       </table>

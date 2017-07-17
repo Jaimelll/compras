@@ -1018,12 +1018,11 @@ if @alabels.length <=29 and @alabels.length>0 then
           when 1
             @vconv1.push(proceso.id)
             @vxper3[1]=@vxper3[1]+1
-            if proceso.moneda==1 and proceso.valor then
-               @contavus[1]=  @contavus[1]+proceso.valor
-            end
-            if proceso.moneda==2  and proceso.valor then
-               @contavus[1]=  @contavus[1]+proceso.valor*@tcambio
-            end
+
+
+             @contavus[1]=  @contavus[1]+ Formula.where(product_id:7,orden:proceso.moneda)
+                   .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+
             if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
             @vpp=Activity.where(phase_id:proceso.id,actividad:34)
             .select('pfecha as dd').first.dd
@@ -1035,12 +1034,8 @@ if @alabels.length <=29 and @alabels.length>0 then
          when 2
             @vconv2.push(proceso.id)
               @vxper3[2]=@vxper3[2]+1
-              if proceso.moneda==1  and proceso.valor then
-                 @contavus[2]=  @contavus[2]+proceso.valor
-              end
-              if proceso.moneda==2  and proceso.valor then
-                 @contavus[2]=  @contavus[2]+proceso.valor*@tcambio
-              end
+              @contavus[2]=  @contavus[2]+ Formula.where(product_id:7,orden:proceso.moneda)
+                    .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
@@ -1106,7 +1101,7 @@ column("actos previos") do |formula|
 
  link_to "#{@vxper3[1]}"+"/("+"#{number_with_delimiter(@contavus[1].to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv1,
-  :param3=>  @tcambio, :param4=>  @titproc1)
+   :param4=>  @titproc1)
 
  end
 
@@ -1118,7 +1113,7 @@ column("actos previos") do |formula|
 
 link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
 reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
-  :param3=>  @tcambio, :param4=>  @titproc1)
+:param4=>  @titproc1)
 
   end
 
@@ -1131,7 +1126,7 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 
   link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
-  :param3=>  @tcambio, :param4=>  @titproc1)
+  :param4=>  @titproc1)
 
    end
 
@@ -1143,7 +1138,7 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 
    link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
-    :param3=>  @tcambio, :param4=>  @titproc1)
+   :param4=>  @titproc1)
 
     end
 
