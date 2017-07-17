@@ -1019,9 +1019,10 @@ if @alabels.length <=29 and @alabels.length>0 then
             @vconv1.push(proceso.id)
             @vxper3[1]=@vxper3[1]+1
 
-
+         if proceso.moneda and proceso.valor then
              @contavus[1]=  @contavus[1]+ Formula.where(product_id:7,orden:proceso.moneda)
                    .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+        end
 
             if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
             @vpp=Activity.where(phase_id:proceso.id,actividad:34)
