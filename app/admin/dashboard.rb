@@ -1091,7 +1091,7 @@ end# del each
 ##################
 
 column("Calendario") do
-   "Procesos/(soles)"
+   "Procesos"
 end
 
 column("actos previos") do |formula|
