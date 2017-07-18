@@ -1090,7 +1090,7 @@ end# del each
 
 ##################
 
-column("Calendario") do
+column("Rol") do
    "Procesos"
 end
 
