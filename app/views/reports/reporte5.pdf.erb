@@ -15,17 +15,17 @@
 
 
   <table >
-    <tr>
+    <tr  style="font-size:90%;">
 
        <th>N°</th>
 
-       <th>Proceso</th>
-       <th>Descripcion</th>
-       <th>Estimado</th>
+       <th  colspan="2">Proceso</th>
+       <th  colspan="3">Descripcion</th>
+       <th  colspan="2">Estimado</th>
 
 
     </tr>
-
+    <tbody>
 
     <%  @conta=0 %>
 
@@ -33,8 +33,8 @@
 
 
 
-        <tr>
-            <tbody>
+        <tr style="font-size:80%;"  class="detl">
+
       <% @conta=@conta+1 %>
 
 
@@ -44,34 +44,40 @@
 
 
 
-        <td VALIGN=top ALIGN=center><h5><%= @conta.to_s+".-" %></h5></td>
+        <td><%= @conta.to_s+".-" %></td>
 
 
 
 
-        <td  VALIGN=top ALIGN=center><h5><%= variable.nomenclatura %></h5></td>
+        <td colspan="2"><%= variable.nomenclatura %></td>
 
 
 
 
 
 
-        <td  VALIGN=top ALIGN=center ><h5><%= variable.descripcion.capitalize %></h5>
+        <td colspan="3"><%= variable.descripcion.capitalize %>  </td>
 
+
+
+       <td colspan="2"><%= number_with_delimiter(variable.valor.to_i, delimiter: ",") %></td>
+
+        </tr>
 
 
           <% if @vdetalle.where(phase_id:variable.id).where(actividad: @vpact).count>0 and @vpaso1.to_i==0 then %>
 
             <% @vdetact= @vdetalle.where(phase_id:variable.id).where(actividad: @vpact)%>
 
-          <table width="800" border="1">
 
-              <tr style="font-size:70%;">
 
-                <th colspan="2">Fecha </th>
-                <th colspan="2">Programa</th>
-                <th>Actividad</th>
-                <th>Observacion</th>
+              <tr style="font-size:80%;"  class="last">
+                <th ></th>
+                <th >Fecha </th>
+                <th >Programa</th>
+                <th colspan="2">Actividad</th>
+                <th colspan="3">Observacion</th>
+                <th ></th>
              </tr>
 
             <tbody>
@@ -80,22 +86,22 @@
               <% @vdetact.each do |deta| %>
 
 
-           <tr style="font-size:70%;">
+           <tr style="font-size:70%;"  class="last">
 
 
 
-
-                   <td ALIGN=center colspan="2"><%= deta.pfecha.strftime("%d-%m") %></td>
+                    <td ></td>
+                   <td><%= deta.pfecha.strftime("%d-%m") %></td>
                      <%  if deta.plan then %>
-                  <td ALIGN=center colspan="2"><%= deta.plan.strftime("%d-%m") %></td>
+                  <td ><%= deta.plan.strftime("%d-%m") %></td>
                      <%  else %>
-                   <td ALIGN=center colspan="2">s/d</td>
+                   <td >s/d</td>
                       <%  end %>
 
-                   <td ALIGN=center><%=Formula.where(product_id:12,orden:deta.actividad).
+                   <td colspan="2"><%=Formula.where(product_id:12,orden:deta.actividad).
                                select('descripcion as dd').first.dd.capitalize  %></td>
-                   <td ALIGN=center><%= deta.obs.capitalize %></td>
-
+                   <td colspan="3"><%= deta.obs.capitalize %></td>
+                   <td ></td>
            </tr>
 
             <% end %>
@@ -103,16 +109,12 @@
             <tbody>
 
 
-  </table>
+
   <% end %>
 
 
 
-    </td>
 
-
-   <td  VALIGN=top ALIGN=right><h5><%= number_with_delimiter(variable.valor.to_i, delimiter: ",") %></h5></td>
-    </tr>
 
 
     <% end %>
