@@ -16,19 +16,6 @@
 
 <h3> NACIONALES:  </h3>
 
-    <tr>
-      <th>N°</th>
-      <th>Pac</th>
-      <th>Expediente</th>
-      <th>Obac</th>
-
-      <th>Descripcion</th>
-
-      <th>Estimado</th>
-
-
-      <th colspan="3"></th>
-    </tr>
 
 
   <tbody>
@@ -41,13 +28,41 @@
           <% @conta=@conta+1 %>
           <%  if @vmod1n>0 and @conta==1 and  item.modalidad==1 then %>
 
-         <tr> <td> <h5> CORPORATIVOS:</h5> </td> </tr>
+         <tr  style="font-size:90%;"> <th>  CORPORATIVOS: </th> </tr>
+         <tr>
+           <th>N°</th>
+           <th>Pac</th>
+           <th>Expediente</th>
+           <th>Obac</th>
+
+           <th>Descripcion</th>
+
+           <th>Estimado</th>
+
+
+           <th colspan="3"></th>
+         </tr>
+
 
           <% end %>
 
           <%  if @vmod2n>0 and @conta==@vmod1n+1 and  item.modalidad==2  then %>
 
-         <tr> <td> <h5>POR ENCARGO:</h5> </td> </tr>
+         <tr style="font-size:90%;"> <th> POR ENCARGO: </th> </tr>
+         <tr>
+           <th>N°</th>
+           <th>Pac</th>
+           <th>Expediente</th>
+           <th>Obac</th>
+
+           <th>Descripcion</th>
+
+           <th>Estimado</th>
+
+
+           <th colspan="3"></th>
+         </tr>
+
 
           <% end %>
 
@@ -104,19 +119,7 @@
 
 
 <h3>INTERNACIONALES:  </h3>
-    <tr>
-      <th>N°</th>
-      <th>Pac</th>
-      <th>Expediente</th>
-      <th>Obac</th>
 
-      <th>Descripcion</th>
-
-      <th>Estimado</th>
-
-
-      <th colspan="3"></th>
-    </tr>
 
 
   <tbody>
@@ -128,13 +131,39 @@
 
           <%  if @vmod1i>0 and @conta==1 and  item.modalidad==1 then %>
 
-          <tr> <td> <h5> CORPORATIVOS:</h5> </td> </tr>
+          <tr> <th> CORPORATIVOS: </th> </tr>
+          <tr style="font-size:90%;">
+            <th>N°</th>
+            <th>Pac</th>
+            <th>Expediente</th>
+            <th>Obac</th>
+
+            <th>Descripcion</th>
+
+            <th>Estimado</th>
+
+
+            <th colspan="3"></th>
+          </tr>
 
           <% end %>
 
           <%  if @vmod2i>0 and @conta==@vmod1i+1 and  item.modalidad==2  then %>
 
-          <tr> <td> <h5>POR ENCARGO:</h5> </td> </tr>
+          <tr> <th> POR ENCARGO: </th> </tr>
+          <tr style="font-size:90%;">
+            <th>N°</th>
+            <th>Pac</th>
+            <th>Expediente</th>
+            <th>Obac</th>
+
+            <th>Descripcion</th>
+
+            <th>Estimado</th>
+
+
+            <th colspan="3"></th>
+          </tr>
 
           <% end %>
 
