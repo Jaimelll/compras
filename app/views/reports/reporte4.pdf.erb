@@ -144,7 +144,7 @@ Formula.where(product_id:7,orden:activity.moneda)
           <% end %>
 
       </tr>
-      <% if Piece.where(phase:activity.id.to_s).count>0 and  (@vopc<3 or @vopc==4)  then  %>
+      <% if Piece.where(phase:activity.id.to_s).count>0  then  %>
 
 
 
@@ -249,11 +249,13 @@ Formula.where(product_id:7,orden:activity.moneda)
   <% @activities.each do |activity2| %>
 
 
-    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*
+    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
+    .sum(:referencial)*
     Formula.where(product_id:7,orden:activity2.moneda)
           .select('cantidad as dd').first.dd/100.to_i %>
 
-    <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null').sum(:adjudicado)*
+    <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
+    .sum(:adjudicado)*
     Formula.where(product_id:7,orden:activity2.moneda)
           .select('cantidad as dd').first.dd/100.to_i %>
 
