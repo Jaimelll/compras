@@ -1091,7 +1091,7 @@ end# del each
 ##################
 
 column("Rol") do
-   "Procesos"
+   "Proceso"
 end
 
 column("actos previos") do |formula|
