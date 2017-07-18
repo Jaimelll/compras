@@ -1405,7 +1405,7 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
    table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
 
       column("Avance") do |formula|
-              "Procesos"
+              "Proceso"
       end
 
       column("DPC") do |formula|
