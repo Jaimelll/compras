@@ -119,6 +119,8 @@ filter :lista,  :as => :select, :collection =>
           Formula.where(product_id:3).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :obac,  :as => :select, :collection =>
       Formula.where(product_id:1,cantidad:1).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :fuente,  :as => :select, :collection =>
+      Formula.where(product_id:8).order('orden ASC').map{|u| ["#{u.descripcion}", u.orden]}
 
 
 index :title => 'Lista de PACs' do
