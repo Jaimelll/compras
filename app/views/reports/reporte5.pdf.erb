@@ -21,9 +21,13 @@
 
        <th  colspan="2">Proceso</th>
        <th  colspan="3">Descripcion</th>
-       <th  colspan="2">Estimado</th>
 
-
+<% if  @vactcanti.to_i==6 then %>
+       <th   >Adjudicado</th>
+<%  else %>
+       <th   >Referencial</th>
+<% end%>
+       <th   >Presupuestado</th>
     </tr>
     <tbody>
 
@@ -40,7 +44,7 @@
 
 
 
-<%  @vpact=[13,18,20,34,56,13,58,61,62,63,64,65,66,50,67,300,35]%>
+<%  @vpact=[13,18,19,20,21,34,35,37,38,40,42,43,44,45,45,47,49,50,56,58,61,62,63,64,65,66,67,300]%>
 
 
 
@@ -58,9 +62,19 @@
 
         <td colspan="3"><%= variable.descripcion.capitalize %>  </td>
 
+        <% if  @vactcanti.to_i==6 then %>
+        <% @vbpro=Piece.where(phase_id:variable.id.to_s).sum(:adjudicado)*
+        Formula.where(product_id:7,orden:variable.moneda)
+              .select('cantidad as dd').first.dd/100%>
 
+                  <td ><h5  ALIGN=center><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></h5></td>
+        <%  else %>
 
-       <td colspan="2"><%= number_with_delimiter(variable.valor.to_i, delimiter: ",") %></td>
+                  <td ><h5  ALIGN=center><%= number_with_delimiter(variable.valor.to_i, delimiter: ",") %></h5></td>
+        <% end%>
+
+        <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
+                <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
         </tr>
 

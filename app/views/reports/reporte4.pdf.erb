@@ -246,7 +246,11 @@ Formula.where(product_id:7,orden:activity.moneda)
     <%@sadjs=0 %>
     <%@srefd= 0 %>
     <%@sadjd=0 %>
+    <%@scert=0 %>
   <% @activities.each do |activity2| %>
+
+  <%@scert= @scert+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
+  .sum(:presupuestado).to_i %>
 
 
     <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
@@ -268,6 +272,7 @@ Formula.where(product_id:7,orden:activity.moneda)
         </thead>
         <tr>
           <th>PRESUPUESTADO</th>
+          <th>CERTIFICADO</th>
           <th>REFERENCIAL</th>
           <th>ADJUDICADO</th>
           <th>AHORRO</th>
@@ -275,13 +280,14 @@ Formula.where(product_id:7,orden:activity.moneda)
         <tr>
 
           <td><%= number_with_delimiter(Item.where(id:@vcert.uniq).sum(:certificado).to_i, delimiter: ",") %></td>
+          <td><%= number_with_delimiter(@scert.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter(@srefs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %></td>
 
         </tr>
 
-          <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
+          <td colspan="5">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
                 .select('cantidad as dd').first.dd.to_i/100.to_f%>
                 ;Tipo de cambio Euro=<%= Formula.where(product_id:7,orden:3)
                       .select('cantidad as dd').first.dd.to_i/100.to_f%>
