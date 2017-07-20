@@ -196,7 +196,7 @@ form :title => 'Edicion Actividad'  do |f|
                     if activity.plan then
                        activity.plan.strftime("%d-%m-%Y")
                     else
-                      Activity.where( phase_id:activity.phase_id).update_all( plan:activity.pfecha )
+                    #  Activity.where( phase_id:activity.phase_id).update_all( plan:activity.pfecha )
                       "s/d"
                      end
                    end
