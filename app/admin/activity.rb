@@ -17,7 +17,7 @@ menu false
 
 permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :obs, :admin_user_id, :phase_id,:moneda,
-              :created_at,:updated_at,:plan
+              :created_at,:updated_at,:plan,:inicial
 
 
 #scope :PAC, :default => true do |activities|
@@ -39,13 +39,22 @@ column("Actividad", :sortable => :phase_id) do |activity|
 
                     link_to "#{n1} ",  admin_phase_activity_path(params[:phase_id],activity)
 end
-column("Fecha", :sortable => :pfecha) do |activity|
+column("Fecha Final", :sortable => :pfecha) do |activity|
   if activity.pfecha then
     activity.pfecha.strftime("%d-%m-%Y")
   else
     "s/d"
   end
 end
+
+column("Fecha Inicial", :sortable => :pfecha) do |activity|
+  if activity.inicial then
+    activity.inicial.strftime("%d-%m-%Y")
+  else
+    "s/d"
+  end
+end
+
 column("Programada", :sortable => :plan) do |activity|
   if activity.plan then
      activity.plan.strftime("%d-%m-%Y")
@@ -119,7 +128,8 @@ form :title => 'Edicion Actividad'  do |f|
              f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
              f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
              f.input :pfecha, :label => 'fecha final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-             f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :inicial, :label => 'fecha inicial' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :plan, :label => 'fecha programada final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :importe,:label => 'Importe ',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -165,11 +175,20 @@ form :title => 'Edicion Actividad'  do |f|
 
 
 
-                  row "Fecha " do |activity|
+                  row "fecha final " do |activity|
                      activity.pfecha.strftime("%d-%m-%Y")
                    end
+                   
+                   row "fecha inicial " do |activity|
+                     if activity.inicial then
+                        activity.inicial.strftime("%d-%m-%Y")
+                     else
+                        "s/d"
+                      end
+                    end
 
-                  row "Fecha Programada " do |activity|
+
+                  row "Fecha Programada Final" do |activity|
                     if activity.plan then
                        activity.plan.strftime("%d-%m-%Y")
                     else

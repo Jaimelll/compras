@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170717122311) do
+ActiveRecord::Schema.define(version: 20170720151737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20170717122311) do
     t.integer  "admin_user_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.date     "inicial"
     t.index ["admin_user_id"], name: "index_activities_on_admin_user_id", using: :btree
     t.index ["phase_id"], name: "index_activities_on_phase_id", using: :btree
   end
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(version: 20170717122311) do
     t.datetime "updated_at",    null: false
     t.integer  "moneda"
     t.date     "plan"
+    t.date     "inicial"
     t.index ["admin_user_id"], name: "index_details_on_admin_user_id", using: :btree
     t.index ["item_id"], name: "index_details_on_item_id", using: :btree
   end

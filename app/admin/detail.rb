@@ -17,7 +17,7 @@ menu false
 
 permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :obs, :admin_user_id, :item_id,:moneda,
-              :created_at,:updated_at,:plan
+              :created_at,:updated_at,:plan,:inicial
 
 
   action_item :view, only:[:show,:new,:index]do
@@ -136,7 +136,16 @@ column("Fecha Final", :sortable => :pfecha) do |detail|
     "s/d"
   end
 end
-column("Fecha Programada", :sortable => :plan) do |detail|
+
+column("Fecha Inicial", :sortable => :inicial) do |detail|
+  if detail.inicial then
+    detail.inicial.strftime("%d-%m-%Y")
+  else
+    "s/d"
+  end
+end
+
+column("Fecha Programada Final", :sortable => :plan) do |detail|
   if detail.plan then
      detail.plan.strftime("%d-%m-%Y")
   else
@@ -210,7 +219,8 @@ end
                  f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
                  f.input :pfecha, :label => 'fecha Final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-                 f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :inicial, :label => 'fecha Inicial' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :plan, :label => 'fecha programada final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
                           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -265,8 +275,15 @@ end
                            "s/d"
                          end
                        end
+                       row "Fecha Inicial " do |detail|
+                         if detail.inicial then
+                            detail.inicial.strftime("%d-%m-%Y")
+                         else
+                            "s/d"
+                          end
+                        end
 
-                       row "Fecha Programada " do |detail|
+                       row "Fecha Programada final " do |detail|
                          if detail.plan then
                             detail.plan.strftime("%d-%m-%Y")
                          else
