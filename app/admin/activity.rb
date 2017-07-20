@@ -59,6 +59,8 @@ column("Programada", :sortable => :plan) do |activity|
   if activity.plan then
      activity.plan.strftime("%d-%m-%Y")
   else
+#  Activity.where( phase_id:activity.phase_id).update_all( inicial:activity.pfecha )
+#    activity.plan.strftime("%d-%m-%Y")
      "s/d"
    end
 end
@@ -178,7 +180,7 @@ form :title => 'Edicion Actividad'  do |f|
                   row "fecha final " do |activity|
                      activity.pfecha.strftime("%d-%m-%Y")
                    end
-                   
+
                    row "fecha inicial " do |activity|
                      if activity.inicial then
                         activity.inicial.strftime("%d-%m-%Y")
