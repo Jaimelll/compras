@@ -129,7 +129,7 @@ if params[:item_id] then
   link_to_if n3==1 ,"#{n1} ",  admin_item_detail_path(params[:item_id],detail)
 end
 end
-column("Fecha Modificada", :sortable => :pfecha) do |detail|
+column("Fecha Final", :sortable => :pfecha) do |detail|
   if detail.pfecha then
     detail.pfecha.strftime("%d-%m-%Y")
   else
@@ -209,7 +209,7 @@ end
 
                  f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
-                 f.input :pfecha, :label => 'fecha modificada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :pfecha, :label => 'fecha Final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :plan, :label => 'fecha programada' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
@@ -258,7 +258,7 @@ end
                         end
                       row :tipo
                       row :numero
-                      row "Fecha Modificada " do |detail|
+                      row "Fecha Final " do |detail|
                         if detail.pfecha then
                            detail.pfecha.strftime("%d-%m-%Y")
                         else
