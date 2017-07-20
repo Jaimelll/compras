@@ -5,7 +5,7 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @tit1 %> </h3>
+<h3><%=   @tit1 %>(Soles) </h3>
 </head>
 
   <% if @activities.length>0 then %>
@@ -28,7 +28,7 @@
        <th >Nomenclatura</th>
        <th >OBAC</th>
        <th colspan="3">Descripcion</th>
-       <th >Moneda</th>
+       <th >Presupuestado</th>
         <th >Referencial</th>
 
       <%  if @vopc==2 or  @vopc==3 then %>
@@ -113,7 +113,10 @@
 
 
 
-      <td >Soles</td>
+
+      <% @presu=Piece.where(phase_id:activity.id.to_s).sum(:presupuestado).to_i%>
+              <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
+
 
 <% @vreff=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*
 Formula.where(product_id:7,orden:activity.moneda)
@@ -271,8 +274,8 @@ Formula.where(product_id:7,orden:activity.moneda)
         <h4>RESUMEN DE AHORRO EN SOLES</h4>
         </thead>
         <tr>
+          <th>ESTIMADO</th>
           <th>PRESUPUESTADO</th>
-          <th>CERTIFICADO</th>
           <th>REFERENCIAL</th>
           <th>ADJUDICADO</th>
           <th>AHORRO</th>

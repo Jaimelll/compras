@@ -21,13 +21,13 @@
 
        <th  colspan="2">Proceso</th>
        <th  colspan="3">Descripcion</th>
-
+       <th   >Presupuestado</th>
 <% if  @vactcanti.to_i==6 then %>
        <th   >Adjudicado</th>
 <%  else %>
        <th   >Referencial</th>
 <% end%>
-       <th   >Presupuestado</th>
+
     </tr>
     <tbody>
 
@@ -61,6 +61,9 @@
 
 
         <td colspan="3"><%= variable.descripcion.capitalize %>  </td>
+        
+        <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
+                <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
         <% if  @vactcanti.to_i==6 then %>
         <% @vbpro=Piece.where(phase_id:variable.id.to_s).sum(:adjudicado)*
@@ -73,8 +76,6 @@
                   <td ><h5  ALIGN=center><%= number_with_delimiter(variable.valor.to_i, delimiter: ",") %></h5></td>
         <% end%>
 
-        <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
-                <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
         </tr>
 
