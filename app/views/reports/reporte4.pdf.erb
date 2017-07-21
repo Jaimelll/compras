@@ -20,7 +20,7 @@
        <th ></th>
        <%  @idpc=34%>
       <%  else%>
-      <th >Presentacion Propuestas</th>
+      <th >Pres. Prop.</th>
       <th >Fecha BP</th>
        <%  @idpc=19%>
      <%  end%>
@@ -28,16 +28,18 @@
        <th >Nomenclatura</th>
        <th >OBAC</th>
        <th colspan="3">Descripcion</th>
-       <th >Presupuestado</th>
-        <th >Referencial</th>
+
+
+        <th >Presupuestado</th>
 
       <%  if @vopc==2 or  @vopc==3 then %>
        <th >Adjudicado</th>
-
+       <th >Ahorro</th>
+       <% else %>
+         <th >Referencial</th>
        <%  end%>
 
 
-    </tr>
 
 
   <tbody>
@@ -114,37 +116,54 @@
 
 
 
+
+
       <% @presu=Piece.where(phase_id:activity.id.to_s).sum(:presupuestado).to_i%>
               <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
 
-<% @vreff=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0 and adjudicado is not null').sum(:referencial)*
-Formula.where(product_id:7,orden:activity.moneda)
-      .select('cantidad as dd').first.dd/100%>
 
-  <%  if @vreff>0 then %>
-        <td  colspan="1"><%= number_with_delimiter(@vreff.to_i, delimiter: ",") %></td>
-  <%  else %>
 
-      <td colspan="1"><%= number_with_delimiter( (Phase.where(id:activity.id.to_s).sum(:valor)*
-      Formula.where(product_id:7,orden:activity.moneda)
-            .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
-  <%  end %>
+
+
+
+
+
+
       <%   if @vopc==2 or  @vopc==3 then %>
 
-          <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)*
-          Formula.where(product_id:7,orden:activity.moneda)
-                .select('cantidad as dd').first.dd/100%>
+             <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)*
+               Formula.where(product_id:7,orden:activity.moneda)
+                    .select('cantidad as dd').first.dd/100%>
 
-        <% if @vbpro >0 then %>
+         <% if @vbpro >0 then %>
 
-        <td  colspan="1"><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></td>
 
+          <td  ><h5  ALIGN=center><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></h5></td>
+          <td  ><h5  ALIGN=center><%= number_with_delimiter((@presu-@vbpro).to_i, delimiter: ",") %></h5></td>
              <% else %>
-        <td>  </td>
-              <% end %>
+               <td></td>
+               <td></td>
+             <% end %>
+            <% else %>
+
+
+             <% @vreff=Piece.where(phase_id:activity.id.to_s).sum(:referencial)*
+             Formula.where(product_id:7,orden:activity.moneda)
+                   .select('cantidad as dd').first.dd/100%>
+
+
+           <td  ><h5  ALIGN=center><%= number_with_delimiter(@vreff.to_i, delimiter: ",") %></h5></td>
+
+
+
+
+
 
           <% end %>
+
+
+
 
       </tr>
       <% if Piece.where(phase:activity.id.to_s).count>0  then  %>
@@ -152,7 +171,7 @@ Formula.where(product_id:7,orden:activity.moneda)
 
 
 
-          <tr style="font-size:80%;"  class="last">
+          <tr style="font-size:80%;"  class="detl">
             <th colspan="2"> </th>
             <th colspan="3" >Item </th>
             <th colspan="1"  >Estado</th>
@@ -274,23 +293,23 @@ Formula.where(product_id:7,orden:activity.moneda)
         <h4>RESUMEN DE AHORRO EN SOLES</h4>
         </thead>
         <tr>
-          <th>ESTIMADO</th>
-          <th>PRESUPUESTADO</th>
           <th>REFERENCIAL</th>
+          <th>PRESUPUESTADO</th>
+
           <th>ADJUDICADO</th>
           <th>AHORRO</th>
         </tr>
         <tr>
 
-          <td><%= number_with_delimiter(Item.where(id:@vcert.uniq).sum(:certificado).to_i, delimiter: ",") %></td>
-          <td><%= number_with_delimiter(@scert.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter(@srefs.to_i, delimiter: ",") %></td>
+          <td><%= number_with_delimiter(@scert.to_i, delimiter: ",") %></td>
+
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
-          <td><%= number_with_delimiter((@srefs-@sadjs).to_i, delimiter: ",") %></td>
+          <td><%= number_with_delimiter((@scert-@sadjs).to_i, delimiter: ",") %></td>
 
         </tr>
 
-          <td colspan="5">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
+          <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
                 .select('cantidad as dd').first.dd.to_i/100.to_f%>
                 ;Tipo de cambio Euro=<%= Formula.where(product_id:7,orden:3)
                       .select('cantidad as dd').first.dd.to_i/100.to_f%>
