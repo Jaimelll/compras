@@ -156,10 +156,10 @@
 
                   <%@vdetact21=0 %>
                   <% @vdetact2.each do |deta3| %>
-                  <%aa=@vactcanti.to_i %>
+
                   <%bb= Formula.where(product_id:12,orden:deta3.actividad).select('cantidad as dd').first.dd %>
 
-                  <% if aa==bb then%>
+                  <% if @vactcanti.include?bb.to_s then%>
 
                  <% @vdetact21=1 %>
 
@@ -219,10 +219,10 @@
 
  <% if @vdetact21==1 then %>
        <% @vdetact2.each do |deta2| %>
-         <%aa=@vactcanti.to_i %>
+
         <%bb= Formula.where(product_id:12,orden:deta2.actividad).select('cantidad as dd').first.dd %>
 
-     <% if aa==bb then%>
+     <% if @vactcanti.include?bb.to_s then%>
 
 
 

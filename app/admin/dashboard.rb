@@ -1310,7 +1310,7 @@ end #panel
                        column("GEX") do |formula|
 
                          @titproc1="GESTION DE EXPEDIENTES"
-                         @vpas=2
+                         @vpas=[0,1,2]
                          @dpcl=   @vxper[0]+ @vxper[1]+ @vxper[2]
                                link_to "#{@dpcl} ",
                                 reports_comment7_path(format: :pdf,
@@ -1332,7 +1332,7 @@ end #panel
                        column("DC") do |formula|
 
                          @dpc=  formula.orden
-                         @vpas=3
+                         @vpas=[3]
                          @titproc1="EXPEDIENTES EN CATALOGACION"
                          @dpcl=   @vxper[3]
                                link_to "#{@dpcl} ",
@@ -1344,7 +1344,7 @@ end #panel
 
                        column("DEM") do |formula|
                          @dpc=  formula.orden
-                         @vpas=4
+                         @vpas=[4]
                          @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
                          @dpcl=  @vxper[4]
                                link_to "#{@dpcl} ",
@@ -1356,7 +1356,7 @@ end #panel
 
                        column("DPC") do |formula|
                        @dpc=  formula.orden
-                        @vpas=5
+                        @vpas=[5]
                         @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
                          @dpcl=  @vxper[5]
                                link_to "#{@dpcl} ",
@@ -1368,7 +1368,7 @@ end #panel
 
                        column("DEC ") do |formula|
                          @dpc=  formula.orden
-                         @vpas=6
+                         @vpas=[6]
                          @titproc1="EXPEDIENTES EN DEC"
                          @dpcl=   @vxper[6].to_s+ "/("+
                          number_with_delimiter(@vpresu[6].to_i, delimiter: ",").to_s+ ")"
