@@ -56,6 +56,12 @@ filter :descripcion
 filter :expediente, :as => :select, :collection =>
      Formula.where(product_id:16).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
 
+ filter :sele, label:'Direccion', :as => :select, :collection =>
+          Formula.where(product_id:10).where('orden=5 or orden=6').order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
+
+
+
+
 
 index :title => 'Lista de Procesos' do
 column("id") do |phase|

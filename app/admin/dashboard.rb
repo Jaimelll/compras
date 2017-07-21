@@ -1038,7 +1038,7 @@ if @alabels.length <=29 and @alabels.length>0 then
               if proceso.valor then
               @contavus[2]=  @contavus[2]+ Formula.where(product_id:7,orden:proceso.moneda)
                     .select('cantidad as dd').first.dd.to_i*proceso.valor/100
-              end   
+              end
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
               Phase.where(id:proceso.id).update_all( pp:@vpp )
@@ -1071,9 +1071,10 @@ if @alabels.length <=29 and @alabels.length>0 then
              case @vdir
                when 5
                  @vpro5.push(proceso.id)
+                 Phase.where(id:proceso.id).update_all( sele:5 )
                when 6
                  @vpro6.push(proceso.id)
-
+                  Phase.where(id:proceso.id).update_all(sele:6  )
               end #case
 
             case @vdir
