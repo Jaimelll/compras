@@ -81,12 +81,28 @@ end
     # columns do
     #   column do
     #     panel "Recent Posts" do
+    case current_admin_user.id # a_variable is the variable we want to compare
+    when 21
+      @vuobac=[1]
+    when 22
+      @vuobac=[2]
+    when 23
+      @vuobac=[3]
+    else
+      @vuobac=[1,2,3,4,5,6]
+    end
 
      @var=Formula.where(product_id:15,cantidad:1).
                           select('orden as dd').first.dd
      @titulo=Formula.where(product_id:15,cantidad:1).
                           select('nombre as dd').first.dd
       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+
+
+
+
+
 case @var
    when 1
      #encargo
@@ -134,7 +150,7 @@ when 8
  @iproce=2
 end
 
-
+@vitem=@vitem.where(obac: @vuobac)
 
 
 
@@ -150,9 +166,7 @@ end
 @alabels3=[]
 @blabels3=[]
 
-@vinicio = Date.parse('2017/01/01')
-@dfin=(Time.now-@vinicio.to_time).to_i/86400
-@vfin=Time.now
+
 @aversion=[]
 @aobac=[]
 @apec=[]
@@ -215,13 +229,6 @@ case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.
      @vrang=30
      @vtitun=" AF-2015"
 
-     @nconta=Detail.where(item_id:item.id).
-        where("details.pfecha>='2015/01/01'and details.pfecha<='2015/12/31' and
-        details.pfecha<=current_date").count
-      @deta2=Detail.where("details.pfecha>='2015/01/01' and
-       details.pfecha<='2015/12/31' and details.pfecha<=current_date").
-      order('details.pfecha DESC,details.id DESC')
-
 
     when 2
       @vinicio = Date.parse('2016/01/01')
@@ -230,12 +237,6 @@ case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.
        @vrang=30
        @vtitun=" AF-2016"
 
-      @nconta=Detail.where(item_id:item.id).
-         where("details.pfecha>='2016/01/01'and details.pfecha<='2016/12/31' and
-         details.pfecha<=current_date").count
-       @deta2=Detail.where("details.pfecha>='2016/01/01' and
-        details.pfecha<='2016/12/31' and details.pfecha<=current_date").
-       order('details.pfecha DESC,details.id DESC')
 
 
      when 3
@@ -245,11 +246,16 @@ case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.
         @vrang=15
         @vtitun=" AF-2017"
 
-       @nconta=Detail.where(item_id:item.id).
-          where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").count
-        @deta2=Detail.where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
-        order('details.pfecha DESC,details.id DESC')
+
   end #termina case
+
+
+  @nconta=Detail.where(item_id:item.id).
+     where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).count
+   @deta2=Detail.where(item_id:item.id).
+          where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).
+         order('details.pfecha DESC,details.id DESC')
+
 
 @deta1=@deta2.where(item_id:item.id)
 
@@ -289,36 +295,9 @@ if detail.pfecha and detail.actividad  then
 
 #inicio de phase if 280 al 392*************************************************************
 if Phase.where(expediente:item.exped).count>0 and item.exped>0 then
-
-
-case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-   when 1
-
-
-        @phase1=Phase.find_by(expediente:item.exped).activities
-          .where("activities.pfecha>='2015/01/01' and
-           activities.pfecha<='2015/12/31' and activities.pfecha<=current_date").
-          order('activities.pfecha DESC,activities.id DESC')
-
-
-    when 2
-
-          @phase1=Phase.find_by(expediente:item.exped).activities
-              .where("activities.pfecha>='2016/01/01' and
-               activities.pfecha<='2016/12/31' and activities.pfecha<=current_date").
-              order('activities.pfecha DESC,activities.id DESC')
-
-
-
-     when 3
-
-
-
-        @phase1=Phase.find_by(expediente:item.exped).activities
-         .where("activities.pfecha>='2017/01/01' and activities.pfecha<=current_date")
-         .order('activities.pfecha DESC,activities.id DESC')
-
-  end #termina case
+  @phase1=Phase.find_by(expediente:item.exped).activities
+  .where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
+   .order('activities.pfecha DESC,activities.id DESC')
 
 
 #inicia cadena
@@ -729,15 +708,16 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                             @le= @le1.count.to_s+ "/("+
                                    number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                            link_to "#{@le} ", reports_comment_path(format: :pdf,
-                            :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
-
-
+                           case current_admin_user.id
+                           when 21,22,23
+                              @le
+                             else
+                               link_to "#{@le} ", reports_comment_path(format: :pdf,
+                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
                             end
 
-
+                          end
 
 
 
@@ -755,8 +735,26 @@ if @alabels.length <=29 and @alabels.length>0 then
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                 case   formula.orden
                             when 3
-                              link_to "#{@le} ", reports_comment2_path(format: :pdf,
-                              :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+
+                              case current_admin_user.id
+                              when 21,22,23
+                                 @le
+                                else
+                                  link_to "#{@le} ", reports_comment2_path(format: :pdf,
+                                  :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+                               end
+
+
+
+
+
+
+
+
+
                             when 2
                               "1,711/(1,277,507,620)"
                             when 1
@@ -804,7 +802,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                 @vopc1=1
 
                               @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
-                                   .where(exped2:@vaf)
+                                   .where(exped2:@vaf).where(obac: @vuobac)
 
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -821,7 +819,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                 @vopc1=2
 
                               @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
-                                    .where(exped2:@vaf)
+                                    .where(exped2:@vaf).where(obac: @vuobac)
 
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -839,7 +837,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                 @vopc1=3
 
                                 @ls1=   Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3")
-                                        .where(exped2:@vaf)
+                                        .where(exped2:@vaf).where(obac: @vuobac)
                                 @ls=   @ls1.count.to_s+ "/("+
                                      number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -874,7 +872,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                            @vopc1=6
 
                                          @le1=Item.where(ejecucion:4,modalidad:2,tipo:formula.orden)
-                                              .where(exped2:@vaf)
+                                              .where(exped2:@vaf).where(obac: @vuobac)
 
                                          @le= @le1.count.to_s+ "/("+
                                                 number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -891,7 +889,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                            @vopc1=7
 
                                          @le1=Item.where(ejecucion:4,modalidad:1,tipo:formula.orden)
-                                               .where(exped2:@vaf)
+                                               .where(exped2:@vaf).where(obac: @vuobac)
 
                                          @le= @le1.count.to_s+ "/("+
                                                 number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -909,7 +907,7 @@ if @alabels.length <=29 and @alabels.length>0 then
                                            @vopc1=8
 
                                            @ls1=   Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3")
-                                                   .where(exped2:@vaf)
+                                                   .where(exped2:@vaf).where(obac: @vuobac)
                                            @ls=   @ls1.count.to_s+ "/("+
                                                 number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -953,38 +951,17 @@ if @alabels.length <=29 and @alabels.length>0 then
 @vconv3=[]# adjudicados
 @vconvt=[]# total
 
-@procp=Phase.where(periodo:@vaf1).where.not(expediente:0).order('id')
+
+@vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
+
+
+@procp=Phase.where(periodo:@vaf1).where(expediente:@vexped).order('id')
 
 @procp .each do |proceso|
 
-
-  case  @vaf1
-     when 1
-
-        @deta4=Activity.where("pfecha>='2015/01/01' and
-         pfecha<='2015/12/31' and pfecha<=current_date").
-        where(phase_id:proceso.id).
-        order('pfecha DESC,id DESC')
-
-
-      when 2
-
-         @deta4=Activity.where("pfecha>='2016/01/01' and
-         pfecha<='2016/12/31' and pfecha<=current_date").
-        where(phase_id:proceso.id).
-        order('pfecha DESC,id DESC')
-
-
-
-       when 3
-
-          @deta4=Activity.where("pfecha>='2017/01/01'").
-        where(phase_id:proceso.id).
-        order('pfecha DESC,id DESC')
-
-
-    end #termina case
-
+    @deta4=Activity.where(phase_id:proceso.id).
+    where("pfecha>=? ", @vinicio ).
+    order('pfecha DESC,id DESC')
 
 
 
@@ -993,8 +970,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
          if @deta4.count>0 then
-            @vactiv3= @deta4.where("pfecha<=current_date").select('actividad as dd').first.dd
-         #   @vactivfec3= @deta4.select('pfecha as dd').first.dd
+            @vactiv3= @deta4.select('actividad as dd').first.dd
 
           @vdir=Formula.where(product_id:12,orden:@vactiv3).
                 select('cantidad as dd').first.dd
@@ -1165,44 +1141,12 @@ end #panel
                             @vpac4=[]
                             @vpac5=[]
                             @vpac6=[]
-                            @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3")
+                            @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3").where(obac: @vuobac)
                             @itep.each do |ite|
 
-
-                              case  @vaf1
-                                 when 1
-
-                                    @deta3=Detail.where("details.pfecha>='2015/01/01' and
-                                     details.pfecha<='2015/12/31' and details.pfecha<=current_date").
-                                    where(item_id:ite.id).
-                                    order('details.pfecha DESC,details.id DESC')
-
-
-                                  when 2
-
-                                     @deta3=Detail.where("details.pfecha>='2016/01/01' and
-                                      details.pfecha<='2016/12/31' and details.pfecha<=current_date").
-                                      where(item_id:ite.id).
-                                     order('details.pfecha DESC,details.id DESC')
-
-
-                                   when 3
-
-                                      @deta3=Detail.where("details.pfecha>='2017/01/01' and details.pfecha<=current_date").
-                                      where(item_id:ite.id).
-                                      order('details.pfecha DESC,details.id DESC')
-
-
-                                end #termina case
-
-
-
-
-
-
-
-
-
+                            @deta3=Detail.where(item_id:ite.id).
+                              where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+                              order('details.pfecha DESC,details.id DESC')
 
 
 
@@ -1222,33 +1166,11 @@ end #panel
                                           if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and
                                             Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
 
-                                            case @vaf1
-                                            when 1
 
-                                                    @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
-                                                      .where("activities.pfecha>='2015/01/01' and
-                                                       activities.pfecha<='2015/12/31' and activities.pfecha<=current_date").
-                                                      order('activities.pfecha DESC,activities.id DESC')
+                                             @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.
+                                                  where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+                                                 order('activities.pfecha DESC,activities.id DESC')
 
-
-                                                when 2
-
-                                                      @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
-                                                          .where("activities.pfecha>='2016/01/01' and
-                                                           activities.pfecha<='2016/12/31' and activities.pfecha<=current_date").
-                                                          order('activities.pfecha DESC,activities.id DESC')
-
-
-
-                                                 when 3
-
-
-
-                                                    @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
-                                                     .where("activities.pfecha>='2017/01/01' and activities.pfecha<=current_date")
-                                                     .order('activities.pfecha DESC,activities.id DESC')
-
-                                              end #termina case
 
 
 
