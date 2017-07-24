@@ -2,7 +2,8 @@ ActiveAdmin.register Formula do
 
 menu false
 permit_params  :nombre, :descripcion,  :orden,
-   :cantidad, :admin_user_id, :product_id,  :numero
+   :cantidad, :admin_user_id, :product_id,
+     :numero, :acti
 
 
 
@@ -103,6 +104,7 @@ filter :descripcion
 filter :cantidad
 filter :numero
 filter :orden
+filter :acti
 
 
       index do
@@ -113,7 +115,7 @@ filter :orden
         column("orden")
         column("cantidad")
         column("numero")
-        column("pfecha")
+        column("acti")
           actions
       end
 
@@ -136,7 +138,8 @@ filter :orden
               f.input :descripcion
               f.input :orden, :input_html => { :style =>  'width:30%'}
               f.input :cantidad, :input_html => { :style =>  'width:30%'}
-                f.input :numero, :input_html => { :style =>  'width:30%'}
+              f.input :numero, :input_html => { :style =>  'width:30%'}
+              f.input :acti, :input_html => { :style =>  'width:30%'}
               f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
            end
               f.actions
@@ -159,7 +162,8 @@ show do
             row :descripcion
             row :orden
             row :cantidad
-            row :obs
+            row :numero
+            row :acti
             row :admin_user_id
           end
 
