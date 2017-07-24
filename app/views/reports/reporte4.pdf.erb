@@ -116,15 +116,16 @@
 
 
 
+  <%   if @vopc==2 or  @vopc==3 then %>
 
-
-      <% @presu=Piece.where(phase_id:activity.id.to_s).sum(:presupuestado).to_i%>
+      <% @presu=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i%>
               <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
+  <%  else %>
 
+              <% @presu=Piece.where(phase_id:activity.id.to_s).sum(:presupuestado).to_i%>
+                      <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
-
-
-
+  <%  end %>
 
 
 
