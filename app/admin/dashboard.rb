@@ -1412,6 +1412,18 @@ end #panel
    end
 
 
+
+   panel  "Leyendas" do
+    li "S/EXP: Sin Expediente"
+      li "C/EXP: Con Expediente"
+        li "DC: Direccion de Catalogacion"
+          li "DEM: Direccion de Estudio de Mercado"
+            li "DPC: Direccion de Proceso de Compras"
+              li "DEC:Direccion de Ejecucion Contractual" 
+
+  end
+
+
   end
 
 
@@ -1424,7 +1436,7 @@ end #panel
                     end# de columns
 
                     column do
-                    panel "Grafico del Estado de PAC" do
+                    panel "Grafico de Etapas del Proceso en Dias Calendarios Desde Inicio de Año Hasta la Fecha" do
 
                        li do
                          if @conta>0  then
