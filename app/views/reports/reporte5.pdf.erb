@@ -42,12 +42,13 @@
       <% @conta=@conta+1 %>
 
 
+      <%  case current_admin_user.id %>
+      <%    when 21,22,23 %>
 
-
-<%  @vpact=Formula.where(product_id:12,acti:1).select('orden')%>
-
-
-
+        <%  @vpact=Formula.where(product_id:12,acti:2).select('orden')%>
+      <% else %>
+        <%  @vpact=Formula.where(product_id:12).where('acti=1 or acti=2').select('orden')%>
+      <%   end %>
         <td><%= @conta.to_s+".-" %></td>
 
 
