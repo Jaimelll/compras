@@ -690,7 +690,18 @@ if @alabels.length <=29 and @alabels.length>0 then
               columns do
 
                      column do
-                       panel  "I.- HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
+
+                       case current_admin_user.id
+                        when 21,22,23
+
+
+                       else
+
+
+
+
+          ########################################
+                       panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).where('orden>1').order('orden')  do
 
 
@@ -787,8 +798,12 @@ if @alabels.length <=29 and @alabels.length>0 then
                           #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                         end   #de table for
                       end #de panel historial periodos
+
+###############################
+        end
+
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-               panel  "II.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+               panel  "I.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                          table_for Formula.where(product_id:3)  do
                            @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -858,7 +873,7 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
                           @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                          panel  "III.- TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+                          panel  "II.- TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                                     table_for Formula.where(product_id:6)  do
                                       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -927,6 +942,202 @@ if @alabels.length <=29 and @alabels.length>0 then
                                    end # panel mercado
                                    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                    @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+
+
+                                   panel  "III.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
+
+
+                                      table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
+                                              @vxper=[0,0,0,0,0,0,0,0]
+                                              @vpresu=[0,0,0,0,0,0,0,0]
+                                              @vpac1=[]
+                                              @vpac2=[]
+                                              @vpac3=[]
+                                              @vpac4=[]
+                                              @vpac5=[]
+                                              @vpac6=[]
+                                              @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3").where(obac: @vuobac)
+                                              @itep.each do |ite|
+
+                                              @deta3=Detail.where(item_id:ite.id).
+                                                where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+                                                order('details.pfecha DESC,details.id DESC')
+
+
+
+
+
+
+
+
+
+                                                        if @deta3.count>0 then
+                                                          @vactiv= @deta3.
+                                                             select('actividad as dd').first.dd
+                                                             @vactivfec= @deta3.
+                                                                select('pfecha as dd').first.dd
+
+
+                                                            if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and
+                                                              Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
+
+
+                                                               @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.
+                                                                    where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+                                                                   order('activities.pfecha DESC,activities.id DESC')
+
+
+
+
+
+
+
+
+
+
+
+                                                             @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                                       .order('activities.pfecha DESC,activities.id DESC').
+                                                                       select('activities.actividad as dd').first.dd
+                                                              @vactiv2fec=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                                                 .order('activities.pfecha DESC,activities.id DESC').
+                                                                                 select('activities.pfecha as dd').first.dd
+
+
+                                                                  if    @vactiv2fec>  @vactivfec then
+                                                                     @vactiv=@vactiv2
+                                                                  end
+                                                            end
+
+
+
+
+
+                                                                #linea 209
+                                                        @vdir=Formula.where(product_id:12,orden:@vactiv).
+                                                              select('cantidad as dd').first.dd
+                                          #                @vdir=2
+                                                          @vxper[@vdir]=@vxper[@vdir]+ 1
+                                                          @vpresu[@vdir]=@vpresu[@vdir]+ ite.certificado
+                                                           case @vdir
+                                                           when 1
+                                                               @vpac1.push(ite.id)
+                                                             when 2
+                                                               @vpac2.push(ite.id)
+                                                             when 3
+                                                               @vpac3.push(ite.id)
+                                                             when 4
+                                                               @vpac4.push(ite.id)
+                                                             when 5
+                                                               @vpac5.push(ite.id)
+                                                             when 6
+                                                               @vpac6.push(ite.id)
+
+                                                          end #case
+
+                                                        else
+                                                           @vxper[0]=@vxper[0]+ 1
+                                                           @vpresu[0]=@vpresu[0]+ ite.certificado
+                                                           @vpac1.push(ite.id)
+                                                        end# de if 1
+                                                 end
+                                         column("Avance") do |formula|
+                                                 "PAC"
+                                         end
+                                         column("S/EXP") do |formula|
+
+                                           @titproc1="PAC SIN EXPEDIENTE DE INICIO "
+                                           @vpas=[0,1]
+                                           @dpcl=   @vxper[0]+ @vxper[1]
+                                                 link_to "#{@dpcl} ",
+                                                  reports_comment7_path(format: :pdf,
+                                                  :param3=> @vpas,
+                                                  :param4=> @titproc1,:param5=> @vpac1)
+                                          end
+
+                                       column("C/EXP") do |formula|
+                                        @dpc=  formula.orden
+                                        @vpas=[2]
+                                        @titproc1="PAC CON EXPEDIENTE DE INICIO"
+                                        @dpcl=      @vxper[2]
+                                               link_to "#{@dpcl} ",
+                                               reports_comment7_path(format: :pdf,
+                                              :param3=> @vpas,
+                                              :param4=> @titproc1,:param5=> @vpac2)
+                                         end
+
+                                         column("DC") do |formula|
+
+                                           @dpc=  formula.orden
+                                           @vpas=[3]
+                                           @titproc1="EXPEDIENTES EN CATALOGACION"
+                                           @dpcl=   @vxper[3]
+                                                 link_to "#{@dpcl} ",
+                                                  reports_comment7_path(format: :pdf,
+                                                  :param3=> @vpas,
+                                                  :param4=> @titproc1,:param5=> @vpac3)
+
+                                          end
+
+                                         column("DEM") do |formula|
+                                           @dpc=  formula.orden
+                                           @vpas=[4]
+                                           @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
+                                           @dpcl=  @vxper[4]
+                                                 link_to "#{@dpcl} ",
+                                                  reports_comment7_path(format: :pdf,
+                                                  :param3=> @vpas,
+                                                  :param4=> @titproc1,:param5=> @vpac4)
+
+                                          end
+
+                                         column("DPC") do |formula|
+                                         @dpc=  formula.orden
+                                          @vpas=[5]
+                                          @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
+                                           @dpcl=  @vxper[5]
+                                                 link_to "#{@dpcl} ",
+                                                  reports_comment7_path(format: :pdf,
+                                                  :param3=> @vpas,
+                                                  :param4=> @titproc1,:param5=> @vpac5)
+
+                                          end
+
+                                         column("DEC ") do |formula|
+                                           @dpc=  formula.orden
+                                           @vpas=[6]
+                                           @titproc1="EXPEDIENTES EN DEC"
+                                           @dpcl=   @vxper[6].to_s+ "/("+
+                                           number_with_delimiter(@vpresu[6].to_i, delimiter: ",").to_s+ ")"
+                                                   link_to "#{@dpcl} ",
+                                                   reports_comment7_path(format: :pdf,
+                                                   :param3=> @vpas,
+                                                   :param4=> @titproc1,:param5=> @vpac6)
+
+                                         end
+
+                                        column("TOTAL ") do |formula|
+
+                                          @auto=  @vaf1
+                                          @tita1="Total Procesos en Curso ACFFAA - PERIODO"
+                                          @vopc1=4
+                                          @le=  @vxper.inject(0, :+).to_s+ "/("+
+                                          number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
+                                                  link_to "#{@le} ", reports_comment_path(format: :pdf,
+                                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+                                       end
+
+                                    end # de table_for
+
+                            end #end de panel
+
+
+
+
+
+
+
 
                                    panel  "IV.- CALENDARIO DE PROCESOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
                                    #  ul do
@@ -1129,246 +1340,59 @@ end #de table
 
 end #panel
 
-                 panel  "V.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
-
-
-                    table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
-                            @vxper=[0,0,0,0,0,0,0,0]
-                            @vpresu=[0,0,0,0,0,0,0,0]
-                            @vpac1=[]
-                            @vpac2=[]
-                            @vpac3=[]
-                            @vpac4=[]
-                            @vpac5=[]
-                            @vpac6=[]
-                            @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3").where(obac: @vuobac)
-                            @itep.each do |ite|
-
-                            @deta3=Detail.where(item_id:ite.id).
-                              where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
-                              order('details.pfecha DESC,details.id DESC')
-
-
-
-
-
-
-
-
-
-                                      if @deta3.count>0 then
-                                        @vactiv= @deta3.
-                                           select('actividad as dd').first.dd
-                                           @vactivfec= @deta3.
-                                              select('pfecha as dd').first.dd
-
-
-                                          if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and
-                                            Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
-
-
-                                             @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.
-                                                  where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
-                                                 order('activities.pfecha DESC,activities.id DESC')
-
-
-
-
-
-
-
-
-
-
-
-                                           @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
-                                                     .order('activities.pfecha DESC,activities.id DESC').
-                                                     select('activities.actividad as dd').first.dd
-                                            @vactiv2fec=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
-                                                               .order('activities.pfecha DESC,activities.id DESC').
-                                                               select('activities.pfecha as dd').first.dd
-
-
-                                                if    @vactiv2fec>  @vactivfec then
-                                                   @vactiv=@vactiv2
-                                                end
-                                          end
-
-
-
-
-
-                                              #linea 209
-                                      @vdir=Formula.where(product_id:12,orden:@vactiv).
-                                            select('cantidad as dd').first.dd
-                        #                @vdir=2
-                                        @vxper[@vdir]=@vxper[@vdir]+ 1
-                                        @vpresu[@vdir]=@vpresu[@vdir]+ ite.certificado
-                                         case @vdir
-                                         when 1,2
-                                             @vpac1.push(ite.id)
-                                           when 2
-                                             @vpac2.push(ite.id)
-                                           when 3
-                                             @vpac3.push(ite.id)
-                                           when 4
-                                             @vpac4.push(ite.id)
-                                           when 5
-                                             @vpac5.push(ite.id)
-                                           when 6
-                                             @vpac6.push(ite.id)
-
-                                        end #case
-
-                                      else
-                                         @vxper[0]=@vxper[0]+ 1
-                                         @vpresu[0]=@vpresu[0]+ ite.certificado
-                                         @vpac1.push(ite.id)
-                                      end# de if 1
-                               end
-                       column("Avance") do |formula|
-                               "PAC"
-                       end
-                       column("GEX") do |formula|
-
-                         @titproc1="GESTION DE EXPEDIENTES"
-                         @vpas=[0,1,2]
-                         @dpcl=   @vxper[0]+ @vxper[1]+ @vxper[2]
-                               link_to "#{@dpcl} ",
-                                reports_comment7_path(format: :pdf,
-                                :param3=> @vpas,
-                                :param4=> @titproc1,:param5=> @vpac1)
-                        end
-
-                  #     column("C/EXP") do |formula|
-                  #      @dpc=  formula.orden
-                  #      @vpas=2
-                  #      @titproc1="PAC CON EXPEDIENTE DE INICIO"
-                  #      @dpcl=      @vxper[2]
-                  #           link_to "#{@dpcl} ",
-                  #           reports_comment7_path(format: :pdf,
-                    #         :param3=> @vpas,
-                    #         :param4=> @titproc1,:param5=> @vpac2)
-                    #    end
-
-                       column("DC") do |formula|
-
-                         @dpc=  formula.orden
-                         @vpas=[3]
-                         @titproc1="EXPEDIENTES EN CATALOGACION"
-                         @dpcl=   @vxper[3]
-                               link_to "#{@dpcl} ",
-                                reports_comment7_path(format: :pdf,
-                                :param3=> @vpas,
-                                :param4=> @titproc1,:param5=> @vpac3)
-
-                        end
-
-                       column("DEM") do |formula|
-                         @dpc=  formula.orden
-                         @vpas=[4]
-                         @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
-                         @dpcl=  @vxper[4]
-                               link_to "#{@dpcl} ",
-                                reports_comment7_path(format: :pdf,
-                                :param3=> @vpas,
-                                :param4=> @titproc1,:param5=> @vpac4)
-
-                        end
-
-                       column("DPC") do |formula|
-                       @dpc=  formula.orden
-                        @vpas=[5]
-                        @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
-                         @dpcl=  @vxper[5]
-                               link_to "#{@dpcl} ",
-                                reports_comment7_path(format: :pdf,
-                                :param3=> @vpas,
-                                :param4=> @titproc1,:param5=> @vpac5)
-
-                        end
-
-                       column("DEC ") do |formula|
-                         @dpc=  formula.orden
-                         @vpas=[6]
-                         @titproc1="EXPEDIENTES EN DEC"
-                         @dpcl=   @vxper[6].to_s+ "/("+
-                         number_with_delimiter(@vpresu[6].to_i, delimiter: ",").to_s+ ")"
-                                 link_to "#{@dpcl} ",
-                                 reports_comment7_path(format: :pdf,
-                                 :param3=> @vpas,
-                                 :param4=> @titproc1,:param5=> @vpac6)
-
-                       end
-
-                      column("TOTAL ") do |formula|
-
-                        @auto=  @vaf1
-                        @tita1="Total Procesos en Curso ACFFAA - PERIODO"
-                        @vopc1=4
-                        @le=  @vxper.inject(0, :+).to_s+ "/("+
-                        number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
-                                link_to "#{@le} ", reports_comment_path(format: :pdf,
-                             :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
-
-                     end
-
-                  end # de table_for
-
-          end #end de panel
-
-
 
 #########################################
-@vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-#periodo
-@vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
+ case current_admin_user.id
+  when 21,22,23
 
 
-   table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
+ else
+   panel  "V.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
-      column("Avance") do |formula|
-              "Proceso"
-      end
 
-      column("DPC") do |formula|
-        @dpc=  formula.orden
-        @vpaso=0
-        @vpas=5
-        @titproc1="PROCESOS DPC"
-        @le= @vxper2[5]
-        link_to "#{@le}",
-        reports_comment5_path(format: :pdf,
-        :param3=> @vpas,
-        :param4=> @titproc1,:param5=> @vpro5,:param2=> @vpaso)
+      table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
 
-       end
+         column("Avance") do |formula|
+                 "Proceso"
+         end
 
-       column("DEC") do |formula|
-         @dpc=  formula.orden
+         column("DPC") do |formula|
+           @dpc=  formula.orden
            @vpaso=0
-         @vpas=6
-         @titproc1="PROCESOS DEC"
-         @le= @vxper2[6]
-         link_to "#{@le}",
-         reports_comment5_path(format: :pdf,
-         :param3=> @vpas,
-         :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
+           @vpas=5
+           @titproc1="PROCESOS DPC"
+           @le= @vxper2[5]
+           link_to "#{@le}",
+           reports_comment5_path(format: :pdf,
+           :param3=> @vpas,
+           :param4=> @titproc1,:param5=> @vpro5,:param2=> @vpaso)
+
+          end
+
+          column("DEC") do |formula|
+            @dpc=  formula.orden
+              @vpaso=0
+            @vpas=6
+            @titproc1="PROCESOS DEC"
+            @le= @vxper2[6]
+            link_to "#{@le}",
+            reports_comment5_path(format: :pdf,
+            :param3=> @vpas,
+            :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
 
 
 
-       end
-       column("TOTAL") do |formula|
-         @dpc=  formula.orden
-           @vpaso=1
-         @vpas=[5,6]
-         @titproc1="Relacion de Procesos"
-         @le= @vxper2[5]+  @vxper2[6]
-         link_to "#{@le}",
-         reports_comment5_path(format: :pdf,
-         :param3=> @vpas,
-         :param4=> @titproc1,:param5=> @vprot,:param2=> @vpaso)
+          end
+          column("TOTAL") do |formula|
+            @dpc=  formula.orden
+              @vpaso=1
+            @vpas=[5,6]
+            @titproc1="Relacion de Procesos"
+            @le= @vxper2[5]+  @vxper2[6]
+            link_to "#{@le}",
+            reports_comment5_path(format: :pdf,
+            :param3=> @vpas,
+            :param4=> @titproc1,:param5=> @vprot,:param2=> @vpaso)
 
 
 
@@ -1376,7 +1400,7 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
 
-       end
+          end
 
 
 
@@ -1384,9 +1408,11 @@ panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
 
-end
-end
+   end
+   end
 
+
+  end
 
 
 #########################################
