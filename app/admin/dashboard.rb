@@ -1413,17 +1413,22 @@ end #panel
 
 
 
-   panel  "Leyendas" do
-    li "S/EXP: Sin Expediente"
-      li "C/EXP: Con Expediente"
-        li "DC: Direccion de Catalogacion"
-          li "DEM: Direccion de Estudio de Mercado"
-            li "DPC: Direccion de Proceso de Compras"
-              li "DEC:Direccion de Ejecucion Contractual" 
+
 
   end
+  panel  "Leyendas" do
+   li "S/EXP: Sin Expediente"
+     li "C/EXP: Con Expediente"
+       li "DC: Dirección de Catalogación"
+         li "DEM: Dirección de Estudio de Mercado"
+           li "DPC: Dirección de Procesos de Compras"
+             li "DEC:Dirección de Ejecucion de Contratos"
 
 
+
+
+
+                      end# de columns
   end
 
 
@@ -1431,9 +1436,6 @@ end #panel
 
 
 
-
-
-                    end# de columns
 
                     column do
                     panel "Grafico de Etapas del Proceso en Dias Calendarios Desde Inicio de Año Hasta la Fecha" do
