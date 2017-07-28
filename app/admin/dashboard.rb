@@ -1460,10 +1460,19 @@ end #panel
                              end
                                end
 
-                     end
+                     end #panel
 
-end
-              end
+          end#columna grafico1
+
+
+
+
+
+
+
+
+
+    end
 
 
 

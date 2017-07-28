@@ -1,0 +1,396 @@
+
+ActiveAdmin.register_page "kpi" do
+
+  menu  priority: 10,label: "KPI"
+
+  content title: "KPI's OPERATIVOS" do
+
+    @vuobac=[1,2,3,4,5,6]
+    @var=Formula.where(product_id:15,cantidad:1).
+                         select('orden as dd').first.dd
+    @titulo=Formula.where(product_id:15,cantidad:1).
+                         select('nombre as dd').first.dd
+     @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+    #gex
+    @vitem=Item.where(ejecucion:4,modalidad:3)
+    .where(exped2:@vaf).order('obac ASC,pac')
+    @iproce=100
+
+    @vitem=@vitem.where(obac: @vuobac)
+
+
+
+    @adata=[]
+    @alabels=[]
+    @blabels=[]
+
+    @adata2=[]
+    @alabels2=[]
+    @blabels2=[]
+
+    @adata3=[]
+    @alabels3=[]
+    @blabels3=[]
+
+
+    @aversion=[]
+    @aobac=[]
+    @apec=[]
+    @adac=[]
+    @adem=[]
+    @adpc=[]
+    @adec=[]
+    @aeobac=[]
+    @conta=0
+
+    @aversion2=[]
+    @aobac2=[]
+    @apec2=[]
+    @adac2=[]
+    @adem2=[]
+    @adpc2=[]
+    @adec2=[]
+    @aeobac2=[]
+    @conta2=0
+
+    @aversion3=[]
+    @aobac3=[]
+    @apec3=[]
+    @adac3=[]
+    @adem3=[]
+    @adpc3=[]
+    @adec3=[]
+    @aeobac3=[]
+    @conta3=0
+
+
+    @vproceso=[]
+
+    #*******************************************************************
+
+    @vitem.each do |item|
+
+      #prueba conta
+
+      #empieza el item
+
+    @vfec1=Time.now
+
+    @vproceso=[0,0,0,0,0,0,0,0]
+
+    @uproc=7
+    @corta=0
+
+    @nconta1=0
+
+
+      #@nconta numero de actividades
+
+    #comienza case
+    case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+       when 1
+         @vinicio = Date.parse('2015/01/01')
+         @dfin=365
+         @vfin=Date.parse('2015/12/31')
+         @vrang=30
+         @vtitun=" AF-2015"
+
+
+        when 2
+          @vinicio = Date.parse('2016/01/01')
+          @dfin=365
+          @vfin=Date.parse('2016/12/31')
+           @vrang=30
+           @vtitun=" AF-2016"
+
+
+
+         when 3
+           @vinicio = Date.parse('2017/01/01')
+           @dfin=(Time.now-@vinicio.to_time).to_i/86400
+           @vfin=Time.now
+            @vrang=15
+            @vtitun=" AF-2017"
+
+
+      end #termina case
+
+
+      @nconta=Detail.where(item_id:item.id).
+         where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).count
+       @deta2=Detail.where(item_id:item.id).
+              where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).
+             order('details.pfecha DESC,details.id DESC')
+
+
+    @deta1=@deta2.where(item_id:item.id)
+
+
+
+
+      @vlog=false
+
+    if @deta1.count==0 then
+
+      object = Detail.new(:actividad => 36, :pfecha=> @vinicio,
+       :item_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
+       :updated_at => @vinicio,:tipo =>'automatico')
+      object.save
+
+
+    end
+
+    @deta1.each do |detail|
+
+      #empieza detail
+    #end
+    #termina cas
+      @nconta1=@nconta1+1
+
+
+    if detail.pfecha and detail.actividad  then
+    @vproc=Formula.where(product_id:12,orden:detail.actividad).
+                         select('cantidad as dd').first.dd
+    #proceso
+    @vprord=detail.actividad
+    #actividad
+    @nconta2=0
+    @ulvproc2=0
+
+
+
+    #inicio de phase if 280 al 392*************************************************************
+    if Phase.where(expediente:item.exped).count>0 and item.exped>0 then
+      @phase1=Phase.find_by(expediente:item.exped).activities
+      .where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
+       .order('activities.pfecha DESC,activities.id DESC')
+
+
+    #inicia cadena
+
+    @phase1.each do |phase|
+
+    if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
+
+    @vproc2=Formula.where(product_id:12,orden:phase.actividad).
+                         select('cantidad as dd').first.dd
+    #proceso
+    @vprord2=phase.actividad
+    #actividad
+
+    @vdetfec2=phase.pfecha
+
+
+      @nconta2=@nconta2+1
+
+
+
+
+
+
+    if  @nconta2==1 and @nconta1==1  then
+          @vlog=false
+          @ulvproc2=@vproc2  #guarda el primer proceso
+       if (@vproc2==@iproce or @iproce==100)  then
+        @vlog=true
+       end
+    end
+
+
+    if @vlog  then
+    # empieza @vlog
+
+
+       unless @vprord2==200 or @vprord2==300 or ( @vprord2==8 and item.modalidad==3)
+         if  @uproc>=@vproc2 then
+
+                @vproceso[@vproc2]=@vproceso[@vproc2]+
+                ( @vfec1-@vdetfec2.to_time).to_i/86400
+
+                if @nconta1==1 then
+                   @vproceso[@vproc2]=@vproceso[@vproc2]+2
+                end
+
+                @uproc=@vproc2
+          else
+                @vproceso[@uproc]=@vproceso[@uproc]+
+                ( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+           end
+        else
+           @corta=( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+        end #de unless
+
+
+
+
+      @vfec1=@vdetfec2.to_time
+
+    end # termina @vlog
+
+
+    end #de if de phase mayor
+
+    end  #terminar ecah de phase
+
+    end #terminar el if de  la cadena phase
+
+
+
+
+
+    # fin phase del 280 al 392************************************************************
+    if  @nconta1==1 and   @vlog==false then
+          @vlog=false
+       if (@vproc==@iproce or @iproce==100 or (@iproce==2 and @vproc<=2)) and  @vproc>@ulvproc2 then
+        @vlog=true
+       end
+    end
+
+    if @vlog  then
+    # empieza @vlog
+
+
+       unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
+         if  @uproc>=@vproc then
+
+                @vproceso[@vproc]=@vproceso[@vproc]+
+                ( @vfec1-detail.pfecha.to_time).to_i/86400
+
+                if @nconta1==1 then
+                   @vproceso[@vproc]=@vproceso[@vproc]+2
+                end
+                @uproc=@vproc
+          else
+                @vproceso[@uproc]=@vproceso[@uproc]+
+                ( @vfec1-detail.pfecha.to_time).to_i/86400
+
+
+           end
+        else
+           @corta=( @vfec1-detail.pfecha.to_time).to_i/86400
+
+
+        end #de unless
+
+
+        if @nconta1==@nconta then
+          if @vprord==36 then
+               @vproceso[0]= ( detail.pfecha.to_time-
+               @vinicio.to_time).to_i/86400
+           end
+
+         @vproceso[@vproc]=@vproceso[@vproc]+
+         ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]
+
+
+
+        end  #if  @nconta1
+
+
+      @vfec1=detail.pfecha.to_time
+
+    end # termina @vlog
+
+    end #termina actividad
+
+
+    end #termina detail??
+
+
+
+
+
+
+    # empieza @vlog
+    if @vlog then
+
+
+    @vversion=@vproceso[0]
+       @vobac=@vproceso[1]
+        @vpec=@vproceso[2]
+        @vdac=@vproceso[3]
+        @vdem=@vproceso[4]
+        @vdpc=@vproceso[5]
+        @vdec=@vproceso[6]
+        @veobac=@vproceso[7]
+
+
+
+
+
+
+
+
+
+
+    if item.obac and item.obac>0 then
+        @n1=Formula.where(product_id:1, orden:item.obac).
+           select('nombre as dd').first.dd
+
+    else
+        @n1="s/d"
+    end
+
+    #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+    #@alabels2.push(item.descripcion.first(10))
+    @desc=item.descripcion.underscore
+
+    if @desc[0,3]=='adq' then
+        @desc=@desc[15,54]
+    else
+     @desc=@desc
+
+    end
+
+
+    #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
+   @lab1=item.pac
+
+
+
+
+
+       @alabels.push(@lab1)
+       @aversion.push(@vversion)
+       @aobac.push(@vobac)
+       @apec.push(@vpec)
+       @adac.push(@vdac)
+       @adem.push(@vdem)
+       @adpc.push(@vdpc)
+       @adec.push(@vdec)
+
+
+
+    end   # log
+
+
+    end #terminia  item
+    #termina item***********************************************
+
+    columns do
+           column do
+
+
+#@alabels=@alabels.map { |i| " '" + i + "'" }.join(',')
+@alabels=@alabels.join(',')
+
+               render :partial => "grafico",
+               :locals => { :param1 => @alabels,
+                            :param2 => @aversion,
+                            :param3 => @aobac,
+                            :param4 => @apec,
+                            :param5 => @adac,
+                            :param6 => @adem,
+                            :param7 => @adpc,
+                            :param8 => @adec,
+                            :param20 => "titulio"}
+
+
+           end
+     end
+  end
+end
