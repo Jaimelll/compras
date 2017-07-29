@@ -29,7 +29,19 @@
         text: 'PROCESOS DE COMPRAS'
     },
     xAxis: {
-        categories:[<%= param1%>]
+        categories:<% nn=param1.length %>
+<% conta=0 %>
+ [
+<%while nn>conta do%>
+
+<%if conta==0 then%>
+   "<%=param1[0] %>"
+<% else %>
+,"<%=param1[conta] %>"
+<% end %>
+<%conta=conta+1 %>
+<% end %>
+]
     },
     yAxis: {
         min: 2,

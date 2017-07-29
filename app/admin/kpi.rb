@@ -454,10 +454,18 @@ ActiveAdmin.register_page "kpi" do
 
     end
 
+    if item.exped and item.exped>0 then
 
+    @lab1=Formula.where(product_id:16,orden:item.exped).
+             select('nombre as dd').first.dd+"-"+
+              Formula.where(product_id:16,orden:item.exped).
+                        select('descripcion as dd').first.dd.underscore.truncate(30)+
+                      "-"+item.pac+"-"+@n1
+    else
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-   @lab1=item.pac
+    @lab1=@desc.capitalize.truncate(40)+"-"+item.pac+"-"+@n1
 
+    end
 
 
 
@@ -484,7 +492,7 @@ ActiveAdmin.register_page "kpi" do
 
 
 #@alabels=@alabels.map { |i| " '" + i + "'" }.join(',')
-@alabels=@alabels.join(',')
+#@alabels=@alabels.join(",")
 
                render :partial => "grafico",
                :locals => { :param1 => @alabels,
