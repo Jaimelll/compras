@@ -276,11 +276,12 @@ ActiveAdmin.register_page "kpi" do
     #inicia cadena
 
     @phase1.each do |phase|
+      #cambio
+      @vproc2=Formula.where(product_id:12,orden:phase.actividad).
+                           select('cantidad as dd').first.dd
+    if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha and @vproc2>@vproc then
 
-    if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
 
-    @vproc2=Formula.where(product_id:12,orden:phase.actividad).
-                         select('cantidad as dd').first.dd
     #proceso
     @vprord2=phase.actividad
     #actividad
@@ -367,9 +368,9 @@ ActiveAdmin.register_page "kpi" do
                 @vproceso[@vproc]=@vproceso[@vproc]+
                 ( @vfec1-detail.pfecha.to_time).to_i/86400
 
-                if @nconta1==1 then
-                   @vproceso[@vproc]=@vproceso[@vproc]+2
-                end
+              #  if @nconta1==1 then
+              #     @vproceso[@vproc]=@vproceso[@vproc]+2
+              #  end
                 @uproc=@vproc
           else
                 @vproceso[@uproc]=@vproceso[@uproc]+

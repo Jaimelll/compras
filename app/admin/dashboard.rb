@@ -304,10 +304,10 @@ if Phase.where(expediente:item.exped).count>0 and item.exped>0 then
 
 @phase1.each do |phase|
 
-if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
+  @vproc2=Formula.where(product_id:12,orden:phase.actividad).
+                       select('cantidad as dd').first.dd
+if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha and @vproc2>@vproc then
 
-@vproc2=Formula.where(product_id:12,orden:phase.actividad).
-                     select('cantidad as dd').first.dd
 #proceso
 @vprord2=phase.actividad
 #actividad
