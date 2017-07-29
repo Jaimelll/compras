@@ -2,19 +2,126 @@
 ActiveAdmin.register_page "kpi" do
 
   menu  priority: 10,label: "KPI"
+  action_item :only=> :index do
+
+      link_to   'Cambiar AF', af_admin_product_formula_path(1, :@num), method: :put
+  end
+
+
+  action_item :only=> :index do
+      link_to 'Encargo', encargo_admin_product_formula_path(1, :@num), method: :put
+
+  end
+  #action_item :only=> :index do
+  #    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
+  #end
+  action_item :only=> :index do
+      link_to 'Corporativos', corporativa_admin_product_formula_path( 1,:@num), method: :put
+  end
+
+
+
+  action_item :only=> :index do
+      link_to 'Autorizaciones', autorizado_admin_product_formula_path( 1,:@num), method: :put
+  end
+
+  action_item :only=> :index do
+      link_to 'Exclusiones', excluido_admin_product_formula_path(1, :@num), method: :put
+  end
+
+
+  action_item :only=> :index do
+     link_to 'GEX', gex_admin_product_formula_path( 1,:@num), method: :put
+  end
+
+  action_item :only=> :index do
+     link_to 'DEM', dem_admin_product_formula_path( 1,:@num), method: :put
+  end
+
+  action_item :only=> :index do
+     link_to 'DPC', dpc_admin_product_formula_path( 1,:@num), method: :put
+  end
+
+  action_item :only=> :index do
+     link_to 'DEC', dec_admin_product_formula_path(1, :@num), method: :put
+  end
+
+
+
+
 
   content title: "KPI's OPERATIVOS" do
 
-    @vuobac=[1,2,3,4,5,6]
-    @var=Formula.where(product_id:15,cantidad:1).
-                         select('orden as dd').first.dd
-    @titulo=Formula.where(product_id:15,cantidad:1).
-                         select('nombre as dd').first.dd
-     @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-    #gex
-    @vitem=Item.where(ejecucion:4,modalidad:3)
+    case current_admin_user.id # a_variable is the variable we want to compare
+    when 21
+      @vuobac=[1]
+    when 22
+      @vuobac=[2]
+    when 23
+      @vuobac=[3]
+    else
+      @vuobac=[1,2,3,4,5,6]
+    end
+
+     @var=Formula.where(product_id:15,cantidad:1).
+                          select('orden as dd').first.dd
+     @titulo=Formula.where(product_id:15,cantidad:1).
+                          select('nombre as dd').first.dd
+      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+
+
+
+
+
+  case @var
+   when 1
+     #encargo
+     @vitem=Item.where(ejecucion:4,modalidad:2)
+     .where(exped2:@vaf).order('periodo,obac ASC,pac')
+     @iproce=100
+
+   when 2
+   #corporativa
+     @vitem=Item.where(ejecucion:4,modalidad:1)
+     .where(exped2:@vaf).order('periodo,exped,obac')
+    @iproce=100
+  when 3
+  # autorizados
+     @vitem=Item.where(ejecucion:4,modalidad:3)
+     .where(exped2:@vaf).order('obac ASC,pac')
+     @iproce=100
+  when 4
+  #DEC proceso 6
+  @vitem=Item.where(ejecucion:4).where("modalidad<3")
+  .where(exped2:@vaf).order('periodo,exped,obac')
+   @iproce=6
+
+  when 5
+  #excluidos
+    @vitem=Item.where(ejecucion:4,modalidad:4)
     .where(exped2:@vaf).order('obac ASC,pac')
     @iproce=100
+
+  when 6
+  #dpc
+  @vitem=Item.where(ejecucion:4).where("modalidad<3")
+  .where(exped2:@vaf).order('periodo,exped,obac')
+  @iproce=5
+
+  when 7
+  #dem
+  @vitem=Item.where(ejecucion:4).where("modalidad<3")
+  .where(exped2:@vaf).order('periodo,exped,obac')
+  @iproce=4
+
+  when 8
+  #gex
+  @vitem=Item.where(ejecucion:4).where("modalidad<3")
+  .where(exped2:@vaf).order('periodo,exped,obac')
+  @iproce=2
+  end
+
 
     @vitem=@vitem.where(obac: @vuobac)
 
