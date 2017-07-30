@@ -1,12 +1,8 @@
 
-ActiveAdmin.register_page "kpi" do
+ActiveAdmin.register_page "grafico" do
 
-  menu  priority: 10,label: "KPI"
-  action_item :only=> :index do
-
-      link_to   'Cambiar AF', af_admin_product_formula_path(1, :@num), method: :put
-  end
-
+  menu  priority: 2,label: "Grafico"
+  
 
   action_item :only=> :index do
       link_to 'Encargo', encargo_admin_product_formula_path(1, :@num), method: :put
@@ -50,7 +46,7 @@ ActiveAdmin.register_page "kpi" do
 
 
 
-  content title: "KPI's OPERATIVOS" do
+  content title: "Grafico" do
 
     case current_admin_user.id # a_variable is the variable we want to compare
     when 21

@@ -4,7 +4,7 @@ ActiveAdmin.register AdminUser do
 
 
 
-menu  priority: 3,label: "Usuarios"
+menu  priority: 7,label: "Usuarios"
 
 
 
