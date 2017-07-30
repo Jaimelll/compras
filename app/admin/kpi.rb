@@ -503,7 +503,7 @@ ActiveAdmin.register_page "kpi" do
                             :param6 => @adem,
                             :param7 => @adpc,
                             :param8 => @adec,
-                            :param20 => "titulio"}
+                            :param20 =>  @titulo+@vtitun}
 
 
            end
