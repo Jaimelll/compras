@@ -7,20 +7,20 @@ class Ability
      user ||= AdminUser.new # guest user (not logged in)
 
   case user.id # a_variable is the variable we want to compare
-  when 1,2
+    when 1,2
           can :manage, :all
-      when 3 #roy
+    when 3 #roy
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can [:read], [Item, Detail]
           can [:read], [Phase,Activity,Piece]
-      when 10,5,16,18,19 #asesor,ballesteros
+    when 10,5,16,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can [:read], [Item, Detail]
         can [:read], [Phase,Activity,Piece]
     #   when 5 # ballesteros
     #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
     #    can [:read], [Item, Detail]
-  when 20 #administrativo,alfaro
+    when 20 #administrativo,alfaro
     can :read, ActiveAdmin::Page, :name =>"Dashboard"
 
 
@@ -43,6 +43,7 @@ class Ability
   else
 
       can :read, ActiveAdmin::Page, :name =>"Dashboard"
+    #  can :read, ActiveAdmin::Page, :name =>"grafico"
   end
     #
     # The first argument to `can` is the action you are giving the user

@@ -26,7 +26,7 @@
     title: {
         text: '<%= param20 %>'
     },
-    xAxis: {
+    xAxis: [{
         categories:<% nn=param1.length %>
 <% conta=0 %>
  [
@@ -41,15 +41,30 @@
 <% end %>
 ]
     },
+    {
+        title: {
+            text: 'PACs'
+        },
+        opposite: true,
+
+    }
+  ],
     yAxis: {
         min: 2,
         title: {
-            text: 'Dias desde inicio de año hasta la fecha'
+            text: 'Seguimiento desde inicio de año hasta la fecha (dias)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
         }
     },
     legend: {
         reversed: true
     },
+    tooltip: {
+          valueSuffix: ' dias'
+      },
     plotOptions: {
         series: {
             stacking: 'true'
