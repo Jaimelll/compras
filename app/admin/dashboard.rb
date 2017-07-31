@@ -819,11 +819,11 @@ end #panel
 
   end
   panel  "Leyenda" do
-   li "S/EXP: Sin Expediente"
-     li "C/EXP: Con Expediente"
-       li "DC: Dirección de Catalogación"
-         li "DEM: Dirección de Estudio de Mercado"
-           li "DPC: Dirección de Procesos de Compras"
+   li "S/EXP: Expediente en OBAC"
+     li "C/EXP: Expediente en ACFFAA"
+       li "DC: Dirección de Catalogación ACFFAA"
+         li "DEM: Dirección de Estudio de Mercado ACFFAA"
+           li "DPC: Dirección de Procesos de Compras ACFFAA"
              li "DEC:Dirección de Ejecucion de Contratos"
 
 
