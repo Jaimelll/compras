@@ -294,7 +294,7 @@
         <h4>RESUMEN DE AHORRO EN SOLES</h4>
         </thead>
         <tr>
-          <th>REFERENCIAL</th>
+
           <th>PRESUPUESTADO</th>
 
           <th>ADJUDICADO</th>
@@ -302,7 +302,7 @@
         </tr>
         <tr>
 
-          <td><%= number_with_delimiter(@srefs.to_i, delimiter: ",") %></td>
+
           <td><%= number_with_delimiter(@scert.to_i, delimiter: ",") %></td>
 
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
@@ -310,7 +310,7 @@
 
         </tr>
 
-          <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
+          <td colspan="3">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
                 .select('cantidad as dd').first.dd.to_i/100.to_f%>
                 ;Tipo de cambio Euro=<%= Formula.where(product_id:7,orden:3)
                       .select('cantidad as dd').first.dd.to_i/100.to_f%>

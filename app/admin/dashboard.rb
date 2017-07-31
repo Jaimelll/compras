@@ -1416,8 +1416,8 @@ end #panel
 
 
   end
-  panel  "Leyendas" do
-   li "S/EXP: Sin Expediente"
+  panel  "Leyenda" do
+   li "S/EXP: Expediente en OBAC"
      li "C/EXP: Con Expediente"
        li "DC: Dirección de Catalogación"
          li "DEM: Dirección de Estudio de Mercado"
