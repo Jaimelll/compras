@@ -14,44 +14,6 @@ action_item :only=> :index do
 end
 
 
-action_item :only=> :index do
-    link_to 'Encargo', encargo_admin_product_formula_path(1, :@num), method: :put
-
-end
-#action_item :only=> :index do
-#    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
-#end
-action_item :only=> :index do
-    link_to 'Corporativos', corporativa_admin_product_formula_path( 1,:@num), method: :put
-end
-
-
-
-action_item :only=> :index do
-    link_to 'Autorizaciones', autorizado_admin_product_formula_path( 1,:@num), method: :put
-end
-
-action_item :only=> :index do
-    link_to 'Exclusiones', excluido_admin_product_formula_path(1, :@num), method: :put
-end
-
-
-action_item :only=> :index do
-   link_to 'GEX', gex_admin_product_formula_path( 1,:@num), method: :put
-end
-
-action_item :only=> :index do
-   link_to 'DEM', dem_admin_product_formula_path( 1,:@num), method: :put
-end
-
-action_item :only=> :index do
-   link_to 'DPC', dpc_admin_product_formula_path( 1,:@num), method: :put
-end
-
-action_item :only=> :index do
-   link_to 'DEC', dec_admin_product_formula_path(1, :@num), method: :put
-end
-
 
 
   content title: proc{ I18n.t("active_admin.dashboard") } do
@@ -92,598 +54,34 @@ end
       @vuobac=[1,2,3,4,5,6]
     end
 
-     @var=Formula.where(product_id:15,cantidad:1).
-                          select('orden as dd').first.dd
-     @titulo=Formula.where(product_id:15,cantidad:1).
-                          select('nombre as dd').first.dd
-      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-
-
-
-
-
-
-case @var
-   when 1
-     #encargo
-     @vitem=Item.where(ejecucion:4,modalidad:2)
-     .where(exped2:@vaf).order('periodo,obac ASC,pac')
-     @iproce=100
-   when 2
-   #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1)
-     .where(exped2:@vaf).order('periodo,exped,obac')
-    @iproce=100
-  when 3
-  # autorizados
-     @vitem=Item.where(ejecucion:4,modalidad:3)
-     .where(exped2:@vaf).order('obac ASC,pac')
-     @iproce=100
- when 4
-#DEC proceso 6
-  @vitem=Item.where(ejecucion:4).where("modalidad<3")
-  .where(exped2:@vaf).order('periodo,exped,obac')
-   @iproce=6
-
-  when 5
-  #excluidos
-    @vitem=Item.where(ejecucion:4,modalidad:4)
-    .where(exped2:@vaf).order('obac ASC,pac')
-    @iproce=100
-
- when 6
-#dpc
-@vitem=Item.where(ejecucion:4).where("modalidad<3")
-.where(exped2:@vaf).order('periodo,exped,obac')
- @iproce=5
-
- when 7
-#dem
-@vitem=Item.where(ejecucion:4).where("modalidad<3")
-.where(exped2:@vaf).order('periodo,exped,obac')
- @iproce=4
-
-when 8
-#gex
-@vitem=Item.where(ejecucion:4).where("modalidad<3")
-.where(exped2:@vaf).order('periodo,exped,obac')
- @iproce=2
-end
-
-@vitem=@vitem.where(obac: @vuobac)
-
-
-
-@adata=[]
-@alabels=[]
-@blabels=[]
-
-@adata2=[]
-@alabels2=[]
-@blabels2=[]
-
-@adata3=[]
-@alabels3=[]
-@blabels3=[]
-
-
-@aversion=[]
-@aobac=[]
-@apec=[]
-@adac=[]
-@adem=[]
-@adpc=[]
-@adec=[]
-@aeobac=[]
-@conta=0
-
-@aversion2=[]
-@aobac2=[]
-@apec2=[]
-@adac2=[]
-@adem2=[]
-@adpc2=[]
-@adec2=[]
-@aeobac2=[]
-@conta2=0
-
-@aversion3=[]
-@aobac3=[]
-@apec3=[]
-@adac3=[]
-@adem3=[]
-@adpc3=[]
-@adec3=[]
-@aeobac3=[]
-@conta3=0
-
-
-@vproceso=[]
-
-#*******************************************************************
-
-@vitem.each do |item|
-
-  #prueba conta
-
-  #empieza el item
-
-@vfec1=Time.now
-
-@vproceso=[0,0,0,0,0,0,0,0]
-
-@uproc=7
-@corta=0
-
-@nconta1=0
-
-
-  #@nconta numero de actividades
-
-#comienza case
-case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-   when 1
-     @vinicio = Date.parse('2015/01/01')
-     @dfin=365
-     @vfin=Date.parse('2015/12/31')
-     @vrang=30
-     @vtitun=" AF-2015"
-
-
-    when 2
-      @vinicio = Date.parse('2016/01/01')
-      @dfin=365
-      @vfin=Date.parse('2016/12/31')
+    #comienza case
+  case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     when 1
+       @vinicio = Date.parse('2015/01/01')
+       @dfin=365
+       @vfin=Date.parse('2015/12/31')
        @vrang=30
-       @vtitun=" AF-2016"
+       @vtitun=" AF-2015"
 
 
+      when 2
+        @vinicio = Date.parse('2016/01/01')
+        @dfin=365
+        @vfin=Date.parse('2016/12/31')
+         @vrang=30
+         @vtitun=" AF-2016"
 
-     when 3
-       @vinicio = Date.parse('2017/01/01')
-       @dfin=(Time.now-@vinicio.to_time).to_i/86400
-       @vfin=Time.now
-        @vrang=15
-        @vtitun=" AF-2017"
 
 
-  end #termina case
+       when 3
+         @vinicio = Date.parse('2017/01/01')
+         @dfin=(Time.now-@vinicio.to_time).to_i/86400
+         @vfin=Time.now
+          @vrang=15
+          @vtitun=" AF-2017"
 
 
-  @nconta=Detail.where(item_id:item.id).
-     where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).count
-   @deta2=Detail.where(item_id:item.id).
-          where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).
-         order('details.pfecha DESC,details.id DESC')
-
-
-@deta1=@deta2.where(item_id:item.id)
-
-
-
-
-  @vlog=false
-
-if @deta1.count==0 then
-
-  object = Detail.new(:actividad => 36, :pfecha=> @vinicio,
-   :item_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
-   :updated_at => @vinicio,:tipo =>'automatico')
-  object.save
-
-
-end
-
-@deta1.each do |detail|
-
-  #empieza detail
-#end
-#termina cas
-  @nconta1=@nconta1+1
-
-
-if detail.pfecha and detail.actividad  then
-@vproc=Formula.where(product_id:12,orden:detail.actividad).
-                     select('cantidad as dd').first.dd
-#proceso
-@vprord=detail.actividad
-#actividad
-@nconta2=0
-@ulvproc2=0
-
-
-
-#inicio de phase if 280 al 392*************************************************************
-if Phase.where(expediente:item.exped).count>0 and item.exped>0 then
-  @phase1=Phase.find_by(expediente:item.exped).activities
-  .where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
-   .order('activities.pfecha DESC,activities.id DESC')
-
-
-#inicia cadena
-
-@phase1.each do |phase|
-
-if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
-
-@vproc2=Formula.where(product_id:12,orden:phase.actividad).
-                     select('cantidad as dd').first.dd
-#proceso
-@vprord2=phase.actividad
-#actividad
-
-@vdetfec2=phase.pfecha
-
-
-  @nconta2=@nconta2+1
-
-
-
-
-
-
-if  @nconta2==1 and @nconta1==1  then
-      @vlog=false
-      @ulvproc2=@vproc2  #guarda el primer proceso
-   if (@vproc2==@iproce or @iproce==100)  then
-    @vlog=true
-   end
-end
-
-
-if @vlog  then
-# empieza @vlog
-
-
-   unless @vprord2==200 or @vprord2==300 or ( @vprord2==8 and item.modalidad==3)
-     if  @uproc>=@vproc2 then
-
-            @vproceso[@vproc2]=@vproceso[@vproc2]+
-            ( @vfec1-@vdetfec2.to_time).to_i/86400
-
-            if @nconta1==1 then
-               @vproceso[@vproc2]=@vproceso[@vproc2]+2
-            end
-
-            @uproc=@vproc2
-      else
-            @vproceso[@uproc]=@vproceso[@uproc]+
-            ( @vfec1-@vdetfec2.to_time).to_i/86400
-
-
-       end
-    else
-       @corta=( @vfec1-@vdetfec2.to_time).to_i/86400
-
-
-    end #de unless
-
-
-
-
-  @vfec1=@vdetfec2.to_time
-
-end # termina @vlog
-
-
-end #de if de phase mayor
-
-end  #terminar ecah de phase
-
-end #terminar el if de  la cadena phase
-
-
-
-
-
-# fin phase del 280 al 392************************************************************
-if  @nconta1==1 and   @vlog==false then
-      @vlog=false
-   if (@vproc==@iproce or @iproce==100 or (@iproce==2 and @vproc<=2)) and  @vproc>@ulvproc2 then
-    @vlog=true
-   end
-end
-
-if @vlog  then
-# empieza @vlog
-
-
-   unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
-     if  @uproc>=@vproc then
-
-            @vproceso[@vproc]=@vproceso[@vproc]+
-            ( @vfec1-detail.pfecha.to_time).to_i/86400
-
-            if @nconta1==1 then
-               @vproceso[@vproc]=@vproceso[@vproc]+2
-            end
-            @uproc=@vproc
-      else
-            @vproceso[@uproc]=@vproceso[@uproc]+
-            ( @vfec1-detail.pfecha.to_time).to_i/86400
-
-
-       end
-    else
-       @corta=( @vfec1-detail.pfecha.to_time).to_i/86400
-
-
-    end #de unless
-
-
-    if @nconta1==@nconta then
-      if @vprord==36 then
-           @vproceso[0]= ( detail.pfecha.to_time-
-           @vinicio.to_time).to_i/86400
-       end
-
-     @vproceso[@vproc]=@vproceso[@vproc]+
-     ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]
-
-
-
-    end  #if  @nconta1
-
-
-  @vfec1=detail.pfecha.to_time
-
-end # termina @vlog
-
-end #termina actividad
-
-
-end #termina detail??
-
-
-
-
-
-
-# empieza @vlog
-if @vlog then
-
-
-@vversion=@vproceso[0]
-   @vobac=@vproceso[1]
-    @vpec=@vproceso[2]
-    @vdac=@vproceso[3]
-    @vdem=@vproceso[4]
-    @vdpc=@vproceso[5]
-    @vdec=@vproceso[6]
-    @veobac=@vproceso[7]
-
-
-
-
-
-
-
-
-
-
-if item.obac and item.obac>0 then
-    @n1=Formula.where(product_id:1, orden:item.obac).
-       select('nombre as dd').first.dd
-
-else
-    @n1="s/d"
-end
-
-#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-#@alabels2.push(item.descripcion.first(10))
-@desc=item.descripcion.underscore
-
-if @desc[0,3]=='adq' then
-    @desc=@desc[15,54]
-else
- @desc=@desc
-
-end
-
-if item.exped and item.exped>0 then
-
-@lab1=Formula.where(product_id:16,orden:item.exped).
-         select('nombre as dd').first.dd+"-"+
-          Formula.where(product_id:16,orden:item.exped).
-                    select('descripcion as dd').first.dd.underscore.truncate(30)+
-                  "-"+item.pac+"-"+@n1
-else
-#@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-@lab1=@desc.capitalize.truncate(40)+"-"+item.pac+"-"+@n1
-
-end
-
-
-
-if @alabels.length <29  then
-   @alabels.push(@lab1)
-   @aversion.push(@vversion)
-   @aobac.push(@vobac)
-   @apec.push(@vpec)
-   @adac.push(@vdac)
-   @adem.push(@vdem)
-   @adpc.push(@vdpc)
-   @adec.push(@vdec)
-   @aeobac.push(@veobac)
-   @conta=@conta+1
-   @titu1=" "
-else
-   if @alabels2.length  <29  then
-      @alabels2.push(@lab1)
-      @aversion2.push(@vversion)
-       @aobac2.push(@vobac)
-       @apec2.push(@vpec)
-       @adac2.push(@vdac)
-       @adem2.push(@vdem)
-       @adpc2.push(@vdpc)
-       @adec2.push(@vdec)
-      @aeobac2.push(@veobac)
-      @titu2=" 2 de 2"
-      @titu1=" 1 de 2"
-      @conta2=  @conta2+1
-   else
-
-   @alabels3.push(@lab1)
-   @aversion3.push(@vversion)
-   @aobac3.push(@vobac)
-   @apec3.push(@vpec)
-   @adac3.push(@vdac)
-   @adem3.push(@vdem)
-   @adpc3.push(@vdpc)
-   @adec3.push(@vdec)
-  @aeobac3.push(@veobac)
-   @titu3=" 3 de 3"
-   @titu2=" 2 de 3"
-   @titu1=" 1 de 3"
-   @conta3= @conta3+1
-  end
-# termina @vlog
-end
-
-# admin
-end
-
-
-
-
-end #terminia  item
-#termina item***********************************************
-
-
-
-if @conta>0 then
-@vancho=(280/@conta).to_i
-if @vancho>30 then
-  @vancho=30
-end
-end
-@ancho=@vancho.to_s
-
-@blabels.push(@alabels.reverse.join("|"))
-@blabels2.push(@alabels2.reverse.join("|"))
-@blabels3.push(@alabels3.reverse.join("|"))
-
-#if @conta <29 then
-@adata.push(@aversion)
-@adata.push(@aobac)
-@adata.push(@apec)
-@adata.push(@adac)
-@adata.push(@adem)
-@adata.push(@adpc)
-@adata.push(@adec)
-@adata.push(@aeobac)
-#else
- @adata2.push(@aversion2)
-  @adata2.push(@aobac2)
-  @adata2.push(@apec2)
-  @adata2.push(@adac2)
-  @adata2.push(@adem2)
-  @adata2.push(@adpc2)
-  @adata2.push(@adec2)
-  @adata2.push(@aeobac2)
-
-#end
-@adata3.push(@aversion3)
-@adata3.push(@aobac3)
-@adata3.push(@apec3)
-@adata3.push(@adac3)
-@adata3.push(@adem3)
-@adata3.push(@adpc3)
-@adata3.push(@adec3)
-@adata3.push(@aeobac3)
-
-@dif=30*86400
-if @alabels.length <=29 and @alabels.length>0 then
-  @bar =Gchart.bar(
-              #  :size   => '570x500',
-                 :size   => '570x500',
-                :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-                :title  => @titulo+@titu1+@vtitun,
-                :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
-                :orientation => 'horizontal',
-                :stacked => true,
-
-                :bg =>'EEEEEE',
-                :legend_position => 'bottom',
-
-
-                :bar_width_and_spacing => @ancho,
-
-                :axis_with_labels => 'y,x,r',
-
-               :axis_labels => [@blabels],
-
-        #   :axis_range => [nil, [@vinicio.to_time.
-        #     strftime("%b %y"), Time.now.strftime("%b %y"),
-        #     DateTime.new(0,1,1)], [0,@conta,1]],
-
-            #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-              :axis_range => [nil, [0,@dfin, @vrang], [1,@alabels.length,1]],
-              #:min_value => 0,
-              #:max_value => 365,
-                :data   =>@adata)
-    end
-    if @alabels2.length <=29 and @alabels2.length >0 then
-    @bar2 =Gchart.bar(
-                #  :size   => '570x500',
-                   :size   => '570x500',
-                  :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-                  :title  => @titulo+@titu2+@vtitun,
-                  :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
-                  :orientation => 'horizontal',
-                  :stacked => true,
-
-                  :bg =>'EEEEEE',
-                  :legend_position => 'bottom',
-
-
-                  :bar_width_and_spacing => @ancho,
-
-                  :axis_with_labels => 'y,x,r',
-
-                 :axis_labels => [@blabels2],
-
-          #   :axis_range => [nil, [@vinicio.to_time.
-          #     strftime("%b %y"), Time.now.strftime("%b %y"),
-          #     DateTime.new(0,1,1)], [0,@conta,1]],
-
-              #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                :axis_range => [nil, [0,@dfin, @vrang], [1,@alabels2.length,1]],
-                #:min_value => 0,
-                #:max_value => 365,
-                  :data   =>@adata2)
-        end
-        if @alabels3.length <=29 and @alabels3.length >0 then
-        @bar3 =Gchart.bar(
-                    #  :size   => '570x500',
-                       :size   => '570x500',
-                      :bar_colors => ['FFFFFF', 'FFFF66', 'FF8C00','33FF33','00BFFF','FF0033','483D8B'],
-                      :title  => @titulo+@titu3+@vtitun,
-                      :legend => ['  ','S/EXP', 'C/EXP','DCA','DEM','DPC','DEC'],
-                      :orientation => 'horizontal',
-                      :stacked => true,
-
-                      :bg =>'EEEEEE',
-                      :legend_position => 'bottom',
-
-
-                      :bar_width_and_spacing => @ancho,
-
-                      :axis_with_labels => 'y,x,r',
-
-                     :axis_labels => [@blabels3],
-
-              #   :axis_range => [nil, [@vinicio.to_time.
-              #     strftime("%b %y"), Time.now.strftime("%b %y"),
-              #     DateTime.new(0,1,1)], [0,@conta,1]],
-
-                  #:axis_range => [nil, [@vinicio.to_time,Time.now], [1,@conta,1]],
-                    :axis_range => [nil, [0,@dfin, @vrang], [1,@alabels3.length,1]],
-                    #:min_value => 0,
-                    #:max_value => 365,
-                      :data   =>@adata3)
-            end
-
+    end #termina case
 
 
 
@@ -996,6 +394,8 @@ if @alabels.length <=29 and @alabels.length>0 then
 
 
 
+
+
                                                              @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
                                                                        .order('activities.pfecha DESC,activities.id DESC').
                                                                        select('activities.actividad as dd').first.dd
@@ -1039,7 +439,9 @@ if @alabels.length <=29 and @alabels.length>0 then
                                                            @vxper[0]=@vxper[0]+ 1
                                                            @vpresu[0]=@vpresu[0]+ ite.certificado
                                                            @vpac1.push(ite.id)
-                                                        end# de if 1
+
+
+                        end# de if 1
                                                  end
                                          column("Avance") do |formula|
                                                  "PAC"
@@ -1132,9 +534,9 @@ if @alabels.length <=29 and @alabels.length>0 then
 
                             end #end de panel
 
+  end# de columns
 
-
-
+column do
 
 
 
@@ -1417,7 +819,7 @@ end #panel
 
   end
   panel  "Leyenda" do
-   li "S/EXP: Expediente en OBAC"
+   li "S/EXP: Sin Expediente"
      li "C/EXP: Con Expediente"
        li "DC: Dirección de Catalogación"
          li "DEM: Dirección de Estudio de Mercado"
@@ -1428,42 +830,26 @@ end #panel
 
 
 
-                      end# de columns
+
   end
 
 
 #########################################
 
+end #column 2
 
 
 
-                    column do
-                    panel "Grafico de Etapas del Proceso en Dias Calendarios Desde Inicio de Año Hasta la Fecha" do
-
-                       li do
-                         if @conta>0  then
-                         strong { image_tag @bar}
-                        end
-                          end
-
-                      #  panel "Grafico de Situacion de Expedientes" do
-                           li do
-                             if @conta2>0 then
-                             strong { image_tag @bar2}
-                            end
-                              end
 
 
-                            li do
-                              if @conta3>0 then
-                              strong { image_tag @bar3}
-                             end
-                               end
 
-                     end
 
-end
-              end
+
+
+
+
+
+    end
 
 
 

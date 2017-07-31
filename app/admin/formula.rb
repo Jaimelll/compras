@@ -40,7 +40,7 @@ permit_params  :nombre, :descripcion,  :orden,
                 select('id as dd').first.dd
         Formula.where( product_id:15 ).update_all( cantidad:0 )
         Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
+        redirect_to admin_grafico_path
       end
 
       member_action :corporativa, method: :put do
@@ -48,7 +48,7 @@ permit_params  :nombre, :descripcion,  :orden,
                 select('id as dd').first.dd
         Formula.where( product_id:15 ).update_all( cantidad:0 )
         Formula.where( product_id:15 ,orden:2).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
+        redirect_to admin_grafico_path
       end
 
       member_action :autorizado, method: :put do
@@ -56,7 +56,7 @@ permit_params  :nombre, :descripcion,  :orden,
                 select('id as dd').first.dd
         Formula.where( product_id:15 ).update_all( cantidad:0 )
         Formula.where( product_id:15 ,orden:3).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
+        redirect_to admin_grafico_path
       end
 
       member_action :dec, method: :put do
@@ -64,7 +64,7 @@ permit_params  :nombre, :descripcion,  :orden,
                select('id as dd').first.dd
        Formula.where( product_id:15 ).update_all( cantidad:0 )
       Formula.where( product_id:15 ,orden:4).update_all( cantidad:1 )
-       redirect_to admin_dashboard_path
+       redirect_to admin_grafico_path
       end
 
       member_action :excluido, method: :put do
@@ -72,7 +72,7 @@ permit_params  :nombre, :descripcion,  :orden,
                 select('id as dd').first.dd
         Formula.where( product_id:15 ).update_all( cantidad:0 )
         Formula.where( product_id:15 ,orden:5).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
+        redirect_to admin_grafico_path
       end
 
       member_action :dpc, method: :put do
@@ -80,7 +80,7 @@ permit_params  :nombre, :descripcion,  :orden,
                select('id as dd').first.dd
        Formula.where( product_id:15 ).update_all( cantidad:0 )
       Formula.where( product_id:15 ,orden:6).update_all( cantidad:1 )
-       redirect_to admin_dashboard_path
+      redirect_to admin_grafico_path
       end
 
       member_action :dem, method: :put do
@@ -88,7 +88,7 @@ permit_params  :nombre, :descripcion,  :orden,
                select('id as dd').first.dd
        Formula.where( product_id:15 ).update_all( cantidad:0 )
       Formula.where( product_id:15 ,orden:7).update_all( cantidad:1 )
-       redirect_to admin_dashboard_path
+       redirect_to admin_grafico_path
       end
 
       member_action :gex, method: :put do
@@ -96,7 +96,7 @@ permit_params  :nombre, :descripcion,  :orden,
                select('id as dd').first.dd
        Formula.where( product_id:15 ).update_all( cantidad:0 )
       Formula.where( product_id:15 ,orden:8).update_all( cantidad:1 )
-       redirect_to admin_dashboard_path
+       redirect_to admin_grafico_path
       end
 
 filter :nombre
