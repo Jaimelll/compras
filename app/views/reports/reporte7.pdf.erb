@@ -217,7 +217,11 @@
 
                <td colspan="2"><%=Formula.where(product_id:12,orden:deta.actividad).
                            select('descripcion as dd').first.dd.capitalize  %></td>
+                   <%  if deta.obs then %>         
                <td colspan="3"><%= deta.obs.capitalize %></td>
+                 <%  else %>
+                 <td > </td>
+                   <%  end %>
                 <td > </td>
        </tr>
         <% end %>
