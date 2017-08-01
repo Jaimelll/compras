@@ -2,7 +2,7 @@
 ActiveAdmin.register_page "grafico" do
 
   menu  priority: 2,label: "Grafico"
-  
+
 
   action_item :only=> :index do
       link_to 'Encargo', encargo_admin_product_formula_path(1, :@num), method: :put
@@ -311,9 +311,7 @@ ActiveAdmin.register_page "grafico" do
                 @vproceso[@vproc2]=@vproceso[@vproc2]+
                 ( @vfec1-@vdetfec2.to_time).to_i/86400
 
-                if @nconta1==1 then
-                   @vproceso[@vproc2]=@vproceso[@vproc2]+2
-                end
+                
 
                 @uproc=@vproc2
           else
