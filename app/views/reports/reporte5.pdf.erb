@@ -91,8 +91,9 @@
 
               <tr style="font-size:80%;"  class="last">
                 <th ></th>
-                <th >Fecha </th>
-                <th >Programa</th>
+                <th >Programada</th>
+                <th >Real </th>
+
                 <th colspan="2">Actividad</th>
                 <th colspan="3">Observacion</th>
                 <th ></th>
@@ -109,12 +110,13 @@
 
 
                     <td ></td>
+                    <%  if deta.plan then %>
+                 <td ><%= deta.plan.strftime("%d-%m") %></td>
+                    <%  else %>
+                  <td >s/d</td>
+                     <%  end %>
                    <td><%= deta.pfecha.strftime("%d-%m") %></td>
-                     <%  if deta.plan then %>
-                  <td ><%= deta.plan.strftime("%d-%m") %></td>
-                     <%  else %>
-                   <td >s/d</td>
-                      <%  end %>
+
 
                    <td colspan="2"><%=Formula.where(product_id:12,orden:deta.actividad).
                                select('descripcion as dd').first.dd.capitalize  %></td>

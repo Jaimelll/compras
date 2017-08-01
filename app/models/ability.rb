@@ -14,7 +14,7 @@ class Ability
             can :read, ActiveAdmin::Page, :name =>"grafico"
           can [:read], [Item, Detail]
           can [:read], [Phase,Activity,Piece]
-    when 10,5,16,18,19 #asesor,ballesteros
+    when 10,5,16,17,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
         can [:read], [Item, Detail]
@@ -29,7 +29,7 @@ class Ability
 #   when 5 # ballesteros
 #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
 #    can [:read], [Item, Detail]
-      when 7,11,12,15,17 #DEM castaneda
+      when 7,11,12,15 #DEM castaneda
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
         can [:read], Item
