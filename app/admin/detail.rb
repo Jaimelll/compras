@@ -63,10 +63,10 @@ index :title => "Lista de Actividades"  do
 
 
   column("Actividad", :sortable => :item_id) do   |detail|
-if params[:item_id] then
 
 
-    if detail.actividad then
+
+
       n4=Formula.where(product_id:12,orden:detail.actividad).
               select('orden as dd').first.dd
       n2=Formula.where(product_id:12,orden:detail.actividad).
@@ -77,15 +77,32 @@ if params[:item_id] then
                 "-----"+
                  "#{Formula.where(product_id:10,orden:n2).
                           select('nombre as dd').first.dd}"
+
+  #para gex
       if n4==25 or n4==15 or n4==17 or n4==26 then
         n5=1
       else
         n5=0
       end
+#para dc
+      if n4==60 then
+        n6=1
+      else
+        n6=0
+      end
 
-   else
-            n1="s/d"
-   end
+  #para dem
+            if n4==34 then
+              n7=1
+            else
+              n7=0
+            end
+  #para dem
+                      if n4==35 then
+                        n8=1
+                      else
+                        n8=0
+                      end
 
     # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
     case current_admin_user.id # a_variable is the variable we want to compare
@@ -98,19 +115,19 @@ if params[:item_id] then
              n3=2
           end
        when 11 #estudio de mercado
-            if n2==4
+            if n2==4 or n7==1
               n3=1
             else
               n3=2
             end
         when 12 # catalogacion
-               if n2==3
+               if n2==3 or n6==1
                  n3=1
                else
                  n3=2
                end
         when 13 #proceso de contrataciones
-                  if n2==5
+                  if n2==5  or n8==1
                     n3=1
                   else
                     n3=2
@@ -127,7 +144,7 @@ if params[:item_id] then
       end
 
   link_to_if n3==1 ,"#{n1} ",  admin_item_detail_path(params[:item_id],detail)
-end
+
 end
 column("Fecha Final", :sortable => :pfecha) do |detail|
   if detail.pfecha then
