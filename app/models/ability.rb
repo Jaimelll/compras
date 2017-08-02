@@ -9,12 +9,8 @@ class Ability
   case user.id # a_variable is the variable we want to compare
     when 1,2
           can :manage, :all
-    when 3 #roy
-          can :read, ActiveAdmin::Page, :name =>"Dashboard"
-            can :read, ActiveAdmin::Page, :name =>"grafico"
-          can [:read], [Item, Detail]
-          can [:read], [Phase,Activity,Piece]
-    when 10,5,16,17,18,19 #asesor,ballesteros
+
+    when 3,5,7,15,16,17,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
         can [:read], [Item, Detail]
@@ -22,29 +18,32 @@ class Ability
     #   when 5 # ballesteros
     #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
     #    can [:read], [Item, Detail]
-    when 20 #administrativo,alfaro
-    can :read, ActiveAdmin::Page, :name =>"Dashboard"
-  can :read, ActiveAdmin::Page, :name =>"grafico"
+
 
 #   when 5 # ballesteros
 #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
 #    can [:read], [Item, Detail]
-      when 7,11,12,15 #DEM castaneda
+      when 11,12 #DEM y DC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
-        can [:read], Item
-        can [:create,:read,:update,:destroy],  Detail
-      when 13,14 #DPC
+        can [:read], [Item,Phase,Piece]
+        can [:create,:read,:update,:destroy],  [Detail,Activity]
+      when 13 #DPC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
-        can [:read], Item
-        can [:create,:read,:update,:destroy],  [Detail,Phase,Activity,Piece]
+        can [:read], [Item,Detail]
+        can [:create,:read,:update,:destroy],  [Phase,Activity,Piece]
+      when 14 # DEC
+        can :read, ActiveAdmin::Page, :name =>"Dashboard"
+          can :read, ActiveAdmin::Page, :name =>"grafico"
+        can [:read], [Item,Piece,Phase]
+        can [:create,:read,:update,:destroy],  [Activity,Detail]
 
-      when 4,6,8,9 #sectoristas
+      when 4,6,8,9 #sectoristas y Bertolotti
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"grafico"
-          can [:create,:read,:update, :destroy], [Item, Detail]
-            can [:read], [Phase,Activity,Piece]
+          can [:create,:read,:update, :destroy], [Item, Detail,Activity]
+            can [:read], [Phase,Piece]
   else
 
       can :read, ActiveAdmin::Page, :name =>"Dashboard"
