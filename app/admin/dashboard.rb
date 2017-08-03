@@ -338,6 +338,11 @@ end
 
                                      end # de table for Mercado
                                    end # panel mercado
+
+        end# de columns
+        column do
+
+
                                    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                    @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
 
@@ -537,9 +542,14 @@ end
 
                             end #end de panel
 
-  end# de columns
 
-column do
+
+
+                            case current_admin_user.id
+                             when 21,22,23
+
+
+                            else  
 
 
 
@@ -747,11 +757,7 @@ end #panel
 
 
 #########################################
- case current_admin_user.id
-  when 21,22,23
 
-
- else
    panel  "V.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
