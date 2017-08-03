@@ -46,7 +46,7 @@
 
   <tbody>
     <%  @conta=0 %>
-    <% @vcert=[] %>
+
     <% @activities.each do |activity| %>
 
         <tr style="font-size:80%;"  class="detl" >
@@ -91,10 +91,11 @@
 
         <% if activity.expediente>0 then %>
        <% Item.where(exped:activity.expediente).each do |nobac| %>
+        <% @spac=nobac.pac%>
        <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
-       <% @vobac=@vobac+ @sobac+"-" %>
+       <% @vobac=@vobac+ @spac+@sobac+"-" %>
 
-       <% @vcert.push(nobac.id) %>
+
        <% end %>
        <% end %>
        <td  ><%= @vobac %></td>

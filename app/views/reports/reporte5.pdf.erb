@@ -20,6 +20,7 @@
        <th>N°</th>
 
        <th  colspan="2">Proceso</th>
+       <th  >PAC-FUENTE</th>
        <th  colspan="3">Descripcion</th>
        <th   >Presupuestado</th>
 <% if  @vactcanti.to_i==6 then %>
@@ -55,7 +56,23 @@
 
 
         <td colspan="2"><%= variable.nomenclatura %></td>
+        <% @vobac=" " %>
 
+        <% if variable.expediente>0 then %>
+        <% Item.where(exped:variable.expediente).each do |nobac| %>
+        <% @spac=nobac.pac%>
+        <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
+        <% if nobac.fuente then %>
+        <% @sfuente=Formula.where(product_id:8,orden:nobac.fuente).select('nombre as dd').first.dd %>
+          <% else %>
+          <%  @sfuente=" "%>
+            <% end %>
+        <% @vobac=@vobac+ @spac+"-"+@sobac+"-"+ @sfuente+"//"%>
+
+
+        <% end %>
+        <% end %>
+        <td  ><%= @vobac %></td>
 
 
 
@@ -94,7 +111,7 @@
                 <th >Programada</th>
                 <th >Fecha Real </th>
 
-                <th colspan="2">Actividad</th>
+                <th colspan="3">Actividad</th>
                 <th colspan="3">Observacion</th>
                 <th ></th>
              </tr>
@@ -118,7 +135,7 @@
                    <td><%= deta.pfecha.strftime("%d-%m") %></td>
 
 
-                   <td colspan="2"><%=Formula.where(product_id:12,orden:deta.actividad).
+                   <td colspan="3"><%=Formula.where(product_id:12,orden:deta.actividad).
                                select('descripcion as dd').first.dd.capitalize  %></td>
                    <td colspan="3"><%= deta.obs.capitalize %></td>
                    <td ></td>
