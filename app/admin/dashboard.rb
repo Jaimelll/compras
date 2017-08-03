@@ -354,6 +354,7 @@ end
                                               @vpac4=[]
                                               @vpac5=[]
                                               @vpac6=[]
+                                              @vpac7=[]
                                               @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3").where(obac: @vuobac)
                                               @itep.each do |ite|
 
@@ -432,6 +433,8 @@ end
                                                                @vpac5.push(ite.id)
                                                              when 6
                                                                @vpac6.push(ite.id)
+                                                             when 7
+                                                               @vpac6.push(ite.id)
 
                                                           end #case
 
@@ -507,7 +510,7 @@ end
 
                                          column("DEC ") do |formula|
                                            @dpc=  formula.orden
-                                           @vpas=[6]
+                                           @vpas=[6,7]
                                            @titproc1="EXPEDIENTES EN DEC"
                                            @dpcl=   @vxper[6].to_s+ "/("+
                                            number_with_delimiter(@vpresu[6].to_i, delimiter: ",").to_s+ ")"

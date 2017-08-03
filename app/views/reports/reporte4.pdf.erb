@@ -16,13 +16,15 @@
     <tr style="font-size:90%;" >
       <th >N°</th>
       <%  if @vopc==4 then %>
-       <th >Ingreso DPC</th>
-       <th ></th>
-       <%  @idpc=34%>
+        <th >Ingreso DPC</th>
+        <th >Convocatoria</th>
+         <%  @idpc=34%>
+         <%  @idpc2=18%>
       <%  else%>
-      <th >Pres. Prop.</th>
-      <th >Fecha BP</th>
-       <%  @idpc=19%>
+       <th >Pres. Prop.</th>
+       <th >Fecha BP</th>
+         <%  @idpc=19%>
+         <%  @idpc2=20%>
      <%  end%>
 
        <th >Nomenclatura</th>
@@ -70,10 +72,10 @@
 
 
 
-          <% if Activity.where(actividad:20,phase_id:activity.id.to_s)
+          <% if Activity.where(actividad:@idpc2,phase_id:activity.id.to_s)
                 .count>0 then %>
 
-              <%  @vabp=Activity.where(actividad:20,phase_id:activity.id.to_s)
+              <%  @vabp=Activity.where(actividad:@idpc2,phase_id:activity.id.to_s)
                          .select('pfecha as dd').first.dd%>
                          <td   ><%=  @vabp.strftime("%d-%m") %></td>
                          <%  else %>
