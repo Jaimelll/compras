@@ -6,4 +6,5 @@ class Phase < ApplicationRecord
       validates :expediente, presence: true
       validates :moneda, presence: true
       validates :periodo, presence: true
+      validates :valor, presence: true
 end

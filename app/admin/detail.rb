@@ -85,7 +85,7 @@ index :title => "Lista de Actividades"  do
         n5=0
       end
 #para dc
-      if n4==60 or n4==76 then
+      if n4==60  then
         n6=1
       else
         n6=0
@@ -97,7 +97,7 @@ index :title => "Lista de Actividades"  do
             else
               n7=0
             end
-  #para dem
+  #para dpc
                       if n4==35 or n4==76 then
                         n8=1
                       else
@@ -210,7 +210,7 @@ end
 
                  when 7,11     #castaneda,dem
                      Formula.where(product_id:12).order("numero,descripcion").
-                       where("cantidad=4 or orden=25 or orden=34").
+                       where("cantidad=4 or orden=34").
                        map{|u| [u.descripcion.capitalize,
                         u.orden]}
                  when 12     #dc
@@ -220,7 +220,7 @@ end
                              u.orden]}
                  when 13     #dpc
                                Formula.where(product_id:12).order("numero,descripcion").
-                               where("cantidad=5 or orden=35").
+                               where("cantidad=5 or orden=35 or orden=76").
                                  map{|u| [u.descripcion.capitalize,
                                   u.orden]}
 
