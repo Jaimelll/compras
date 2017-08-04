@@ -127,7 +127,7 @@ index :title => "Lista de Actividades"  do
                  n3=2
                end
         when 13 #proceso de contrataciones
-                  if n2==5  or n8==1
+                  if n2==5  or n8==1 or n8==76
                     n3=1
                   else
                     n3=2

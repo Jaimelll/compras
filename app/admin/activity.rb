@@ -79,19 +79,19 @@ column("Actividad", :sortable => :phase_id) do |activity|
                             n3=2
                          end
                       when 11 #estudio de mercado
-                           if n2==4
+                           if n2==4 or n7==1
                              n3=1
                            else
                              n3=2
                            end
                        when 12 # catalogacion
-                              if n2==3
+                              if n2==3 or n6==1
                                 n3=1
                               else
                                 n3=2
                               end
                        when 13 #proceso de contrataciones
-                                 if n2==5
+                                 if n2==5  or n8==1 or n8==76
                                    n3=1
                                  else
                                    n3=2
@@ -106,7 +106,6 @@ column("Actividad", :sortable => :phase_id) do |activity|
                        else
                             n3=2
                      end
-
                   link_to_if n3==1 ,"#{n1} ", admin_phase_activity_path(params[:phase_id],activity)
 end
 column("Fecha Final", :sortable => :pfecha) do |activity|
