@@ -85,7 +85,7 @@ index :title => "Lista de Actividades"  do
         n5=0
       end
 #para dc
-      if n4==60 then
+      if n4==60 or n4==76 then
         n6=1
       else
         n6=0
@@ -98,7 +98,7 @@ index :title => "Lista de Actividades"  do
               n7=0
             end
   #para dem
-                      if n4==35 then
+                      if n4==35 or n4==76 then
                         n8=1
                       else
                         n8=0
@@ -127,7 +127,7 @@ index :title => "Lista de Actividades"  do
                  n3=2
                end
         when 13 #proceso de contrataciones
-                  if n2==5  or n8==1 or n8==76 then
+                  if n2==5  or n8==1 then
                     n3=1
                   else
                     n3=2
