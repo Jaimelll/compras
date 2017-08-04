@@ -91,7 +91,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
                                 n3=2
                               end
                        when 13 #proceso de contrataciones
-                                 if n2==5  or n8==1 or n8==76
+                                 if n2==5  or n8==1 or n8==76 then
                                    n3=1
                                  else
                                    n3=2
