@@ -70,7 +70,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
 
                    # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
                    case current_admin_user.id # a_variable is the variable we want to compare
-                       when 1,2,4 #gex
+                   when 1,2,4,5 #gex
                             n3=1
                         when 6,8,9 #gex
                           if n2==1 or n2==2 or n5==1 then

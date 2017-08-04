@@ -10,7 +10,7 @@ class Ability
     when 1,2
           can :manage, :all
 
-    when 3,5,7,15,16,17,18,19 #asesor,ballesteros
+    when 3,7,15,16,17,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
         can [:read], [Item, Detail]
@@ -39,7 +39,7 @@ class Ability
         can [:read], [Item,Piece,Phase]
         can [:create,:read,:update,:destroy],  [Activity,Detail]
 
-      when 4,6,8,9 #sectoristas y Bertolotti
+      when 4,5,6,8,9 #sectoristas y Bertolotti
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"grafico"
           can [:create,:read,:update, :destroy], [Item, Detail,Activity]
