@@ -903,7 +903,7 @@ end #panel
               @vpaso=1
             @vpas=[5,6,7]
             @titproc1="Relacion de Procesos"
-            @le= @vxper2[5]+  @vxper2[6]+  @vxper2[7]
+            @le=@vxper2[1]+@vxper2[2]+@vxper2[3]+@vxper2[4]+ @vxper2[5]+  @vxper2[6]+  @vxper2[7]
             link_to "#{@le}",
             reports_comment5_path(format: :pdf,
             :param3=> @vpas,
