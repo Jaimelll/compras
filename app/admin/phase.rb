@@ -21,7 +21,7 @@ ActiveAdmin.register Phase do
 #   permitted
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
-              :admin_user_id, :periodo
+              :admin_user_id, :periodo, :convocatoria
 
 menu priority: 5, label: "Procesos"
 
@@ -52,6 +52,7 @@ end
 
 
 filter :nomenclatura
+filter :convocatoria
 filter :descripcion
 filter :expediente, :as => :select, :collection =>
      Formula.where(product_id:16).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
@@ -71,7 +72,7 @@ column("nomenclatura") do |phase|
 
    link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)
 end
-
+ column("convocatoria")
  column("descripcion") do |phase|
   phase.descripcion.capitalize
 
@@ -103,6 +104,7 @@ form :title => 'Edicion Procesos' do |f|
 
     f.inputs  do
  f.input :nomenclatura , :input_html => { :style =>  'width:30%'}
+ f.input :convocatoria , :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del bien o servicio'
  f.input :moneda, :as => :select, :collection =>
           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -127,6 +129,7 @@ show :title => ' Proceso'  do
     attributes_table  do
 
       row :nomenclatura
+      row :convocatoria
       row :descripcion
       row :moneda do |phase|
           if phase.moneda and phase.moneda>0 then

@@ -382,16 +382,13 @@ end
                                                                 select('pfecha as dd').first.dd
 
 
-                                                            if  Phase.where.not(expediente:0).where(expediente:ite.exped).count>0 and
-                                                              Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.count>0 then
+                                                            if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 and
+                                                              Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities.count>0 then
 
 
-                                                               @phase3=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities.
-                                                                    where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
-                                                                   order('activities.pfecha DESC,activities.id DESC')
-
-
-
+                                                               @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                                                    .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin )
+                                                                   .order('activities.pfecha DESC,activities.id DESC')
 
 
 
@@ -402,10 +399,15 @@ end
 
 
 
-                                                             @vactiv2=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+
+
+
+                                                             @vactiv2=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                                                        .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin )
                                                                        .order('activities.pfecha DESC,activities.id DESC').
                                                                        select('activities.actividad as dd').first.dd
-                                                              @vactiv2fec=Phase.where.not(expediente:0).find_by(expediente:ite.exped).activities
+                                                              @vactiv2fec=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                                                           .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin )
                                                                                  .order('activities.pfecha DESC,activities.id DESC').
                                                                                  select('activities.pfecha as dd').first.dd
 
@@ -439,7 +441,7 @@ end
                                                              when 6
                                                                @vpac6.push(ite.id)
                                                              when 7
-                                                               @vpac6.push(ite.id)
+                                                               @vpac7.push(ite.id)
 
                                                           end #case
 
@@ -513,16 +515,27 @@ end
 
                                           end
 
-                                         column("DEC ") do |formula|
+                                         column("FC ") do |formula|
                                            @dpc=  formula.orden
-                                           @vpas=[6,7]
-                                           @titproc1="EXPEDIENTES EN DEC"
-                                           @dpcl=   @vxper[6].to_s+ "/("+
-                                           number_with_delimiter(@vpresu[6].to_i, delimiter: ",").to_s+ ")"
+                                           @vpas=[6]
+                                           @titproc1="EXPEDIENTES POR FIRMA DE CONTRATO"
+                                           @dpcl=   @vxper[6]
                                                    link_to "#{@dpcl} ",
                                                    reports_comment7_path(format: :pdf,
                                                    :param3=> @vpas,
                                                    :param4=> @titproc1,:param5=> @vpac6)
+
+                                         end
+                                         column("DEC ") do |formula|
+                                           @dpc=  formula.orden
+                                           @vpas=[7]
+                                           @titproc1="EXPEDIENTES EN DEC"
+                                           @dpcl=   @vxper[7].to_s+ "/("+
+                                           number_with_delimiter(@vpresu[7].to_i, delimiter: ",").to_s+ ")"
+                                                   link_to "#{@dpcl} ",
+                                                   reports_comment7_path(format: :pdf,
+                                                   :param3=> @vpas,
+                                                   :param4=> @titproc1,:param5=> @vpac7)
 
                                          end
 
@@ -549,7 +562,7 @@ end
                              when 21,22,23
 
 
-                            else  
+                            else
 
 
 
@@ -563,13 +576,18 @@ end
                                    #  end
                                        table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
 ##################
-@vxper2=[0,0,0,0,0,0,0]
-@vxper3=[0,0,0,0]
-@contavus=[0,0,0,0]
-@tcambio=3.3
+@vxper2=[0,0,0,0,0,0,0,0]
+@vxper3=[0,0,0,0,0,0,0,0]
+@contavus=[0,0,0,0,0,0,0,0]
+
 # @vpresu2=[0,0,0,0,0,0,0]
+@vpro1=[]
+@vpro2=[]
+@vpro3=[]
+@vpro4=[]
 @vpro5=[]
 @vpro6=[]
+@vpro7=[]
 @vprot=[]
 
 @vconv1=[]# actos previos
@@ -586,7 +604,7 @@ end
 @procp .each do |proceso|
 
     @deta4=Activity.where(phase_id:proceso.id).
-    where("pfecha>=? ", @vinicio ).
+      where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
     order('pfecha DESC,id DESC')
 
 
@@ -651,8 +669,11 @@ end
             @vconv3.push(proceso.id)
               @vxper3[3]=@vxper3[3]+1
 
-              @contavus[3]=  @contavus[3]+Piece.where(phase_id:proceso.id,moneda:1).sum(:adjudicado)+
-              Piece.where(phase_id:proceso.id,moneda:2).sum(:adjudicado)*@tcambio
+              @contavus[3]=  @contavus[3]+Piece.where(phase_id:proceso.id).sum(:adjudicado)*
+              Formula.where(product_id:7,orden:proceso.moneda)
+                    .select('cantidad as dd').first.dd.to_i/100
+
+
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
               Phase.where(id:proceso.id).update_all( pp:@vpp )
@@ -671,16 +692,31 @@ end
 
 
              case @vdir
+             when 1
+               @vpro1.push(proceso.id)
+               Phase.where(id:proceso.id).update_all( sele:1 )
+             when 2
+               @vpro2.push(proceso.id)
+               Phase.where(id:proceso.id).update_all( sele:2 )
+             when 3
+               @vpro3.push(proceso.id)
+               Phase.where(id:proceso.id).update_all( sele:3 )
+             when 4
+               @vpro4.push(proceso.id)
+               Phase.where(id:proceso.id).update_all( sele:4 )
                when 5
                  @vpro5.push(proceso.id)
                  Phase.where(id:proceso.id).update_all( sele:5 )
                when 6
                  @vpro6.push(proceso.id)
                   Phase.where(id:proceso.id).update_all(sele:6  )
+                when 7
+                  @vpro7.push(proceso.id)
+                   Phase.where(id:proceso.id).update_all(sele:7  )
               end #case
 
             case @vdir
-              when 5,6
+            when 1,2,3,4,5,6,7
                 @vprot.push(proceso.id)
             end
 
@@ -766,12 +802,68 @@ end #panel
          column("Avance") do |formula|
                  "Proceso"
          end
+         column("S/EXP") do |formula|
+           @dpc=  formula.orden
+           @vpaso=0
+           @vpas=1
+           @titproc1="PROCESOS EN OBAC"
+           @le= @vxper2[1]
+           link_to "#{@le}",
+           reports_comment5_path(format: :pdf,
+           :param3=> @vpas,
+           :param4=> @titproc1,:param5=> @vpro1,:param2=> @vpaso)
+
+          end
+
+
+         column("C/EXP") do |formula|
+           @dpc=  formula.orden
+           @vpaso=0
+           @vpas=2
+           @titproc1="PROCESOS EN GEX"
+           @le= @vxper2[2]
+           link_to "#{@le}",
+           reports_comment5_path(format: :pdf,
+           :param3=> @vpas,
+           :param4=> @titproc1,:param5=> @vpro2,:param2=> @vpaso)
+
+          end
+
+
+         column("DC") do |formula|
+           @dpc=  formula.orden
+           @vpaso=0
+           @vpas=3
+           @titproc1="PROCESOS EN DC"
+           @le= @vxper2[3]
+           link_to "#{@le}",
+           reports_comment5_path(format: :pdf,
+           :param3=> @vpas,
+           :param4=> @titproc1,:param5=> @vpro3,:param2=> @vpaso)
+
+          end
+
+
+         column("DEM") do |formula|
+           @dpc=  formula.orden
+           @vpaso=0
+           @vpas=4
+           @titproc1="PROCESOS EN DEM"
+           @le= @vxper2[4]
+           link_to "#{@le}",
+           reports_comment5_path(format: :pdf,
+           :param3=> @vpas,
+           :param4=> @titproc1,:param5=> @vpro4,:param2=> @vpaso)
+
+          end
+
+
 
          column("DPC") do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=5
-           @titproc1="PROCESOS DPC"
+           @titproc1="PROCESOS EN DPC"
            @le= @vxper2[5]
            link_to "#{@le}",
            reports_comment5_path(format: :pdf,
@@ -780,16 +872,28 @@ end #panel
 
           end
 
-          column("DEC") do |formula|
+          column("FC") do |formula|
             @dpc=  formula.orden
               @vpaso=0
             @vpas=6
-            @titproc1="PROCESOS DEC"
+            @titproc1="PROCESOS EN FIRMA DE CONTRATO"
             @le= @vxper2[6]
             link_to "#{@le}",
             reports_comment5_path(format: :pdf,
             :param3=> @vpas,
             :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
+          end
+
+            column("DEC") do |formula|
+              @dpc=  formula.orden
+                @vpaso=0
+              @vpas=7
+              @titproc1="PROCESOS DEC"
+              @le= @vxper2[7]
+              link_to "#{@le}",
+              reports_comment5_path(format: :pdf,
+              :param3=> @vpas,
+              :param4=> @titproc1,:param5=> @vpro7,:param2=> @vpaso)
 
 
 
@@ -797,9 +901,9 @@ end #panel
           column("TOTAL") do |formula|
             @dpc=  formula.orden
               @vpaso=1
-            @vpas=[5,6]
+            @vpas=[5,6,7]
             @titproc1="Relacion de Procesos"
-            @le= @vxper2[5]+  @vxper2[6]
+            @le= @vxper2[5]+  @vxper2[6]+  @vxper2[7]
             link_to "#{@le}",
             reports_comment5_path(format: :pdf,
             :param3=> @vpas,
@@ -833,6 +937,7 @@ end #panel
        li "DC: Dirección de Catalogación ACFFAA"
          li "DEM: Dirección de Estudio de Mercado ACFFAA"
            li "DPC: Dirección de Procesos de Compras ACFFAA"
+            li "FC: En proceso de suscripcion de contrato DEC "
              li "DEC:Dirección de Ejecucion de Contratos"
 
 

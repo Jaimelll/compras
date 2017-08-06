@@ -91,7 +91,7 @@ ActiveAdmin.register_page "grafico" do
   #DEC proceso 6
   @vitem=Item.where(ejecucion:4).where("modalidad<3")
   .where(exped2:@vaf).order('periodo,exped,obac')
-   @iproce=6
+   @iproce=7
 
   when 5
   #excluidos
@@ -181,7 +181,7 @@ ActiveAdmin.register_page "grafico" do
 
     @vproceso=[0,0,0,0,0,0,0,0]
 
-    @uproc=7
+    @uproc=8
     @corta=0
 
     @nconta1=0
@@ -263,8 +263,8 @@ ActiveAdmin.register_page "grafico" do
 
 
     #inicio de phase if 280 al 392*************************************************************
-    if Phase.where(expediente:item.exped).count>0 and item.exped>0 then
-      @phase1=Phase.find_by(expediente:item.exped).activities
+    if Phase.where(expediente:item.exped,convocatoria:1).count>0 and item.exped>0 then
+      @phase1=Phase.where(convocatoria:1).find_by(expediente:item.exped).activities
       .where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
        .order('activities.pfecha DESC,activities.id DESC')
 
@@ -295,9 +295,41 @@ ActiveAdmin.register_page "grafico" do
     if  @nconta2==1 and @nconta1==1  then
           @vlog=false
           @ulvproc2=@vproc2  #guarda el primer proceso
-       if (@vproc2==@iproce or @iproce==100)  then
+
+###################repetir case de iproce
+
+      
+       case   @iproce
+         when 100
+             @vlog=true
+        when 2
+          if  @vproc2<=2 then
+              @vlog=true
+
+          end
+        when 4
+
+           if  @vproc2==4 then
+            @vlog=true
+           end
+
+      when 5
+
+         if  @vproc2==5 then
+          @vlog=true
+         end
+
+    when 7
+
+       if  @vproc2==6 or  @vproc2==7 then
         @vlog=true
        end
+    end
+
+
+
+######################################
+
     end
 
 
@@ -311,7 +343,7 @@ ActiveAdmin.register_page "grafico" do
                 @vproceso[@vproc2]=@vproceso[@vproc2]+
                 ( @vfec1-@vdetfec2.to_time).to_i/86400
 
-                
+
 
                 @uproc=@vproc2
           else
@@ -347,9 +379,41 @@ ActiveAdmin.register_page "grafico" do
     # fin phase del 280 al 392************************************************************
     if  @nconta1==1 and   @vlog==false then
           @vlog=false
-       if (@vproc==@iproce or @iproce==100 or (@iproce==2 and @vproc<=2)) and  @vproc>@ulvproc2 then
+
+###############
+ if  @vproc>@ulvproc2 then
+   case   @iproce
+     when 100
+         @vlog=true
+    when 2
+      if  @vproc<=2 then
+          @vlog=true
+
+      end
+    when 4
+
+       if  @vproc==4 then
         @vlog=true
        end
+
+  when 5
+
+     if  @vproc==5 then
+      @vlog=true
+     end
+
+when 7
+
+   if  @vproc==6 or  @vproc==7 then
+    @vlog=true
+   end
+end
+
+
+end
+###################
+
+
     end
 
     if @vlog  then
@@ -472,7 +536,7 @@ ActiveAdmin.register_page "grafico" do
        @adem.push(@vdem)
        @adpc.push(@vdpc)
        @adec.push(@vdec)
-
+       @aeobac.push(@veobac)
 
 
     end   # log
@@ -497,6 +561,7 @@ ActiveAdmin.register_page "grafico" do
                             :param6 => @adem,
                             :param7 => @adpc,
                             :param8 => @adec,
+                            :param9 => @aeobac,
                             :param20 =>  @titulo+@vtitun}
 
 
