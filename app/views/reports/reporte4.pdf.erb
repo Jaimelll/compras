@@ -223,18 +223,19 @@
 
         <% end %>
 
-        <% if   pite.estado==2  or pite.estado==4 then %>
+        <% if   (pite.estado==2  or pite.estado==4) and pite.adjudicado then %>
         <td ><%= number_with_delimiter((pite.adjudicado*
         Formula.where(product_id:7,orden:pite.moneda)
               .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
 
           <% else %>
-
+              <% if  pite.referencial then %>
         <td ><%= number_with_delimiter((pite.referencial*
         Formula.where(product_id:7,orden:pite.moneda)
               .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
-
-
+           <% else %>
+           <td  ></td> 
+           <% end %>
                  <td colspan="1"> </td>
 
           <% end %>

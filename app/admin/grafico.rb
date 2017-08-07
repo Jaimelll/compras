@@ -298,7 +298,7 @@ ActiveAdmin.register_page "grafico" do
 
 ###################repetir case de iproce
 
-      
+
        case   @iproce
          when 100
              @vlog=true
