@@ -1,46 +1,7 @@
 
-ActiveAdmin.register_page "grafico" do
+ActiveAdmin.register_page "grafico0" do
 
-  menu  priority: 2,label: "Grafico"
-
-
-  action_item :only=> :index do
-      link_to 'Encargo', encargo_admin_product_formula_path(1, :@num), method: :put
-
-  end
-  #action_item :only=> :index do
-  #    link_to 'Encargo 2 de 2', mgp_admin_formula_path( :@num), method: :put
-  #end
-  action_item :only=> :index do
-      link_to 'Corporativos', corporativa_admin_product_formula_path( 1,:@num), method: :put
-  end
-
-
-
-  action_item :only=> :index do
-      link_to 'Autorizaciones', autorizado_admin_product_formula_path( 1,:@num), method: :put
-  end
-
-  action_item :only=> :index do
-      link_to 'Exclusiones', excluido_admin_product_formula_path(1, :@num), method: :put
-  end
-
-
-  action_item :only=> :index do
-     link_to 'GEX', gex_admin_product_formula_path( 1,:@num), method: :put
-  end
-
-  action_item :only=> :index do
-     link_to 'DEM', dem_admin_product_formula_path( 1,:@num), method: :put
-  end
-
-  action_item :only=> :index do
-     link_to 'DPC', dpc_admin_product_formula_path( 1,:@num), method: :put
-  end
-
-  action_item :only=> :index do
-     link_to 'DEC', dec_admin_product_formula_path(1, :@num), method: :put
-  end
+  menu  priority: 3,label: "Grafico Procesos"
 
 
 
@@ -58,7 +19,7 @@ ActiveAdmin.register_page "grafico" do
     else
       @vuobac=[1,2,3,4,5,6]
     end
-
+     #datos de grafico var y titulo, vaf de año fiscal
      @var=Formula.where(product_id:15,cantidad:1).
                           select('orden as dd').first.dd
      @titulo=Formula.where(product_id:15,cantidad:1).
@@ -70,53 +31,11 @@ ActiveAdmin.register_page "grafico" do
 
 
 
-  case @var
-   when 1
+
      #encargo
-     @vitem=Item.where(ejecucion:4,modalidad:2)
+     @vitem=Item.where(ejecucion:4,modalidad:2,obac:1)
      .where(exped2:@vaf).order('periodo,obac ASC,pac')
      @iproce=100
-
-   when 2
-   #corporativa
-     @vitem=Item.where(ejecucion:4,modalidad:1)
-     .where(exped2:@vaf).order('periodo,exped,obac')
-    @iproce=100
-  when 3
-  # autorizados
-     @vitem=Item.where(ejecucion:4,modalidad:3)
-     .where(exped2:@vaf).order('obac ASC,pac')
-     @iproce=100
-  when 4
-  #DEC proceso 6
-  @vitem=Item.where(ejecucion:4).where("modalidad<3")
-  .where(exped2:@vaf).order('periodo,exped,obac')
-   @iproce=7
-
-  when 5
-  #excluidos
-    @vitem=Item.where(ejecucion:4,modalidad:4)
-    .where(exped2:@vaf).order('obac ASC,pac')
-    @iproce=100
-
-  when 6
-  #dpc
-  @vitem=Item.where(ejecucion:4).where("modalidad<3")
-  .where(exped2:@vaf).order('periodo,exped,obac')
-  @iproce=5
-
-  when 7
-  #dem
-  @vitem=Item.where(ejecucion:4).where("modalidad<3")
-  .where(exped2:@vaf).order('periodo,exped,obac')
-  @iproce=4
-
-  when 8
-  #gex
-  @vitem=Item.where(ejecucion:4).where("modalidad<3")
-  .where(exped2:@vaf).order('periodo,exped,obac')
-  @iproce=2
-  end
 
 
     @vitem=@vitem.where(obac: @vuobac)
@@ -233,166 +152,24 @@ ActiveAdmin.register_page "grafico" do
     #proceso
     @vprord=detail.actividad
     #actividad
-    @nconta2=0
-    @ulvproc2=0
+
 
 
 
     #inicio de phase if 280 al 392*************************************************************
-    if Phase.where(expediente:item.exped,convocatoria:1).count>0 and item.exped>0 then
-      @phase1=Phase.where(convocatoria:1).find_by(expediente:item.exped).activities
-      .where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
-       .order('activities.pfecha DESC,activities.id DESC')
-
-
-    #inicia cadena
-
-    @phase1.each do |phase|
-      #cambio
-      @vproc2=Formula.where(product_id:12,orden:phase.actividad).
-                           select('cantidad as dd').first.dd
-    if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha and @vproc2>@vproc then
-
-
-    #proceso
-    @vprord2=phase.actividad
-    #actividad
-
-    @vdetfec2=phase.pfecha
-
-
-      @nconta2=@nconta2+1
-
-
-
-
-
-
-    if  @nconta2==1 and @nconta1==1  then
-          @vlog=false
-          @ulvproc2=@vproc2  #guarda el primer proceso
-
-###################repetir case de iproce
-
-
-       case   @iproce
-         when 100
-             @vlog=true
-        when 2
-          if  @vproc2<=2 then
-              @vlog=true
-
-          end
-        when 4
-
-           if  @vproc2==4 then
-            @vlog=true
-           end
-
-      when 5
-
-         if  @vproc2==5 then
-          @vlog=true
-         end
-
-    when 7
-
-       if  @vproc2==6 or  @vproc2==7 then
-        @vlog=true
-       end
-    end
-
-
-
-######################################
-
-    end
-
-
-    if @vlog  then
-    # empieza @vlog
-
-
-       unless @vprord2==200 or @vprord2==300 or ( @vprord2==8 and item.modalidad==3)
-         if  @uproc>=@vproc2 then
-
-                @vproceso[@vproc2]=@vproceso[@vproc2]+
-                ( @vfec1-@vdetfec2.to_time).to_i/86400
-
-
-
-                @uproc=@vproc2
-          else
-                @vproceso[@uproc]=@vproceso[@uproc]+
-                ( @vfec1-@vdetfec2.to_time).to_i/86400
-
-
-           end
-        else
-           @corta=( @vfec1-@vdetfec2.to_time).to_i/86400
-
-
-        end #de unless
-
-
-
-
-      @vfec1=@vdetfec2.to_time
-
-    end # termina @vlog
-
-
-    end #de if de phase mayor
-
-    end  #terminar ecah de phase
-
-    end #terminar el if de  la cadena phase
-
-
-
-
 
     # fin phase del 280 al 392************************************************************
-    if  @nconta1==1 and   @vlog==false then
-          @vlog=false
 
-###############
- if  @vproc>@ulvproc2 then
-   case   @iproce
-     when 100
-         @vlog=true
-    when 2
-      if  @vproc<=2 then
-          @vlog=true
 
-      end
-    when 4
-
-       if  @vproc==4 then
-        @vlog=true
-       end
-
-  when 5
-
-     if  @vproc==5 then
-      @vlog=true
-     end
-
-when 7
-
-   if  @vproc==6 or  @vproc==7 then
     @vlog=true
-   end
-end
 
 
-end
 ###################
 
 
-    end
 
-    if @vlog  then
+
+
     # empieza @vlog
 
 
@@ -435,7 +212,7 @@ end
 
       @vfec1=detail.pfecha.to_time
 
-    end # termina @vlog
+
 
     end #termina actividad
 
@@ -448,7 +225,7 @@ end
 
 
     # empieza @vlog
-    if @vlog then
+
 
 
     @vversion=@vproceso[0]
@@ -515,7 +292,7 @@ end
        @aeobac.push(@veobac)
 
 
-    end   # log
+
 
 
     end #terminia  item
@@ -528,7 +305,7 @@ end
 #@alabels=@alabels.map { |i| " '" + i + "'" }.join(',')
 #@alabels=@alabels.join(",")
 
-               render :partial => "grafico",
+               render :partial => "grafico0",
                :locals => { :param1 => @alabels,
                             :param2 => @aversion,
                             :param3 => @aobac,
