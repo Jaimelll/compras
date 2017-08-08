@@ -1,7 +1,7 @@
 
 ActiveAdmin.register_page "grafico" do
 
-  menu  priority: 2,label: "Grafico"
+  menu  priority: 2,label: "Grafico PAC"
 
 
   action_item :only=> :index do

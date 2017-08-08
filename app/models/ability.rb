@@ -10,6 +10,13 @@ class Ability
     when 1,2
           can :manage, :all
 
+        when 3,7,15,16,17,18,19 #asesor,ballesteros
+            can :read, ActiveAdmin::Page, :name =>"Dashboard"
+              can :read, ActiveAdmin::Page, :name =>"grafico"
+                can :read, ActiveAdmin::Page, :name =>"grafico0"
+            can [:read], [Item, Detail]
+            can [:read], [Phase,Activity,Piece]
+
     when 3,7,15,16,17,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"

@@ -19,10 +19,12 @@ ActiveAdmin.register Formula do
 end
 
 
+permit_params :nombre, :descripcion, :orden,
+     :obs, :admin_user_id, :created_at, :updated_at
+
 menu  priority: 6, label: "Productos"
 
-permit_params :nombre, :descripcion, :orden,
-     :obs
+
 
      action_item :view, only: :show do
        link_to 'Ir a Productos', admin_products_path()

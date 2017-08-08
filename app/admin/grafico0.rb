@@ -3,7 +3,15 @@ ActiveAdmin.register_page "grafico0" do
 
   menu  priority: 3,label: "Grafico Procesos"
 
+  action_item :only=> :index do
+      link_to 'DPC', dpc2_admin_product_formula_path(1, :@num), method: :put
 
+  end
+
+  action_item :only=> :index do
+      link_to 'DEC', dec2_admin_product_formula_path(1, :@num), method: :put
+
+  end
 
 
 
@@ -20,25 +28,38 @@ ActiveAdmin.register_page "grafico0" do
       @vuobac=[1,2,3,4,5,6]
     end
      #datos de grafico var y titulo, vaf de año fiscal
-     @var=Formula.where(product_id:15,cantidad:1).
+     @var=Formula.where(product_id:15,numero:1).
                           select('orden as dd').first.dd
-     @titulo=Formula.where(product_id:15,cantidad:1).
+     @titulo=Formula.where(product_id:15,numero:1).
                           select('nombre as dd').first.dd
       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
 
 
 
 
+      case @var
+
+      when 9
+         #dpc2
+         @vitem=Phase.where('sele<=5')
+         .where(periodo:@vaf)
+         @iproce=100
+
+       when 10
+       #dec2
+       @vitem=Phase.where('sele=6 or sele=7')
+       .where(periodo:@vaf)
+        @iproce=100
+      end #case
 
 
 
-     #encargo
-     @vitem=Item.where(ejecucion:4,modalidad:2,obac:1)
-     .where(exped2:@vaf).order('periodo,obac ASC,pac')
-     @iproce=100
 
 
-    @vitem=@vitem.where(obac: @vuobac)
+
+
+
+
 
 
 
@@ -85,7 +106,7 @@ ActiveAdmin.register_page "grafico0" do
       #@nconta numero de actividades
 
     #comienza case
-    case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+    case   @vaf
        when 1
          @vinicio = Date.parse('2015/01/01')
          @dfin=365
@@ -114,14 +135,14 @@ ActiveAdmin.register_page "grafico0" do
       end #termina case
 
 
-      @nconta=Detail.where(item_id:item.id).
-         where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).count
-       @deta2=Detail.where(item_id:item.id).
-              where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).
-             order('details.pfecha DESC,details.id DESC')
+      @nconta=Activity.where(phase_id:item.id).
+         where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count
+       @deta2=Activity.where(phase_id:item.id).
+              where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+             order('pfecha DESC,id DESC')
 
 
-    @deta1=@deta2.where(item_id:item.id)
+    @deta1=@deta2.where(phase_id:item.id)
 
 
 
@@ -130,8 +151,8 @@ ActiveAdmin.register_page "grafico0" do
 
     if @deta1.count==0 then
 
-      object = Detail.new(:actividad => 36, :pfecha=> @vinicio,
-       :item_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
+      object = Activity.new(:actividad => 18, :pfecha=> @vinicio,
+       :phase_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
        :updated_at => @vinicio,:tipo =>'automatico')
       object.save
 
@@ -197,10 +218,10 @@ ActiveAdmin.register_page "grafico0" do
 
 
         if @nconta1==@nconta then
-          if @vprord==36 then
+      #    if @vprord==36 then
                @vproceso[0]= ( detail.pfecha.to_time-
                @vinicio.to_time).to_i/86400
-           end
+    #       end
 
          @vproceso[@vproc]=@vproceso[@vproc]+
          ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]
@@ -246,13 +267,7 @@ ActiveAdmin.register_page "grafico0" do
 
 
 
-    if item.obac and item.obac>0 then
-        @n1=Formula.where(product_id:1, orden:item.obac).
-           select('nombre as dd').first.dd
 
-    else
-        @n1="s/d"
-    end
 
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
     #@alabels2.push(item.descripcion.first(10))
@@ -265,18 +280,11 @@ ActiveAdmin.register_page "grafico0" do
 
     end
 
-    if item.exped and item.exped>0 then
 
-    @lab1=Formula.where(product_id:16,orden:item.exped).
-             select('nombre as dd').first.dd+"-"+
-              Formula.where(product_id:16,orden:item.exped).
-                        select('descripcion as dd').first.dd.underscore.truncate(30)+
-                      "-"+item.pac+"-"+@n1
-    else
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @lab1=@desc.capitalize.truncate(40)+"-"+item.pac+"-"+@n1
+    @lab1=@desc.capitalize.truncate(40)+"-"+item.nomenclatura
 
-    end
+
 
 
 

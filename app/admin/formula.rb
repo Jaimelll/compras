@@ -99,6 +99,27 @@ permit_params  :nombre, :descripcion,  :orden,
        redirect_to admin_grafico_path
       end
 
+#grafico0
+member_action :dpc2, method: :put do
+   @num=Formula.where(product_id: 15, orden:9).
+         select('id as dd').first.dd
+ Formula.where( product_id:15 ).update_all( numero:0 )
+Formula.where( product_id:15 ,orden:9).update_all( numero:1 )
+ redirect_to admin_grafico0_path
+end
+
+member_action :dec2, method: :put do
+   @num=Formula.where(product_id: 15, orden:10).
+         select('id as dd').first.dd
+ Formula.where( product_id:15 ).update_all( numero:0 )
+Formula.where( product_id:15 ,orden:10).update_all( numero:1 )
+ redirect_to admin_grafico0_path
+end
+
+
+
+
+
 filter :nombre
 filter :descripcion
 filter :cantidad

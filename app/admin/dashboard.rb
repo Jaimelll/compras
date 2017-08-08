@@ -260,6 +260,7 @@ end
 
 
                               end
+                          
 
 
 
@@ -937,8 +938,8 @@ end #panel
        li "DC: Dirección de Catalogación ACFFAA"
          li "DEM: Dirección de Estudio de Mercado ACFFAA"
            li "DPC: Dirección de Procesos de Compras ACFFAA"
-            li "FC: En proceso de suscripcion de contrato DEC "
-             li "DEC:Dirección de Ejecucion de Contratos"
+            li "FC: Firma de Contrato ACFFAA "
+             li "DEC:En Ejecucion de Contrato"
 
 
 
