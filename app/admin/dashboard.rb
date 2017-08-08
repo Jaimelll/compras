@@ -260,7 +260,7 @@ end
 
 
                               end
-                          
+
 
 
 
@@ -268,6 +268,23 @@ end
 
 
                           end # de table for listas
+
+        @let=Item.where(ejecucion:4)
+               .where(exped2:@vaf).where(obac: @vuobac)
+
+
+table_for "A"  do
+  column("Total=")
+  column("#{@let.where(modalidad:2).count.to_s+"/("+
+           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+  column("#{@let.where(modalidad:1).count.to_s+"/("+
+           number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+  column("#{@let.where('modalidad<=2').count.to_s+"/("+
+           number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+end#table
+
+
+
                         end # panel listas
 
 
@@ -338,6 +355,10 @@ end
 
 
                                      end # de table for Mercado
+
+
+
+
                                    end # panel mercado
 
         end# de columns
