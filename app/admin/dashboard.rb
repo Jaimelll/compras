@@ -548,7 +548,7 @@ end#table
                                                    :param4=> @titproc1,:param5=> @vpac6)
 
                                          end
-                                         column("DEC ") do |formula|
+                                         column("EC ") do |formula|
                                            @dpc=  formula.orden
                                            @vpas=[7]
                                            @titproc1="EXPEDIENTES EN DEC"
@@ -898,7 +898,7 @@ end #panel
             @dpc=  formula.orden
               @vpaso=0
             @vpas=6
-            @titproc1="PROCESOS EN FIRMA DE CONTRATO"
+            @titproc1="PROCESOS PREVIOS A FIRMA DE CONTRATO"
             @le= @vxper2[6]
             link_to "#{@le}",
             reports_comment5_path(format: :pdf,
@@ -906,11 +906,11 @@ end #panel
             :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
           end
 
-            column("DEC") do |formula|
+            column("EC") do |formula|
               @dpc=  formula.orden
                 @vpaso=0
               @vpas=7
-              @titproc1="PROCESOS DEC"
+              @titproc1="PROCESOS EN EJECUCION CONTRACTUAL"
               @le= @vxper2[7]
               link_to "#{@le}",
               reports_comment5_path(format: :pdf,
@@ -959,8 +959,8 @@ end #panel
        li "DC: Dirección de Catalogación ACFFAA"
          li "DEM: Dirección de Estudio de Mercado ACFFAA"
            li "DPC: Dirección de Procesos de Compras ACFFAA"
-            li "FC: Firma de Contrato ACFFAA "
-             li "DEC:En Ejecucion de Contrato"
+            li "FC: Previo a Firma de Contrato ACFFAA "
+             li "EC:En Ejecucion de Contrato"
 
 
 
