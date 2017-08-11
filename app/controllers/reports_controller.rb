@@ -27,18 +27,18 @@ def comment
   case @vopc
 when 1
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('obac,pac')
+  @items=Item.where(ejecucion:4,modalidad:2,lista:params[:param2]).order('tipo,certificado DESC')
   .where(exped2:@vaf).where(obac: @vuobac)
 
 when 2
    @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
-  @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2]).order('expediente')
-  .where(exped2:@vaf).where(obac: @vuobac)
+  @items=Item.where(ejecucion:4,modalidad:1,lista:params[:param2])
+  .where(exped2:@vaf).where(obac: @vuobac).order('exped')
 
 when 3
   @lista=Formula.where(product_id:3,orden:params[:param2]).select('descripcion as dd').first.dd
   @items=Item.where(ejecucion:4,lista:params[:param2]).where("modalidad<3")
-          .where(exped2:@vaf).where(obac: @vuobac)
+          .where(exped2:@vaf).where(obac: @vuobac).order('tipo,modalidad,certificado DESC')
  when 4
    @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
    @items= Item.where(ejecucion:4,exped2:params[:param2])
