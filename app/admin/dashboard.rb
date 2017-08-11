@@ -405,7 +405,7 @@ end#table
 
 
                                                             if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 and
-                                                              Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities.count>0 then
+                                                              Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities  .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
 
 
                                                                @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
