@@ -1,0 +1,8 @@
+class Contract < ApplicationRecord
+  belongs_to :admin_user
+
+  has_many :elements
+  has_many :packages
+
+  
+end

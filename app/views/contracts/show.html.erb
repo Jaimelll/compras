@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Numero:</strong>
+  <%= @contract.numero %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @contract.fecha %>
+</p>
+
+<p>
+  <strong>Descripcion:</strong>
+  <%= @contract.descripcion %>
+</p>
+
+<p>
+  <strong>Obac:</strong>
+  <%= @contract.obac %>
+</p>
+
+<p>
+  <strong>Postor:</strong>
+  <%= @contract.postor %>
+</p>
+
+<p>
+  <strong>Proveedor:</strong>
+  <%= @contract.proveedor %>
+</p>
+
+<p>
+  <strong>Moneda:</strong>
+  <%= @contract.moneda %>
+</p>
+
+<p>
+  <strong>Adjudicado:</strong>
+  <%= @contract.adjudicado %>
+</p>
+
+<p>
+  <strong>Presupuestado:</strong>
+  <%= @contract.presupuestado %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @contract.admin_user %>
+</p>
+
+<%= link_to 'Edit', edit_contract_path(@contract) %> |
+<%= link_to 'Back', contracts_path %>

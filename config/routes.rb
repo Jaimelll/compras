@@ -3,6 +3,10 @@ Rails.application.routes.draw do
 
 
 
+  resources :elements
+  resources :packages
+  resources :contracts
+  
   resources :pieces
   devise_for :admin_users, ActiveAdmin::Devise.config
 

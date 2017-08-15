@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  actividad: 1
+  tipo: MyString
+  numero: MyString
+  pfecha: 2017-08-15
+  importe: 1.5
+  obs: MyString
+  admin_user: one
+  contract: one
+  moneda: 1
+  plan: 2017-08-15
+  inicial: 2017-08-15
+
+two:
+  actividad: 1
+  tipo: MyString
+  numero: MyString
+  pfecha: 2017-08-15
+  importe: 1.5
+  obs: MyString
+  admin_user: two
+  contract: two
+  moneda: 1
+  plan: 2017-08-15
+  inicial: 2017-08-15

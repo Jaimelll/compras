@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Elements</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Actividad</th>
+      <th>Tipo</th>
+      <th>Numero</th>
+      <th>Pfecha</th>
+      <th>Importe</th>
+      <th>Obs</th>
+      <th>Admin user</th>
+      <th>Contract</th>
+      <th>Moneda</th>
+      <th>Plan</th>
+      <th>Inicial</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @elements.each do |element| %>
+      <tr>
+        <td><%= element.actividad %></td>
+        <td><%= element.tipo %></td>
+        <td><%= element.numero %></td>
+        <td><%= element.pfecha %></td>
+        <td><%= element.importe %></td>
+        <td><%= element.obs %></td>
+        <td><%= element.admin_user %></td>
+        <td><%= element.contract %></td>
+        <td><%= element.moneda %></td>
+        <td><%= element.plan %></td>
+        <td><%= element.inicial %></td>
+        <td><%= link_to 'Show', element %></td>
+        <td><%= link_to 'Edit', edit_element_path(element) %></td>
+        <td><%= link_to 'Destroy', element, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Element', new_element_path %>

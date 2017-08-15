@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170806132104) do
+ActiveRecord::Schema.define(version: 20170815205219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,22 @@ ActiveRecord::Schema.define(version: 20170806132104) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  create_table "contracts", force: :cascade do |t|
+    t.string   "numero"
+    t.date     "fecha"
+    t.string   "descripcion"
+    t.integer  "obac"
+    t.string   "postor"
+    t.integer  "proveedor"
+    t.integer  "moneda"
+    t.float    "adjudicado"
+    t.float    "presupuestado"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_contracts_on_admin_user_id", using: :btree
+  end
+
   create_table "details", force: :cascade do |t|
     t.integer  "actividad"
     t.string   "tipo"
@@ -80,6 +96,24 @@ ActiveRecord::Schema.define(version: 20170806132104) do
     t.date     "inicial"
     t.index ["admin_user_id"], name: "index_details_on_admin_user_id", using: :btree
     t.index ["item_id"], name: "index_details_on_item_id", using: :btree
+  end
+
+  create_table "elements", force: :cascade do |t|
+    t.integer  "actividad"
+    t.string   "tipo"
+    t.string   "numero"
+    t.date     "pfecha"
+    t.float    "importe"
+    t.string   "obs"
+    t.integer  "admin_user_id"
+    t.integer  "contract_id"
+    t.integer  "moneda"
+    t.date     "plan"
+    t.date     "inicial"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_elements_on_admin_user_id", using: :btree
+    t.index ["contract_id"], name: "index_elements_on_contract_id", using: :btree
   end
 
   create_table "formulas", force: :cascade do |t|
@@ -123,6 +157,19 @@ ActiveRecord::Schema.define(version: 20170806132104) do
     t.integer  "exped",         default: 0
     t.integer  "exped2"
     t.index ["admin_user_id"], name: "index_items_on_admin_user_id", using: :btree
+  end
+
+  create_table "packages", force: :cascade do |t|
+    t.integer  "item"
+    t.integer  "moneda"
+    t.float    "adjudicado"
+    t.float    "presupuestado"
+    t.integer  "admin_user_id"
+    t.integer  "contract_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_packages_on_admin_user_id", using: :btree
+    t.index ["contract_id"], name: "index_packages_on_contract_id", using: :btree
   end
 
   create_table "phases", force: :cascade do |t|
@@ -172,11 +219,16 @@ ActiveRecord::Schema.define(version: 20170806132104) do
 
   add_foreign_key "activities", "admin_users"
   add_foreign_key "activities", "phases"
+  add_foreign_key "contracts", "admin_users"
   add_foreign_key "details", "admin_users"
   add_foreign_key "details", "items"
+  add_foreign_key "elements", "admin_users"
+  add_foreign_key "elements", "contracts"
   add_foreign_key "formulas", "admin_users"
   add_foreign_key "formulas", "products"
   add_foreign_key "items", "admin_users"
+  add_foreign_key "packages", "admin_users"
+  add_foreign_key "packages", "contracts"
   add_foreign_key "phases", "admin_users"
   add_foreign_key "pieces", "admin_users"
   add_foreign_key "pieces", "phases"

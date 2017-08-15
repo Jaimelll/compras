@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  item: 1
+  moneda: 1
+  adjudicado: 1.5
+  presupuestado: 1.5
+  admin_user: one
+  contract: one
+
+two:
+  item: 1
+  moneda: 1
+  adjudicado: 1.5
+  presupuestado: 1.5
+  admin_user: two
+  contract: two
