@@ -72,39 +72,44 @@
     },
     series: [
       {
-      name: 'EC',
-      data: <%= param9%>
-      },
-      {
-      name: 'FC',
-      data: <%= param8%>
-      },
-      {
-      name: 'DPC',
-      data: <%= param7%>
-      },
-      {
-      name: 'DEM',
-      data: <%= param6%>
-      },
-      {
-      name: 'DC',
-      data:  <%= param5%>
-      },
-      {
-      name: 'C/EXP',
-      data: <%= param4%>
-      },
-      {
-      name: 'S/EXP',
-      data: <%= param3%>
-      },
+        name: 'EC',
+        data: <%= param9%>
+        },
+        {
+        name: 'FC',
+        data: <%= param8%>
+        },
+        {
+        name: 'DPC',
+        color: 'rgba(255,0,0)',
+        data: <%= param7%>
+        },
+        {
+        name: 'DEM',
+        color: 'rgba(0,255,0,0.9)',
+        data: <%= param6%>
+        },
+        {
+        name: 'DC',
+        color: 'rgba(0,0,255,0.8)',
+        data:  <%= param5%>
+        },
+        {
+        name: 'C/EXP',
+        color: 'rgba(255,0,255,0.8)',
+        data: <%= param4%>
+        },
+        {
+        name: 'S/EXP',
+        color: 'rgba(255,255,0,0.8)',
+        data: <%= param3%>
+        },
 
-     {
-      name: 'OBAC',
-      color: 'rgba(0,0,0,0.1)',
-      data:  <%= param2%>
-     }
+       {
+        name: 'OBAC',
+        color: 'rgba(0,0,0,0.1)',
+        data:  <%= param2%>
+       }
   ]
 })
 });
