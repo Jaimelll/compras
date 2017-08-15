@@ -10,16 +10,17 @@ class Ability
     when 1,2
           can :manage, :all
 
-        when 3,7,15,16,17,18,19 #asesor,ballesteros
+        when 3#Roy
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
               can :read, ActiveAdmin::Page, :name =>"grafico"
                 can :read, ActiveAdmin::Page, :name =>"grafico0"
             can [:read], [Item, Detail]
             can [:read], [Phase,Activity,Piece]
 
-    when 3,7,15,16,17,18,19 #asesor,ballesteros
+    when 7,15,16,17,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
+            can :read, ActiveAdmin::Page, :name =>"grafico0"
         can [:read], [Item, Detail]
         can [:read], [Phase,Activity,Piece]
     #   when 5 # ballesteros
@@ -33,28 +34,32 @@ class Ability
       when 11,12 #DEM y DC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
+            can :read, ActiveAdmin::Page, :name =>"grafico0"
         can [:read], [Item,Phase,Piece]
         can [:create,:read,:update,:destroy],  [Detail,Activity]
       when 13 #DPC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
+            can :read, ActiveAdmin::Page, :name =>"grafico0"
         can [:read], [Item,Detail]
         can [:create,:read,:update,:destroy],  [Phase,Activity,Piece]
       when 14 # DEC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
+            can :read, ActiveAdmin::Page, :name =>"grafico0"
         can [:read], [Item,Piece,Phase]
         can [:create,:read,:update,:destroy],  [Activity,Detail]
 
       when 4,5,6,8,9 #sectoristas y Bertolotti
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"grafico"
+              can :read, ActiveAdmin::Page, :name =>"grafico0"
           can [:create,:read,:update, :destroy], [Item, Detail,Activity]
             can [:read], [Phase,Piece]
   else
 
       can :read, ActiveAdmin::Page, :name =>"Dashboard"
-      can :read, ActiveAdmin::Page, :name =>"grafico"
+
     #  can :read, ActiveAdmin::Page, :name =>"grafico"
   end
     #
