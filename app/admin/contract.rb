@@ -24,9 +24,29 @@ end
 
 permit_params :numero, :fecha,:descripcion, :obac,:postor,
               :proveedor, :moneda, :adjudicado,
-              :presupuestado, :admin_user_id
+              :presupuestado, :admin_user_id, :periodo
 
 menu priority: 6, label: "Contratos"
+
+scope :AF_2017, :default => true do |phases|
+     phases.where(periodo:3)
+end
+
+scope :AF_2016, :default => true do |phases|
+phases.where(periodo:2)
+end
+
+scope :AF_2015, :default => true do |phases|
+phases.where(periodo:1)
+end
+
+scope :Todos, :default => true do |phases|
+     phases
+end
+
+
+
+
 
 
 filter :numero
@@ -95,6 +115,10 @@ form :title => 'Edicion Contrato' do |f|
  f.input :adjudicado, :as => :string, :input_html => { :style =>  'width:30%'}
  f.input :presupuestado, :as => :string, :input_html => { :style =>  'width:30%'}
 
+ f.input :periodo, :as => :select, :collection =>
+    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+
+
 
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
   f.actions
@@ -161,7 +185,15 @@ show :title => ' Contrato'  do
              number_with_delimiter(contra.presupuestado, delimiter: ",")
 
             end
+            row :periodo do |phase|
+               if  phase.periodo and  phase.periodo>0 then
+                  Formula.where(product_id:11, orden: phase.periodo).
+                   select('nombre as dd').first.dd
+               else
+                     "s/d"
+               end
 
+            end
 
   end #de attributes_table
 
