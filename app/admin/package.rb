@@ -84,8 +84,10 @@ form :title => 'Edicion Item'  do |f|
          attributes_table do
 
 
-                  row :item
 
+                  row :item do |activity|
+                       link_to "#{activity.item}", admin_contract_packages_path(activity.contract_id)
+                  end
                    row :moneda do |detail|
                        if detail.moneda and detail.moneda>0 then
 

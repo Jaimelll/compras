@@ -69,7 +69,7 @@ column("Fecha ", :sortable => :fecha) do |contra|
   end
 end
  column("descripcion")
-
+ column("proceso")
 
 
  column("obac") do |contra|
@@ -105,6 +105,7 @@ form :title => 'Edicion Contrato' do |f|
  f.input :numero , :input_html => { :style =>  'width:30%'}
  f.input :fecha, :label => 'fecha ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del contrato'
+  f.input :proceso , :input_html => { :style =>  'width:30%'}
  f.input :obac, :as => :select, :collection =>
    Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
  f.input :postor , :input_html => { :style =>  'width:30%'}
@@ -146,6 +147,7 @@ show :title => ' Contrato'  do
        end
 
       row :descripcion
+      row :proceso
 
       row :obac do |contra|
           if contra.obac and contra.obac>0 then
