@@ -1,73 +1,157 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @lista.titleize %> </h3>
+<h3>Periodo:<%=   @vper %> </h3>
+<h4><%= @titproc %></h4>
+
 </head>
-
-  <% if @items.count>0 then %>
-<table>
-
-  <thead>
-<h4>PROCESOS POR EXCLUIR:</h4>
-    <tr>
-      <th>N°</th>
-
-       <th>Exped</th>
-         <th>Pac</th>
-        <th>Obac</th>
-
-      <th>Descripcion</th>
-
-      <th>Estimado</th>
+<% if @items.count>0 then %>
 
 
-      <th colspan="3"></th>
+
+
+
+  <table >
+    <tr  style="font-size:90%;">
+
+       <th>N°</th>
+     <th  >Numero</th>
+       <th >Proceso</th>
+       <th  >OBAC</th>
+       <th  colspan="3">Descripcion</th>
+          <th   >Adjudicado</th>
+       <th   >Presupuestado</th>
+
+
+
+
     </tr>
-  </thead>
+    <tbody>
 
-  <tbody>
     <%  @conta=0 %>
-    <% @items.each do |item| %>
-        <tr>
-          <% @conta=@conta+1 %>
+
+    <% @items.each do |variable| %>
+
+
+
+        <tr style="font-size:80%;"  class="detl">
+
+      <% @conta=@conta+1 %>
+
+
+
         <td><%= @conta.to_s+".-" %></td>
-        <% if item.exped>0 then %>
-           <td><%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd').first.dd %></td>
-          <% else %>
-        <td><%= " s/d"   %></td>
-          <% end %>
+        
+        <%  case current_admin_user.id %>
+        <%    when 21,22,23 %>
+
+          <%  @vpact=Formula.where(product_id:12,acti:2).select('orden')%>
+        <% else %>
+          <%  @vpact=Formula.where(product_id:12).where('acti=1 or acti=2').select('orden')%>
+        <%   end %>
 
 
-        <td><%= item.pac.to_i %></td>
 
-
-
-        <td><%= Formula.where(product_id:1,orden:item.obac).select('nombre as dd').first.dd %></td>
-
-        <td><%= item.descripcion.underscore.capitalize %></td>
-
-        <td  ALIGN=right><%= number_with_delimiter(item.certificado.to_i, delimiter: ",") %></td>
-
-
-      </td>
-      </tr>
+        <td ><%= variable.numero %></td>
+      <% if variable.proceso>0 and variable.proceso then %>
+         <td ><%= Phase.where(id:variable.proceso). select('nomenclatura as dd').first.dd  %></td>
+     <%else %>
+         <td ></td>
 
     <% end %>
 
+
+
+        <% if variable.obac>0 then %>
+
+        <td  >  <%=Formula.where(product_id:1,orden:variable.obac).select('nombre as dd').first.dd %></td>
+
+
+        <% end %>
+
+
+
+
+
+
+
+        <td colspan="3"><%= variable.descripcion.capitalize %>  </td>
+
+
+        <td ><%= number_with_delimiter( variable.adjudicado.to_i, delimiter: ",") %></td>
+
+        <td ><%= number_with_delimiter( variable.presupuestado.to_i, delimiter: ",") %></td>
+
+        </tr>
+
+
+          <% if @vdetalle.where(contract_id:variable.id).where(actividad: @vpact).count>0  then %>
+
+            <% @vdetact= @vdetalle.where(contract_id:variable.id).where(actividad: @vpact)%>
+
+
+
+              <tr style="font-size:80%;"  class="last">
+                <th ></th>
+                <th >Programada</th>
+                <th >Fecha Real </th>
+
+                <th colspan="3">Actividad</th>
+                <th colspan="3">Observacion</th>
+                <th ></th>
+             </tr>
+
+            <tbody>
+
+
+              <% @vdetact.each do |deta| %>
+
+
+           <tr style="font-size:70%;"  class="last">
+
+
+
+                    <td ></td>
+                    <%  if deta.plan then %>
+                 <td ><%= deta.plan.strftime("%d-%m") %></td>
+                    <%  else %>
+                  <td >s/d</td>
+                     <%  end %>
+                   <td><%= deta.pfecha.strftime("%d-%m") %></td>
+
+
+                   <td colspan="3"><%=Formula.where(product_id:12,orden:deta.actividad).
+                               select('descripcion as dd').first.dd.capitalize  %></td>
+                   <td colspan="3"><%= deta.obs.capitalize %></td>
+                   <td ></td>
+           </tr>
+
+            <% end %>
+
+            <tbody>
+
+
+
+  <% end %>
+
+
+
+
+
+
+    <% end %>
+    <br>
   </tbody>
+  </table>
 
-</table>
-
-<h3>Total(Soles) = <%=   number_with_delimiter(@items.sum(:certificado).to_i, delimiter: ",") %></h3>
-<br>
 <% else %>
 <br>
 <br>
- <td> No hay procesos Por Excluir para esta Entidad  </td>
+ <td> No hay procesos en esta etapa  </td>
  <br>
  <br>
 <% end %>
+</html>

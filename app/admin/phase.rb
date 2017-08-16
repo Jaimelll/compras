@@ -23,7 +23,7 @@ ActiveAdmin.register Phase do
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :admin_user_id, :periodo, :convocatoria
 
-menu priority: 5, label: "Procesos"
+menu priority: 10, label: "Procesos"
 
 
 

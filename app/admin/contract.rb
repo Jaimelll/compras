@@ -24,9 +24,10 @@ end
 
 permit_params :numero, :fecha,:descripcion, :obac,:postor,
               :proveedor, :moneda, :adjudicado,
-              :presupuestado, :admin_user_id, :periodo, :proceso
+              :presupuestado, :admin_user_id,
+              :periodo, :proceso,  :plazo, :sele
 
-menu priority: 6, label: "Contratos"
+menu priority: 12, label: "Contratos"
 
 scope :AF_2017, :default => true do |phases|
      phases.where(periodo:3)
@@ -136,7 +137,7 @@ form :title => 'Edicion Contrato' do |f|
     Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
 
 
-
+ f.input :plazo,:label => 'Plazo de entrega(dias)', :input_html => { :style =>  'width:30%'}
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
   f.actions
 
@@ -222,7 +223,7 @@ show :title => ' Contrato'  do
                end
 
             end
-
+              row :plazo
   end #de attributes_table
 
 end # de show

@@ -1,7 +1,7 @@
 
-ActiveAdmin.register_page "grafico0" do
+ActiveAdmin.register_page "grafico1" do
 
-  menu  priority: 4,label: "Grafico Procesos"
+  menu  priority: 5,label: "Grafico Contratos"
 
   action_item :only=> :index do
       link_to 'DPC', dpc2_admin_product_formula_path(1, :@num), method: :put
@@ -313,7 +313,7 @@ ActiveAdmin.register_page "grafico0" do
 #@alabels=@alabels.map { |i| " '" + i + "'" }.join(',')
 #@alabels=@alabels.join(",")
 
-               render :partial => "grafico0",
+               render :partial => "grafico1",
                :locals => { :param1 => @alabels,
                             :param2 => @aversion,
                             :param3 => @aobac,

@@ -212,6 +212,35 @@ def comment4
 
 
 
+
+    def comment6
+
+      @vactcanti=params[:param3]
+      @vpacv=params[:param5]
+      @titproc=params[:param4].to_s
+      #@numproc=params[:param3].to_i
+      @vper=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+
+    @vdetalle= Element.where(actividad: Formula
+    .where(product_id:19,cantidad:params[:param3]).select('orden'))
+    .order('pfecha')
+
+
+      @items=Contract.where(id:@vpacv).order('numero')
+
+    respond_to do |format|
+
+    format.html
+    format.json
+    format.pdf{render template: 'reports/reporte6.pdf.erb', pdf:'detalle'}
+    end
+      end
+
+
+
+
+
+
 def comment7
   @vactcanti=params[:param3]
   @vpacv=params[:param5]

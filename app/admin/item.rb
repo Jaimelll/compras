@@ -32,7 +32,7 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-menu priority: 4, label: "PACs"
+menu priority: 8, label: "PACs"
 
  #action_item :encargo, only: :index do
 #  link_to 'Encargo',encargo_admin_post_path
@@ -93,6 +93,10 @@ action_item :view, only: :show do
 
           items.where(ejecucion:4,exped2:1).order('pac')
      end
+     scope :ACFFAA_filtro, :default => true do |items|
+ @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+          items.where(ejecucion:4,exped2:@vaf).where('modalidad<3').order('pac')
+    end
 
 
 
