@@ -1004,25 +1004,25 @@ end #panel
                          case @vdir
                          when 1
                            @vpro1.push(proceso.id)
-                           Phase.where(id:proceso.id).update_all( sele:1 )
+                           Contract.where(id:proceso.id).update_all( sele:1 )
                          when 2
                            @vpro2.push(proceso.id)
-                           Phase.where(id:proceso.id).update_all( sele:2 )
+                           Contract.where(id:proceso.id).update_all( sele:2 )
                          when 3
                            @vpro3.push(proceso.id)
-                           Phase.where(id:proceso.id).update_all( sele:3 )
+                           Contract.where(id:proceso.id).update_all( sele:3 )
                          when 4
                            @vpro4.push(proceso.id)
-                           Phase.where(id:proceso.id).update_all( sele:4 )
+                           Contract.where(id:proceso.id).update_all( sele:4 )
                            when 5
                              @vpro5.push(proceso.id)
-                             Phase.where(id:proceso.id).update_all( sele:5 )
+                             Contract.where(id:proceso.id).update_all( sele:5 )
                            when 6
                              @vpro6.push(proceso.id)
-                              Phase.where(id:proceso.id).update_all(sele:6  )
+                              Contract.where(id:proceso.id).update_all(sele:6  )
                             when 7
                               @vpro7.push(proceso.id)
-                               Phase.where(id:proceso.id).update_all(sele:7  )
+                               Contract.where(id:proceso.id).update_all(sele:7  )
                           end #case
 
                         case @vdir

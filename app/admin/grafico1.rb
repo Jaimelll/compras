@@ -3,15 +3,7 @@ ActiveAdmin.register_page "grafico1" do
 
   menu  priority: 5,label: "Grafico Contratos"
 
-  action_item :only=> :index do
-      link_to 'DPC', dpc2_admin_product_formula_path(1, :@num), method: :put
 
-  end
-
-  action_item :only=> :index do
-      link_to 'DEC', dec2_admin_product_formula_path(1, :@num), method: :put
-
-  end
 
 
 
@@ -28,31 +20,17 @@ ActiveAdmin.register_page "grafico1" do
       @vuobac=[1,2,3,4,5,6]
     end
      #datos de grafico var y titulo, vaf de año fiscal
-     @var=Formula.where(product_id:15,numero:1).
-                          select('orden as dd').first.dd
-     @titulo=Formula.where(product_id:15,numero:1).
-                          select('nombre as dd').first.dd
+
       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
 
 
 
 
-      case @var
 
-      when 9
-         #dpc2
-         @vitem=Phase.where('sele<=5')
+
+         @vitem=Contract.where('sele<=5')
          .where(periodo:@vaf)
          @iproce=100
-
-       when 10
-       #dec2
-       @vitem=Phase.where('sele=6 or sele=7')
-       .where(periodo:@vaf)
-        @iproce=100
-      end #case
-
-
 
 
 
@@ -135,14 +113,14 @@ ActiveAdmin.register_page "grafico1" do
       end #termina case
 
 
-      @nconta=Activity.where(phase_id:item.id).
+      @nconta=Element.where(contract_id:item.id).
          where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count
-       @deta2=Activity.where(phase_id:item.id).
+       @deta2=Element.where(contract_id:item.id).
               where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
              order('pfecha DESC,id DESC')
 
 
-    @deta1=@deta2.where(phase_id:item.id)
+    @deta1=@deta2.where(contract_id:item.id)
 
 
 
@@ -151,8 +129,8 @@ ActiveAdmin.register_page "grafico1" do
 
     if @deta1.count==0 then
 
-      object = Activity.new(:actividad => 18, :pfecha=> @vinicio,
-       :phase_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
+      object = Element.new(:actividad => 61, :pfecha=> @vinicio,
+       :contract_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
        :updated_at => @vinicio,:tipo =>'automatico')
       object.save
 
@@ -168,7 +146,7 @@ ActiveAdmin.register_page "grafico1" do
 
 
     if detail.pfecha and detail.actividad  then
-    @vproc=Formula.where(product_id:12,orden:detail.actividad).
+    @vproc=Formula.where(product_id:19,orden:detail.actividad).
                          select('cantidad as dd').first.dd
     #proceso
     @vprord=detail.actividad
@@ -282,7 +260,7 @@ ActiveAdmin.register_page "grafico1" do
 
 
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @lab1=@desc.capitalize.truncate(40)+"-"+item.nomenclatura
+    @lab1=@desc.capitalize.truncate(40)+"-"+item.numero
 
 
 
@@ -323,7 +301,7 @@ ActiveAdmin.register_page "grafico1" do
                             :param7 => @adpc,
                             :param8 => @adec,
                             :param9 => @aeobac,
-                            :param20 =>  @titulo+@vtitun}
+                            :param20 => @vtitun}
 
 
            end
