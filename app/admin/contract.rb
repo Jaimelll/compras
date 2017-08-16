@@ -24,7 +24,7 @@ end
 
 permit_params :numero, :fecha,:descripcion, :obac,:postor,
               :proveedor, :moneda, :adjudicado,
-              :presupuestado, :admin_user_id, :periodo
+              :presupuestado, :admin_user_id, :periodo, :proceso
 
 menu priority: 6, label: "Contratos"
 
@@ -69,8 +69,17 @@ column("Fecha ", :sortable => :fecha) do |contra|
   end
 end
  column("descripcion")
- column("proceso")
 
+column("proceso") do |contra|
+     if contra.proceso and contra.proceso>0 then
+
+        Phase.where(id:contra.proceso).
+         select('nomenclatura as dd').first.dd
+
+       else
+           "s/d"
+       end
+   end
 
  column("obac") do |contra|
          if contra.obac and contra.obac>0 then
@@ -105,9 +114,16 @@ form :title => 'Edicion Contrato' do |f|
  f.input :numero , :input_html => { :style =>  'width:30%'}
  f.input :fecha, :label => 'fecha ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del contrato'
-  f.input :proceso , :input_html => { :style =>  'width:30%'}
- f.input :obac, :as => :select, :collection =>
-   Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
+
+  f.input :proceso, :as => :select, :collection =>
+    Phase.order('nomenclatura').map{|u| [u.nomenclatura, u.id]}
+
+
+
+
+  f.input :obac, :as => :select, :collection =>
+    Formula.where(product_id:1).map{|u| [u.nombre, u.orden]}
+
  f.input :postor , :input_html => { :style =>  'width:30%'}
 
  f.input :moneda, :as => :select, :collection =>
@@ -147,7 +163,17 @@ show :title => ' Contrato'  do
        end
 
       row :descripcion
-      row :proceso
+
+      row :proceso do |contra|
+          if contra.proceso and contra.proceso>0 then
+
+             Phase.where(id:contra.proceso).
+              select('nomenclatura as dd').first.dd
+
+            else
+                "s/d"
+            end
+        end
 
       row :obac do |contra|
           if contra.obac and contra.obac>0 then

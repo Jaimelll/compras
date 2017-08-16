@@ -15,7 +15,7 @@ class Ability
               can :read, ActiveAdmin::Page, :name =>"grafico"
                 can :read, ActiveAdmin::Page, :name =>"grafico0"
             can [:read], [Item, Detail]
-            can [:read], [Phase,Activity,Piece]
+            can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
     when 7,15,16,17,18,19 #asesor,ballesteros
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
@@ -48,7 +48,7 @@ class Ability
           can :read, ActiveAdmin::Page, :name =>"grafico"
             can :read, ActiveAdmin::Page, :name =>"grafico0"
         can [:read], [Item,Piece,Phase]
-        can [:create,:read,:update,:destroy],  [Activity,Detail]
+        can [:create,:read,:update,:destroy],  [Activity,Detail,Contract,Element,Package]
 
       when 4,5,6,8,9 #sectoristas y Bertolotti
           can :read, ActiveAdmin::Page, :name =>"Dashboard"

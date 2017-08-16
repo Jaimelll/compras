@@ -27,7 +27,16 @@ filter :descripcion
 
 index :title => "Lista de Items"  do
 
-column("item")
+
+column("item") do |contra|
+     if contra.item and contra.item>0 then
+             Piece.where(id:contra.item).
+         select('descripcion as dd').first.dd
+
+       else
+           "s/d"
+       end
+   end
 column("moneda") do |activity|
   if activity.moneda and activity.moneda>0 then
 
@@ -58,9 +67,12 @@ form :title => 'Edicion Item'  do |f|
 
       f.inputs  do
 
+            vproce=Contract.where(id:params[:contract_id]).select('proceso as dd').first.dd
 
 
-             f.input :item, :input_html => { :style =>  'width:30%'}
+             f.input :item, :as => :select, :collection =>
+                      Piece.where(phase_id:vproce).order('codigo').map{|u| [u.codigo+'-'+u.descripcion, u.id]}
+
 
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -83,10 +95,20 @@ form :title => 'Edicion Item'  do |f|
 
          attributes_table do
 
+           row :item  do |contra|
+                if contra.item and contra.item>0 then
+                  pp= Piece.where(id:contra.item).
+                    select('descripcion as dd').first.dd
+
+   link_to "#{pp}", admin_contract_packages_path(contra.contract_id)
+                  else
+                      "s/d"
+                  end
+              end
 
 
                   row :item do |activity|
-                       link_to "#{activity.item}", admin_contract_packages_path(activity.contract_id)
+
                   end
                    row :moneda do |detail|
                        if detail.moneda and detail.moneda>0 then

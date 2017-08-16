@@ -4,5 +4,5 @@ class Contract < ApplicationRecord
   has_many :elements
   has_many :packages
 
-  
+    validates :proceso, presence: true
 end
