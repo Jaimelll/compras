@@ -1040,7 +1040,7 @@ end #panel
             column("Avance") do |formula|
                     "Contrato"
             end
-            column("RC") do |formula|
+            column("Recp Contrato") do |formula|
               @dpc=  formula.orden
 
               @vpas=1
@@ -1054,7 +1054,7 @@ end #panel
              end
 
 
-            column("RBS") do |formula|
+            column("Recp Bien") do |formula|
               @dpc=  formula.orden
 
               @vpas=2
@@ -1067,7 +1067,7 @@ end #panel
 
              end
 
-             column("RG") do |formula|
+             column("Recp Guia") do |formula|
                @dpc=  formula.orden
 
                @vpas=3
@@ -1081,7 +1081,7 @@ end #panel
               end
 
 
-             column("RP") do |formula|
+             column("Recp Pago") do |formula|
                @dpc=  formula.orden
 
                @vpas=4

@@ -260,8 +260,8 @@ ActiveAdmin.register_page "grafico1" do
 
 
     #@alabels.push(item.pac+"--------"+number_with_delimiter(item.certificado, delimiter: ",").to_s+"----"+@n1)
-    @lab1=@desc.capitalize.truncate(40)+"-"+item.numero
-
+    @lab1=item.numero+'-'+ Phase.where(id:item.proceso).select('nomenclatura as dd').first.dd+'-'+
+      @desc.capitalize.truncate(40)
 
 
 

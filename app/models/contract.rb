@@ -5,4 +5,6 @@ class Contract < ApplicationRecord
   has_many :packages
 
     validates :proceso, presence: true
+    validates :numero, presence: true
+    validates :descripcion, presence: true
 end
