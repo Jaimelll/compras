@@ -61,7 +61,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
                                  n7=0
                                end
                      #para dpc
-                                         if n4==35 or n4==76 then
+                                         if n4==35 or n4==76 or n4=38 then
                                            n8=1
                                          else
                                            n8=0
@@ -183,7 +183,7 @@ form :title => 'Edicion Actividad'  do |f|
                          u.orden]}
              when 13     #dpc
                            Formula.where(product_id:12).order("numero,descripcion").
-                           where("cantidad=5 or orden=35 or orden=76").
+                           where("cantidad=5 or orden=35 or orden=76 or orden=38").
                              map{|u| [u.descripcion.capitalize,
                               u.orden]}
 
