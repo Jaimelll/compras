@@ -626,7 +626,7 @@ end#table
 @procp .each do |proceso|
 
     @deta4=Activity.where(phase_id:proceso.id).
-      where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+      where("pfecha>=?  ", @vinicio ).
     order('pfecha DESC,id DESC')
 
 
