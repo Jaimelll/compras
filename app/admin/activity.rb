@@ -61,7 +61,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
                                  n7=0
                                end
                      #para dpc
-                                         if n4==35 or n4==76 or n4=38 then
+                                         if n4==35 or n4==76 or n4==38 then
                                            n8=1
                                          else
                                            n8=0
