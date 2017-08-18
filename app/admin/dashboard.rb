@@ -655,7 +655,11 @@ end#table
             end
 
         else
+          if @vdir==5 then
               @vconv=1
+          else
+              @vconv=4
+          end
         end
         if @deta4.where(actividad:79).count>0 then
           @vconv=4
