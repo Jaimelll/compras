@@ -635,13 +635,17 @@ end#table
 
 
 
-         if @deta4.count>0 then
+         if @deta4.count>0  then
             @vactiv3= @deta4.select('actividad as dd').first.dd
 
           @vdir=Formula.where(product_id:12,orden:@vactiv3).
                 select('cantidad as dd').first.dd
 
-            @vxper2[@vdir]=@vxper2[@vdir]+ 1
+
+
+                @vxper2[@vdir]=@vxper2[@vdir]+ 1
+
+
      #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
            @vconv=0
         if @deta4.where(actividad:20).count>0 then
@@ -649,10 +653,15 @@ end#table
             if @deta4.where(actividad:20).sum(:importe)>0 then
               @vconv=3
             end
+
         else
               @vconv=1
         end
-
+        if @deta4.where(actividad:79).count>0 then
+          @vconv=4
+          @vxper2[@vdir]=@vxper2[@vdir]- 1
+          @vdir=0
+        end
 
 
 
@@ -711,7 +720,7 @@ end#table
 
         end
 
-
+    unless @vactiv3 ==79
 
              case @vdir
              when 1
@@ -741,7 +750,7 @@ end#table
             when 1,2,3,4,5,6,7
                 @vprot.push(proceso.id)
             end
-
+end
 
 
           end# de if 1

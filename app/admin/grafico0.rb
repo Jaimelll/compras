@@ -194,7 +194,7 @@ ActiveAdmin.register_page "grafico0" do
     # empieza @vlog
 
 
-       unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
+       unless @vprord==200 or @vprord==300 or  @vprord==79 or ( @vprord==8 and item.modalidad==3)
          if  @uproc>=@vproc then
 
                 @vproceso[@vproc]=@vproceso[@vproc]+
