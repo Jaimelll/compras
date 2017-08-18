@@ -44,7 +44,7 @@
 
 
         <td><%= @conta.to_s+".-" %></td>
-        
+
         <%  case current_admin_user.id %>
         <%    when 21,22,23 %>
 
@@ -125,7 +125,12 @@
 
                    <td colspan="3"><%=Formula.where(product_id:12,orden:deta.actividad).
                                select('descripcion as dd').first.dd.capitalize  %></td>
-                   <td colspan="3"><%= deta.obs.capitalize %></td>
+                        <%  if deta.obs then %>
+                  <td colspan="3"><%= deta.obs.capitalize %></td>
+                         <%  else %>
+                  <td ></td>
+                     <%  end %>
+
                    <td ></td>
            </tr>
 
