@@ -936,8 +936,8 @@ end #panel
           column("TOTAL") do |formula|
             @dpc=  formula.orden
               @vpaso=1
-            @vpas=[5,6,7]
-            @titproc1="Relacion de Procesos"
+            @vpas=[1,2,3,4,5,6,7]
+            @titproc1="RELACION DE PROCESOS"
             @le=@vxper2[1]+@vxper2[2]+@vxper2[3]+@vxper2[4]+ @vxper2[5]+  @vxper2[6]+  @vxper2[7]
             link_to "#{@le}",
             reports_comment5_path(format: :pdf,

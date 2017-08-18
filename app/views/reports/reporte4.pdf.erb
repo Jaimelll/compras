@@ -5,7 +5,7 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @tit1 %>(Soles) </h3>
+<h3><%=   @tit1 %>(Soles) al<%= Time.now.strftime("%d-%m-%Y")%>	 </h3>
 </head>
 
   <% if @activities.length>0 then %>

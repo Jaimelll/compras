@@ -5,7 +5,7 @@
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
 <h3>Periodo:<%=   @vper %> </h3>
-<h4><%= @titproc %></h4>
+<h4><%= @titproc %> AL<%= Time.now.strftime("%d-%m-%Y")%></h4>
 
 </head>
 <% if @items.count>0 then %>
@@ -23,7 +23,7 @@
        <th  >PAC-FUENTE</th>
        <th  colspan="3">Descripcion</th>
        <th   >Presupuestado</th>
-<% if  @vactcanti.to_i==6 then %>
+<% if  @vactcanti==6.to_s then %>
        <th   >Adjudicado</th>
 <%  else %>
        <th   >Referencial</th>
@@ -83,7 +83,7 @@
         <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
                 <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
-        <% if  @vactcanti.to_i==6 then %>
+        <% if  @vactcanti==6.to_s then %>
         <% @vbpro=Piece.where(phase_id:variable.id.to_s).sum(:adjudicado)*
         Formula.where(product_id:7,orden:variable.moneda)
               .select('cantidad as dd').first.dd/100%>

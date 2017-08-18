@@ -5,7 +5,7 @@
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
 <h3>Periodo:<%=   @vper %> </h3>
-<h4><%= @titproc %></h4>
+<h4><%= @titproc %> AL<%= Time.now.strftime("%d-%m-%Y")%>	</h4>
 
 </head>
 <% if @items.count>0 then %>
