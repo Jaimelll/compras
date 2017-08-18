@@ -18,7 +18,7 @@
       <%  if @vopc==4 then %>
         <th >Ingreso DPC</th>
         <th >Convocatoria</th>
-         <%  @idpc=34%>
+         <%  @idpc=[17,34]%>
          <%  @idpc2=18%>
       <%  else%>
        <th >Pres. Prop.</th>
@@ -234,7 +234,7 @@
         Formula.where(product_id:7,orden:pite.moneda)
               .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
            <% else %>
-           <td  ></td> 
+           <td  ></td>
            <% end %>
                  <td colspan="1"> </td>
 
