@@ -636,7 +636,7 @@ end#table
 
 
          if @deta4.count>0  then
-            @vactiv3= @deta4.select('actividad as dd').first.dd
+            @vactiv3= @deta4.where("pfecha<=?  ", @vfin ).select('actividad as dd').first.dd
 
           @vdir=Formula.where(product_id:12,orden:@vactiv3).
                 select('cantidad as dd').first.dd
