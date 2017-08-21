@@ -236,7 +236,7 @@ ActiveAdmin.register_page "grafico" do
     @nconta2=0
     @ulvproc2=0
 
-
+    @n2fecha=@vinicio
 
     #inicio de phase if 280 al 392*************************************************************
     if Phase.where(expediente:item.exped,convocatoria:1).count>0 and item.exped>0 then
@@ -251,7 +251,8 @@ ActiveAdmin.register_page "grafico" do
       #cambio
       @vproc2=Formula.where(product_id:12,orden:phase.actividad).
                            select('cantidad as dd').first.dd
-    if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha and @vproc2>@vproc then
+
+    if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
 
 
     #proceso
@@ -271,7 +272,7 @@ ActiveAdmin.register_page "grafico" do
     if  @nconta2==1 and @nconta1==1  then
           @vlog=false
           @ulvproc2=@vproc2  #guarda el primer proceso
-
+          @n2fecha=phase.pfecha #guarda la primera fecha
 ###################repetir case de iproce
 
 
@@ -354,10 +355,10 @@ ActiveAdmin.register_page "grafico" do
 
     # fin phase del 280 al 392************************************************************
     if  @nconta1==1 and   @vlog==false then
-          @vlog=false
+
 
 ###############
- if  @vproc>@ulvproc2 then
+ if  @vproc>@ulvproc2 and detail.pfecha> @n2fecha then
    case   @iproce
      when 100
          @vlog=true
