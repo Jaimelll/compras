@@ -201,7 +201,7 @@ def comment4
   .order('pfecha')
 
 
-    @items=Phase.where(id:@vpacv).order('nomenclatura')
+    @items=Phase.where(id:@vpacv).order('sele2 DESC')
 
   respond_to do |format|
 
@@ -254,7 +254,7 @@ def comment7
 .order('pfecha')
 
 
-  @items=Item.where(id:@vpacv).order('tipo,modalidad,exped,obac,pac')
+  @items=Item.where(id:@vpacv).order('tipo,modalidad,exped,certificado DESC')
 
 respond_to do |format|
 
