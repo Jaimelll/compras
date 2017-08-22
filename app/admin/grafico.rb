@@ -211,7 +211,7 @@ ActiveAdmin.register_page "grafico" do
 
     if @deta1.count==0 then
 
-      object = Detail.new(:actividad => 36, :pfecha=> @vinicio,
+      object = Detail.new(:actividad => 36, :pfecha=> @vinicio+1,
        :item_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
        :updated_at => @vinicio,:tipo =>'automatico')
       object.save
@@ -271,7 +271,7 @@ ActiveAdmin.register_page "grafico" do
 
     if  @nconta2==1 and @nconta1==1  then
           @vlog=false
-          @ulvproc2=@vproc2  #guarda el primer proceso
+          @ulvproc2=1  #guarda el primer proceso
           @n2fecha=phase.pfecha #guarda la primera fecha
 ###################repetir case de iproce
 
@@ -358,7 +358,7 @@ ActiveAdmin.register_page "grafico" do
 
 
 ###############
- if  @vproc>@ulvproc2 and detail.pfecha> @n2fecha then
+ if  @ulvproc2==0 and detail.pfecha> @n2fecha then
    case   @iproce
      when 100
          @vlog=true
