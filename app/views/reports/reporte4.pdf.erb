@@ -152,12 +152,10 @@
             <% else %>
 
 
-             <% @vreff=Piece.where(phase_id:activity.id.to_s).sum(:referencial)*
-             Formula.where(product_id:7,orden:activity.moneda)
-                   .select('cantidad as dd').first.dd/100%>
 
 
-           <td  ><h5  ALIGN=center><%= number_with_delimiter(@vreff.to_i, delimiter: ",") %></h5></td>
+
+
 
 
 
@@ -167,7 +165,7 @@
           <% end %>
 
 
-
+<td  ><h5  ALIGN=center><%= number_with_delimiter(activity.sele2.to_i, delimiter: ",") %></h5></td>
 
       </tr>
       <% if Piece.where(phase:activity.id.to_s).count>0  then  %>
