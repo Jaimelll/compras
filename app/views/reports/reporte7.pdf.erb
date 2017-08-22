@@ -109,10 +109,11 @@
     <%    when 21,22,23 %>
 
       <%  @vpact=Formula.where(product_id:12,acti:2).select('orden')%>
+
     <% else %>
       <%  @vpact=Formula.where(product_id:12).where('acti=1 or acti=2').select('orden')%>
     <%   end %>
-
+      <%  @vpact3=Formula.where(product_id:12,acti:3).select('orden')%>
 
 
 
@@ -184,8 +185,24 @@
 
       <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact).count>0 or @vdetact21==1 then %>
 
+
+
         <% @vdetact= @vdetalle.where(item_id:variable.id).where(actividad: @vpact)%>
 
+
+    <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact3).count>0 then %>
+    <%  @vdetalle.where(item_id:variable.id).where(actividad:@vpact3).each do |deta| %>
+      <tr  style="font-size:80%;"  class="detl">
+    <td ></td>
+
+   <td colspan="8"><%='ESTADO='+deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize %></td>
+
+
+    </tr>
+
+
+      <% end %>
+      <% end %>
 
 
           <tr  style="font-size:80%;"  class="last">

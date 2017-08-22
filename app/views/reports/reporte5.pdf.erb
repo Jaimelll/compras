@@ -50,6 +50,9 @@
       <% else %>
         <%  @vpact=Formula.where(product_id:12).where('acti=1 or acti=2').select('orden')%>
       <%   end %>
+
+  <%  @vpact3=Formula.where(product_id:12,acti:3).select('orden')%>
+
         <td><%= @conta.to_s+".-" %></td>
 
 
@@ -103,6 +106,35 @@
           <% if @vdetalle.where(phase_id:variable.id).where(actividad: @vpact).count>0 and @vpaso1.to_i==0 then %>
 
             <% @vdetact= @vdetalle.where(phase_id:variable.id).where(actividad: @vpact)%>
+
+
+
+
+
+
+            <% if @vdetalle.where(phase_id:variable.id).where(actividad: @vpact3).count>0 then %>
+            <%  @vdetalle.where(phase_id:variable.id).where(actividad:@vpact3).each do |deta| %>
+              <tr  style="font-size:80%;"  class="detl">
+            <td ></td>
+
+           <td colspan="8"><%='ESTADO='+deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize %></td>
+
+
+            </tr>
+
+
+              <% end %>
+              <% end %>
+
+
+
+
+
+
+
+
+
+
 
 
 
