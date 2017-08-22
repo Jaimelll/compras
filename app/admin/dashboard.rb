@@ -675,8 +675,13 @@ end#table
             @vxper3[1]=@vxper3[1]+1
 
          if proceso.moneda and proceso.valor then
-             @contavus[1]=  @contavus[1]+ Formula.where(product_id:7,orden:proceso.moneda)
+
+             @vpv=Formula.where(product_id:7,orden:proceso.moneda)
                    .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+
+
+             @contavus[1]=  @contavus[1]+ @vpv
+             Phase.where(id:proceso.id).update_all( sele2:@vpv )
         end
 
             if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
@@ -691,8 +696,12 @@ end#table
             @vconv2.push(proceso.id)
               @vxper3[2]=@vxper3[2]+1
               if proceso.valor then
-              @contavus[2]=  @contavus[2]+ Formula.where(product_id:7,orden:proceso.moneda)
-                    .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+
+             @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                   .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+
+              @contavus[2]=  @contavus[2]+@vpv
+               Phase.where(id:proceso.id).update_all( sele2:@vpv )
               end
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
@@ -704,10 +713,13 @@ end#table
             @vconv3.push(proceso.id)
               @vxper3[3]=@vxper3[3]+1
 
-              @contavus[3]=  @contavus[3]+Piece.where(phase_id:proceso.id).sum(:adjudicado)*
-              Formula.where(product_id:7,orden:proceso.moneda)
-                    .select('cantidad as dd').first.dd.to_i/100
 
+               @vpv=Piece.where(phase_id:proceso.id).sum(:adjudicado)*
+               Formula.where(product_id:7,orden:proceso.moneda)
+                     .select('cantidad as dd').first.dd.to_i/100
+
+              @contavus[3]=  @contavus[3]+@vpv
+                Phase.where(id:proceso.id).update_all( sele2:@vpv )
 
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
@@ -769,9 +781,9 @@ column("Rol") do
    "Proceso"
 end
 
-column("actos previos") do |formula|
+column("En Proceso") do |formula|
   @dpc=  formula.orden
-  @titproc1="Procesos en Actos Previos"
+  @titproc1="En Proceso"
   @vopc=4
 
 

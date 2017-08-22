@@ -168,7 +168,8 @@ def comment4
 @tcambio=3.3
 @tit1=params[:param4].to_s
 
-           @activities=Phase.where(id:@vprov).order('pp')
+           @activities=Phase.where(id:@vprov).
+           order('sele2 DESC')
 
 
 
