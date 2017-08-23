@@ -143,8 +143,8 @@
          <% if @vbpro >0 then %>
 
 
-          <td  ><h5  ALIGN=center><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></h5></td>
-          <td  ><h5  ALIGN=center><%= number_with_delimiter((@presu-@vbpro).to_i, delimiter: ",") %></h5></td>
+      <td  ><h5  ALIGN=center><%= number_with_delimiter(activity.sele2.to_i, delimiter: ",") %></h5></td>
+          <td  ><h5  ALIGN=center><%= number_with_delimiter((@presu-activity.sele2).to_i, delimiter: ",") %></h5></td>
              <% else %>
                <td>     </td>
                <td></td>
@@ -283,10 +283,7 @@
     Formula.where(product_id:7,orden:activity2.moneda)
           .select('cantidad as dd').first.dd/100.to_i %>
 
-    <%@sadjs= @sadjs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
-    .sum(:adjudicado)*
-    Formula.where(product_id:7,orden:activity2.moneda)
-          .select('cantidad as dd').first.dd/100.to_i %>
+    <%@sadjs=@sadjs+Phase.where(id:activity2.id).sum(:sele2).to_i %>
 
       <% end %>
     <%  case current_admin_user.id%>
@@ -314,7 +311,7 @@
 
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter((@scert-@sadjs).to_i, delimiter: ",") %></td>
-          <td><%= number_with_delimiter(((@scert-@sadjs)/@scert*100).to_i, delimiter: ",")+"%" %></td>
+          <td><%= number_with_delimiter((@scert-@sadjs)*100/@scert.to_i, delimiter: ",")+"%" %></td>
         </tr>
 
           <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)

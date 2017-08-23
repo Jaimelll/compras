@@ -712,11 +712,11 @@ end#table
           when 3
             @vconv3.push(proceso.id)
               @vxper3[3]=@vxper3[3]+1
+@vpv=0
+Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL").each do |adju|
+@vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+end
 
-
-               @vpv=Piece.where(phase_id:proceso.id).sum(:adjudicado)*
-               Formula.where(product_id:7,orden:proceso.moneda)
-                     .select('cantidad as dd').first.dd.to_i/100
 
               @contavus[3]=  @contavus[3]+@vpv
                 Phase.where(id:proceso.id).update_all( sele2:@vpv )
