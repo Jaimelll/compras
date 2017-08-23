@@ -17,7 +17,7 @@
       <th >N°</th>
       <%  if @vopc==4 then %>
         <th >Ingreso DPC</th>
-        <th >Convocatoria</th>
+        <th >Convoc</th>
          <%  @idpc=[17,34]%>
          <%  @idpc2=18%>
       <%  else%>
@@ -175,23 +175,28 @@
 
           <tr style="font-size:80%;"  class="detl">
             <th colspan="2"> </th>
-            <th colspan="3" >Item </th>
-            <th colspan="1"  >Estado</th>
+            <th colspan="3" >Item Paquete </th>
+            <th >Postores</th>
+            <% if   @vopc!=1 then %>
+             <th colspan="1"  >Estado</th>
+                 <% end %>
 
-            <% if   @vopc==2 then %>
-            <th colspan="2"  >Postor Ganador</th>
+            <% if   @vopc==2 or   @vopc==3 then %>
+              <th colspan="2"  >Postor Ganador</th>
 
-             <th colspan="1" > </th>
             <% end %>
-            <th  >Monto</th>
+            <th  >Presupuestado</th>
+        <% if   @vopc==2 or   @vopc==3 then %>
 
-             <th colspan="1"> </th>
-
+            <th  >Adjudicado</th>
+        <% else %>
+             <th  >Referencial</th>
+       <% end %>
          </tr>
 
 
 
-          <% Piece.where(phase:activity.id.to_s).each do |pite| %>
+          <% Piece.where(phase:activity.id.to_s).order('presupuestado DESC').each do |pite| %>
 
 
        <tr style="font-size:70%;"  class="last" >
@@ -202,11 +207,14 @@
                 <td colspan="2"></td>
 
 
-               <td  colspan="3" ><%= pite.descripcion.capitalize %></td>
+               <td  colspan="3" ><%= pite.codigo+'-'+pite.descripcion.capitalize %></td>
+
+              <td ><%= pite.cantidad %></td>
+               <% if   @vopc!=1 then %>
                  <% if pite.estado and pite.estado>0 then %>
 
-                  <td colspan="1" ><%= Formula.where(product_id:17, orden:pite.estado).
-                   select('nombre as dd').first.dd %></td>
+                  <td colspan="1" ><h5 ><%= Formula.where(product_id:17, orden:pite.estado).
+                   select('nombre as dd').first.dd %></h5 ></td>
 
 
              <% else %>
@@ -214,29 +222,45 @@
 
                 <td colspan="1" > s/d </td>
             <% end %>
+            <% end %>
 
-      <% if   @vopc==2 then %>
 
-               <td colspan="3" ><%= pite.postor.capitalize %></td>
+      <% if  @vopc==2 or   @vopc==3  then %>
+
+               <td colspan="2" ><%= pite.postor.capitalize %></td>
 
         <% end %>
 
-        <% if   (pite.estado==2  or pite.estado==4) and pite.adjudicado then %>
-        <td ><%= number_with_delimiter((pite.adjudicado*
-        Formula.where(product_id:7,orden:pite.moneda)
-              .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
 
-          <% else %>
-              <% if  pite.referencial then %>
-        <td ><%= number_with_delimiter((pite.referencial*
-        Formula.where(product_id:7,orden:pite.moneda)
-              .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
-           <% else %>
-           <td  ></td>
-           <% end %>
-                 <td colspan="1"> </td>
+        <% if  pite.presupuestado then %>
 
-          <% end %>
+      <td  ><%= number_with_delimiter(pite.presupuestado.to_i, delimiter: ",") %></td>
+      <% else %>
+      <td  ></td>
+      <% end %>
+
+    <% if  @vopc==2 or   @vopc==3  then %>
+    <% if  pite.adjudicado then %>
+    <td ><%= number_with_delimiter((pite.adjudicado*
+    Formula.where(product_id:7,orden:pite.moneda)
+          .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
+
+      <% else %>
+      <td  ></td>
+      <% end %>
+     <% else %>
+     <% if  pite.referencial then %>
+   <td ><%= number_with_delimiter((pite.referencial*
+   Formula.where(product_id:7,orden:pite.moneda)
+     .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
+   <% else %>
+   <td  ></td>
+   <% end %>
+    <% end %>
+
+
+
+
 
        </tr>
 

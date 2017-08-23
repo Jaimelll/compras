@@ -22,7 +22,7 @@ index :title => "Lista de Items"  do
 
 column("codigo")
 column("descripcion")
-column("cantidad")
+column("cantidad postores")
 column("moneda") do |activity|
   if activity.moneda and activity.moneda>0 then
 
@@ -68,7 +68,7 @@ form :title => 'Edicion Item'  do |f|
 
              f.input :codigo, :input_html => { :style =>  'width:30%'}
              f.input :descripcion, :input_html => { :style =>  'width:30%'}
-             f.input :cantidad, :input_html => { :style =>  'width:30%'}
+             f.input :cantidad,:label => 'Cantidad de postores', :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
 

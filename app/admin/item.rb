@@ -259,6 +259,7 @@ form :title => 'Edicion PACs' do |f|
 
        f.input :periodo, :as => :select, :collection =>
                Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+
        f.input :obac, :as => :select, :collection =>
        case current_admin_user.id # a_variable is the variable we want to compare
          when 6   #mgp

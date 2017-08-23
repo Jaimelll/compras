@@ -165,7 +165,7 @@ def comment4
 
 @vopc=params[:param1].to_i
 @vprov=params[:param2]
-@tcambio=3.3
+
 @tit1=params[:param4].to_s
 
            @activities=Phase.where(id:@vprov).
