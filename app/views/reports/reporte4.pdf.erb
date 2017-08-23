@@ -168,6 +168,27 @@
 
 
       </tr>
+
+      <% if Activity.where(phase_id:activity.id).where(actividad: 56).count>0 and @vopc==4 then %>
+      <%  @vesta=Activity.where(phase_id:activity.id).where(actividad:56).order('pfecha').last %>
+        <tr  style="font-size:80%;"  class="detl">
+      <td ></td>
+
+     <td colspan="8"><%='ESTADO='+@vesta.pfecha.strftime("%d/%m/%y").to_s+"-"+ @vesta.obs.capitalize %></td>
+
+
+      </tr>
+
+
+
+        <% end %>
+
+
+
+
+
+
+
       <% if Piece.where(phase:activity.id.to_s).count>0  then  %>
 
 
@@ -177,11 +198,9 @@
             <th colspan="2"> </th>
             <th colspan="3" >Item Paquete </th>
             <th >Postores</th>
-            <% if   @vopc!=1 then %>
+            <% if   @vopc==2 or @vopc==3 then %>
              <th colspan="1"  >Estado</th>
-                 <% end %>
 
-            <% if   @vopc==2 or   @vopc==3 then %>
               <th colspan="2"  >Postor Ganador</th>
 
             <% end %>
@@ -210,7 +229,7 @@
                <td  colspan="3" ><%= pite.codigo+'-'+pite.descripcion.capitalize %></td>
 
               <td ><%= pite.cantidad %></td>
-               <% if   @vopc!=1 then %>
+                <% if  @vopc==2 or   @vopc==3  then %>
                  <% if pite.estado and pite.estado>0 then %>
 
                   <td colspan="1" ><h5 ><%= Formula.where(product_id:17, orden:pite.estado).
