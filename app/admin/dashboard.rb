@@ -493,7 +493,10 @@ end#table
                                         @dpc=  formula.orden
                                         @vpas=[2]
                                         @titproc1="PAC CON EXPEDIENTE DE INICIO"
-                                        @dpcl=      @vxper[2]
+                                      
+                                        @dpcl=   @vxper[2].to_s+ "/("+
+                                        number_with_delimiter(@vpresu[2].to_i, delimiter: ",").to_s+ ")"
+
                                                link_to "#{@dpcl} ",
                                                reports_comment7_path(format: :pdf,
                                               :param3=> @vpas,
@@ -517,7 +520,8 @@ end#table
                                            @dpc=  formula.orden
                                            @vpas=[4]
                                            @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
-                                           @dpcl=  @vxper[4]
+                                           @dpcl=   @vxper[4].to_s+ "/("+
+                                           number_with_delimiter(@vpresu[4].to_i, delimiter: ",").to_s+ ")"
                                                  link_to "#{@dpcl} ",
                                                   reports_comment7_path(format: :pdf,
                                                   :param3=> @vpas,
@@ -552,8 +556,7 @@ end#table
                                            @dpc=  formula.orden
                                            @vpas=[7]
                                            @titproc1="EXPEDIENTES EN DEC"
-                                           @dpcl=   @vxper[7].to_s+ "/("+
-                                           number_with_delimiter(@vpresu[7].to_i, delimiter: ",").to_s+ ")"
+                                           @dpcl=   @vxper[7]
                                                    link_to "#{@dpcl} ",
                                                    reports_comment7_path(format: :pdf,
                                                    :param3=> @vpas,
