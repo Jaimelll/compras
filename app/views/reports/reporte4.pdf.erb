@@ -354,7 +354,13 @@
 
           <td><%= number_with_delimiter(@sadjs.to_i, delimiter: ",") %></td>
           <td><%= number_with_delimiter((@scert-@sadjs).to_i, delimiter: ",") %></td>
+
+            <% if@scert.to_i>0  then  %>
           <td><%= number_with_delimiter((@scert-@sadjs)*100/@scert.to_i, delimiter: ",")+"%" %></td>
+
+            <% else  %>
+            <td>0</td>  
+            <% end %>
         </tr>
 
           <td colspan="4">Tipo de cambio Dolar=<%= Formula.where(product_id:7,orden:2)
