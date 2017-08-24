@@ -5,7 +5,7 @@
 <title></title>
 <%= wicked_pdf_stylesheet_link_tag 'pdf' %>
 <meta charset="utf-8">
-<h3><%=   @tit1 %>(Soles) al<%= Time.now.strftime("%d-%m-%Y")%>	 </h3>
+<h3><%=   @tit1 %>(Soles) al<%=" "+ Time.now.strftime("%d-%m-%Y").to_s%>	 </h3>
 </head>
 
   <% if @activities.length>0 then %>
@@ -39,6 +39,7 @@
        <th >Ahorro</th>
        <% else %>
          <th >Referencial</th>
+          <th ></th>
        <%  end%>
 
 
@@ -195,7 +196,7 @@
 
 
           <tr style="font-size:80%;"  class="detl">
-            <th colspan="2"> </th>
+            <th> </th>
             <th colspan="3" >Item Paquete </th>
             <th >Postores</th>
             <% if   @vopc==2 or @vopc==3 then %>
@@ -208,9 +209,12 @@
         <% if   @vopc==2 or   @vopc==3 then %>
 
             <th  >Adjudicado</th>
+            <th>Ahorro </th>
         <% else %>
              <th  >Referencial</th>
+             <th> </th>
        <% end %>
+
          </tr>
 
 
@@ -223,7 +227,7 @@
 
 
 
-                <td colspan="2"></td>
+                <td></td>
 
 
                <td  colspan="3" ><%= pite.codigo+'-'+pite.descripcion.capitalize %></td>
@@ -260,10 +264,13 @@
 
     <% if  @vopc==2 or   @vopc==3  then %>
     <% if  pite.adjudicado then %>
+
     <td ><%= number_with_delimiter((pite.adjudicado*
     Formula.where(product_id:7,orden:pite.moneda)
           .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
-
+          <td ><%= number_with_delimiter((pite.presupuestado-pite.adjudicado*
+          Formula.where(product_id:7,orden:pite.moneda)
+                .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
       <% else %>
       <td  ></td>
       <% end %>
@@ -273,8 +280,10 @@
    Formula.where(product_id:7,orden:pite.moneda)
      .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
    <% else %>
-   <td  ></td>
+   <td  colspan="2"  ></td>
    <% end %>
+
+
     <% end %>
 
 
@@ -359,7 +368,7 @@
           <td><%= number_with_delimiter((@scert-@sadjs)*100/@scert.to_i, delimiter: ",")+"%" %></td>
 
             <% else  %>
-            <td>0</td>  
+            <td>0</td>
             <% end %>
         </tr>
 
