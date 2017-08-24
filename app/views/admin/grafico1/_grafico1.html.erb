@@ -11,6 +11,15 @@
          crossorigin="anonymous"></script>
          <script src="https://code.highcharts.com/highcharts.js"></script>
 
+         <% if  param1.length<20 %>
+            <% @vanc=400 %>
+         <% else %>
+           <% @vanc=param1.length*22 %>
+         <% end %>
+
+         <div id="container" style="min-width: 310px; max-width: 900px; height:<%= @vanc%>px; margin: 0 auto"></div>
+
+
     </head>
 
     <body>

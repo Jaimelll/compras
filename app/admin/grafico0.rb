@@ -306,6 +306,13 @@ ActiveAdmin.register_page "grafico0" do
     end #terminia  item
     #termina item***********************************************
 
+    if @vtitun then
+    @vtit=@titulo+'-'+@vtitun
+    else
+    @vtit=@titulo
+    end
+
+
     columns do
            column do
 
@@ -323,7 +330,7 @@ ActiveAdmin.register_page "grafico0" do
                             :param7 => @adpc,
                             :param8 => @adec,
                             :param9 => @aeobac,
-                            :param20 =>  @titulo+@vtitun}
+                            :param20 =>  @vtit}
 
 
            end

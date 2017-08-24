@@ -177,10 +177,10 @@ ActiveAdmin.register_page "grafico" do
 
         when 2
           @vinicio = Date.parse('2016/01/01')
-          @dfin=365
+          @dfin=368
           @vfin=Date.parse('2016/12/31')
            @vrang=30
-           @vtitun=" AF-2016"
+           @vtitun="AF-2016"
 
 
 
@@ -522,6 +522,12 @@ end
     end #terminia  item
     #termina item***********************************************
 
+
+if @vtitun then
+@vtit=@titulo+'-'+@vtitun
+else
+@vtit=@titulo
+end
     columns do
            column do
 
@@ -539,7 +545,7 @@ end
                             :param7 => @adpc,
                             :param8 => @adec,
                             :param9 => @aeobac,
-                            :param20 =>  @titulo+@vtitun}
+                            :param20 =>  @vtit}
 
 
            end
