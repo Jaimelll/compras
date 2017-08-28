@@ -476,7 +476,8 @@ end#table
                         end# de if 1
                                                  end
                                          column("Avance") do |formula|
-                                                 "PAC"
+                                  #   link_to "PAC", reports_vhoja1_path(format:  "xls", :param1=> @vxper, :param2=> @vpresu)
+                                          "PAC"
                                          end
                                          column("S/EXP") do |formula|
 
@@ -493,7 +494,7 @@ end#table
                                         @dpc=  formula.orden
                                         @vpas=[2]
                                         @titproc1="PAC CON EXPEDIENTE DE INICIO"
-                                      
+
                                         @dpcl=   @vxper[2].to_s+ "/("+
                                         number_with_delimiter(@vpresu[2].to_i, delimiter: ",").to_s+ ")"
 
@@ -575,6 +576,13 @@ end#table
                                                :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
                                        end
+
+
+
+
+
+
+
 
                                     end # de table_for
 
@@ -1133,14 +1141,7 @@ end #panel
                 :param3=> @vpas,
                 :param4=> @titproc1,:param5=> @vprot)
 
-
-
-
-
-
-
               end
-
 
 
 

@@ -266,4 +266,20 @@ end
 
 
 
+def vhoja1
+  @vnpac=params[:param1]
+  @vmpac=params[:param2]
+
+  respond_to do |format|
+    format.html
+    format.xls{render template: 'reports/hoja1.xls.erb', xls:'ahoja'}
+  end
+end
+
+
+
+
+
+
+
 end

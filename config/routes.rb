@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :elements
   resources :packages
   resources :contracts
-  
+
   resources :pieces
   devise_for :admin_users, ActiveAdmin::Devise.config
 
@@ -52,5 +52,6 @@ match 'reports/comment4', via: [:get]
 match 'reports/comment5', via: [:get]
 match 'reports/comment6', via: [:get]
 match 'reports/comment7', via: [:get]
+match 'reports/vhoja1', via: [:get]
 
 end
