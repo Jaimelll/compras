@@ -269,6 +269,11 @@ end
 def vhoja1
   @vnpac=params[:param1]
   @vmpac=params[:param2]
+  @vpac1=params[:param3]
+  @vpac2=params[:param4]
+  @vpac3=params[:param5]
+  @vpac4=params[:param6]
+  @items=Item.order('tipo,modalidad,exped,certificado DESC')
 
   respond_to do |format|
     format.html
