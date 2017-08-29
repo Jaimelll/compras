@@ -1,48 +1,37 @@
-<?xml version="1.0"?>
-<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
-  xmlns:o="urn:schemas-microsoft-com:office:office"
-  xmlns:x="urn:schemas-microsoft-com:office:excel"
-  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
-  xmlns:html="http://www.w3.org/TR/REC-html40">
-  <Worksheet ss:Name="Seguimiento">
-    <Table>
-      <Row>
-        <Cell><Data ss:Type="String">Avance</Data></Cell>
-        <Cell><Data ss:Type="String">S/EXP</Data></Cell>
-        <Cell><Data ss:Type="String">C/EXP</Data></Cell>
-        <Cell><Data ss:Type="String">DC</Data></Cell>
-        <Cell><Data ss:Type="String">DEM</Data></Cell>
-        <Cell><Data ss:Type="String">DPC</Data></Cell>
-        <Cell><Data ss:Type="String">FC</Data></Cell>
-        <Cell><Data ss:Type="String">EC</Data></Cell>
-        <Cell><Data ss:Type="String">TOTAL</Data></Cell>
-      </Row>
-      <Row>
-        <Cell><Data ss:Type="String">PAC</Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[1]%></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[2] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[3] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[4] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[5] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[6] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[7] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vnpac[1].to_i+@vnpac[2].to_i+@vnpac[3].to_i+@vnpac[4].to_i+@vnpac[5].to_i+@vnpac[6].to_i+@vnpac[7].to_i%></Data></Cell>
-      </Row>
-      <Row>
-        <Cell><Data ss:Type="String">MONTO(SOLES)</Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[1].to_i%></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[2].to_i %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[3].to_i %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[4].to_i %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[5].to_i %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[6].to_i %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[7].to_i %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+@vmpac[6].to_i+@vmpac[7].to_i%></Data></Cell>
-      </Row>
 
+    <Table border="1">
+     <tr>
+        <th>AVANCE</th>
+        <th>S/EXP</th>
+        <th>C/EXP</th>
+        <th>DC</th>
+        <th>DEM</th>
+        <th>DPC</th>
+        <th>FC</th>
+        <th>EC</th>
+        <th>TOTAL</th>
+      </tr>
+      <tr>
+        <th>PAC</th>
+        <th><%= @vnpac[1] %></th>
+        <th><%= @vnpac[2] %></th>
+        <th><%= @vnpac[3] %></th>
+        <th><%= @vnpac[4] %></th>
+        <th><%= @vnpac[5] %></th>
+        <th><%= @vnpac[6] %></th>
+        <th><%= @vnpac[7] %></th>
+        <th><%= @vnpac[1].to_i+@vnpac[2].to_i+@vnpac[3].to_i+@vnpac[4].to_i+@vnpac[5].to_i+@vnpac[6].to_i+@vnpac[7].to_i%></th>
+      </tr>
+      <tr>
+        <th>MONTO(SOLES)</th>
+        <td><%= @vmpac[1].to_i %></td>
+        <td><%= @vmpac[2].to_i %></td>
+        <td><%= @vmpac[3].to_i %></td>
+        <td><%= @vmpac[4].to_i %></td>
+        <td><%= @vmpac[5].to_i %></td>
+        <td><%= @vmpac[6].to_i %></td>
+        <td><%= @vmpac[7].to_i %></td>
+        <td><%= @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+@vmpac[6].to_i+@vmpac[7].to_i%></td>
+      </tr>
 
-
-<Cell><Data ss:Type="Number"><%= @vnpac[4] %></Data></Cell>
     </Table>
-  </Worksheet>
-</Workbook>
