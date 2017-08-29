@@ -280,7 +280,22 @@ def vhoja1
     format.xls{render template: 'reports/hoja1.xls.erb', xls:'ahoja'}
   end
 end
+def vhoja2
+  @vnpac=params[:param1]
+  @vmpac=params[:param2]
+  @vpac1=params[:param3]
+  @vpac2=params[:param4]
+  @vpac3=params[:param5]
+  @vpact=params[:param6]
+  @activities=Phase.order('sele2 DESC')
 
+
+
+  respond_to do |format|
+    format.html
+    format.xls{render template: 'reports/hoja2.xls.erb', xls:'ahoja'}
+  end
+end
 
 
 
