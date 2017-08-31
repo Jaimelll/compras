@@ -284,7 +284,8 @@ ActiveAdmin.register_page "grafico1" do
     end #terminia  item
     #termina item***********************************************
     if @vtitun then
-    @vtit=@titulo+'-'+@vtitun
+
+    @vtit=@titulo
     else
     @vtit=@titulo
     end

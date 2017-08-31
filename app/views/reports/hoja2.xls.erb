@@ -1,117 +1,129 @@
-<Table border="1">
- <tr>
-    <th>AVANCE</th>
-    <th>PREVIOS</th>
-    <th>CONVOCADOS</th>
-    <th>ADJUDICADOS</th>
-    <th>TOTAL</th>
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Resumen">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">AVANCE</Data></Cell>
+        <Cell><Data ss:Type="String">PREVIOS</Data></Cell>
+        <Cell><Data ss:Type="String">CONVOCADOS</Data></Cell>
+        <Cell><Data ss:Type="String">ADJUDICADOS</Data></Cell>
+        <Cell><Data ss:Type="String">TOTAL</Data></Cell>
 
-  </tr>
-  <tr>
-    <th>PAC</th>
-    <th><%= @vnpac[1] %></th>
-    <th><%= @vnpac[2] %></th>
-    <th><%= @vnpac[3] %></th>
-    <th><%= @vnpac[0] %></th>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">PAC</Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vnpac[1] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vnpac[2] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vnpac[3] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vnpac[0] %></Data></Cell>
 
-  </tr>
-  <tr>
-    <th>MONTO(SOLES)</th>
-    <td><%= @vmpac[1].to_i %></td>
-    <td><%= @vmpac[2].to_i %></td>
-    <td><%= @vmpac[3].to_i %></td>
-    <td><%= @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i%></td>
-  </tr>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">MONTO(SOLES)</Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[1] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[2] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[3] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[0] %></Data></Cell>
 
-</Table>
-<%Formula.where(product_id:20).order('orden').each do |proce| %>
-<Table border="1">
-<tr>
-<th><%= proce.nombre%></th>
-</tr>
-<tr>
-  <th>N</th>
-  <th>PAC-OBAC</th>
-  <th>PROCESO</th>
-  <th>DESCRIPCION</th>
-  <th>MONTO PRESUPUESTADO</th>
+      </Row>
+     </Table>
+    </Worksheet>
 
-  <%   if proce.orden==3  then %>
-  <th>MONTO ADJUDICADO</th>
-   <% else %>
-  <th>MONTO REFERENCIAL</th>
-   <%  end %>
+      <%Formula.where(product_id:20).order('orden').each do |proce| %>
+    <Worksheet ss:Name= "<%= proce.nombre %>">
+      <Table>
+        <Row>
+          <Cell><Data ss:Type="String">N</Data></Cell>
+          <Cell><Data ss:Type="String">PAC-OBAC</Data></Cell>
+          <Cell><Data ss:Type="String">PROCESO</Data></Cell>
+          <Cell><Data ss:Type="String">DESCRIPCION</Data></Cell>
+          <Cell><Data ss:Type="String">MONTO PRESUPUESTADO</Data></Cell>
 
-  <th>SITUACION ACTUAL</th>
-</tr>
-<%  case proce.orden %>
-<%  when 1 %>
-<%  @vpacn=@vpac1 %>
-<%  when 2 %>
-<%  @vpacn=@vpac2 %>
-<%  when 3 %>
-<%  @vpacn=@vpac3 %>
-<%  end %>
+            <%   if proce.orden==3  then %>
+          <Cell><Data ss:Type="String">MONTO ADJUDICADO</Data></Cell>
+                <% else %>
+           <Cell><Data ss:Type="String">>MONTO REFERENCIAL</Data></Cell>
+              <%  end %>
 
+          <Cell><Data ss:Type="String">SITUACION ACTUAL</Data></Cell>
+        </Row>
+        <%  case proce.orden %>
+        <%  when 1 %>
+        <%  @vpacn=@vpac1 %>
+        <%  when 2 %>
+        <%  @vpacn=@vpac2 %>
+        <%  when 3 %>
+        <%  @vpacn=@vpac3 %>
 
-<%  @conta=0 %>
-<%  @activities.where(id:@vpacn).each do |activ| %>
-<tr>
- <% @conta=@conta+1 %>
-<td ><%= @conta %></td>
-
-
-<% @vobac=" " %>
-<% if activ.expediente>0 then %>
-<% Item.where(exped:activ.expediente).each do |nobac| %>
-<% @spac=nobac.pac%>
-<% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
-<% @vobac=@vobac+ @spac+@sobac+"-" %>
-<% end %>
-<% end %>
+        <%  end %>
+        <%  @conta=0 %>
+          <%   @activities.where(id:@vpacn).each do |activ|  %>
 
 
-<td  ><%= @vobac %></td>
+        <Row>
+             <% @conta=@conta+1 %>
+          <Cell><Data ss:Type="Number"><%= @conta %></Data></Cell>
 
-<td ><%= activ.nomenclatura %></td>
-<td ><%= activ.descripcion.underscore.capitalize %></td>
-
-
-
-<%   if proce.orden==3  then %>
-
-    <% @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i%>
-            <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
-<%  else %>
-
-            <% @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i%>
-          <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
-
-<%  end %>
-  <td  ><h5  ALIGN=center><%= number_with_delimiter(activ.sele2.to_i, delimiter: ",") %></h5></td>
+          <% @vobac=" " %>
+          <% if activ.expediente>0 then %>
+          <% Item.where(exped:activ.expediente).each do |nobac| %>
+          <% @spac=nobac.pac%>
+          <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
+          <% @vobac=@vobac+ @spac+@sobac+"-" %>
+          <% end %>
+          <% end %>
 
 
 
+          <Cell><Data ss:Type="String"><%= @vobac %></Data></Cell>
 
-  <%  @vpact3=Formula.where(product_id:12,acti:3).select('orden')%>
 
-  <% @vdetalle= Activity.order('pfecha')%>
-  <% @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)%>
 
-  <% if @vdetalle.count>0%>
- <% @vdetalle.each do |deta|%>
- <% @vobsr=deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize%>
- <% end %>
-  <td><%= @vobsr%></td>
- <% end %>
+          <Cell><Data ss:Type="String"><%=activ.nomenclatura%></Data></Cell>
+          <Cell><Data ss:Type="String"><%= activ.descripcion.underscore.capitalize%></Data></Cell>
+
+          <%   if proce.orden==3  then %>
+
+              <% @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i%>
+                      <Cell><Data ss:Type="Number"><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></Data></Cell>
+          <%  else %>
+
+                      <% @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i%>
+                      <Cell><Data ss:Type="Number"><%= number_with_delimiter( activ.sele2.to_i, delimiter: ",") %></Data></Cell>
+
+          <%  end %>
 
 
 
 
+          <%  @vpact3=Formula.where(product_id:12,acti:3).select('orden')%>
+
+          <% @vdetalle= Activity.order('pfecha')%>
+          <% @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)%>
+
+          <% if @vdetalle.count>0%>
+         <% @vdetalle.each do |deta|%>
+         <% @vobsr=deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize%>
+         <% end %>
+           <Cell><Data ss:Type="String"><%= @vobsr%></Data></Cell>
+         <% end %>
 
 
 
-</tr>
-<% end %>
-</Table>
-<% end %>
+
+
+
+        </Row>
+
+        <%end %>
+
+       </Table>
+      </Worksheet>
+
+
+     <%end %>
+ </Workbook>
