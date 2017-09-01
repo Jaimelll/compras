@@ -308,7 +308,7 @@ def vhoja5
   end
 end
 
-def vhoja5
+def vhoja6
 
   respond_to do |format|
     format.html
