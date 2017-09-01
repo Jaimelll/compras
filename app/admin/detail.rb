@@ -92,7 +92,7 @@ index :title => "Lista de Actividades"  do
       end
 
   #para dem
-            if n4==34  or n4==81   or n4==82 then
+            if n4==34  or n4==81 or n4==82 then
               n7=1
             else
               n7=0
