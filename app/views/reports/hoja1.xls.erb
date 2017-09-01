@@ -4,47 +4,9 @@
   xmlns:x="urn:schemas-microsoft-com:office:excel"
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:html="http://www.w3.org/TR/REC-html40">
-
-  <ss:Styles>
-  <ss:Style ss:ID='titulo'><ss:Font ss:Color="#000000" ss:Bold='1'/><ss:Alignment ss:Horizontal='Left'/>
-  </ss:Style>
-
-
-
-          <ss:Style ss:ID='header'><ss:Font ss:Color="#000000" ss:Bold='1'/><ss:Alignment ss:Horizontal='Center'/>
-          <Borders>
-     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-    </Borders></ss:Style>
-
-          <ss:Style ss:ID='row'><ss:Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
-          <Borders>
-     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-    </Borders></ss:Style>
-      </ss:Styles>
-
-
-
-
   <Worksheet ss:Name="Resumen">
     <Table>
       <Row>
-
-      </Row>
-            <Row ss:StyleID='titulo'>
-                <Cell ><Data></Data></Cell>
-                <Cell ><Data ss:Type="String">RESUMEN PAC</Data></Cell>
-            </Row>
-        <Row>
-
-        </Row>
-
-              <Row ss:StyleID='header'>
         <Cell><Data ss:Type="String">AVANCE</Data></Cell>
         <Cell><Data ss:Type="String">S/EXP</Data></Cell>
         <Cell><Data ss:Type="String">C/EXP</Data></Cell>
@@ -55,7 +17,7 @@
         <Cell><Data ss:Type="String">EC</Data></Cell>
         <Cell><Data ss:Type="String">TOTAL</Data></Cell>
       </Row>
-      <Row ss:StyleID='row'>
+      <Row>
         <Cell><Data ss:Type="String">PAC</Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vnpac[1] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vnpac[2] %></Data></Cell>
@@ -67,7 +29,7 @@
         <Cell><Data ss:Type="Number"><%=@vnpac[1].to_i+@vnpac[2].to_i+@vnpac[3].to_i+@vnpac[4].to_i+@vnpac[5].to_i+@vnpac[6].to_i+@vnpac[7].to_i %></Data></Cell>
 
       </Row>
-      <Row ss:StyleID='row'>
+      <Row>
         <Cell><Data ss:Type="String">MONTO(SOLES)</Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vmpac[1] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vmpac[2] %></Data></Cell>
@@ -86,17 +48,6 @@
     <Worksheet ss:Name= "<%= proce.nombre %>">
       <Table>
         <Row>
-
-        </Row>
-              <Row ss:StyleID='titulo'>
-                  <Cell ><Data></Data></Cell>
-                  <Cell ><Data ss:Type="String"><%= proce.descripcion.upcase %></Data></Cell>
-              </Row>
-          <Row>
-
-          </Row>
-
-                <Row ss:StyleID='header'>
           <Cell><Data ss:Type="String">N</Data></Cell>
           <Cell><Data ss:Type="String">PAC</Data></Cell>
           <Cell><Data ss:Type="String">FECHA PAC</Data></Cell>
@@ -120,7 +71,7 @@
           <%  @items.where(id:@vpacn).each do |ite| %>
 
 
-        <Row ss:StyleID='row'>
+        <Row>
              <% @conta=@conta+1 %>
           <Cell><Data ss:Type="Number"><%= @conta %></Data></Cell>
           <Cell><Data ss:Type="String"><%= ite.pac %></Data></Cell>

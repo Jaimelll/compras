@@ -4,49 +4,9 @@
   xmlns:x="urn:schemas-microsoft-com:office:excel"
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:html="http://www.w3.org/TR/REC-html40">
-
-  <ss:Styles>
-  <ss:Style ss:ID='titulo'><ss:Font ss:Color="#000000" ss:Bold='1'/><ss:Alignment ss:Horizontal='Left'/>
-  </ss:Style>
-
-
-
-          <ss:Style ss:ID='header'><ss:Font ss:Color="#000000" ss:Bold='1'/><ss:Alignment ss:Horizontal='Center'/>
-          <Borders>
-     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-    </Borders></ss:Style>
-
-          <ss:Style ss:ID='row'><ss:Alignment ss:Horizontal='Center' ss:Vertical='Center'/>
-          <Borders>
-     <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"/>
-     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
-    </Borders></ss:Style>
-      </ss:Styles>
-
-
-
-
-
-
   <Worksheet ss:Name="Resumen">
     <Table>
       <Row>
-
-      </Row>
-            <Row ss:StyleID='titulo'>
-                <Cell ><Data></Data></Cell>
-                <Cell ><Data ss:Type="String">RESUMEN PROCESOS</Data></Cell>
-            </Row>
-        <Row>
-
-        </Row>
-
-      <Row ss:StyleID='header'>
         <Cell><Data ss:Type="String">AVANCE</Data></Cell>
         <Cell><Data ss:Type="String">PREVIOS</Data></Cell>
         <Cell><Data ss:Type="String">CONVOCADOS</Data></Cell>
@@ -54,20 +14,20 @@
         <Cell><Data ss:Type="String">TOTAL</Data></Cell>
 
       </Row>
-      <Row ss:StyleID='row'>
-        <Cell><Data ss:Type="String">Procesos</Data></Cell>
+      <Row>
+        <Cell><Data ss:Type="String">Proceso</Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vnpac[1] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vnpac[2] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vnpac[3] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vnpac[0] %></Data></Cell>
 
       </Row>
-      <Row ss:StyleID='row'>
+      <Row>
         <Cell><Data ss:Type="String">MONTO(SOLES)</Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vmpac[1] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vmpac[2] %></Data></Cell>
         <Cell><Data ss:Type="Number"><%= @vmpac[3] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%=@vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[0] %></Data></Cell>
 
       </Row>
      </Table>
@@ -77,17 +37,6 @@
     <Worksheet ss:Name= "<%= proce.nombre %>">
       <Table>
         <Row>
-
-        </Row>
-              <Row ss:StyleID='titulo'>
-                  <Cell ><Data></Data></Cell>
-                  <Cell ><Data ss:Type="String"><%= proce.descripcion.upcase %></Data></Cell>
-              </Row>
-          <Row>
-
-          </Row>
-
-                <Row ss:StyleID='header'>
           <Cell><Data ss:Type="String">N</Data></Cell>
           <Cell><Data ss:Type="String">PAC-OBAC</Data></Cell>
           <Cell><Data ss:Type="String">PROCESO</Data></Cell>
@@ -116,7 +65,7 @@
           <%   @activities.where(id:@vpacn).each do |activ|  %>
 
 
-          <Row ss:StyleID='row'>
+        <Row>
              <% @conta=@conta+1 %>
           <Cell><Data ss:Type="Number"><%= @conta %></Data></Cell>
 
@@ -154,7 +103,7 @@
 
           <%  end %>
 
-                  <Cell><Data ss:Type="Number"><%= number_with_delimiter( activ.sele2.to_i, delimiter: ",") %></Data></Cell>
+                  <Cell><Data ss:Type="Number"><%= number_with_delimiter(  @esti.to_i, delimiter: ",") %></Data></Cell>
 
 
           <%  @vpact3=Formula.where(product_id:12,acti:3).select('orden')%>
