@@ -15,13 +15,14 @@ class Ability
             can :read, ActiveAdmin::Page, :name =>"grafico"
             can :read, ActiveAdmin::Page, :name =>"grafico0"
             can :read, ActiveAdmin::Page, :name =>"grafico1"
+            can :read, ActiveAdmin::Page, :name =>"Indices"
             can [:read], [Item, Detail]
             can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
     when 7,15,16,17,18,19 #asesor,ballesteros
-        can :read, ActiveAdmin::Page, :name =>"Dashboard"
+          can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
-            can :read, ActiveAdmin::Page, :name =>"grafico0"
+          can :read, ActiveAdmin::Page, :name =>"grafico0"
         can [:read], [Item, Detail]
         can [:read], [Phase,Activity,Piece]
     #   when 5 # ballesteros
@@ -34,14 +35,16 @@ class Ability
 #    can [:read], [Item, Detail]
       when 11,12 #DEM y DC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
-          can :read, ActiveAdmin::Page, :name =>"grafico"
-            can :read, ActiveAdmin::Page, :name =>"grafico0"
+        can :read, ActiveAdmin::Page, :name =>"grafico"
+        can :read, ActiveAdmin::Page, :name =>"grafico0"
+        can :read, ActiveAdmin::Page, :name =>"Indices"
         can [:read], [Item,Phase,Piece]
         can [:create,:read,:update,:destroy],  [Detail,Activity]
       when 13 #DPC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"grafico"
-            can :read, ActiveAdmin::Page, :name =>"grafico0"
+          can :read, ActiveAdmin::Page, :name =>"grafico0"
+          can :read, ActiveAdmin::Page, :name =>"Indices"
         can [:read], [Item,Detail]
         can [:create,:read,:update,:destroy],  [Phase,Activity,Piece]
       when 14 # DEC
@@ -52,10 +55,10 @@ class Ability
           can [:create,:read,:update,:destroy],  [Item,Piece,Phase,Activity,Detail,Contract,Element,Package]
 
       when 4,5,6,8,9 #sectoristas y Bertolotti
-          can :read, ActiveAdmin::Page, :name =>"Dashboard"
+            can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"grafico"
-              can :read, ActiveAdmin::Page, :name =>"grafico0"
-          can [:create,:read,:update, :destroy], [Item, Detail,Activity]
+            can :read, ActiveAdmin::Page, :name =>"grafico0"
+            can [:create,:read,:update, :destroy], [Item, Detail,Activity]
             can [:read], [Phase,Piece]
   else
 

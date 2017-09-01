@@ -300,6 +300,21 @@ end
 
 
 
+def vhoja5
+
+  respond_to do |format|
+    format.html
+    format.xls{render template: 'reports/hoja5.xls.erb', xls:'pacs'}
+  end
+end
+
+def vhoja5
+
+  respond_to do |format|
+    format.html
+    format.xls{render template: 'reports/hoja6.xls.erb', xls:'procesos'}
+  end
+end
 
 
 end

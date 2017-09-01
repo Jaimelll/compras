@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Indice">
+    <Table>
+      <Row>
+
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">1. N SNC</Data></Cell>
+        <Cell><Data ss:Type="String">2.FECHA DE REPORTE</Data></Cell>
+        <Cell><Data ss:Type="String">3. NUMERO EXPEDIENTE</Data></Cell>
+        <Cell><Data ss:Type="String">3. OBAC</Data></Cell>
+        <Cell><Data ss:Type="String">4. AREA DE DETECCION </Data></Cell>
+        <Cell><Data ss:Type="String">5. DESCRIPCION</Data></Cell>
+        <Cell><Data ss:Type="String">5. ACTIVIDAD</Data></Cell>
+        <Cell><Data ss:Type="String">6. DESCRIPCION DEL HALLAZAGO</Data></Cell>
+        <Cell><Data ss:Type="String">7. AREA DE CORRECCION</Data></Cell>
+
+      </Row>
+      <%  @conta=0 %>
+      <% @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd%>
+      <% @vite1=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3").select('id')%>
+      <%  @vdesv=Formula.where(product_id:12).where("numero>100").select('orden')%>
+
+      <% Detail.where(actividad:@vdesv,item_id:@vite1).order("pfecha").each do |deta| %>
+        <Row>
+          <% @conta=@conta+1 %>
+       <Cell><Data ss:Type="Number"><%= @conta %></Data></Cell>
+       <Cell><Data ss:Type="String"><%= deta.pfecha %></Data></Cell>
+
+       <Cell><Data ss:Type="String"><%= Item.where(id:deta.item_id).select('pac as dd').first.dd  %></Data></Cell>
+       <Cell><Data ss:Type="String"><%= Formula.where(product_id:1,orden:Item.where(id:deta.item_id).select('obac as dd').first.dd ).select('nombre as dd').first.dd  %></Data></Cell>
+        <% @varea1=Formula.where(product_id:12,orden:deta.actividad).select('numero/100 as dd').first.dd %>
+       <Cell><Data ss:Type="String"><%= Formula.where(product_id:10,orden:@varea1).select('nombre as dd').first.dd   %></Data></Cell>
+       <Cell><Data ss:Type="String"><%= Item.where(id:deta.item_id).select('descripcion as dd').first.dd  %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= Formula.where(product_id:12,orden:deta.actividad).select('descripcion as dd').first.dd %> </Data></Cell>
+       <Cell><Data ss:Type="String"><%= deta.obs %></Data></Cell>
+       <% @varea2=Formula.where(product_id:12,orden:deta.actividad).select('cantidad as dd').first.dd %>
+      <Cell><Data ss:Type="String"><%= Formula.where(product_id:10,orden:@varea2).select('nombre as dd').first.dd   %></Data></Cell>
+        </Row>
+      <% end %>
+
+
+
+
+       </Table>
+      </Worksheet>
+
+
+
+
+
+
+
+ </Workbook>
