@@ -85,7 +85,7 @@
           <Cell><Data ss:Type="String"><%=Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd  %></Data></Cell>
           <Cell><Data ss:Type="String"><%= ite.descripcion%></Data></Cell>
           <Cell><Data ss:Type="String"><%= Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd %></Data></Cell>
-          <Cell><Data ss:Type="Number"><%= ite.certificado%></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= ite.certificado.to_i%></Data></Cell>
 
 
            <%  @vpact3=Formula.where(product_id:12,acti:3).select('orden')%>

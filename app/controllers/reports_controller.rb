@@ -280,6 +280,8 @@ def vhoja1
     format.xls{render template: 'reports/hoja1.xls.erb', xls:'ahoja'}
   end
 end
+
+
 def vhoja2
   @vnpac=params[:param1]
   @vmpac=params[:param2]

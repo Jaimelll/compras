@@ -788,7 +788,11 @@ end
 
 end# del each
 
-
+@nliqui=@procp.where(sele:7).count
+if @nliqui>0 then
+@idliqui=@procp.where(sele:7).select('id')
+@vliqui=Activity.where(phase_id:@idliqui,actividad:300).count
+end
 ##################
 
 column("Rol") do
@@ -850,9 +854,10 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 
 
 
-
 end #de table
-
+if @vliqui>0 then
+strong("* Procesos culminados = "+@vliqui.to_s)
+end
 end #panel
 
 
