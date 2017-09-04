@@ -263,7 +263,7 @@
       <% end %>
 
     <% if  @vopc==2 or   @vopc==3  then %>
-    <% if  pite.adjudicado then %>
+    <% if  pite.adjudicado and pite.presupuestado then %>
 
     <td ><%= number_with_delimiter((pite.adjudicado*
     Formula.where(product_id:7,orden:pite.moneda)
