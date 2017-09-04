@@ -68,9 +68,11 @@
         <Cell><Data ss:Type="String">OBAC</Data></Cell>
         <Cell><Data ss:Type="String">DESCRIPCION</Data></Cell>
         <Cell><Data ss:Type="String">FUENTE DE FINANCIAMIENTO</Data></Cell>
+         <Cell><Data ss:Type="String">MERCADO: </Data></Cell>
+          <Cell><Data ss:Type="String"> MODALIDAD: </Data></Cell>
         <Cell><Data ss:Type="String">MONTO</Data></Cell>
         <Cell><Data ss:Type="String">SITUACION ACTUAL</Data></Cell>
-
+<%  @conta=0 %>
       </Row>
 </Table>
 
@@ -86,23 +88,13 @@
   <Table>
        <Row>
       </Row>
-        <Row>
-           <Cell><Data ss:Type="String"></Data></Cell>
-           <Cell><Data ss:Type="String">MERCADO: </Data></Cell>
-           <Cell><Data ss:Type="String">  <%=Formula.where(product_id:6,orden:merca.orden).
-                               select('nombre as dd').first.dd  %>  </Data></Cell>
-           <Cell><Data ss:Type="String">  MODALIDAD: </Data></Cell>
-           <Cell><Data ss:Type="String">  <%=Formula.where(product_id:4,orden:modal.orden).
-                             select('nombre as dd').first.dd  %> </Data></Cell>
-           <Cell><Data ss:Type="String"></Data></Cell>
-        </Row>
 
 
 
 
 
 
-        <%  @conta=0 %>
+
           <%  @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).order('certificado').each do |ite| %>
 
 
@@ -120,6 +112,13 @@
           <Cell><Data ss:Type="String"><%=Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd  %></Data></Cell>
           <Cell><Data ss:Type="String"><%= ite.descripcion.capitalize%></Data></Cell>
           <Cell><Data ss:Type="String"><%= Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd %></Data></Cell>
+
+          <Cell><Data ss:Type="String">  <%=Formula.where(product_id:6,orden:merca.orden).
+                              select('nombre as dd').first.dd  %>  </Data></Cell>
+          <Cell><Data ss:Type="String">  <%=Formula.where(product_id:4,orden:modal.orden).
+                              select('nombre as dd').first.dd  %> </Data></Cell>
+
+
           <Cell><Data ss:Type="Number"><%= ite.certificado.to_i%></Data></Cell>
 
 
