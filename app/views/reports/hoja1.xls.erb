@@ -31,13 +31,13 @@
       </Row>
       <Row>
         <Cell><Data ss:Type="String">MONTO(SOLES)</Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[1] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[2] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[3] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[4] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[5] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[6] %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= @vmpac[7] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[1].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[2].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[3].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[4].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[5].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[6].to_i %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @vmpac[7].to_i %></Data></Cell>
         <Cell><Data ss:Type="Number"><%=@vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+@vmpac[6].to_i+@vmpac[7].to_i %></Data></Cell>
 
       </Row>
@@ -68,7 +68,7 @@
         <%  @vpacn=@vpac4 %>
         <%  end %>
         <%  @conta=0 %>
-          <%  @items.where(id:@vpacn).each do |ite| %>
+          <%  @items.where(id:@vpacn).order('certificado').each do |ite| %>
 
 
         <Row>
