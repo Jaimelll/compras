@@ -1,0 +1,144 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center })
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center },num_fmt: 8)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
+
+
+
+
+wb.add_worksheet(name: "Resumen") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(AVANCE PREVIOS CONVOCADOS ADJUDICADOS TOTAL),
+  style: [titu, titu, titu, titu, titu]
+
+
+
+
+  sheet.add_row ["PAC", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[0]],
+   style: [izq, centra, centra, centra, centra]
+
+   sheet.add_row ["MONTO", @vmpac[1], @vmpac[2], @vmpac[3],
+   @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i],
+    style: [izq, soles, soles, soles, soles]
+
+
+end
+
+
+Formula.where(product_id:20).order('orden').each do |proce|
+wb.add_worksheet(name: proce.nombre) do |sheet|
+
+  sheet.add_row []
+
+
+     if proce.orden==3  then
+        @aapp="ADJUDICADO"
+     else
+        @aapp="REFERENCIAL"
+     end
+
+
+
+
+
+
+  sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  PRESUPUESTADO ESTIMADO SITUACION),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu]
+
+  case proce.orden
+     when 1
+        @vpacn=@vpac1
+     when 2
+       @vpacn=@vpac2
+     when 3
+       @vpacn=@vpac3
+
+      end
+       @conta=0
+     @activities.where(id:@vpacn).each do |activ|
+
+
+        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+       @vdetalle= Activity.order('pfecha')
+       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
+
+       @vobsr=" "
+       if @vdetalle.count>0
+      @vdetalle.each do |deta|
+
+      if deta.obs then
+      @vobsr=deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize
+       end
+     end
+    end
+
+
+
+     @vobac=" "
+         @esti=0
+     if activ.expediente>0 then
+      @esti=Item.where(exped:activ.expediente).sum(:certificado).to_i
+     Item.where(exped:activ.expediente).each do |nobac|
+     @spac=nobac.pac
+     @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd
+     @vobac=@vobac+ @spac+@sobac+"-"
+     end
+     end
+
+
+        if proce.orden==3  then
+          @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
+       else
+           @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
+       end
+
+
+
+
+
+
+@conta=@conta+1
+
+
+
+  sheet.add_row [ @conta,@vobac, activ.nomenclatura, activ.descripcion.underscore.capitalize,
+   @presu.to_i, @esti.to_i, @vobsr ],
+   style: [centra, centra,  centra, izq, soles, soles, izq]
+
+
+end
+end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end

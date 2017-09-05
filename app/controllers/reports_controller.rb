@@ -278,7 +278,7 @@ def vhoja1
   respond_to do |format|
     format.html
     format.xls{render template: 'reports/hoja1.xls.erb', xls:'ahoja'}
-    format.xlsx{render template: 'reports/hoja1.xlsx.axlsx', xlsx:'nueva'}
+    format.xlsx{render template: 'reports/hoja1.xlsx.axlsx', xlsx:'SeguimPac'}
   end
 end
 
@@ -297,6 +297,7 @@ def vhoja2
   respond_to do |format|
     format.html
     format.xls{render template: 'reports/hoja2.xls.erb', xls:'ahoja'}
+    format.xlsx{render template: 'reports/hoja2.xlsx.axlsx', xlsx:'SeguimProce'}
   end
 end
 

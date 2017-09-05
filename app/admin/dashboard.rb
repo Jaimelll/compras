@@ -796,7 +796,7 @@ end
 ##################
 
 column("Rol") do
-  link_to "Proceso", reports_vhoja2_path(format:  "xls", :param1=> @vxper3,
+  link_to "Proceso", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
    :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
    :param5=> @vconv3,:param6=> @vconvt)
 

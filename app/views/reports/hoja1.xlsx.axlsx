@@ -1,6 +1,7 @@
 wb = xlsx_package.workbook
 
 wb.styles do |style|
+
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                  alignment: { horizontal: :center })
 
@@ -12,6 +13,10 @@ fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDE
 
 centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
 
 
 
@@ -29,12 +34,12 @@ wb.add_worksheet(name: "Resumen") do |sheet|
   sheet.add_row ["PAC", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[4], @vnpac[5],
    @vnpac[6], @vnpac[7],@vnpac[1].to_i+@vnpac[2].to_i+@vnpac[3].to_i+@vnpac[4].to_i+@vnpac[5].to_i+
    @vnpac[6].to_i+@vnpac[7].to_i],
-   style: [centra, centra, centra, centra, centra, centra, centra, centra, centra]
+   style: [izq, centra, centra, centra, centra, centra, centra, centra, centra]
 
    sheet.add_row ["MONTO", @vmpac[1], @vmpac[2], @vmpac[3], @vmpac[4], @vmpac[5],
     @vmpac[6], @vmpac[7],@vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+
     @vmpac[6].to_i+@vmpac[7].to_i],
-    style: [soles, soles, soles, soles, soles, soles, soles, soles, soles]
+    style: [izq, soles, soles, soles, soles, soles, soles, soles, soles]
 
 
 end
@@ -83,8 +88,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
    Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
    Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
-  ite.certificado, @vobsr],
-  style: [centra, centra, fechas, centra, centra, centra, centra, soles, centra]
+  ite.certificado.to_i, @vobsr],
+  style: [centra, centra, fechas, centra, izq, centra, centra, centra, centra, soles, izq]
 
 
 end
