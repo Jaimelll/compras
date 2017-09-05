@@ -278,6 +278,7 @@ def vhoja1
   respond_to do |format|
     format.html
     format.xls{render template: 'reports/hoja1.xls.erb', xls:'ahoja'}
+    format.xlsx{render template: 'reports/hoja1.xlsx.axlsx', xlsx:'nueva'}
   end
 end
 

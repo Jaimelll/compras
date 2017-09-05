@@ -476,7 +476,7 @@ end#table
                         end# de if 1
                                                  end
                                          column("Avance") do |formula|
-                                     link_to "PAC", reports_vhoja1_path(format:  "xls", :param1=> @vxper,
+                                     link_to "PAC", reports_vhoja1_path(format:  "xlsx", :param1=> @vxper,
                                       :param2=> @vpresu, :param3=> @vpac1, :param4=> @vpac2,
                                       :param5=> @vpac3,:param6=> @vpac4)
                                         #  "PAC"
