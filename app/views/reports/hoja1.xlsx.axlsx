@@ -50,8 +50,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE MONTO SITUACION),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE ESTIMADO SITUACION),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
   case proce.orden
      when 1
@@ -89,7 +89,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
    Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
   ite.certificado.to_i, @vobsr],
-  style: [centra, centra, fechas, centra, izq, centra, centra, centra, centra, soles, izq]
+  style: [centra, centra, fechas, centra, izq, centra, centra, centra, soles, izq]
 
 
 end

@@ -49,9 +49,11 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
      if proce.orden==3  then
-        @aapp="ADJUDICADO"
+     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  PRESUPUESTADO ADJUDICADO SITUACION),
+     style: [titu, titu, titu, titu, titu, titu, titu]
      else
-        @aapp="REFERENCIAL"
+     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  PRESUPUESTADO ESTIMADO SITUACION),
+     style: [titu, titu, titu, titu, titu, titu, titu]
      end
 
 
@@ -59,8 +61,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
 
-  sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  PRESUPUESTADO ESTIMADO SITUACION),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu]
+
 
   case proce.orden
      when 1
@@ -120,7 +121,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row [ @conta,@vobac, activ.nomenclatura, activ.descripcion.underscore.capitalize,
    @presu.to_i, @esti.to_i, @vobsr ],
-   style: [centra, centra,  centra, izq, soles, soles, izq]
+   style: [centra, centra,  izq, izq, soles, soles, izq]
 
 
 end
