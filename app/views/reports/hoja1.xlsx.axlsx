@@ -6,7 +6,7 @@ titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                  alignment: { horizontal: :center })
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
-                           alignment: { horizontal: :center },num_fmt: 8)
+                           alignment: { horizontal: :center },num_fmt: 3)
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
                         alignment: { horizontal: :center })
@@ -36,7 +36,7 @@ wb.add_worksheet(name: "Resumen") do |sheet|
    @vnpac[6].to_i+@vnpac[7].to_i],
    style: [izq, centra, centra, centra, centra, centra, centra, centra, centra]
 
-   sheet.add_row ["Estimado", @vmpac[1], @vmpac[2], @vmpac[3], @vmpac[4], @vmpac[5],
+   sheet.add_row ["Estimado(soles)", @vmpac[1], @vmpac[2], @vmpac[3], @vmpac[4], @vmpac[5],
     @vmpac[6], @vmpac[7],@vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+
     @vmpac[6].to_i+@vmpac[7].to_i],
     style: [izq, soles, soles, soles, soles, soles, soles, soles, soles]
@@ -50,7 +50,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO SITUACION),
+  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
   style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
   case proce.orden

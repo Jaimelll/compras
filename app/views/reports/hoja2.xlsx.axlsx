@@ -6,7 +6,7 @@ titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                  alignment: { horizontal: :center })
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
-                           alignment: { horizontal: :center },num_fmt: 8)
+                           alignment: { horizontal: :center },num_fmt: 3)
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
                         alignment: { horizontal: :center })
@@ -34,7 +34,7 @@ wb.add_worksheet(name: "Resumen") do |sheet|
   sheet.add_row ["Proceso", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[0]],
    style: [izq, centra, centra, centra, centra]
 
-   sheet.add_row ["Estimado", @vmpac[1], @vmpac[2], @vmpac[3],
+   sheet.add_row ["Estimado(soles)", @vmpac[1], @vmpac[2], @vmpac[3],
    @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i],
     style: [izq, soles, soles, soles, soles]
 
@@ -56,15 +56,15 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   case proce.orden
      when 1
-        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO PRESUPUESTADO ING_DPC ESTIM_CONV SITUACION),
+        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO(soles) PRESUPUESTADO(soles) ING_DPC ESTIM_CONV SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac1
      when 2
-        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO PRESUPUESTADO PRES_PROP BUENA_PRO SITUACION),
+        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO(soles) PRESUPUESTADO(soles) PRES_PROP BUENA_PRO SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO ADJUDICADO PRES_PROP BUENA_PRO SITUACION),
+        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac3
 
