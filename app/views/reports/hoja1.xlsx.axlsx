@@ -36,7 +36,7 @@ wb.add_worksheet(name: "Resumen") do |sheet|
    @vnpac[6].to_i+@vnpac[7].to_i],
    style: [izq, centra, centra, centra, centra, centra, centra, centra, centra]
 
-   sheet.add_row ["MONTO", @vmpac[1], @vmpac[2], @vmpac[3], @vmpac[4], @vmpac[5],
+   sheet.add_row ["Estimado", @vmpac[1], @vmpac[2], @vmpac[3], @vmpac[4], @vmpac[5],
     @vmpac[6], @vmpac[7],@vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+
     @vmpac[6].to_i+@vmpac[7].to_i],
     style: [izq, soles, soles, soles, soles, soles, soles, soles, soles]

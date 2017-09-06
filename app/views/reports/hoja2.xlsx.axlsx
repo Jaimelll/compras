@@ -31,10 +31,10 @@ wb.add_worksheet(name: "Resumen") do |sheet|
 
 
 
-  sheet.add_row ["PAC", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[0]],
+  sheet.add_row ["Proceso", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[0]],
    style: [izq, centra, centra, centra, centra]
 
-   sheet.add_row ["MONTO", @vmpac[1], @vmpac[2], @vmpac[3],
+   sheet.add_row ["Estimado", @vmpac[1], @vmpac[2], @vmpac[3],
    @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i],
     style: [izq, soles, soles, soles, soles]
 
@@ -49,10 +49,10 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
      if proce.orden==3  then
-     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  PRESUPUESTADO ADJUDICADO SITUACION),
+     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO ADJUDICADO SITUACION),
      style: [titu, titu, titu, titu, titu, titu, titu]
      else
-     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  PRESUPUESTADO ESTIMADO SITUACION),
+     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO PRESUPUESTADO SITUACION),
      style: [titu, titu, titu, titu, titu, titu, titu]
      end
 
@@ -121,7 +121,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row [ @conta,@vobac, activ.nomenclatura, activ.descripcion.underscore.capitalize,
    @presu.to_i, @esti.to_i, @vobsr ],
-   style: [centra, centra,  izq, izq, soles, soles, izq]
+   style: [centra, izq,  izq, izq, soles, soles, izq]
 
 
 end
