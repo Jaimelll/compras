@@ -261,7 +261,7 @@ form :title => 'Edicion Actividad'  do |f|
                     end
 
 
-                  row "Fecha Programada Final" do |activity|
+                  row "Fecha Programada " do |activity|
                     if activity.plan then
                        activity.plan.strftime("%d-%m-%Y")
                     else

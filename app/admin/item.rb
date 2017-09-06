@@ -235,7 +235,7 @@ column("exped")do |item|
     #        end
     #    end
 
-    column("certificado") do |item|
+    column("estimado") do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 
