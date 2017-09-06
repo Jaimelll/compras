@@ -200,7 +200,7 @@ form :title => 'Edicion Actividad'  do |f|
              f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
              f.input :pfecha, :label => 'fecha final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :inicial, :label => 'fecha inicial' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-             f.input :plan, :label => 'fecha programada final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :plan, :label => 'fecha programada ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :importe,:label => 'Importe ',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}

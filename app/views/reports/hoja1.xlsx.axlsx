@@ -50,19 +50,30 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+  
 
   case proce.orden
      when 1
+       sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
         @vpacn=@vpac1
      when 2
+         sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
        @vpacn=@vpac2
      when 3
+       sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
+      style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
        @vpacn=@vpac3
      when 4
+       sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING FEC_EPOM PLAN_EPOM ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
+
        @vpacn=@vpac4
-      end
+       end
        @conta=0
       @items.where(id:@vpacn).each do |ite|
 
@@ -89,6 +100,21 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
    @fecing=""
  end
 
+ if Detail.where(actividad:33,item_id:ite.id).count>0 then
+   @epom1=Detail.where(actividad:33,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   @epom2=Detail.where(actividad:33,item_id:ite.id).select('plan as dd').first.dd.strftime("%d/%m/%y")
+ else
+   @epom1=""
+   @epom2=""
+ end
+
+
+
+
+
+ case proce.orden
+    when 1,2,3
+
   sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
   ite.descripcion,
    Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
@@ -98,7 +124,18 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   ite.certificado.to_i, @vobsr],
   style: [centra, centra, fechas, centra, izq, centra, centra,centra, centra, soles, izq]
 
+    when 4
 
+    sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+    ite.descripcion,
+     Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
+     Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
+     Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+      @fecing, @epom1, @epom2,
+    ite.certificado.to_i, @vobsr],
+    style: [centra, centra, fechas, centra, izq, centra, centra,centra, centra, centra, centra, soles, izq]
+
+    end
 
 
 end

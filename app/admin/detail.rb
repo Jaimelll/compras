@@ -237,7 +237,7 @@ end
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
                  f.input :pfecha, :label => 'fecha Final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :inicial, :label => 'fecha Inicial' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-                 f.input :plan, :label => 'fecha programada final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :plan, :label => 'fecha programada ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
                           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -300,10 +300,11 @@ end
                           end
                         end
 
-                       row "Fecha Programada final " do |detail|
+                       row "Fecha Programada " do |detail|
                          if detail.plan then
                             detail.plan.strftime("%d-%m-%Y")
                          else
+                             Detail.where( item_id:detail.item_id,id:detail.id).update_all( plan:detail.pfecha )
                             "s/d"
                           end
                         end
