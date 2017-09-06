@@ -119,8 +119,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 case proce.orden
    when 1
 
-     if Activity.where(actividad:34,phase_id:activ.id).count>0 then
-       @fec21= Activity.where(actividad:34,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     if Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').count>0 then
+       @fec21= Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').select('pfecha as dd').first.dd.strftime("%d/%m/%y")
      else
        @fec21=""
      end
