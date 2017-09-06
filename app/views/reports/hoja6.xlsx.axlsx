@@ -38,11 +38,12 @@ wb.add_worksheet(name: "Indice") do |sheet|
 
   @varea1=Formula.where(product_id:12,orden:deta.actividad).select('numero/100 as dd').first.dd
   @varea2=Formula.where(product_id:12,orden:deta.actividad).select('cantidad as dd').first.dd
+  @vpfecha=deta.pfecha.strftime("%d/%m/%y")
 
 
 
 
-   sheet.add_row [ @conta, deta.pfecha,
+   sheet.add_row [ @conta, @vpfecha,
    Phase.where(id:deta.phase_id).select('nomenclatura as dd').first.dd,
    Formula.where(product_id:10,orden:@varea1).select('nombre as dd').first.dd  ,
    Phase.where(id:deta.phase_id).select('descripcion as dd').first.dd  ,
