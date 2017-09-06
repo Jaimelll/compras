@@ -290,6 +290,7 @@ def vhoja2
   @vpac2=params[:param4]
   @vpac3=params[:param5]
   @vpact=params[:param6]
+  @vuobac=params[:param7]
   @activities=Phase.order('sele2 DESC')
 
 

@@ -95,7 +95,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
      @vobac=" "
          @esti=0
      if activ.expediente>0 then
-      @esti=Item.where(exped:activ.expediente).sum(:certificado).to_i
+      @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
      Item.where(exped:activ.expediente).each do |nobac|
      @spac=nobac.pac
      @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd
@@ -105,7 +105,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
         if proce.orden==3  then
-          @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
+          @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:adjudicado).to_i
        else
            @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
        end
@@ -120,7 +120,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
   sheet.add_row [ @conta,@vobac, activ.nomenclatura, activ.descripcion.underscore.capitalize,
-   @presu.to_i, @esti.to_i, @vobsr ],
+   @esti.to_i, @presu.to_i, @vobsr ],
    style: [centra, izq,  izq, izq, soles, soles, izq]
 
 

@@ -593,11 +593,7 @@ end#table
 
 
 
-                            case current_admin_user.id
-                             when 21,22,23
 
-
-                            else
 
 
 
@@ -798,7 +794,7 @@ end
 column("Rol") do
   link_to "Proceso", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
    :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-   :param5=> @vconv3,:param6=> @vconvt)
+   :param5=> @vconv3,:param6=> @vconvtm,:param7=> @vuobac)
 
 end
 
@@ -862,7 +858,11 @@ end #panel
 
 
 #########################################
+case current_admin_user.id
+ when 21,22,23
 
+
+else
    panel  "V.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
@@ -1160,6 +1160,8 @@ end #panel
 
 
   end
+
+
   panel  "Leyenda" do
    li "S/EXP: Expediente en OBAC"
      li "C/EXP: Expediente en ACFFAA"
