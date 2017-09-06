@@ -1,0 +1,62 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center })
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center },num_fmt: 8)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
+
+
+
+
+wb.add_worksheet(name: "Indice") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(1_N_SNC 2_FECHA_DE_REPORTE 3_NUMERO_PROCESO 4_AREA_DE_DETECCION 5_DESCRIPCION 6_ACTIVIDAD 7_DESCRIPCION_DEL_HALLAZAGO 8_AREA_DE_CORRECCION),
+  style: [izq, izq, izq, izq, izq, izq, izq, izq]
+
+ @conta=0
+ @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+ @vite1=Phase.where(periodo:@vaf1).select('id')
+@vdesv=Formula.where(product_id:12).where("numero>100").select('orden')
+
+ Activity.where(actividad:@vdesv,phase_id:@vite1).order("pfecha").each do |deta|
+ @conta=@conta+1
+
+  @varea1=Formula.where(product_id:12,orden:deta.actividad).select('numero/100 as dd').first.dd
+  @varea2=Formula.where(product_id:12,orden:deta.actividad).select('cantidad as dd').first.dd
+
+
+
+
+   sheet.add_row [ @conta, deta.pfecha,
+   Phase.where(id:deta.phase_id).select('nomenclatura as dd').first.dd,
+   Formula.where(product_id:10,orden:@varea1).select('nombre as dd').first.dd  ,
+   Phase.where(id:deta.phase_id).select('descripcion as dd').first.dd  ,
+   Formula.where(product_id:12,orden:deta.actividad).select('descripcion as dd').first.dd ,
+   deta.obs,
+   Formula.where(product_id:10,orden:@varea2).select('nombre as dd').first.dd],
+   style: [centra, centra, izq, centra, izq, izq, izq, centra]
+
+
+
+end
+
+end
+
+
+
+end
