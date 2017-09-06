@@ -48,15 +48,6 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   sheet.add_row []
 
 
-     if proce.orden==3  then
-     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO ADJUDICADO SITUACION),
-     style: [titu, titu, titu, titu, titu, titu, titu]
-     else
-     sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO PRESUPUESTADO SITUACION),
-     style: [titu, titu, titu, titu, titu, titu, titu]
-     end
-
-
 
 
 
@@ -65,13 +56,23 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   case proce.orden
      when 1
+        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO PRESUPUESTADO ING_DPC ESTIM_CONV SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac1
      when 2
-       @vpacn=@vpac2
+        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO PRESUPUESTADO PRES_PROP BUENA_PRO SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac2
      when 3
-       @vpacn=@vpac3
+        sheet.add_row %w(N PAC-OBAC PROCESO  DESCRIPCION  ESTIMADO ADJUDICADO PRES_PROP BUENA_PRO SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac3
 
       end
+
+
+
+
        @conta=0
      @activities.where(id:@vpacn).each do |activ|
 
@@ -113,15 +114,46 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
 
-
-
 @conta=@conta+1
+
+case proce.orden
+   when 1
+
+     if Activity.where(actividad:34,phase_id:activ.id).count>0 then
+       @fec21= Activity.where(actividad:34,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec21=""
+     end
+     if Activity.where(actividad:18,phase_id:activ.id).count>0 then
+       @fec22= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec22=""
+     end
+
+   when 2,3
+
+   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
+     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec21=""
+   end
+   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
+     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec22=""
+   end
+
+
+
+
+    end
+
 
 
 
   sheet.add_row [ @conta,@vobac, activ.nomenclatura, activ.descripcion.underscore.capitalize,
-   @esti.to_i, @presu.to_i, @vobsr ],
-   style: [centra, izq,  izq, izq, soles, soles, izq]
+   @esti.to_i, @presu.to_i, @fec21,@fec22,@vobsr ],
+   style: [centra, izq,  izq, izq, soles, soles,centra,centra, izq]
 
 
 end

@@ -50,8 +50,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE ESTIMADO SITUACION),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO SITUACION),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
   case proce.orden
      when 1
@@ -83,13 +83,22 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 @conta=@conta+1
 
+ if Detail.where(actividad:13,item_id:ite.id).count>0 then
+   @fecing=Detail.where(actividad:13,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ else
+   @fecing=""
+ end
+
   sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
   ite.descripcion,
    Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
    Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+    @fecing,
   ite.certificado.to_i, @vobsr],
-  style: [centra, centra, fechas, centra, izq, centra, centra, centra, soles, izq]
+  style: [centra, centra, fechas, centra, izq, centra, centra,centra, centra, soles, izq]
+
+
 
 
 end
