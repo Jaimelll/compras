@@ -97,7 +97,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
                                    n3=2
                                  end
                        when 14 #ejecucion de contratos
-                                    if n2==6 or n2===7 then
+                                    if n2=5 or n2==6 or n2===7 then
                                       n3=1
                                     else
                                       n3=2
@@ -188,7 +188,7 @@ form :title => 'Edicion Actividad'  do |f|
                               u.orden]}
 
              when 14    #dec
-                       Formula.where(product_id:12).where("cantidad=6 or cantidad=7")
+                       Formula.where(product_id:12).where("cantidad=5 or cantidad=6 or cantidad=7")
                          .order("numero,descripcion").
                             map{|u| [u.descripcion.capitalize,
                                    u.orden]}
