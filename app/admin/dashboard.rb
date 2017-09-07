@@ -99,8 +99,10 @@ end
 
 
           ########################################
+          case current_admin_user.id
+          when 2,3
                        panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
-                         table_for Formula.where(product_id:11).where('orden>1').order('orden')  do
+                         table_for Formula.where(product_id:11).order('orden')  do
 
 
                               column("Periodos" ) do |formula|
@@ -199,7 +201,7 @@ end
 
 ###############################
         end
-
+end # de case
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
                panel  "I.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
