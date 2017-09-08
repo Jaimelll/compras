@@ -173,9 +173,9 @@ form :title => 'Edicion Actividad'  do |f|
 
              when 7,11     #castaneda,dem
                  Formula.where(product_id:12).order("numero,descripcion").
-                   where("cantidad=4 or orden=34 or orden=81  or orden==82").
-                   map{|u| [u.descripcion.capitalize,
-                    u.orden]}
+                   where("cantidad=4 or orden=34 or orden=81  or orden=82")
+                   .order("numero,descripcion").map{|u| [u.descripcion.capitalize,
+                      u.orden]}
              when 12     #dc
                       Formula.where(product_id:12).order("numero,descripcion").
                        where("cantidad=3 or orden=60 or orden=80").
