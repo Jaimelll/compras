@@ -24,7 +24,7 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
               :modalidad, :dependencia, :tipo, :descripcion, :cantidad,
               :certificado, :constancia, :moneda, :fuente, :seleccion,
               :mesconvoca, :rubro, :admin_user_id, :cuadrante, :expediente,
-              :observacion, :exped, :exped2
+              :observacion, :exped, :exped2, :solicita, :ccp, :cpr, :sele3
 # or
 #
 # permit_params do
@@ -316,11 +316,16 @@ form :title => 'Edicion PACs' do |f|
          f.input :cuadrante, :as => :select, :collection =>
             Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
          f.input :mesconvoca, :label => 'Fecha de Convocatoria SEACE' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+          f.input :solicita, :label => 'Fecha solicitada OBAC' ,:as =>:string, :input_html => { :style =>  'width:30%'}
          f.input :seleccion,:label => 'Tipo de seleccion', :as => :select, :collection =>
              Formula.where(product_id:14).map{|u| [u.nombre, u.orden]}
          f.input :certificado,:label => 'Valor estimado PAC', :as => :string, :input_html => { :style =>  'width:30%'}
-        #f.input :moneda, :as => :select, :collection =>
-        #    Formula.where(product_id:7).map{|u| [u.nombre, u.orden]}
+
+         f.input :ccp,:label => 'Certificado presupuestal', :as => :string, :input_html => { :style =>  'width:30%'}
+         f.input :cpr,:label => 'Constancia de prevision', :as => :string, :input_html => { :style =>  'width:30%'}
+
+
+
         f.input :fuente,:label => 'Fuente de financiamiento', :as => :select, :collection =>
              Formula.where(product_id:8).map{|u| [u.descripcion, u.orden]}
         #f.input :ccp , :label => 'No certificado presupuestal', :input_html => { :style =>  'width:30%'}
@@ -447,9 +452,12 @@ form :title => 'Edicion PACs' do |f|
                end
            end
 
-           row "Fecha de convocatoria" do |item|
+           row "Fecha de convocatoria SEACE" do |item|
               item.mesconvoca
             end
+            row "Fecha solicitada OBAC" do |item|
+               item.solicita
+             end
 
             row "Tipo de seleccion" do |item|
                 if item.seleccion and item.seleccion>0 then
@@ -467,6 +475,20 @@ form :title => 'Edicion PACs' do |f|
                  number_with_delimiter(item.certificado, delimiter: ",")
 
                 end
+
+                row "Certificado presupuestal" do |item|
+
+                   number_with_delimiter(item.ccp, delimiter: ",")
+
+                  end
+                  row "Constancia de prevision" do |item|
+
+                     number_with_delimiter(item.cpr, delimiter: ",")
+
+                    end
+
+
+
 
                 row "Fuente de financiamiento" do |item|
                     if item.fuente and item.fuente>0 then

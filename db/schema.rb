@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170822155030) do
+ActiveRecord::Schema.define(version: 20170908174754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,10 @@ ActiveRecord::Schema.define(version: 20170822155030) do
     t.string   "observacion"
     t.integer  "exped",         default: 0
     t.integer  "exped2"
+    t.date     "solicita"
+    t.float    "ccp"
+    t.float    "cpr"
+    t.integer  "sele3"
     t.index ["admin_user_id"], name: "index_items_on_admin_user_id", using: :btree
   end
 
