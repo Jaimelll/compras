@@ -161,10 +161,45 @@ end
 end
 
 
+wb.add_worksheet(name: "items adjudicados") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(PROCESO ITEM DESCRIPCION POSTOR_GANADOR PRESUPUESTADO ADJUDICADO),
+  style: [titu, titu, titu, titu, titu, titu]
 
 
+Piece.where(phase_id:@vpac3,estado:4).order('phase_id,codigo').each do |vite|
+
+sheet.add_row [ Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+ vite.codigo, vite.descripcion, vite.postor, vite.presupuestado,
+ vite.adjudicado* Formula.where(product_id:7,orden:vite.moneda)
+        .select('cantidad as dd').first.dd/100],
+ style: [izq, izq,  izq,  izq, soles,soles]
+
+end
+
+end
 
 
+wb.add_worksheet(name: "items desiertos") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(PROCESO ITEM DESCRIPCION  PRESUPUESTADO REFERENCIAL),
+  style: [titu, titu, titu, titu, titu]
+
+
+Piece.where(phase_id:@vpac3,estado:3).order('phase_id,codigo').each do |vite|
+
+sheet.add_row [ Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+ vite.codigo, vite.descripcion, vite.presupuestado,
+ vite.referencial* Formula.where(product_id:7,orden:vite.moneda)
+        .select('cantidad as dd').first.dd/100],
+ style: [izq, izq,  izq, soles,soles]
+
+end
+end
 
 
 
