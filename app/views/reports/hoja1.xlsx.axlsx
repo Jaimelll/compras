@@ -105,7 +105,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
  if Detail.where(actividad:33,item_id:ite.id).count>0 then
    @epom1=Detail.where(actividad:33,item_id:ite.id).select('plan as dd').first.dd.strftime("%d/%m/%y")
    @epom2=Detail.where(actividad:33,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-    @epom3=Detail.where(actividad:33,item_id:ite.id).select('pfecha+20 as dd').first.dd.strftime("%d/%m/%y")
+    @epom3=Detail.where(actividad:33,item_id:ite.id).select('pfecha+21 as dd').first.dd.strftime("%d/%m/%y")
  else
    @epom1=""
    @epom2=""
