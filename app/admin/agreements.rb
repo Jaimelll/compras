@@ -136,7 +136,7 @@ ActiveAdmin.register Agreement do
           Employee.where(id:params[:employee_id]).update_all( fec_inicon:Agreement.
               where(employee_id:params[:employee_id],
               tipo_contra:contr.tipo_contra).minimum('fec_inicon') ,
-              fec_tercon:contr.fec_tercon,estado:1)
+              fec_tercon:contr.fec_tercon,estado:1,area:contr.area)
 
           @conta=1
      end

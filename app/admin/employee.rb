@@ -56,7 +56,8 @@ end
   filter :ape_nom
   filter :cargo
   filter :grado
-
+  filter :area, :as => :select, :collection =>
+       Formula.where(product_id:26).order('nombre ASC').map{|u| ["#{u.descripcion}", u.orden]}
 
   index :title => 'Lista de Empleados' do
 
@@ -176,7 +177,15 @@ end
              row 'Término de contrato' do |emple|
                emple.fec_tercon
              end
+             row :area do |emple|
+                         if emple.area and emple.area>0 then
 
+                            Formula.where(product_id:26, orden:emple.area).
+                                             select('descripcion as dd').first.dd
+
+
+                           end
+             end
 
 
 
