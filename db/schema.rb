@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170908174754) do
+ActiveRecord::Schema.define(version: 20170914140205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,32 @@ ActiveRecord::Schema.define(version: 20170908174754) do
     t.datetime "updated_at",    null: false
     t.index ["admin_user_id"], name: "index_elements_on_admin_user_id", using: :btree
     t.index ["contract_id"], name: "index_elements_on_contract_id", using: :btree
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string   "dni"
+    t.string   "ape_pat"
+    t.string   "ape_mat"
+    t.string   "nombres"
+    t.string   "direccion"
+    t.string   "telefono"
+    t.string   "correo"
+    t.date     "fec_nacimiento"
+    t.integer  "estado"
+    t.integer  "tip_tra"
+    t.integer  "esta_civil"
+    t.integer  "afp"
+    t.integer  "admin_user_id"
+    t.string   "foto"
+    t.string   "ape_nom"
+    t.string   "correo_corp"
+    t.date     "fec_inicon"
+    t.date     "fec_tercon"
+    t.string   "grado"
+    t.string   "cargo"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["admin_user_id"], name: "index_employees_on_admin_user_id", using: :btree
   end
 
   create_table "formulas", force: :cascade do |t|
@@ -233,6 +259,7 @@ ActiveRecord::Schema.define(version: 20170908174754) do
   add_foreign_key "details", "items"
   add_foreign_key "elements", "admin_users"
   add_foreign_key "elements", "contracts"
+  add_foreign_key "employees", "admin_users"
   add_foreign_key "formulas", "admin_users"
   add_foreign_key "formulas", "products"
   add_foreign_key "items", "admin_users"

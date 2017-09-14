@@ -1,0 +1,65 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Employees</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dni</th>
+      <th>Ape pat</th>
+      <th>Ape mat</th>
+      <th>Nombres</th>
+      <th>Direccion</th>
+      <th>Telefono</th>
+      <th>Correo</th>
+      <th>Fec nacimiento</th>
+      <th>Estado</th>
+      <th>Tip tra</th>
+      <th>Esta civil</th>
+      <th>Afp</th>
+      <th>Admin user</th>
+      <th>Foto</th>
+      <th>Ape nom</th>
+      <th>Correo corp</th>
+      <th>Fec inicon</th>
+      <th>Fec tercon</th>
+      <th>Grado</th>
+      <th>Cargo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.dni %></td>
+        <td><%= employee.ape_pat %></td>
+        <td><%= employee.ape_mat %></td>
+        <td><%= employee.nombres %></td>
+        <td><%= employee.direccion %></td>
+        <td><%= employee.telefono %></td>
+        <td><%= employee.correo %></td>
+        <td><%= employee.fec_nacimiento %></td>
+        <td><%= employee.estado %></td>
+        <td><%= employee.tip_tra %></td>
+        <td><%= employee.esta_civil %></td>
+        <td><%= employee.afp %></td>
+        <td><%= employee.admin_user %></td>
+        <td><%= employee.foto %></td>
+        <td><%= employee.ape_nom %></td>
+        <td><%= employee.correo_corp %></td>
+        <td><%= employee.fec_inicon %></td>
+        <td><%= employee.fec_tercon %></td>
+        <td><%= employee.grado %></td>
+        <td><%= employee.cargo %></td>
+        <td><%= link_to 'Show', employee %></td>
+        <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
+        <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Employee', new_employee_path %>

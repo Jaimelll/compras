@@ -1,0 +1,117 @@
+<%= form_for(employee) do |f| %>
+  <% if employee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(employee.errors.count, "error") %> prohibited this employee from being saved:</h2>
+
+      <ul>
+      <% employee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :dni %>
+    <%= f.text_field :dni %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ape_pat %>
+    <%= f.text_field :ape_pat %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ape_mat %>
+    <%= f.text_field :ape_mat %>
+  </div>
+
+  <div class="field">
+    <%= f.label :nombres %>
+    <%= f.text_field :nombres %>
+  </div>
+
+  <div class="field">
+    <%= f.label :direccion %>
+    <%= f.text_field :direccion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :telefono %>
+    <%= f.text_field :telefono %>
+  </div>
+
+  <div class="field">
+    <%= f.label :correo %>
+    <%= f.text_field :correo %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fec_nacimiento %>
+    <%= f.date_select :fec_nacimiento %>
+  </div>
+
+  <div class="field">
+    <%= f.label :estado %>
+    <%= f.number_field :estado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tip_tra %>
+    <%= f.number_field :tip_tra %>
+  </div>
+
+  <div class="field">
+    <%= f.label :esta_civil %>
+    <%= f.number_field :esta_civil %>
+  </div>
+
+  <div class="field">
+    <%= f.label :afp %>
+    <%= f.number_field :afp %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin_user_id %>
+    <%= f.text_field :admin_user_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :foto %>
+    <%= f.text_field :foto %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ape_nom %>
+    <%= f.text_field :ape_nom %>
+  </div>
+
+  <div class="field">
+    <%= f.label :correo_corp %>
+    <%= f.text_field :correo_corp %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fec_inicon %>
+    <%= f.date_select :fec_inicon %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fec_tercon %>
+    <%= f.date_select :fec_tercon %>
+  </div>
+
+  <div class="field">
+    <%= f.label :grado %>
+    <%= f.text_field :grado %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cargo %>
+    <%= f.text_field :cargo %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

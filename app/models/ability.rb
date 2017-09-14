@@ -16,7 +16,7 @@ class Ability
             can :read, ActiveAdmin::Page, :name =>"grafico0"
             can :read, ActiveAdmin::Page, :name =>"grafico1"
             can :read, ActiveAdmin::Page, :name =>"Indices"
-            can [:read], [Item, Detail]
+            can [:read], [Item, Detail,Employee]
             can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
     when 7,15,16,17,18,19 #asesor,ballesteros
