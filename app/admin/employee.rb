@@ -75,11 +75,11 @@ ActiveAdmin.register Employee do
          f.input :grado, :input_html => { :style =>  'width:30%'}
 
          f.input :estado, :as => :select, :collection =>
-            Formula.where(product_id:12).order('nombre').map{|u| [u.nombre, u.orden]}
+            Formula.where(product_id:22).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :tip_tra,:label => 'Tipo Contrato', :as => :select, :collection =>
-            Formula.where(product_id:13).order('nombre').map{|u| [u.nombre, u.orden]}
+            Formula.where(product_id:23).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :esta_civil, :as => :select, :collection =>
-            Formula.where(product_id:14).order('nombre').map{|u| [u.nombre, u.orden]}
+            Formula.where(product_id:24).order('nombre').map{|u| [u.nombre, u.orden]}
 
 
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
@@ -115,7 +115,7 @@ ActiveAdmin.register Employee do
               row :estado do |emple|
                         if emple.estado and emple.estado>0 then
 
-                           Formula.where(product_id:12, orden:emple.estado).
+                           Formula.where(product_id:22, orden:emple.estado).
                             select('nombre as dd').first.dd
 
 
@@ -124,7 +124,7 @@ ActiveAdmin.register Employee do
               row  'Tipo de contrato' do |emple|
                           if emple.tip_tra and emple.tip_tra>0 then
 
-                           Formula.where(product_id:13, orden:emple.tip_tra).
+                           Formula.where(product_id:23, orden:emple.tip_tra).
                                   select('nombre as dd').first.dd
 
 
@@ -134,7 +134,7 @@ ActiveAdmin.register Employee do
             row :esta_civil do |emple|
                         if emple.esta_civil and emple.esta_civil>0 then
 
-                           Formula.where(product_id:14, orden:emple.esta_civil).
+                           Formula.where(product_id:24, orden:emple.esta_civil).
                                             select('nombre as dd').first.dd
 
 
