@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914140205) do
+ActiveRecord::Schema.define(version: 20170914173310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,6 +146,32 @@ ActiveRecord::Schema.define(version: 20170914140205) do
     t.index ["admin_user_id"], name: "index_employees_on_admin_user_id", using: :btree
   end
 
+  create_table "experiences", force: :cascade do |t|
+    t.integer  "employee_id"
+    t.string   "empresa"
+    t.date     "desde"
+    t.date     "hasta"
+    t.string   "cargo"
+    t.string   "obs"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_experiences_on_admin_user_id", using: :btree
+    t.index ["employee_id"], name: "index_experiences_on_employee_id", using: :btree
+  end
+
+  create_table "families", force: :cascade do |t|
+    t.integer  "employee_id"
+    t.integer  "tipo_rela"
+    t.string   "ape_nom"
+    t.date     "fec_nac"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_families_on_admin_user_id", using: :btree
+    t.index ["employee_id"], name: "index_families_on_employee_id", using: :btree
+  end
+
   create_table "formulas", force: :cascade do |t|
     t.string   "nombre"
     t.string   "descripcion"
@@ -252,6 +278,21 @@ ActiveRecord::Schema.define(version: 20170914140205) do
     t.index ["admin_user_id"], name: "index_products_on_admin_user_id", using: :btree
   end
 
+  create_table "students", force: :cascade do |t|
+    t.integer  "employee_id"
+    t.string   "centro"
+    t.string   "especialidad"
+    t.date     "desde"
+    t.date     "hasta"
+    t.string   "grado"
+    t.string   "obs"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_students_on_admin_user_id", using: :btree
+    t.index ["employee_id"], name: "index_students_on_employee_id", using: :btree
+  end
+
   add_foreign_key "activities", "admin_users"
   add_foreign_key "activities", "phases"
   add_foreign_key "contracts", "admin_users"
@@ -260,6 +301,10 @@ ActiveRecord::Schema.define(version: 20170914140205) do
   add_foreign_key "elements", "admin_users"
   add_foreign_key "elements", "contracts"
   add_foreign_key "employees", "admin_users"
+  add_foreign_key "experiences", "admin_users"
+  add_foreign_key "experiences", "employees"
+  add_foreign_key "families", "admin_users"
+  add_foreign_key "families", "employees"
   add_foreign_key "formulas", "admin_users"
   add_foreign_key "formulas", "products"
   add_foreign_key "items", "admin_users"
@@ -269,4 +314,6 @@ ActiveRecord::Schema.define(version: 20170914140205) do
   add_foreign_key "pieces", "admin_users"
   add_foreign_key "pieces", "phases"
   add_foreign_key "products", "admin_users"
+  add_foreign_key "students", "admin_users"
+  add_foreign_key "students", "employees"
 end

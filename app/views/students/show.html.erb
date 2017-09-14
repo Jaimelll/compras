@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @student.employee %>
+</p>
+
+<p>
+  <strong>Centro:</strong>
+  <%= @student.centro %>
+</p>
+
+<p>
+  <strong>Especialidad:</strong>
+  <%= @student.especialidad %>
+</p>
+
+<p>
+  <strong>Desde:</strong>
+  <%= @student.desde %>
+</p>
+
+<p>
+  <strong>Hasta:</strong>
+  <%= @student.hasta %>
+</p>
+
+<p>
+  <strong>Grado:</strong>
+  <%= @student.grado %>
+</p>
+
+<p>
+  <strong>Obs:</strong>
+  <%= @student.obs %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @student.admin_user %>
+</p>
+
+<%= link_to 'Edit', edit_student_path(@student) %> |
+<%= link_to 'Back', students_path %>

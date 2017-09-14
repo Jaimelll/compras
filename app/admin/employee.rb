@@ -1,5 +1,16 @@
 ActiveAdmin.register Employee do
 
+  ActiveAdmin.register Family do
+  belongs_to :employee
+  end
+
+  ActiveAdmin.register Student do
+  belongs_to :employee
+  end
+
+  ActiveAdmin.register Experience do
+belongs_to :employee
+end
 
     menu  priority: 16, label: "Empleados"
 
@@ -50,8 +61,8 @@ ActiveAdmin.register Employee do
            emple.ape_nom.upcase
            end
 
-          column("cargo")
-          column("grado")
+          column("Puesto")
+          column("Perfil")
           column("Foto") do   |emple|
                   unless emple.foto.blank?
                    li   image_tag emple.foto.thumb.url, size: "100"
@@ -75,8 +86,8 @@ ActiveAdmin.register Employee do
          f.input :telefono, :input_html => { :style =>  'width:30%'}
          f.input :correo, :input_html => { :style =>  'width:30%'}
          f.input :correo_corp, :input_html => { :style =>  'width:30%'}
-         f.input :cargo, :input_html => { :style =>  'width:30%'}
-         f.input :grado, :input_html => { :style =>  'width:30%'}
+         f.input :cargo,:label => 'Puesto', :input_html => { :style =>  'width:30%'}
+         f.input :grado,:label => 'Perfil', :input_html => { :style =>  'width:30%'}
 
          f.input :estado, :as => :select, :collection =>
             Formula.where(product_id:22).order('nombre').map{|u| [u.nombre, u.orden]}
@@ -112,7 +123,13 @@ ActiveAdmin.register Employee do
                emple.nombres
              end
 
-              row :cargo
+              row 'Puesto' do |emple|
+                emple.cargo
+              end
+              row 'Perfil' do |emple|
+                emple.grado
+              end
+
               row :direccion
               row :telefono
               row :correo
@@ -166,18 +183,27 @@ ActiveAdmin.register Employee do
 
            sidebar "Foto", except: :index  do
 
-                         if params[:id] then
-                        Employee.where(id:params[:id]).each do |item|
-                          @nomb=item.ape_nom.upcase
-                          unless item.foto.blank?
-                           li   image_tag item.foto.thumb.url, size: "250"
-                           li      strong "Nombre: "+"#{@nomb}"
-                          end
+             if params[:id] then
+            Employee.where(id:params[:id]).each do |item|
+              @nomb=item.ape_nom.upcase
+              unless item.foto.blank?
+               li   image_tag item.foto.thumb.url, size: "250"
+               li      strong "Nombre: "+"#{@nomb}"
+              end
 
 
-                       end
-                     end
-            end #sidebar
+           end
+         end
+     ul do
+        if params[:id] then
+         li      link_to "CARGA FAMILIAR", admin_employee_families_path(params[:id])
+         li      link_to "ESTUDIOS", admin_employee_students_path(params[:id])
+         li      link_to "EXPERIENCIA LABORAL", admin_employee_experiences_path(params[:id])
+        
+        end
+    end
+         end # de sider
+
 
 
 

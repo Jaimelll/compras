@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @family.employee %>
+</p>
+
+<p>
+  <strong>Tipo rela:</strong>
+  <%= @family.tipo_rela %>
+</p>
+
+<p>
+  <strong>Ape nom:</strong>
+  <%= @family.ape_nom %>
+</p>
+
+<p>
+  <strong>Fec nac:</strong>
+  <%= @family.fec_nac %>
+</p>
+
+<p>
+  <strong>Admin user:</strong>
+  <%= @family.admin_user %>
+</p>
+
+<%= link_to 'Edit', edit_family_path(@family) %> |
+<%= link_to 'Back', families_path %>

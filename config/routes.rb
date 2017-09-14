@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
 
 
+  resources :experiences
+  resources :students
+  resources :families
   resources :employees
   resources :elements
   resources :packages
