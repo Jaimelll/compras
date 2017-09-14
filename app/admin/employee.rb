@@ -59,6 +59,8 @@ end
   filter :area, :as => :select, :collection =>
        Formula.where(product_id:26).order('nombre ASC').map{|u| ["#{u.descripcion}", u.orden]}
 
+
+
   index :title => 'Lista de Empleados' do
 
 
@@ -67,8 +69,14 @@ end
            emple.ape_nom.upcase
            end
 
-          column("Puesto")
-          column("Perfil")
+          column("Puesto") do |emple|
+            emple.cargo
+          end
+
+          column("Perfil") do |emple|
+            emple.grado
+          end
+
           column("Foto") do   |emple|
                   unless emple.foto.blank?
                    li   image_tag emple.foto.thumb.url, size: "100"

@@ -274,7 +274,7 @@ def vhoja1
   @vpac3=params[:param5]
   @vpac4=params[:param6]
 #  @items=Item.order('tipo,modalidad,exped,certificado DESC')
-  @items=Item.order('certificado DESC')
+  @items=Item.order('tipo,modalidad,exped,certificado DESC')
   respond_to do |format|
     format.html
     format.xls{render template: 'reports/hoja1.xls.erb', xls:'ahoja'}
