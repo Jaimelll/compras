@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Agreements</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Employee</th>
+      <th>Num cont</th>
+      <th>Fec inicon</th>
+      <th>Fec tercon</th>
+      <th>Puesto</th>
+      <th>Cod hor</th>
+      <th>Remuneracion</th>
+      <th>Area</th>
+      <th>Tipo contra</th>
+      <th>Fec retiro</th>
+      <th>Motivo retir</th>
+      <th>Obs</th>
+      <th>Admin user</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @agreements.each do |agreement| %>
+      <tr>
+        <td><%= agreement.employee %></td>
+        <td><%= agreement.num_cont %></td>
+        <td><%= agreement.fec_inicon %></td>
+        <td><%= agreement.fec_tercon %></td>
+        <td><%= agreement.puesto %></td>
+        <td><%= agreement.cod_hor %></td>
+        <td><%= agreement.remuneracion %></td>
+        <td><%= agreement.area %></td>
+        <td><%= agreement.tipo_contra %></td>
+        <td><%= agreement.fec_retiro %></td>
+        <td><%= agreement.motivo_retir %></td>
+        <td><%= agreement.obs %></td>
+        <td><%= agreement.admin_user %></td>
+        <td><%= link_to 'Show', agreement %></td>
+        <td><%= link_to 'Edit', edit_agreement_path(agreement) %></td>
+        <td><%= link_to 'Destroy', agreement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Agreement', new_agreement_path %>

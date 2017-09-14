@@ -1,0 +1,82 @@
+<%= form_for(agreement) do |f| %>
+  <% if agreement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(agreement.errors.count, "error") %> prohibited this agreement from being saved:</h2>
+
+      <ul>
+      <% agreement.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :employee_id %>
+    <%= f.text_field :employee_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :num_cont %>
+    <%= f.number_field :num_cont %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fec_inicon %>
+    <%= f.date_select :fec_inicon %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fec_tercon %>
+    <%= f.date_select :fec_tercon %>
+  </div>
+
+  <div class="field">
+    <%= f.label :puesto %>
+    <%= f.text_field :puesto %>
+  </div>
+
+  <div class="field">
+    <%= f.label :cod_hor %>
+    <%= f.number_field :cod_hor %>
+  </div>
+
+  <div class="field">
+    <%= f.label :remuneracion %>
+    <%= f.text_field :remuneracion %>
+  </div>
+
+  <div class="field">
+    <%= f.label :area %>
+    <%= f.number_field :area %>
+  </div>
+
+  <div class="field">
+    <%= f.label :tipo_contra %>
+    <%= f.number_field :tipo_contra %>
+  </div>
+
+  <div class="field">
+    <%= f.label :fec_retiro %>
+    <%= f.date_select :fec_retiro %>
+  </div>
+
+  <div class="field">
+    <%= f.label :motivo_retir %>
+    <%= f.text_field :motivo_retir %>
+  </div>
+
+  <div class="field">
+    <%= f.label :obs %>
+    <%= f.text_field :obs %>
+  </div>
+
+  <div class="field">
+    <%= f.label :admin_user_id %>
+    <%= f.text_field :admin_user_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

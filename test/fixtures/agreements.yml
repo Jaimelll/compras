@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  employee: one
+  num_cont: 1
+  fec_inicon: 2017-09-14
+  fec_tercon: 2017-09-14
+  puesto: MyString
+  cod_hor: 1
+  remuneracion: 1.5
+  area: 1
+  tipo_contra: 1
+  fec_retiro: 2017-09-14
+  motivo_retir: MyString
+  obs: MyString
+  admin_user: one
+
+two:
+  employee: two
+  num_cont: 1
+  fec_inicon: 2017-09-14
+  fec_tercon: 2017-09-14
+  puesto: MyString
+  cod_hor: 1
+  remuneracion: 1.5
+  area: 1
+  tipo_contra: 1
+  fec_retiro: 2017-09-14
+  motivo_retir: MyString
+  obs: MyString
+  admin_user: two

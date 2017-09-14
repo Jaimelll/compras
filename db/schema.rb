@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914173310) do
+ActiveRecord::Schema.define(version: 20170914194307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,26 @@ ActiveRecord::Schema.define(version: 20170914173310) do
     t.datetime "updated_at",                          null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+  end
+
+  create_table "agreements", force: :cascade do |t|
+    t.integer  "employee_id"
+    t.integer  "num_cont"
+    t.date     "fec_inicon"
+    t.date     "fec_tercon"
+    t.string   "puesto"
+    t.integer  "cod_hor"
+    t.float    "remuneracion"
+    t.integer  "area"
+    t.integer  "tipo_contra"
+    t.date     "fec_retiro"
+    t.string   "motivo_retir"
+    t.string   "obs"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_agreements_on_admin_user_id", using: :btree
+    t.index ["employee_id"], name: "index_agreements_on_employee_id", using: :btree
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -143,6 +163,8 @@ ActiveRecord::Schema.define(version: 20170914173310) do
     t.string   "cargo"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "area"
+    t.integer  "sele"
     t.index ["admin_user_id"], name: "index_employees_on_admin_user_id", using: :btree
   end
 
@@ -295,6 +317,8 @@ ActiveRecord::Schema.define(version: 20170914173310) do
 
   add_foreign_key "activities", "admin_users"
   add_foreign_key "activities", "phases"
+  add_foreign_key "agreements", "admin_users"
+  add_foreign_key "agreements", "employees"
   add_foreign_key "contracts", "admin_users"
   add_foreign_key "details", "admin_users"
   add_foreign_key "details", "items"

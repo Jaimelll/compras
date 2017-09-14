@@ -12,6 +12,11 @@ ActiveAdmin.register Employee do
 belongs_to :employee
 end
 
+ActiveAdmin.register Agreement do
+belongs_to :employee
+end
+
+
     menu  priority: 16, label: "Empleados"
 
     permit_params :dni, :ape_pat, :ape_mat,
@@ -20,7 +25,7 @@ end
          :tip_tra, :esta_civil, :afp,
          :admin_user_id, :foto, :ape_nom,
          :correo_corp, :fec_inicon, :fec_tercon,
-         :cargo, :grado
+         :cargo, :grado,:area, :sele
 
 
 
@@ -168,7 +173,7 @@ end
                emple.fec_inicon
              end
 
-             row 'Términi de contrato' do |emple|
+             row 'Término de contrato' do |emple|
                emple.fec_tercon
              end
 
@@ -199,8 +204,8 @@ end
          li      link_to "CARGA FAMILIAR", admin_employee_families_path(params[:id])
          li      link_to "ESTUDIOS", admin_employee_students_path(params[:id])
          li      link_to "EXPERIENCIA LABORAL", admin_employee_experiences_path(params[:id])
-        
-        end
+         li      link_to "CONTRATOS", admin_employee_agreements_path(params[:id])
+                  end
     end
          end # de sider
 
