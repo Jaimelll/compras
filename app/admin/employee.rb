@@ -53,9 +53,9 @@ end
                end
 
 
-  filter :ape_nom
-  filter :cargo
-  filter :grado
+  filter :ape_nom, label:'Apellido Nombre'
+  filter :cargo, label:'Puesto'
+  filter :grado, label:'Perfil'
   filter :area, :as => :select, :collection =>
        Formula.where(product_id:26).order('nombre ASC').map{|u| ["#{u.descripcion}", u.orden]}
 
