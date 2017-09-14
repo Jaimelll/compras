@@ -1,6 +1,6 @@
 class Employee < ApplicationRecord
   belongs_to :admin_user
-
+mount_uploader :foto, FotoUploader
 
 
   validates :ape_pat, presence: true

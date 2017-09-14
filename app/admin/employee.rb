@@ -52,7 +52,11 @@ ActiveAdmin.register Employee do
 
           column("cargo")
           column("grado")
-
+          column("Foto") do   |emple|
+                  unless emple.foto.blank?
+                   li   image_tag emple.foto.thumb.url, size: "100"
+                  end
+                end
 
            actions
        end
@@ -80,6 +84,9 @@ ActiveAdmin.register Employee do
             Formula.where(product_id:23).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :esta_civil, :as => :select, :collection =>
             Formula.where(product_id:24).order('nombre').map{|u| [u.nombre, u.orden]}
+        f.input :foto, :as => :file, :hint => f.object.foto.present? \
+                ? image_tag(f.object.foto.url(:thumb))
+                 : content_tag(:span, "no hay foto aun")
 
 
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
@@ -155,6 +162,22 @@ ActiveAdmin.register Employee do
              end
            end
 
+
+
+           sidebar "Foto", except: :index  do
+
+                         if params[:id] then
+                        Employee.where(id:params[:id]).each do |item|
+                          @nomb=item.ape_nom.upcase
+                          unless item.foto.blank?
+                           li   image_tag item.foto.thumb.url, size: "250"
+                           li      strong "Nombre: "+"#{@nomb}"
+                          end
+
+
+                       end
+                     end
+            end #sidebar
 
 
 

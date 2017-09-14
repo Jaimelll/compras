@@ -6,6 +6,9 @@ gem 'axlsx', '= 2.0.1'
 gem 'axlsx_rails'
 
 
+gem 'carrierwave', '~> 0.10.0'
+gem 'mini_magick', '~> 4.3'
+
 gem 'cancancan'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
