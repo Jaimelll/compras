@@ -659,7 +659,7 @@ end#table
 
      #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
            @vconv=0
-        if @deta4.where(actividad:20).count>0 then
+        if @deta4.where(actividad:20).count>0 and @vdir>4 then
               @vconv=2
             if @deta4.where(actividad:20).sum(:importe)>0 then
               @vconv=3
@@ -873,7 +873,7 @@ else
          column("Avance") do |formula|
                  "Proceso"
          end
-         column("S/EXP") do |formula|
+         column("Des./nulo") do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=1
