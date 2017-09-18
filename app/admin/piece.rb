@@ -15,14 +15,20 @@ ActiveAdmin.register Piece do
 
 permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
              :referencial, :adjudicado,:estado, :postor,:phase_id,
-             :admin_user_id
+             :admin_user_id, :canti_dem,:sele
 
 filter :descripcion
 index :title => "Lista de Items"  do
 
 column("codigo")
 column("descripcion")
-column("cantidad postores")
+column('Postores DPC') do |item|
+  item.cantidad
+end
+
+column('Postores DEM') do |item|
+  item.canti_dem
+end
 column("moneda") do |activity|
   if activity.moneda and activity.moneda>0 then
 
@@ -68,7 +74,8 @@ form :title => 'Edicion Item'  do |f|
 
              f.input :codigo, :input_html => { :style =>  'width:30%'}
              f.input :descripcion, :input_html => { :style =>  'width:30%'}
-             f.input :cantidad,:label => 'Cantidad de postores', :input_html => { :style =>  'width:30%'}
+             f.input :cantidad,:label => 'Cantidad de postores DPC', :input_html => { :style =>  'width:30%'}
+             f.input :canti_dem,:label => 'Cantidad de postores DEM', :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
 
@@ -110,9 +117,12 @@ form :title => 'Edicion Item'  do |f|
                   row :codigo
                   row :descripcion
 
-                  row :cantidad
-
-
+                  row 'Cantidad de postores DPC' do |item|
+                    item.cantidad
+                  end
+                  row 'Cantidad de postores DEM' do |item|
+                    item.canti_dem
+                  end
                    row :moneda do |detail|
                        if detail.moneda and detail.moneda>0 then
 
