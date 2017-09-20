@@ -56,15 +56,15 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   case proce.orden
      when 1
-        sheet.add_row %w(N PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIMADO(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
+        sheet.add_row %w(N PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac1
      when 2
-        sheet.add_row %w(N PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIMADO(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
+        sheet.add_row %w(N PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIMADO(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
+        sheet.add_row %w(N PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac3
 
