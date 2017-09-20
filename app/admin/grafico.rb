@@ -42,7 +42,9 @@ ActiveAdmin.register_page "grafico" do
      link_to 'DEC', dec_admin_product_formula_path(1, :@num), method: :put
   end
 
-
+  action_item :only=> :index do
+      link_to 'Indicadores', indica_admin_product_formula_path( 1,:@num), method: :put
+  end
 
 
 
@@ -116,7 +118,13 @@ ActiveAdmin.register_page "grafico" do
   @vitem=Item.where(ejecucion:4).where("modalidad<3")
   .where(exped2:@vaf).order('periodo,exped,obac')
   @iproce=2
-  end
+
+
+ when 11
+  #indicadores
+    @vitem=Item.where(ejecucion:4).where("modalidad<3")#    .where(exped2:@vaf).order('periodo,exped,obac')
+   @iproce=100
+end
 
 
     @vitem=@vitem.where(obac: @vuobac)
@@ -148,12 +156,14 @@ ActiveAdmin.register_page "grafico" do
     #feriados
     @vferi=[]
 
-     Formula.where(product_id:27).each do  |feri|
+     Formula.where(product_id:27,cantidad:1).each do  |feri|
 
        @vferi.push(DateTime.parse(feri.nombre))
 
      end
-
+     @vmesc=DateTime.parse(Formula.where(product_id:27,cantidad:2).select('nombre as dd').first.dd).month
+     @vmesct=0
+     @vmescr=0
     #*******************************************************************
 
     @vitem.each do |item|
@@ -471,7 +481,7 @@ end
         @veobac=@vproceso[7]
 
 
-
+###########################################
 
         iplazo= @vinicio+ @vversion+@vobac+@vpec+@vdac
         fplazo=iplazo+@vdem
@@ -487,20 +497,27 @@ end
         @vdemd=@vdem-vnhab
 
 
+
       @vplazodem=0
    case  item.modalidad
     when 1
-      @vplazodem=15
+      @vplazodem=Formula.where(product_id:10,orden:4).select('cantidad as dd').first.dd
     when 2
-       @vplazodem=20
+       @vplazodem=Formula.where(product_id:10,orden:4).select('numero as dd').first.dd
+   end
+# pacs terminados en plazo teorico
+
+
+   if (iplazo+ @vplazodem).month<=@vmesc then
+   @vmesct=@vmesct+1
+   end
+# pacs terminados en plazo en mes
+   if fplazo.month<=@vmesc and @vplazodem>=@vdemd then
+   @vmescr=@vmescr+1
    end
 
 
-
-
-
-
-
+###########################
 
 
 
@@ -558,6 +575,8 @@ end
 
     end #terminia  item
     #termina item***********************************************
+   unless  @var==11
+
 
 
 if @vtitun then
@@ -589,7 +608,7 @@ end
      end
 
 
-               if @var==6 then
+    else
 
 
               @vplaz1= @adem.reduce :+
@@ -598,17 +617,19 @@ end
 
                  ul do
 
-                               li   strong {'suma dem='+ @vplaz1.to_s}
-                               li   strong {'dem depu='+@vplaz2.to_s}
-                               li   strong {'dem plazo='+@vplaz3.to_s}
-
-
+                               li   strong {'suma dem dias='+ @vplaz1.to_s}
+                               li   strong {'dem depu dias='+@vplaz2.to_s}
+                               li   strong {'dem plazo dias='+@vplaz3.to_s}
+                                li
+                                 li   strong {'mes de calculo='+ @vmesc.to_s}
+                                li   strong {'pacs debieron terminarse en plazo DEM='+ @vmesct.to_s}
+                                 li   strong {'pacs terminados en plazo DEM ='+ @vmescr.to_s}
 
 
                  end
 
 
-               end
+             end
 
 
 

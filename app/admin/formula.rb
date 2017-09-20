@@ -117,6 +117,14 @@ Formula.where( product_id:15 ,orden:10).update_all( numero:1 )
 end
 
 
+member_action :indica, method: :put do
+  @num=Formula.where(product_id: 15, orden:11).
+         select('id as dd').first.dd
+ Formula.where( product_id:15 ).update_all( cantidad:0 )
+  Formula.where( product_id:15 ,orden:11).update_all( cantidad:1 )
+  redirect_to admin_grafico_path
+end
+
 
 
 
