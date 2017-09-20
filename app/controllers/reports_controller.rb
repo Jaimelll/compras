@@ -63,9 +63,21 @@ when 3
    @lista=" "
    @items= Item.where(ejecucion:4,tipo:params[:param2]).where("modalidad<3")
            .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
+         when 9
+           @lista=" "
+           @items=Item.where(ejecucion:4,modalidad:2,fuente:params[:param2]).order('obac,pac')
+           .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
 
+         when 10
+           @lista=" "
+           @items=Item.where(ejecucion:4,modalidad:1,fuente:params[:param2]).order('obac,pac')
+           .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
 
-
+         when 11
+           @lista=" "
+           @items= Item.where(ejecucion:4,fuente:params[:param2]).where("modalidad<3")
+                   .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
+         when 9
   end
 
 

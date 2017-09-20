@@ -139,11 +139,20 @@ ActiveAdmin.register_page "grafico" do
     @adec=[]
     @aeobac=[]
     @conta=0
-
-
+#para plazos
+    @ademd=[]
+    @aplazodem=[]
 
 
     @vproceso=[]
+    #feriados
+    @vferi=[]
+
+     Formula.where(product_id:27).each do  |feri|
+
+       @vferi.push(DateTime.parse(feri.nombre))
+
+     end
 
     #*******************************************************************
 
@@ -464,6 +473,33 @@ end
 
 
 
+        iplazo= @vinicio+ @vversion+@vobac+@vpec+@vdac
+        fplazo=iplazo+@vdem
+        vddia=iplazo
+        vnhab=0
+        while vddia<=fplazo
+          vddia=vddia+1
+          if vddia.wday==0 or  vddia.wday==6  or @vferi.include?(vddia) then
+            vnhab=vnhab+1
+          end
+
+        end
+        @vdemd=@vdem-vnhab
+
+
+      @vplazodem=0
+   case  item.modalidad
+    when 1
+      @vplazodem=15
+    when 2
+       @vplazodem=20
+   end
+
+
+
+
+
+
 
 
 
@@ -515,7 +551,8 @@ end
        @adec.push(@vdec)
        @aeobac.push(@veobac)
 
-
+      @ademd.push(@vdemd)
+      @aplazodem.push(@vplazodem)
     end   # log
 
 
@@ -550,5 +587,36 @@ end
 
            end
      end
+
+
+               if @var==6 then
+
+
+              @vplaz1= @adem.reduce :+
+              @vplaz2= @ademd.reduce :+
+              @vplaz3= @aplazodem.reduce :+
+
+                 ul do
+
+                               li   strong {'suma dem='+ @vplaz1.to_s}
+                               li   strong {'dem depu='+@vplaz2.to_s}
+                               li   strong {'dem plazo='+@vplaz3.to_s}
+
+
+
+
+                 end
+
+
+               end
+
+
+
+
+
+
+
+
+
   end
 end
