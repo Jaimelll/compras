@@ -172,10 +172,17 @@ wb.add_worksheet(name: "items adjudicados") do |sheet|
 Piece.where(phase_id:@vpac3,estado:4).order('phase_id,codigo').each do |vite|
 
 @conta=@conta+1
+if vite.adjudicado and vite.moneda then
+@vadj=vite.adjudicado* Formula.where(product_id:7,orden:vite.moneda).select('cantidad as dd').first.dd/100
+
+else
+@vadj=0
+end
+
+
 sheet.add_row [@conta, Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
  vite.codigo, vite.descripcion, vite.postor, vite.presupuestado,
- vite.adjudicado* Formula.where(product_id:7,orden:vite.moneda)
-        .select('cantidad as dd').first.dd/100],
+ @vadj],
  style: [centra,izq, centra,  izq,  izq, soles,soles]
 
 end
@@ -193,10 +200,16 @@ wb.add_worksheet(name: "items desiertos") do |sheet|
 @conta=0
 Piece.where(phase_id:@vpac3,estado:3).order('phase_id,codigo').each do |vite|
 @conta=@conta+1
+if vite.adjudicado and vite.moneda then
+@vref=vite.adjudicado* Formula.where(product_id:7,orden:vite.moneda).select('cantidad as dd').first.dd/100
+
+else
+@vref=0
+end
+
 sheet.add_row [@conta,  Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
  vite.codigo, vite.descripcion, vite.presupuestado,
- vite.referencial* Formula.where(product_id:7,orden:vite.moneda)
-        .select('cantidad as dd').first.dd/100],
+ @vref],
  style: [centra,izq, centra,  izq, soles,soles]
 
 end
