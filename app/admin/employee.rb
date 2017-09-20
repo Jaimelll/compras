@@ -195,7 +195,7 @@ end
                            end
              end
 
-
+  row :foto
 
 
              end
