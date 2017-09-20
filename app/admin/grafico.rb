@@ -122,7 +122,8 @@ ActiveAdmin.register_page "grafico" do
 
  when 11
   #indicadores
-    @vitem=Item.where(ejecucion:4).where("modalidad<3")#    .where(exped2:@vaf).order('periodo,exped,obac')
+    @vitem=Item.where(ejecucion:4).where("modalidad<3")
+    .where(exped2:@vaf).order('periodo,exped,obac')
    @iproce=100
 end
 
@@ -512,7 +513,7 @@ end
    @vmesct=@vmesct+1
    end
 # pacs terminados en plazo en mes
-   if fplazo.month<=@vmesc and @vplazodem>=@vdemd then
+   if fplazo.month<=@vmesc and @vplazodem>=@vdemd and @vdpc>0 then
    @vmescr=@vmescr+1
    end
 
