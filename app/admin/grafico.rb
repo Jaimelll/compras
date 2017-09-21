@@ -163,8 +163,10 @@ end
 
      end
      @vmesc=DateTime.parse(Formula.where(product_id:27,cantidad:2).select('nombre as dd').first.dd).month
-     @vmesct=0
-     @vmescr=0
+
+     @amesct=[]
+
+     @amescr=[]
     #*******************************************************************
 
     @vitem.each do |item|
@@ -510,11 +512,13 @@ end
 
 
    if (iplazo+ @vplazodem).month<=@vmesc then
-   @vmesct=@vmesct+1
+
+   @amesct.push(item.id)
    end
 # pacs terminados en plazo en mes
    if fplazo.month<=@vmesc and @vplazodem>=@vdemd and @vdpc>0 then
-   @vmescr=@vmescr+1
+
+   @amescr.push(item.id)
    end
 
 
@@ -616,21 +620,43 @@ end
               @vplaz2= @ademd.reduce :+
               @vplaz3= @aplazodem.reduce :+
 
-                 ul do
+           ul do
 
-                               li   strong {'suma dem dias='+ @vplaz1.to_s}
-                               li   strong {'dem depu dias='+@vplaz2.to_s}
-                               li   strong {'dem plazo dias='+@vplaz3.to_s}
-                                li
-                                 li   strong {'mes de calculo='+ @vmesc.to_s}
-                                li   strong {'pacs debieron terminarse en plazo DEM='+ @vmesct.to_s}
-                                 li   strong {'pacs terminados en plazo DEM ='+ @vmescr.to_s}
+                     li   strong {'suma dem dias='+ @vplaz1.to_s}
+                     li   strong {'dem depu dias='+@vplaz2.to_s}
+                     li   strong {'dem plazo dias='+@vplaz3.to_s}
+                     li
+                     li   strong {'mes de calculo='+ @vmesc.to_s}
 
 
-                 end
+                     @titproc1="PACS DEBIERON TERMINARSE EN PLAZO DEM_"
+                      @vpas=[0]
+                      @la1= 'pacs debieron terminarse en plazo DEM='+ @amesct.length.to_s
+                     li     link_to "#{@la1} ",
+                      reports_comment7_path(format: :pdf,
+                      :param3=>   @vpas,
+                      :param4=> @titproc1,:param5=> @amesct)
 
 
-             end
+
+                     @titproc2="PACS TERMINADOS EN PLAZO DEM_"
+
+                      @la2= 'pacs terminados en plazo DEM ='+ @amescr.length.to_s
+                     li     link_to "#{@la2} ",
+                      reports_comment7_path(format: :pdf,
+                      :param3=>   @vpas,
+                      :param4=> @titproc2,:param5=> @amescr)
+
+
+
+
+
+
+
+        end
+
+
+   end
 
 
 

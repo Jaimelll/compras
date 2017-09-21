@@ -77,7 +77,11 @@ when 3
            @lista=" "
            @items= Item.where(ejecucion:4,fuente:params[:param2]).where("modalidad<3")
                    .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
-         when 9
+     when 12
+         @lista=" "
+         @items= Item.where(ejecucion:4,fuente:params[:param2]).where("modalidad<3")
+             .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
+
   end
 
 
