@@ -206,7 +206,9 @@ end
 
                            end
              end
-  row :Nivel
+             row 'Nivel' do |emple|
+               emple.sele
+             end
   row :foto
 
 
