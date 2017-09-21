@@ -109,9 +109,10 @@ end
                Formula.where(product_id:22).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :tip_tra,:label => 'Tipo Contrato', :as => :select, :collection =>
             Formula.where(product_id:23).order('nombre').map{|u| [u.nombre, u.orden]}
+         f.input :fec_nacimiento, :label => 'Fecha de nacimiento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
          f.input :esta_civil, :as => :select, :collection =>
             Formula.where(product_id:24).order('nombre').map{|u| [u.nombre, u.orden]}
-        f.input :foto, :as => :file, :hint => f.object.foto.present? \
+         f.input :foto, :as => :file, :hint => f.object.foto.present? \
                 ? image_tag(f.object.foto.url(:thumb))
                  : content_tag(:span, "no hay foto aun")
 
@@ -176,8 +177,10 @@ end
 
                           end
               end
-
-            row :esta_civil do |emple|
+              row 'Fecha de nacimiento' do |emple|
+                emple.fec_nacimiento
+              end
+              row :esta_civil do |emple|
                         if emple.esta_civil and emple.esta_civil>0 then
 
                            Formula.where(product_id:24, orden:emple.esta_civil).
