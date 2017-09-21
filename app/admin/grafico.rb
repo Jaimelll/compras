@@ -511,12 +511,12 @@ end
 # pacs terminados en plazo teorico
 
 
-   if (iplazo+ @vplazodem).month<=@vmesc then
+   if (iplazo+ @vplazodem).month<=@vmesc and @vdem>0 then
 
    @amesct.push(item.id)
    end
 # pacs terminados en plazo en mes
-   if fplazo.month<=@vmesc and @vplazodem>=@vdemd and @vdpc>0 then
+   if fplazo.month<=@vmesc and @vplazodem>=@vdemd and @vdpc>0 and @vdem>0  then
 
    @amescr.push(item.id)
    end
