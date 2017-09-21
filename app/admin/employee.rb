@@ -58,7 +58,7 @@ end
   filter :grado, label:'Perfil'
   filter :area, :as => :select, :collection =>
        Formula.where(product_id:26).order('nombre ASC').map{|u| ["#{u.descripcion}", u.orden]}
-
+  filter :sele, label:'Nivel'
 
 
   index :title => 'Lista de Empleados' do
@@ -112,6 +112,7 @@ end
          f.input :fec_nacimiento, :label => 'Fecha de nacimiento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
          f.input :esta_civil, :as => :select, :collection =>
             Formula.where(product_id:24).order('nombre').map{|u| [u.nombre, u.orden]}
+         f.input :sele,:label => 'Nivel', :input_html => { :style =>  'width:30%'}
          f.input :foto, :as => :file, :hint => f.object.foto.present? \
                 ? image_tag(f.object.foto.url(:thumb))
                  : content_tag(:span, "no hay foto aun")
@@ -205,7 +206,7 @@ end
 
                            end
              end
-
+  row :Nivel
   row :foto
 
 
