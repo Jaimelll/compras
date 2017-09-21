@@ -103,8 +103,10 @@ end
          f.input :cargo,:label => 'Puesto', :input_html => { :style =>  'width:30%'}
          f.input :grado,:label => 'Perfil', :input_html => { :style =>  'width:30%'}
 
-         f.input :estado, :as => :select, :collection =>
-            Formula.where(product_id:22).order('nombre').map{|u| [u.nombre, u.orden]}
+         f.input :area, :as => :select, :collection =>
+            Formula.where(product_id:26).order('nombre').map{|u| [u.descripcion, u.orden]}
+        f.input :estado, :as => :select, :collection =>
+               Formula.where(product_id:22).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :tip_tra,:label => 'Tipo Contrato', :as => :select, :collection =>
             Formula.where(product_id:23).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :esta_civil, :as => :select, :collection =>
@@ -150,6 +152,12 @@ end
               row :correo_corp
 
 
+             row :area do |emple|
+                      if emple.estado and emple.estado>0 then
+                           Formula.where(product_id:26, orden:emple.area).
+                                          select('nombre as dd').first.dd
+                                  end
+                            end
               row :estado do |emple|
                         if emple.estado and emple.estado>0 then
 
