@@ -10,7 +10,7 @@ ActiveAdmin.register Agreement do
   filter :centro
 
   action_item :only=> :index do
-      link_to 'Actualiza Empleado', actualiza_admin_product_formula_path( 1,:@num), method: :put
+      link_to 'Actualiza Contrato', actualiza_admin_product_formula_path( 1,:@num), method: :put
   end
 
 
@@ -133,7 +133,7 @@ ActiveAdmin.register Agreement do
 
 
 
-  sidebar "Contrato", only: :index  do
+  sidebar "Contrato por Actualizar", only: :index  do
     @conta=0
    Agreement.where(employee_id:params[:employee_id]).each do |contr|
      if contr.fec_inicon<=Time.now and  contr.fec_tercon>=Time.now then
