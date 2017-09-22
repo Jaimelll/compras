@@ -67,7 +67,9 @@ end
 
 
           column("Apellido Nombre", :sortable => :ape_nom) do |emple|
-           emple.ape_nom.upcase
+            if  emple.ape_nom then
+             emple.ape_nom.upcase
+            end 
            end
 
           column("Puesto") do |emple|
