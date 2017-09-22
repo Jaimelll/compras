@@ -146,7 +146,7 @@ ActiveAdmin.register Agreement do
                tipo_contra:contr.tipo_contra).minimum('fec_inicon').to_s
            li "Area: "+Formula.where(product_id:26,orden:contr.area).
                         select('descripcion as dd').first.dd
-           li "remuneracion:  "+number_with_delimiter(contr.remuneracion, delimiter: ",")
+           li "remuneracion contrato:  "+number_with_delimiter(contr.remuneracion, delimiter: ",")
        end
        if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
           Employee.where(id:params[:employee_id]).update_all( fec_inicon:Agreement.
@@ -179,7 +179,11 @@ ActiveAdmin.register Agreement do
 
 
      end
+     ul do
 
+       li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:employee_id]).
+       select('remuneracion as dd').first.dd, delimiter: ",")
+     end
 
 
 end
