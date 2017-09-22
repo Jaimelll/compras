@@ -26,7 +26,7 @@ end
          :admin_user_id, :foto, :ape_nom,
          :correo_corp, :fec_inicon, :fec_tercon,
          :cargo, :grado,:area, :sele,
-         :remuneracion, :sele2
+         :remuneracion, :sele2, :distrito
 
 
 
@@ -98,6 +98,7 @@ end
          f.input :ape_mat,:label => 'Apellido materno', :input_html => { :style =>  'width:30%'}
          f.input :nombres, :input_html => { :style =>  'width:30%'}
          f.input :direccion, :input_html => { :style =>  'width:30%'}
+         f.input :distrito, :input_html => { :style =>  'width:30%'}
          f.input :telefono, :input_html => { :style =>  'width:30%'}
          f.input :correo, :input_html => { :style =>  'width:30%'}
          f.input :correo_corp, :input_html => { :style =>  'width:30%'}
@@ -151,6 +152,7 @@ end
               end
 
               row :direccion
+              row :distrito
               row :telefono
               row :correo
               row :correo_corp
