@@ -25,7 +25,8 @@ end
          :tip_tra, :esta_civil, :afp,
          :admin_user_id, :foto, :ape_nom,
          :correo_corp, :fec_inicon, :fec_tercon,
-         :cargo, :grado,:area, :sele
+         :cargo, :grado,:area, :sele,
+         :remuneracion, :sele2
 
 
 
@@ -113,6 +114,7 @@ end
          f.input :esta_civil, :as => :select, :collection =>
             Formula.where(product_id:24).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :sele,:label => 'Nivel', :input_html => { :style =>  'width:30%'}
+         f.input :remuneracion,:as =>:string, :input_html => { :style =>  'width:30%'}
          f.input :foto, :as => :file, :hint => f.object.foto.present? \
                 ? image_tag(f.object.foto.url(:thumb))
                  : content_tag(:span, "no hay foto aun")
@@ -209,6 +211,12 @@ end
              row 'Nivel' do |emple|
                emple.sele
              end
+
+             row :remuneracion do |emple|
+
+              number_with_delimiter(emple.remuneracion, delimiter: ",")
+
+            end
   row :foto
 
 

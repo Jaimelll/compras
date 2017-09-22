@@ -9,7 +9,14 @@ ActiveAdmin.register Agreement do
 
   filter :centro
 
+  action_item :only=> :index do
+      link_to 'Actualiza Empleado', actualiza_admin_product_formula_path( 1,:@num), method: :put
+  end
+
+
+
   index :title => 'Lista de Contratos' do
+
 
 
 
@@ -45,8 +52,12 @@ ActiveAdmin.register Agreement do
 
              f.input :puesto, :input_html => { :style =>  'width:30%'}
              f.input :cod_hor,:label => 'Horario', :input_html => { :style =>  'width:30%'}
+            f.input :remuneracion,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :area, :as => :select, :collection =>
                 Formula.where(product_id:26).order('nombre').map{|u| [u.descripcion, u.orden]}
+
+            f.input :tipo_contra,:label => 'Tipo Contrato', :as => :select, :collection =>
+                    Formula.where(product_id:23).order('nombre').map{|u| [u.nombre, u.orden]}
              f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
 
@@ -65,7 +76,11 @@ ActiveAdmin.register Agreement do
                   row :fec_tercon
                   row :puesto
                   row :cod_hor
-                  row :remuneracion
+                  row :remuneracion do |contra|
+
+                   number_with_delimiter(contra.remuneracion, delimiter: ",")
+
+                 end
                   row :area
                   row :tipo_contra
                   row :fec_retiro
@@ -131,12 +146,19 @@ ActiveAdmin.register Agreement do
                tipo_contra:contr.tipo_contra).minimum('fec_inicon').to_s
            li "Area: "+Formula.where(product_id:26,orden:contr.area).
                         select('descripcion as dd').first.dd
+           li "remuneracion:  "+number_with_delimiter(contr.remuneracion, delimiter: ",")
        end
-
+       if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
           Employee.where(id:params[:employee_id]).update_all( fec_inicon:Agreement.
               where(employee_id:params[:employee_id],
               tipo_contra:contr.tipo_contra).minimum('fec_inicon') ,
-              fec_tercon:contr.fec_tercon,estado:1,area:contr.area)
+              fec_tercon:contr.fec_tercon,estado:1,area:contr.area,
+              remuneracion:contr.remuneracion)
+              #actualiza activo en estado
+              Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
+
+        end
+
 
           @conta=1
      end
@@ -147,9 +169,14 @@ ActiveAdmin.register Agreement do
 
           li "Estado: INACTIVO"
        end
-
+    if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
        Employee.where(id:params[:employee_id]).update_all( fec_inicon:nil,
        fec_tercon:nil,estado:2)
+       #actualiza activo en estado
+       Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
+
+    end
+
 
      end
 
