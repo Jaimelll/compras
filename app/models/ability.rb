@@ -61,7 +61,16 @@ class Ability
             can :read, ActiveAdmin::Page, :name =>"grafico0"
             can [:create,:read,:update, :destroy], [Item, Detail,Activity]
             can [:read], [Phase,Piece]
-  else
+      when 4,5,6,8,9 #sectoristas y Bertolotti
+                can :read, ActiveAdmin::Page, :name =>"Dashboard"
+                can :read, ActiveAdmin::Page, :name =>"grafico"
+                can :read, ActiveAdmin::Page, :name =>"grafico0"
+                can [:create,:read,:update, :destroy], [Item, Detail,Activity]
+                can [:read], [Phase,Piece]
+      when 24  #neil
+             can :read, ActiveAdmin::Page, :name =>"Dashboard"
+             can [:create,:read,:update, :destroy], [Agreement, Employee, Experience, Family, Student]
+     else
 
       can :read, ActiveAdmin::Page, :name =>"Dashboard"
 

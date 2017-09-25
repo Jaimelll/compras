@@ -48,8 +48,12 @@ end
 
   end
 
+#root 'admin/employees#index', via: [:get]
 
 root 'admin/dashboard#index'
+
+
+
 match 'reports/comment', via: [:get]
 match 'reports/comment2', via: [:get]
 match 'reports/comment3', via: [:get]
@@ -61,5 +65,7 @@ match 'reports/vhoja1', via: [:get]
 match 'reports/vhoja2', via: [:get]
 match 'reports/vhoja5', via: [:get]
 match 'reports/vhoja6', via: [:get]
+
+
 
 end

@@ -90,15 +90,20 @@ end
                      column do
 
                        case current_admin_user.id
-                        when 21,22,23
+                       when 21,22,23,24
 
 
                        else
 
-
+#else de column abierto
 
 
           ########################################
+
+
+
+
+
           case current_admin_user.id
           when 2,3
                        panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
@@ -202,6 +207,9 @@ end
 ###############################
         end
 end # de case
+unless current_admin_user.id==24
+
+
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
                panel  "I.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
@@ -435,8 +443,14 @@ end#table
                                    end # panel mercado
 
         end# de columns
+
+      end # de unless de personal
+
+
+
         column do
 
+unless current_admin_user.id==24 #personal
 
                                    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                    @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
@@ -929,10 +943,10 @@ strong("* Procesos culminados = "+@vliqui.to_s)
 end
 end #panel
 
-
+end #personal de column
 #########################################
 case current_admin_user.id
- when 21,22,23
+when 21,22,23,24
 
 
 else
@@ -1233,6 +1247,8 @@ else
 
 
   end
+#personal
+unless current_admin_user.id==24
 
 
   panel  "Leyenda" do
@@ -1250,7 +1266,7 @@ else
 
 
   end
-
+end
 
 #########################################
 
