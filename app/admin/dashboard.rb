@@ -938,9 +938,34 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 
 
 end #de table
-if @vliqui>0 then
-strong("* Procesos culminados = "+@vliqui.to_s)
+
+ #if @vliqui>0 then
+ #strong("* Procesos culminados = "+@vliqui.to_s)
+
+ #end
+
+table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
+  column("Resumen ") do |formula|
+  "Procesos acumulados"
+  end
+column("convocados") do |formula|
+  @vxper3[2]+@vxper3[3]
 end
+column("Adjudicados") do |formula|
+  @vxper3[3]
+end
+column("Culminados") do |formula|
+  @vliqui
+end
+
+end
+
+
+
+
+
+
+
 end #panel
 
 end #personal de column
@@ -1082,7 +1107,7 @@ else
    end
    end
 
-
+if current_admin_user.id==2 then
    panel  "VII.-SEGUIMIENTO DE CONTRATOS ACFFAA-"+@vaf  do
           table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
 
@@ -1244,7 +1269,7 @@ else
 
       end#panel
     end   #table for
-
+  end # de if  panel contratos current 2
 
   end
 #personal
