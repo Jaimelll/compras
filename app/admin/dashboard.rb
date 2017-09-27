@@ -900,7 +900,7 @@ column("En Proceso") do |formula|
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv1,
    :param4=>  @titproc1)
  else
-    0
+    Phase.where(id:@vconv1,sele3:2).count
  end
  end
 
@@ -915,7 +915,7 @@ link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimit
 reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 :param4=>  @titproc1)
 else
-   0
+    Phase.where(id:@vconv2,sele3:2).count
 end
   end
 
@@ -931,7 +931,7 @@ end
   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
   :param4=>  @titproc1)
 else
-   0
+     Phase.where(id:@vconv3,sele3:2).count
 end
 end
    column("Total") do |formula|
@@ -945,7 +945,7 @@ end
    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
    :param4=>  @titproc1)
  else
-    0
+      Phase.where(id:@vconvt,sele3:2).count
  end
 
     end
