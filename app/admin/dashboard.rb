@@ -692,7 +692,7 @@ unless current_admin_user.id==24 #personal
                                      #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
 
                                    #  end
-                                       table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
+                                       table_for  Formula.where(product_id:28).order('orden') do
 ##################
 @vxper2=[0,0,0,0,0,0,0,0]
 @vxper3=[0,0,0,0,0,0,0,0]
@@ -878,14 +878,19 @@ if @nliqui>0 then
 end
 ##################
 
-column("Rol") do
-  link_to "Proceso", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
-   :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-   :param5=> @vconv3,:param6=> @vconvtm,:param7=> @vuobac)
+column("Rol") do |formula|
+   if formula.orden==1 then
+     link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
+        :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+        :param5=> @vconv3,:param6=> @vconvtm,:param7=> @vuobac)
+   else
+        formula.nombre
+   end
 
 end
 
 column("En Proceso") do |formula|
+  if formula.orden==1 then
   @dpc=  formula.orden
   @titproc1="En Proceso"
   @vopc=4
@@ -894,10 +899,13 @@ column("En Proceso") do |formula|
  link_to "#{@vxper3[1]}"+"/("+"#{number_with_delimiter(@contavus[1].to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv1,
    :param4=>  @titproc1)
-
+ else
+    0
+ end
  end
 
  column("convocados") do |formula|
+   if formula.orden==1 then
    @dpc=  formula.orden
    @titproc1="Procesos Convocados"
    @vopc=1
@@ -906,11 +914,14 @@ column("En Proceso") do |formula|
 link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
 reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 :param4=>  @titproc1)
-
+else
+   0
+end
   end
 
 
   column("Adjudicados") do |formula|
+       if formula.orden==1 then
     @dpc=  formula.orden
     @titproc1="Procesos Adjudicados"
     @vopc=2
@@ -919,10 +930,12 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
   link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
   :param4=>  @titproc1)
-
-   end
-
+else
+   0
+end
+end
    column("Total") do |formula|
+     if formula.orden==1 then
      @dpc=  formula.orden
      @titproc1="Relacion de Procesos"
      @vopc=3
@@ -931,6 +944,9 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
    link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
    :param4=>  @titproc1)
+ else
+    0
+ end
 
     end
 
