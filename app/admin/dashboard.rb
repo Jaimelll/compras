@@ -692,7 +692,7 @@ unless current_admin_user.id==24 #personal
                                      #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
 
                                    #  end
-                                       table_for  Formula.where(product_id:28).order('orden') do
+                                       table_for  Formula.where(product_id:29).order('orden') do
 ##################
 @vxper2=[0,0,0,0,0,0,0,0]
 @vxper3=[0,0,0,0,0,0,0,0]
