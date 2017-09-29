@@ -28,7 +28,14 @@ end
          :cargo, :grado,:area, :sele,
          :remuneracion, :sele2, :distrito
 
+   action_item :actualiza,only: :show do
+         link_to 'Actualiza Contrato', actualiza_admin_employee_path( params[:id]), method: :put
+   end
 
+   member_action :actualiza, method: :put do
+      Formula.where( product_id:22 ,orden:1).update_all( cantidad:1 )
+     redirect_to admin_employee_path(params[:id])
+   end
 
          scope :Activos, :default => true do |emples|
                    emples.where(estado:1)
@@ -69,7 +76,7 @@ end
           column("Apellido Nombre", :sortable => :ape_nom) do |emple|
             if  emple.ape_nom then
              emple.ape_nom.upcase
-            end 
+            end
            end
 
           column("Puesto") do |emple|
@@ -250,10 +257,64 @@ end
          li      link_to "CONTRATOS", admin_employee_agreements_path(params[:id])
                   end
     end
-         end # de sider
 
 
 
+      panel  "Datos de Contratos " do
+
+    @conta=0
+   Agreement.where(employee_id:params[:id]).each do |contr|
+     if   contr.fec_inicon and contr.fec_tercon then
+     if contr.fec_inicon<=Time.now and  contr.fec_tercon>=Time.now  then
+        ul do
+           li "Inicio de contrato: "+contr.fec_inicon.to_s
+           li "Fin de contrato: "+contr. fec_tercon.to_s
+           li "Puesto:  "+contr.puesto
+           li "Estado: ACTIVO"
+           li "Ingreso: "+Agreement.where(employee_id:params[:id],
+               tipo_contra:contr.tipo_contra).minimum('fec_inicon').to_s
+           li "Area: "+Formula.where(product_id:26,orden:contr.area).
+                        select('descripcion as dd').first.dd
+           li "remuneracion contrato:  "+number_with_delimiter(contr.remuneracion, delimiter: ",")
+       end
+       if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
+          Employee.where(id:params[:id]).update_all( fec_inicon:Agreement.
+              where(employee_id:params[:id],
+              tipo_contra:contr.tipo_contra).minimum('fec_inicon') ,
+              fec_tercon:contr.fec_tercon,estado:1,area:contr.area,
+              remuneracion:contr.remuneracion)
+              #actualiza activo en estado
+              Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
+
+        end
 
 
+          @conta=1
+     end #1er if
+      end #1er if
+   end  #each
+
+     if   @conta==0 then
+       ul do
+
+          li "Estado: INACTIVO"
+       end
+    if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
+       Employee.where(id:params[:employee_id]).update_all( fec_inicon:nil,
+       fec_tercon:nil,estado:2)
+       #actualiza activo en estado
+       Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
+
+    end
+
+
+     end
+     ul do
+
+       li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
+       select('remuneracion as dd').first.dd, delimiter: ",")
+     end
+
+end
+end
   end

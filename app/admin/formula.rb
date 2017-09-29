@@ -125,12 +125,6 @@ member_action :indica, method: :put do
   redirect_to admin_grafico_path
 end
 
-member_action :actualiza, method: :put do
-  @num=Formula.where(product_id: 22, orden:1).
-         select('id as dd').first.dd
-   Formula.where( product_id:22 ,orden:1).update_all( cantidad:1 )
-  #redirect_to admin_employee_agreements_path(params[:employee_id])
-end
 
 
 
