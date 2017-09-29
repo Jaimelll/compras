@@ -187,11 +187,7 @@ end
                   end
               row  'Tipo de contrato' do |emple|
                           if emple.tip_tra and emple.tip_tra>0 then
-
-                           Formula.where(product_id:23, orden:emple.tip_tra).
-                                  select('nombre as dd').first.dd
-
-
+                           Formula.where(product_id:23, orden:emple.tip_tra).select('nombre as dd').first.dd
                           end
               end
               row 'Fecha de nacimiento' do |emple|
@@ -276,8 +272,11 @@ end
            li "Estado: ACTIVO"
            li "Ingreso: "+Agreement.where(employee_id:params[:id],
                tipo_contra:contr.tipo_contra).minimum('fec_inicon').to_s
-           li "Area: "+Formula.where(product_id:26,orden:contr.area).
+           li "Area: "
+               if contr.area and contr.area>0 then
+                       +Formula.where(product_id:26,orden:contr.area).
                         select('descripcion as dd').first.dd
+               end
            li "remuneracion contrato:  "+number_with_delimiter(contr.remuneracion, delimiter: ",")
        end
        if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
