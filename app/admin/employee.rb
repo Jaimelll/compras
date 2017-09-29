@@ -167,12 +167,15 @@ end
               row :correo_corp
 
 
-             row :area do |emple|
-                      if emple.estado and emple.estado>0 then
-                           Formula.where(product_id:26, orden:emple.area).
-                                          select('nombre as dd').first.dd
-                                  end
-                            end
+             row :afp do |emple|
+                       if emple.afp and emple.afp>0 then
+
+                          Formula.where(product_id:30, orden:emple.afp).
+                           select('nombre as dd').first.dd
+
+
+                         end
+                 end
               row :estado do |emple|
                         if emple.estado and emple.estado>0 then
 
