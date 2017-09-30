@@ -234,6 +234,31 @@ end
            end
 
 
+           sidebar "Foto", except: :index  do
 
-      
+                      if params[:id] then
+                     Employee.where(id:params[:id]).each do |item|
+                       @nomb=item.ape_nom.upcase
+                       unless item.foto.blank?
+                        li   image_tag item.foto.thumb.url, size: "250"
+                        li      strong "Nombre: "+"#{@nomb}"
+                       end
+
+
+                    end
+                  end
+              ul do
+                 if params[:id] then
+                  li      link_to "CARGA FAMILIAR", admin_employee_families_path(params[:id])
+                  li      link_to "ESTUDIOS", admin_employee_students_path(params[:id])
+                  li      link_to "EXPERIENCIA LABORAL", admin_employee_experiences_path(params[:id])
+                  li      link_to "CONTRATOS", admin_employee_agreements_path(params[:id])
+                           end
+             end
+   end #end de sidebar
+
+
+
+
+
   end
