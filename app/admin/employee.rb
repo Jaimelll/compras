@@ -266,13 +266,13 @@ if contr.fec_inicon<=Time.now and  contr.fec_tercon>=Time.now  then
      li "Fin de contrato: "+contr. fec_tercon.to_s
      li "Puesto:  "+contr.puesto
      li "Estado: ACTIVO"
-     li "Ingreso: "+Agreement.where(employee_id:params[:id],
-         tipo_contra:contr.tipo_contra).minimum('fec_inicon').to_s
-     li "Area: "
-         if contr.area and contr.area>0 then
-                 +Formula.where(product_id:26,orden:contr.area).
-                  select('descripcion as dd').first.dd
-         end
+  #   li "Ingreso: "+Agreement.where(employee_id:params[:id],
+  #       tipo_contra:contr.tipo_contra).minimum('fec_inicon').to_s
+  #   li "Area: "
+  #       if contr.area and contr.area>0 then
+  #               +Formula.where(product_id:26,orden:contr.area).
+  #                select('descripcion as dd').first.dd
+  #       end
      li "remuneracion contrato:  "+number_with_delimiter(contr.remuneracion, delimiter: ",")
  end
  if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
@@ -309,8 +309,8 @@ end
 end
 ul do
 
- #li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
- #select('remuneracion as dd').first.dd, delimiter: ",")
+ li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
+ select('remuneracion as dd').first.dd, delimiter: ",")
 end
 
 end
