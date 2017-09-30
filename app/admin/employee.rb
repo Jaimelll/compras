@@ -309,8 +309,8 @@ end
 end
 ul do
 
- li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
- select('remuneracion as dd').first.dd, delimiter: ",")
+ #li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
+ #select('remuneracion as dd').first.dd, delimiter: ",")
 end
 
 end
