@@ -70,6 +70,9 @@ class Ability
       when 24  #neil
              can :read, ActiveAdmin::Page, :name =>"Dashboard"
              can [:create,:read,:update, :destroy], [Agreement, Employee, Experience, Family, Student]
+     when 10,25  #pedro y salinas
+              can :read, ActiveAdmin::Page, :name =>"Dashboard"
+                can [:read], [Phase, Activity,Piece]
      else
 
       can :read, ActiveAdmin::Page, :name =>"Dashboard"

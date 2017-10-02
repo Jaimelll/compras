@@ -78,7 +78,7 @@ end
 
 member_action :auditado, method: :put do
   case current_admin_user.id # a_variable is the variable we want to compare
-     when 2,3 # administrador,roy
+  when 2,3,10,25 # administrador,roy
         proc=Phase.find(params[:id])
         proc.update(sele3:2)
         redirect_to admin_phase_path(proc)
@@ -90,7 +90,7 @@ member_action :auditado, method: :put do
 
   member_action :noauditado, method: :put do
     case current_admin_user.id # a_variable is the variable we want to compare
-       when 2,3 # administrador,roy
+    when 2,3,10,25 # administrador,roy
            proc=Phase.find(params[:id])
            proc.update(sele3:1)
            redirect_to admin_phase_path(proc)
