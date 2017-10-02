@@ -75,6 +75,10 @@ action_item :noauditado, only: :show do
         link_to   'No auditado', noauditado_admin_phase_path(params[:id]), method: :put
 end
 
+action_item :enproceso, only: :show do
+        link_to   'En progreso', enproceso_admin_phase_path(params[:id]), method: :put
+end
+
 
 member_action :auditado, method: :put do
   case current_admin_user.id # a_variable is the variable we want to compare
@@ -96,6 +100,15 @@ member_action :auditado, method: :put do
            redirect_to admin_phase_path(proc)
        end
     end
+
+    member_action :enproceso, method: :put do
+      case current_admin_user.id # a_variable is the variable we want to compare
+      when 2,3,10,25 # administrador,roy
+            proc=Phase.find(params[:id])
+            proc.update(sele3:3)
+            redirect_to admin_phase_path(proc)
+        end
+      end
 
 
 

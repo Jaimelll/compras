@@ -175,11 +175,17 @@ case proce.orden
 
     end
 
-if activ.sele3==2 then
-  @laudi="Si"
-else
-  @laudi="No"
-end
+
+    if  activ.sele3 and  activ.sele3>0 then
+
+     @laudi=  Formula.where(product_id:29, orden: activ.sele3).
+        select('descripcion as dd').first.dd
+
+    else
+         @laudi="No"
+    end
+
+
 
   sheet.add_row [ @conta, activ.nomenclatura, activ.descripcion.underscore.capitalize,
    @esti.to_i, @presu.to_i, activ.sele2.to_i,   @laudi],
