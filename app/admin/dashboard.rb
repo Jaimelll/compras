@@ -882,9 +882,11 @@ column("Rol") do |formula|
    if formula.orden==1 then
      link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-        :param5=> @vconv3,:param6=> @vconvtm,:param7=> @vuobac)
+        :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
    else
-        formula.nombre
+     link_to "#{formula.nombre}", reports_vhoja3_path(format:  "xlsx", :param1=> @vxper3,
+        :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+        :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
    end
 
 end

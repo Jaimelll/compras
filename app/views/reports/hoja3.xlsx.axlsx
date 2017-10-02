@@ -1,0 +1,196 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center })
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center },num_fmt: 3)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
+
+
+
+
+wb.add_worksheet(name: "Resumen") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(AVANCE PREVIOS CONVOCADOS ADJUDICADOS TOTAL),
+  style: [titu, titu, titu, titu, titu]
+
+
+
+
+  sheet.add_row ["Proceso", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[0]],
+   style: [izq, centra, centra, centra, centra]
+
+   sheet.add_row ["Estimado(soles)", @vmpac[1], @vmpac[2], @vmpac[3],
+   @vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i],
+    style: [izq, soles, soles, soles, soles]
+
+
+@vaud1= Phase.where(sele3:2,id:@vpac1).count
+@vaud2= Phase.where(sele3:2,id:@vpac2).count
+@vaud3= Phase.where(sele3:2,id:@vpac3).count
+@vaudt= Phase.where(sele3:2,id:@vpact).count
+
+    sheet.add_row ["Auditados",@vaud1, @vaud2,@vaud3,@vaudt],
+     style: [izq, centra, centra, centra, centra]
+
+
+end
+
+
+Formula.where(product_id:20).order('orden').each do |proce|
+wb.add_worksheet(name: proce.nombre) do |sheet|
+
+  sheet.add_row []
+
+
+
+
+
+
+
+
+  case proce.orden
+     when 1
+        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) AUDITADO),
+        style: [titu,  titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac1
+     when 2
+        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) AUDITADO),
+        style: [titu,  titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac2
+     when 3
+        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) AUDITADO ),
+        style: [titu,  titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac3
+
+      end
+
+
+
+
+       @conta=0
+     @activities.where(id:@vpacn).each do |activ|
+
+
+        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+       @vdetalle= Activity.order('pfecha')
+       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
+
+       @vobsr=" "
+       if @vdetalle.count>0
+      @vdetalle.each do |deta|
+
+      if deta.obs then
+      @vobsr=deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize
+       end
+     end
+    end
+
+
+
+     @vobac=" "
+         @esti=0
+         @apac=[]
+         @aobac=[]
+         @afecing=[]
+     if activ.expediente>0 then
+      @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
+     Item.where(exped:activ.expediente).each do |nobac|
+
+     @apac.push(nobac.pac)
+     @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
+
+     if Detail.where(actividad:13,item_id:nobac.id).count>0 then
+      @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
+     else
+        @afecing.push("")
+     end
+
+
+     end
+     end
+
+
+
+
+
+
+
+
+
+
+
+
+        if proce.orden==3  then
+          @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
+       else
+           @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
+       end
+
+
+
+
+@conta=@conta+1
+
+case proce.orden
+   when 1
+
+     if Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').count>0 then
+       @fec21= Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec21=""
+     end
+     if Activity.where(actividad:18,phase_id:activ.id).count>0 then
+       @fec22= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec22=""
+     end
+
+   when 2,3
+
+   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
+     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec21=""
+   end
+   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
+     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec22=""
+   end
+
+    end
+
+if activ.sele3==2 then
+  @laudi="Si"
+else
+  @laudi="No"
+end
+
+  sheet.add_row [ @conta, activ.nomenclatura, activ.descripcion.underscore.capitalize,
+   @esti.to_i, @presu.to_i, activ.sele2.to_i,   @laudi],
+   style: [ centra,  izq, izq, soles, soles, soles,centra]
+
+
+
+
+end
+end
+end
+
+
+end

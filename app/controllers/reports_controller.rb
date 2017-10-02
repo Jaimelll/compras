@@ -319,6 +319,26 @@ def vhoja2
 end
 
 
+def vhoja3
+  @vnpac=params[:param1]
+  @vmpac=params[:param2]
+  @vpac1=params[:param3]
+  @vpac2=params[:param4]
+  @vpac3=params[:param5]
+  @vpact=params[:param6]
+  @vuobac=params[:param7]
+  @activities=Phase.order('sele2 DESC')
+
+
+
+  respond_to do |format|
+    format.html
+    format.xls{render template: 'reports/hoja3.xls.erb', xls:'ahoja'}
+    format.xlsx{render template: 'reports/hoja3.xlsx.axlsx', xlsx:'ProceAudi'}
+  end
+end
+
+
 
 
 def vhoja5
