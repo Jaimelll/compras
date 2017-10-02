@@ -309,6 +309,9 @@ end
 
 
 end
+
+ if params[:id] and Employee.where(id:params[:id]).
+ select('remuneracion as dd').first.dd then
 ul do
 
  li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
@@ -320,6 +323,6 @@ end
 
 
 
-
+end
 
   end
