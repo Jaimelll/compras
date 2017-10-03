@@ -185,7 +185,7 @@ def comment4
 @tit1=params[:param4].to_s
 
            @activities=Phase.where(id:@vprov).
-           order('sele2 DESC')
+           order('pp ASC')
 
 
 
@@ -307,7 +307,7 @@ def vhoja2
   @vpac3=params[:param5]
   @vpact=params[:param6]
   @vuobac=params[:param7]
-  @activities=Phase.order('sele2 DESC')
+  @activities=Phase.order('pp ASC')
 
 
 
