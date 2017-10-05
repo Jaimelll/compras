@@ -340,6 +340,18 @@ end
 
 
 
+def vhoja4
+  
+
+  respond_to do |format|
+    format.html
+
+    format.xlsx{render template: 'reports/hoja4.xlsx.axlsx', xlsx:'eval'}
+  end
+end
+
+
+
 
 def vhoja5
 

@@ -1,0 +1,87 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center })
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center },num_fmt: 3)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
+
+
+
+
+wb.add_worksheet(name: "INSTRUCCIONES") do |sheet|
+
+  sheet.add_row []
+  sheet.add_row ["", "Factores a considerar:"]
+
+
+  sheet.add_row %w(ACTITUD APTITUD CONOCIMIENTO),   style: [titu, titu, titu]
+  sheet.add_row ["Asistencia","Preparacion " , "Experiencia " ],   style: [titu, titu, titu]
+  sheet.add_row ["Motivacion","Formacion " , "Desempeño " ],   style: [titu, titu, titu]
+  sheet.add_row ["Puntualidad","Potencial " , "Calidad " ],   style: [titu, titu, titu]
+  
+    sheet.add_row []
+    sheet.add_row []
+    sheet.add_row ["", "Puntuacion:"]
+
+
+    sheet.add_row %w(PUNTUACION DESCRIPCION),   style: [titu, titu]
+    sheet.add_row ["1","Muy bajo "  ],   style: [titu, titu]
+    sheet.add_row ["2","Bajo "  ],   style: [titu, titu]
+    sheet.add_row ["3","Regular "  ],   style: [titu, titu]
+    sheet.add_row ["4","Bueno "  ],   style: [titu, titu]
+    sheet.add_row ["5","Muy bueno "  ],   style: [titu, titu]
+
+      sheet.add_row []
+
+
+
+end
+
+
+Formula.where(product_id:26).order('orden').each do |proce|
+  wb.add_worksheet(name: proce.nombre) do |sheet|
+
+    sheet.add_row []
+    sheet.add_row [ "","EVALUADOR:", " "], style: [izq, centra, centra]
+    sheet.add_row ["", "DNI:", " "], style: [izq, centra, centra]
+    sheet.add_row []
+
+  sheet.add_row %w(N DNI  NOMBRE  ACTITUD APTITUD CONOCIMIENTO),
+  style: [titu,  titu, titu, titu, titu, titu]
+
+  @conta=0
+Employee.where(area:proce.orden).order('ape_nom').each do |emple|
+
+
+@conta=@conta+1
+
+
+
+
+
+
+  sheet.add_row [@conta," "+ emple.dni, emple.ape_nom," " ," " , " " ],
+   style: [ centra,  izq, izq,  centra, centra,  centra]
+
+
+
+
+end
+end
+end
+
+
+end

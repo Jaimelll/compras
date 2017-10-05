@@ -94,6 +94,7 @@ end
                 end
 
            actions
+          
        end
 
 
@@ -316,6 +317,8 @@ ul do
 
  li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
  select('remuneracion as dd').first.dd, delimiter: ",")
+ li link_to "Personal por area evaluacion",
+  reports_vhoja4_path(format: "xlsx")
 end
 
 end

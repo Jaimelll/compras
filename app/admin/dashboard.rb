@@ -202,10 +202,15 @@ end
                           #     Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
                           #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                         end   #de table for
+    #########personal
+
+                        li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
+                  
                       end #de panel historial periodos
 
 ###############################
         end
+
 end # de case
 unless current_admin_user.id==24
 
@@ -1307,8 +1312,9 @@ unless current_admin_user.id==24
 
 
 
-
   end
+else
+#  li link_to "Personal por area evaluacion",    reports_vhoja4_path(format: "xlsx")
 end
 
 #########################################

@@ -64,6 +64,7 @@ match 'reports/comment7', via: [:get]
 match 'reports/vhoja1', via: [:get]
 match 'reports/vhoja2', via: [:get]
 match 'reports/vhoja3', via: [:get]
+match 'reports/vhoja4', via: [:get]
 match 'reports/vhoja5', via: [:get]
 match 'reports/vhoja6', via: [:get]
 
