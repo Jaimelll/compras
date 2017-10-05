@@ -31,7 +31,7 @@ wb.add_worksheet(name: "INSTRUCCIONES") do |sheet|
   sheet.add_row ["Asistencia","Preparacion " , "Experiencia " ],   style: [titu, titu, titu]
   sheet.add_row ["Motivacion","Formacion " , "Desempeño " ],   style: [titu, titu, titu]
   sheet.add_row ["Puntualidad","Potencial " , "Calidad " ],   style: [titu, titu, titu]
-  
+
     sheet.add_row []
     sheet.add_row []
     sheet.add_row ["", "Puntuacion:"]
@@ -53,6 +53,9 @@ end
 
 Formula.where(product_id:26).order('orden').each do |proce|
   wb.add_worksheet(name: proce.nombre) do |sheet|
+
+
+  sheet.add_row ["","", proce.descripcion.upcase]
 
     sheet.add_row []
     sheet.add_row [ "","EVALUADOR:", " "], style: [izq, centra, centra]
