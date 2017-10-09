@@ -702,7 +702,7 @@ end
            ul do
 
 
-                     li   strong {vnproceso}
+                     li   strong {"VER"}
 
 
 
