@@ -148,12 +148,42 @@ end
     @adec=[]
     @aeobac=[]
     @conta=0
-#para plazos
-    @ademd=[]
-    @aplazodem=[]
+
 
 
     @vproceso=[]
+
+#################var plazo
+#mes con pacs debieron
+mes_deb2=[]
+
+
+
+#mes con pacs terminados
+mes_ter2=[]
+
+#mes con pacs debieron
+mes_deb4=[]
+
+
+
+#mes con pacs terminados
+mes_ter4=[]
+
+
+
+#demoras netas:
+vnproceso=[0,0,0,0,0]
+
+#plazos teoricos
+vplazo=[0,0,0,0,0]
+
+
+
+
+
+
+###################################
     #feriados
     @vferi=[]
 
@@ -225,9 +255,15 @@ end
 
 
     @deta1=@deta2.where(item_id:item.id)
-
-
-
+#####################################################para plazo
+vcontmes=@vfin.month
+while  vcontmes>0
+mes_deb2[vcontmes]=[]
+mes_ter2[vcontmes]=[]
+mes_deb4[vcontmes]=[]
+mes_ter4[vcontmes]=[]
+end
+########################################################
 
       @vlog=false
 
@@ -484,42 +520,87 @@ end
         @veobac=@vproceso[7]
 
 
-###########################################
+########################################### plazo rutina
+#calculo de plazo de pec
+   case  item.modalida
+   when 1 #corporativa
+     vplazo[2]=Formula.where(product_id:10,orden:2).select(' cantidad as dd').first.dd
+    when 2 #encargo
+      vplazo[2]=Formula.where(product_id:10,orden:2).select(' numero as dd').first.dd
+   end
 
-        iplazo= @vinicio+ @vversion+@vobac+@vpec+@vdac
-        fplazo=iplazo+@vdem
-        vddia=iplazo
-        vnhab=0
+
+
+
+#calculo de plazo de dem
+  #mercado
+     case  item.tipo
+   when 1 #nacional
+        vplazo[4]=Formula.where(product_id:10,orden:4).select('cantidad as dd').first.dd
+    when 2 #internacional
+        vplazo[4]=Formula.where(product_id:10,orden:4).select('numero as dd').first.dd
+   end
+
+
+
+
+
+
+conta=0
+while conta<5  #calculo de los vnproceso
+  #  iplazo  = @vinicio+ @vproceso.take(conta).reduce :+
+     iplazo  = @vinicio+30
+     fplazo=iplazo+ @vproceso[conta]
+     vddia=iplazo
+    vlmes=0
+     vmes=  vddia.month
+
+     vhab=0        #dias laborables
+
         while vddia<=fplazo
-          vddia=vddia+1
-          if vddia.wday==0 or  vddia.wday==6  or @vferi.include?(vddia) then
-            vnhab=vnhab+1
-          end
-
-        end
-        @vdemd=@vdem-vnhab
+                 vddia=vddia+1
+                unless vddia.wday==0 or  vddia.wday==6  or @vferi.include?(vddia)
+                          vhab=vhab+1
+                end   # unless
 
 
 
-      @vplazodem=0
-   case  item.modalidad
-    when 1
-      @vplazodem=Formula.where(product_id:10,orden:4).select('cantidad as dd').first.dd
-    when 2
-       @vplazodem=Formula.where(product_id:10,orden:4).select('numero as dd').first.dd
-   end
-# pacs terminados en plazo teorico
+               if vhab>vplazo[conta] and  vplazo[conta] >0 and vlmes==0 then
+                      vmes=  vddia.month
+                      vlmes=1
+               end
+
+        end #de while
+
+if  vlmes==0 then
+       vmes=  vddia.month
+
+   case conta
+        when 2
+            mes_ter2[vmes].push(item.id)
+        when 4
+          mes_ter4[vmes].push(item.id)
+    end   #case
+end #if
 
 
-   if (iplazo+ @vplazodem).month<=@vmesc and @vdem>0 then
+case conta
+        when 2
+            mes_deb2[vmes].push(item.id)
+        when 4
+          mes_deb4[vmes].push(item.id)
+    end #case
 
-   @amesct.push(item.id)
-   end
-# pacs terminados en plazo en mes
-   if fplazo.month<=@vmesc and @vplazodem>=@vdemd and @vdpc>0 and @vdem>0  then
 
-   @amescr.push(item.id)
-   end
+#demoras netas:
+vnproceso[conta]= vhab
+
+
+
+
+conta=conta+1
+
+end #de while1
 
 
 ###########################
@@ -616,36 +697,15 @@ end
     else
 
 
-              @vplaz1= @adem.reduce :+
-              @vplaz2= @ademd.reduce :+
-              @vplaz3= @aplazodem.reduce :+
+      #        @vplaz1= @adem.reduce :+
 
            ul do
 
-                     li   strong {'suma dem dias='+ @vplaz1.to_s}
-                     li   strong {'dem depu dias='+@vplaz2.to_s}
-                     li   strong {'dem plazo dias='+@vplaz3.to_s}
-                     li
-                     li   strong {'mes de calculo='+ @vmesc.to_s}
 
-
-                     @titproc1="PACS DEBIERON TERMINARSE EN PLAZO DEM_"
-                      @vpas=[0]
-                      @la1= 'pacs debieron terminarse en plazo DEM='+ @amesct.length.to_s
-                     li     link_to "#{@la1} ",
-                      reports_comment7_path(format: :pdf,
-                      :param3=>   @vpas,
-                      :param4=> @titproc1,:param5=> @amesct)
+                     li   strong {vnproceso}
 
 
 
-                     @titproc2="PACS TERMINADOS EN PLAZO DEM_"
-
-                      @la2= 'pacs terminados en plazo DEM ='+ @amescr.length.to_s
-                     li     link_to "#{@la2} ",
-                      reports_comment7_path(format: :pdf,
-                      :param3=>   @vpas,
-                      :param4=> @titproc2,:param5=> @amescr)
 
 
 
