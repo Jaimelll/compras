@@ -10,7 +10,7 @@ class Ability
     when 1,2
           can :manage, :all
 
-        when 3#Roy
+        when 3,26#Roy,amador
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"grafico"
             can :read, ActiveAdmin::Page, :name =>"grafico0"

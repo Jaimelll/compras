@@ -105,7 +105,7 @@ end
 
 
           case current_admin_user.id
-          when 2,3
+          when 2,3,26
                        panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).order('orden')  do
 
@@ -205,7 +205,7 @@ end
     #########personal
 
                         li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
-                  
+                        li    link_to "visitas", "https://secure-harbor-85875.herokuapp.com"
                       end #de panel historial periodos
 
 ###############################
