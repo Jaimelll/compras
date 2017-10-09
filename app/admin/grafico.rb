@@ -185,18 +185,10 @@ vplazo=[0,0,0,0,0]
 
 ###################################
     #feriados
-    @vferi=[]
 
-     Formula.where(product_id:27,cantidad:1).each do  |feri|
 
-       @vferi.push(DateTime.parse(feri.nombre))
+    @vferi=Formula.where(product_id:27,cantidad:1).select('nombre')
 
-     end
-     @vmesc=DateTime.parse(Formula.where(product_id:27,cantidad:2).select('nombre as dd').first.dd).month
-
-     @amesct=[]
-
-     @amescr=[]
     #*******************************************************************
 
     @vitem.each do |item|
@@ -521,87 +513,6 @@ end
 
 
 ########################################### plazo rutina
-#calculo de plazo de pec
-   case  item.modalida
-   when 1 #corporativa
-     vplazo[2]=Formula.where(product_id:10,orden:2).select(' cantidad as dd').first.dd
-    when 2 #encargo
-      vplazo[2]=Formula.where(product_id:10,orden:2).select(' numero as dd').first.dd
-   end
-
-
-
-
-#calculo de plazo de dem
-  #mercado
-     case  item.tipo
-   when 1 #nacional
-        vplazo[4]=Formula.where(product_id:10,orden:4).select('cantidad as dd').first.dd
-    when 2 #internacional
-        vplazo[4]=Formula.where(product_id:10,orden:4).select('numero as dd').first.dd
-   end
-
-
-
-
-
-
-conta=0
-while conta<5  #calculo de los vnproceso
-  #  iplazo  = @vinicio+ @vproceso.take(conta).reduce :+
-     iplazo  = @vinicio+30
-     fplazo=iplazo+ @vproceso[conta]
-     vddia=iplazo
-    vlmes=0
-     vmes=  vddia.month
-
-     vhab=0        #dias laborables
-
-        while vddia<=fplazo
-                 vddia=vddia+1
-                unless vddia.wday==0 or  vddia.wday==6  or @vferi.include?(vddia)
-                          vhab=vhab+1
-                end   # unless
-
-
-
-               if vhab>vplazo[conta] and  vplazo[conta] >0 and vlmes==0 then
-                      vmes=  vddia.month
-                      vlmes=1
-               end
-
-        end #de while
-
-if  vlmes==0 then
-       vmes=  vddia.month
-
-   case conta
-        when 2
-            mes_ter2[vmes].push(item.id)
-        when 4
-          mes_ter4[vmes].push(item.id)
-    end   #case
-end #if
-
-
-case conta
-        when 2
-            mes_deb2[vmes].push(item.id)
-        when 4
-          mes_deb4[vmes].push(item.id)
-    end #case
-
-
-#demoras netas:
-vnproceso[conta]= vhab
-
-
-
-
-conta=conta+1
-
-end #de while1
-
 
 ###########################
 
@@ -654,8 +565,7 @@ end #de while1
        @adec.push(@vdec)
        @aeobac.push(@veobac)
 
-      @ademd.push(@vdemd)
-      @aplazodem.push(@vplazodem)
+
     end   # log
 
 
