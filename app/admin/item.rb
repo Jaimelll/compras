@@ -148,22 +148,38 @@ if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
 end
 
 
-
-   link_to_if vsec==1, "#{item.pac} ", admin_item_details_path(item) }
+   link_to_if vsec==1, "#{item.pac} ", admin_item_details_path(item)}
 #  column("expediente")
 
 
 column("exped")do |item|
     if item.exped and item.exped>0 then
 
-       Formula.where(product_id:16, orden:item.exped).
+      exp =Formula.where(product_id:16, orden:item.exped).
         select('nombre as dd').first.dd
 
       else
-          "s/d"
+        exp =   "s/d"
       end
-  end
 
+
+  vsec=1
+if current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+vsec=0
+end
+if current_admin_user.id==6 and item.obac==2 then
+vsec=1
+end
+
+if current_admin_user.id==8 and item.obac==3 then
+vsec=1
+end
+
+if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
+vsec=1
+end
+ link_to_if vsec==1, "#{exp } ", admin_item_path(item)
+  end
    column("descripcion")
 
 
@@ -241,7 +257,7 @@ column("exped")do |item|
 
 #unless current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
 
-  actions
+#  actions
 #end
 
 end
