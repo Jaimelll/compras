@@ -617,6 +617,10 @@ end
        while sconta<5  #calculo de los vnproceso
              prueba.push(sconta)
              vss=@vproceso.take(sconta).compact.reduce :+
+
+             idss=@vproceso.push(0)
+             dvss=idss.drop(sconta).compact.reduce :+
+
              unless vss
                vss=0
              end
@@ -645,7 +649,7 @@ end
                end #de while
 
 
-#if vhab>0 then
+if vhab>0 and dvss>0 then
        if  vlmes==0  then
               vmes=  vddia.month
 
@@ -665,7 +669,7 @@ end
                  mes_deb4[vmes].push(item.id)
            end #case
 
-#end
+end
        #demoras netas:
        vnproceso[sconta]=vhab
 

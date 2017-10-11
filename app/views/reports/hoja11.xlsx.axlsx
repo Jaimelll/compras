@@ -25,17 +25,19 @@ fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BO
 wb.add_worksheet(name: "indicador") do |sheet|
 
 conta=0
-anch=@iitem[conta].length
+
+anch=@iitem.length
 
 while conta< anch
 
-
-voba=Item.where(id:@iitem[conta]).select('obac as dd').first.dd
+vid=@iitem[conta].to_i
+voba=Item.where(id:vid).select('obac as dd').first.dd
 vnoba=Formula.where(product_id:1,orden:voba).select('nombre as dd').first.dd
 
 sheet.add_row [@lmes, Item.where(id:@iitem[conta]).select('pac as dd').first.dd,
 vnoba,
-  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd]
+  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd,
+@iitem[conta]  ]
 
 conta=conta+1
 
