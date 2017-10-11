@@ -1,0 +1,62 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center })
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center },num_fmt: 3)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
+fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :center })
+
+
+
+wb.add_worksheet(name: "indicador") do |sheet|
+
+conta=0
+anch=@iitem[conta].length
+
+while conta< anch
+
+
+voba=Item.where(id:@iitem[conta]).select('obac as dd').first.dd
+vnoba=Formula.where(product_id:1,orden:voba).select('nombre as dd').first.dd
+
+sheet.add_row [@lmes, Item.where(id:@iitem[conta]).select('pac as dd').first.dd,
+vnoba,
+  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd]
+
+conta=conta+1
+
+end
+
+
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end

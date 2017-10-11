@@ -644,6 +644,8 @@ end
 
                end #de while
 
+
+#if vhab>0 then
        if  vlmes==0  then
               vmes=  vddia.month
 
@@ -651,7 +653,7 @@ end
                when 2
                    mes_ter2[vmes].push(item.id)
                when 4
-                 mes_ter4[vmes].push(item.id)
+                   mes_ter4[vmes].push(item.id)
            end   #case
        end #if
 
@@ -663,7 +665,7 @@ end
                  mes_deb4[vmes].push(item.id)
            end #case
 
-
+#end
        #demoras netas:
        vnproceso[sconta]=vhab
 
@@ -739,17 +741,27 @@ end
              panel  "Indicadores"+@vaf do
 
              table_for "B"  do
-               column("Term. plazo DEM")
+               column("Mes")do |ter|
+               "Term. plazo DEM"
+               end
+
                 lmes=1
-               while lmes<13 and mes_deb4[lmes].length>0
+               while lmes<13 # and mes_deb4[lmes].length>0
                    column ("#{lmes}") do |ter|
                    mes_ter4[lmes].length
+
+
+                   link_to "#{mes_ter4[lmes].length}", reports_vhoja11_path(format:  "xlsx",
+                   :param1=> mes_ter4[lmes], :param2=> lmes)
+
+
+
                end
                lmes=lmes+1
                end
              end#table
 
-             
+
              table_for "B"  do
                column("Procesos DEM")
                 lmes=1
