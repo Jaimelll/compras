@@ -151,7 +151,7 @@ end
 
 
 
-    @vproceso=[]
+
 
 #################var plazo
 #mes con pacs debieron
@@ -171,17 +171,26 @@ mes_deb4=[]
 mes_ter4=[]
 
 
-
 #demoras netas:
 vnproceso=[0,0,0,0,0]
 
 #plazos teoricos
 vplazo=[0,0,0,0,0]
 
+#####################################################para plazo
 
+vcontmes=12
 
+ while  vcontmes>0
+mes_deb2[vcontmes]=[]
+mes_ter2[vcontmes]=[]
+mes_deb4[vcontmes]=[]
+mes_ter4[vcontmes]=[]
+vcontmes=vcontmes-1
+end
 
-
+    prueba=[]
+########################################################
 
 ###################################
     #feriados
@@ -247,15 +256,6 @@ vplazo=[0,0,0,0,0]
 
 
     @deta1=@deta2.where(item_id:item.id)
-#####################################################para plazo
-vcontmes=@vfin.month
-while  vcontmes>0
-mes_deb2[vcontmes]=[]
-mes_ter2[vcontmes]=[]
-mes_deb4[vcontmes]=[]
-mes_ter4[vcontmes]=[]
-end
-########################################################
 
       @vlog=false
 
@@ -488,6 +488,16 @@ end
 
     end # termina @vlog
 
+
+
+
+
+
+
+
+
+
+
     end #termina actividad
 
 
@@ -502,6 +512,13 @@ end
     if @vlog then
 
 
+
+
+
+
+
+
+
     @vversion=@vproceso[0]
        @vobac=@vproceso[1]
         @vpec=@vproceso[2]
@@ -512,9 +529,11 @@ end
         @veobac=@vproceso[7]
 
 
-########################################### plazo rutina
 
-###########################
+
+
+
+
 
 
 
@@ -566,7 +585,113 @@ end
        @aeobac.push(@veobac)
 
 
+
+       #calculo de plazo de pec
+          case  item.modalidad
+          when 1 #corporativa
+            vplazo[2]=Formula.where(product_id:10,orden:2).select(' cantidad as dd').first.dd
+           when 2 #encargo
+             vplazo[2]=Formula.where(product_id:10,orden:2).select(' numero as dd').first.dd
+          end
+
+
+
+
+       #calculo de plazo de dem
+         #mercado
+            case  item.tipo
+          when 1 #nacional
+               vplazo[4]=Formula.where(product_id:10,orden:4).select('cantidad as dd').first.dd
+           when 2 #internacional
+               vplazo[4]=Formula.where(product_id:10,orden:4).select('numero as dd').first.dd
+          end
+
+
+
+
+
+
+
+       sconta=0
+
+       while sconta<5  #calculo de los vnproceso
+             prueba.push(sconta)
+             vss=@vproceso.take(sconta).compact.reduce :+
+             unless vss
+               vss=0
+             end
+           iplazo  = @vinicio+vss
+
+            fplazo=iplazo+ @vproceso[sconta]
+            vddia=iplazo
+           vlmes=0
+            vmes=  vddia.month
+
+            vhab=0        #dias laborables
+
+               while vddia<fplazo
+                        vddia=vddia+1
+                       unless vddia.wday==0 or  vddia.wday==6  or @vferi.include?(vddia)
+                                 vhab=vhab+1
+                       end   # unless
+
+
+
+                      if vhab>vplazo[sconta] and  vplazo[sconta] >0 and vlmes==0 then
+                             vmes=  vddia.month
+                             vlmes=1
+                      end
+
+               end #de while
+
+       if  vlmes==0  then
+              vmes=  vddia.month
+
+          case sconta
+               when 2
+                   mes_ter2[vmes].push(item.id)
+               when 4
+                 mes_ter4[vmes].push(item.id)
+           end   #case
+       end #if
+
+
+       case sconta
+               when 2
+                   mes_deb2[vmes].push(item.id)
+               when 4
+                 mes_deb4[vmes].push(item.id)
+           end #case
+
+
+       #demoras netas:
+       vnproceso[sconta]=vhab
+
+
+
+
+       sconta=sconta+1
+
+       end #de while1
+       ###########################
+
+
+
+
+
+
+
+
+
     end   # log
+
+
+
+    ########################################### plazo rutina
+
+
+
+
 
 
     end #terminia  item
@@ -610,9 +735,33 @@ end
       #        @vplaz1= @adem.reduce :+
 
            ul do
+             @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+             panel  "Indicadores"+@vaf do
+
+             table_for "B"  do
+               column("Term. plazo DEM")
+                lmes=1
+               while lmes<13 and mes_deb4[lmes].length>0
+                   column ("#{lmes}") do |ter|
+                   mes_ter4[lmes].length
+               end
+               lmes=lmes+1
+               end
+             end#table
+
+             
+             table_for "B"  do
+               column("Procesos DEM")
+                lmes=1
+               while lmes<13 and mes_deb4[lmes].length>0
+               column("#{mes_deb4[lmes].length}")
+               lmes=lmes+1
+               end
+             end#table
+           end #panel
 
 
-                     li   strong {"VER"}
+
 
 
 
