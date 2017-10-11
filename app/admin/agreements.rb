@@ -4,7 +4,7 @@ ActiveAdmin.register Agreement do
   permit_params :employee_id, :num_cont, :fec_inicon,
        :fec_tercon, :puesto, :cod_hor, :remuneracion,
        :area, :tipo_contra, :fec_retiro, :motivo_retir,
-       :obs, :admin_user_id
+       :obs, :admin_user_id,:contra, :sele
 
 
   filter :centro
@@ -19,7 +19,7 @@ ActiveAdmin.register Agreement do
 
 
 
-          column("num_cont")
+          column("contra")
           column("fec_inicon")
           column("fec_tercon")
           column("puesto")
@@ -43,7 +43,7 @@ ActiveAdmin.register Agreement do
            f.inputs  do
 
 
-             f.input :num_cont, :input_html => { :style =>  'width:30%'}
+             f.input :contra, :input_html => { :style =>  'width:30%'}
 
              f.input :fec_inicon,:label => 'Inicio de contrato',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :fec_tercon,:label => 'Término de contrato',:as =>:string, :input_html => { :style =>  'width:30%'}
@@ -69,7 +69,7 @@ ActiveAdmin.register Agreement do
 
                  attributes_table  do
 
-                  row :num_cont
+                  row :contra
                   row :fec_inicon
                   row :fec_tercon
                   row :puesto
