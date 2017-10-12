@@ -770,15 +770,15 @@ end
 
                    if le>0 then
                    link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                   :param1=> ter[lmes], :param2=> lmes, :param3=> tit.upcase)
+                   :param1=> ter[lmes], :param2=> lmes, :param3=> tit.upcase, :param4=> 1)
                  else
                    le
-                 end
+                 end #de if
 
 
-               end
+               end #de colum
                lmes=lmes+1
-               end
+             end #de while
 
                                   column ("TOTAL") do |ter|
 
@@ -795,9 +795,122 @@ end
              end#table
 
 
-           end #panel
 
 
+
+
+
+
+
+
+
+
+                      vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+                      pie=Piece.where("adjudicado IS NOT NULL").select(' distinct phase_id')
+
+                      vpac3=Phase.where(periodo:vaf,id:pie).select('id')
+
+                      bb=["Procesos adjudicados","Presupuestado",
+                        "Adjudicado","Ahorro"]
+
+
+
+                      table_for bb  do
+
+                        column("Mes")do |aho|
+                           bb[bb.index(aho)]
+                        end
+
+
+                        lmes=1
+                       while lmes<13
+
+                          proce=Phase.where(id:vpac3).where('extract(month from pp) = ?',lmes)
+                          vite1=Phase.where(id:vpac3).where('extract(month from pp) = ?',
+                          lmes).select(:id).map {|e| e.attributes.values}
+
+                          vite=Phase.where(id:vpac3).where('extract(month from pp) = ?',
+                          lmes).select("id")
+
+                          presu=Piece.where(phase_id:vite,estado:4).sum(:presupuestado)
+                           column ("#{lmes}") do |aho|
+                               case bb.index(aho)
+                                 when 0
+                                     proce.count
+
+                                     tit=  bb[bb.index(aho)]
+                                     le= proce.count
+
+                                     if le>0 then
+                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                     :param1=> vite1, :param2=> lmes, :param3=> tit.upcase, :param4=> 2)
+                                     else
+                                     le
+                                     end #de if
+
+
+
+
+
+
+
+
+
+                                  when 1
+
+                                     number_with_delimiter( presu.to_i, delimiter: ",")
+                                  when 2
+                                     number_with_delimiter( proce.sum("sele2").to_i, delimiter: ",") #adjudicado
+                                  when 3
+                                    number_with_delimiter( (presu-proce.sum("sele2")).to_i, delimiter: ",")
+                                end
+                            end
+                       lmes=lmes+1
+                       end
+
+
+
+
+                       procet=Phase.where(id:vpac3)
+                       vitet=Phase.where(id:vpac3).select("id")
+                       presut=Piece.where(phase_id:vitet,estado:4).sum(:presupuestado)
+
+                       column ("TOTAL") do |aho|
+
+                          case bb.index(aho)
+                             when 0
+                                procet.count
+                             when 1
+
+                               number_with_delimiter( presut.to_i, delimiter: ",")
+                             when 2
+                               number_with_delimiter( procet.sum("sele2").to_i, delimiter: ",") #adjudicado
+                             when 3
+                              number_with_delimiter( (presut-procet.sum("sele2")).to_i, delimiter: ",")
+                           end
+                        end
+
+
+
+
+                        column ("Porcentaje") do |aho|
+
+                           case bb.index(aho)
+                              when 3
+                              porcc=(presut-procet.sum("sele2"))*100/presut
+                               number_with_delimiter( porcc.to_i, delimiter: ",").to_s+"%"
+                             else
+                               "-"
+                            end
+                         end
+
+
+                  end#table
+
+
+
+end #panel
 
 
 

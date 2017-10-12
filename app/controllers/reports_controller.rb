@@ -375,10 +375,13 @@ def vhoja11
     @iitem=params[:param1]
     @lmes=params[:param2].to_i
     @tit=params[:param3]
+    @tip=params[:param4]
   respond_to do |format|
     format.html
 
     format.xlsx{render template: 'reports/hoja11.xlsx.axlsx', xlsx:'indi1'}
   end
 end
+
+
 end

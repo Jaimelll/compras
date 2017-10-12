@@ -25,10 +25,15 @@ fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BO
 wb.add_worksheet(name: "indicador") do |sheet|
 
 sheet.add_row []
-sheet.add_row ["", @tit," ","MES=",@lmes],   style: [titu, titu, titu,titu, titu]
+sheet.add_row ["", @tit," ","MES=",@lmes],   style: [titu, titu, titu ,titu, titu]
 sheet.add_row []
 
+
+case @tip.to_i
+when 1
 sheet.add_row %w(PAC OBAC DESCRIPCION),   style: [titu, titu, titu]
+
+
 
 
 
@@ -50,7 +55,25 @@ conta=conta+1
 
 end
 
+when 2
 
+sheet.add_row %w( NOMENCLATURA DESCRIPCION),   style: [titu, titu, titu]
+
+aiitem=@iitem.flatten.compact
+
+Phase.where(id:aiitem).each do |procc|
+
+sheet.add_row [ procc.nomenclatura, procc.descripcion],  style: [izq, izq]
+
+end
+
+
+
+
+
+
+
+end
 
 end
 
