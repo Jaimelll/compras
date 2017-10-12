@@ -650,6 +650,7 @@ end
 
 
 if vhab>0 and dvss>0 then
+
        if  vlmes==0  then
               vmes=  vddia.month
 
@@ -667,7 +668,7 @@ if vhab>0 and dvss>0 then
                    mes_deb2[vmes].push(item.id)
                when 4
                  mes_deb4[vmes].push(item.id)
-           end #case
+       end #case
 
 end
        #demoras netas:
@@ -750,13 +751,15 @@ end
                end
 
                 lmes=1
-               while lmes<13 # and mes_deb4[lmes].length>0
+                aa=[mes_ter4,mes_deb4]
+
+               while lmes<13
                    column ("#{lmes}") do |ter|
-                   mes_ter4[lmes].length
+                   le=aa[0][lmes].length
 
 
-                   link_to "#{mes_ter4[lmes].length}", reports_vhoja11_path(format:  "xlsx",
-                   :param1=> mes_ter4[lmes], :param2=> lmes)
+                   link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                   :param1=> aa[0][lmes], :param2=> lmes)
 
 
 
@@ -769,7 +772,7 @@ end
              table_for "B"  do
                column("Procesos DEM")
                 lmes=1
-               while lmes<13 and mes_deb4[lmes].length>0
+               while lmes<13
                column("#{mes_deb4[lmes].length}")
                lmes=lmes+1
                end
