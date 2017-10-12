@@ -24,6 +24,14 @@ fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BO
 
 wb.add_worksheet(name: "indicador") do |sheet|
 
+sheet.add_row []
+sheet.add_row ["", @tit," ","MES=",@lmes],   style: [titu, titu, titu,titu, titu]
+sheet.add_row []
+
+sheet.add_row %w(PAC OBAC DESCRIPCION),   style: [titu, titu, titu]
+
+
+
 conta=0
 
 anch=@iitem.length
@@ -34,10 +42,9 @@ vid=@iitem[conta].to_i
 voba=Item.where(id:vid).select('obac as dd').first.dd
 vnoba=Formula.where(product_id:1,orden:voba).select('nombre as dd').first.dd
 
-sheet.add_row [@lmes, Item.where(id:@iitem[conta]).select('pac as dd').first.dd,
+sheet.add_row [ Item.where(id:@iitem[conta]).select('pac as dd').first.dd,
 vnoba,
-  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd,
-@iitem[conta]  ]
+  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd  ],   style: [centra, centra, izq]
 
 conta=conta+1
 

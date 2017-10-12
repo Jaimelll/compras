@@ -374,7 +374,7 @@ end
 def vhoja11
     @iitem=params[:param1]
     @lmes=params[:param2].to_i
-
+    @tit=params[:param3]
   respond_to do |format|
     format.html
 

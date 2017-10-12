@@ -744,23 +744,27 @@ end
            ul do
              @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
              panel  "Indicadores"+@vaf do
-
-             table_for "B"  do
+              aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4]
+              bb=["Term. plazo GEX","Deb. plazo GEX","Term. plazo DEM","Deb. plazo DEM"]
+             table_for aa  do
                column("Mes")do |ter|
-               "Term. plazo DEM"
+                bb[aa.index(ter)]
                end
 
                 lmes=1
-                aa=[mes_ter4,mes_deb4]
+
 
                while lmes<13
                    column ("#{lmes}") do |ter|
-                   le=aa[0][lmes].length
+                   tit=  bb[aa.index(ter)]
+                   le=ter[lmes].length
 
-
+                   if le>0 then
                    link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                   :param1=> aa[0][lmes], :param2=> lmes)
-
+                   :param1=> ter[lmes], :param2=> lmes, :param3=> tit.upcase)
+                 else
+                   le
+                 end
 
 
                end
@@ -769,14 +773,6 @@ end
              end#table
 
 
-             table_for "B"  do
-               column("Procesos DEM")
-                lmes=1
-               while lmes<13
-               column("#{mes_deb4[lmes].length}")
-               lmes=lmes+1
-               end
-             end#table
            end #panel
 
 
