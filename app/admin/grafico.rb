@@ -745,7 +745,16 @@ end
              @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
              panel  "Indicadores"+@vaf do
               aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4]
-              bb=["Term. plazo GEX","Deb. plazo GEX","Term. plazo DEM","Deb. plazo DEM"]
+              bb=["Terminados en plazo GEX","Debieron terminar GEX",
+                "Terminados plazo DEM","Debieron terminar DEM"]
+              cc=[aa[0].flatten.compact.length,aa[1].flatten.compact.length,
+                   aa[2].flatten.compact.length,aa[3].flatten.compact.length]
+              if cc[1]>0 and cc[3]>0 then
+              dd=[(cc[0]*100/cc[1]).to_s+"%","-",(cc[2]*100/cc[3]).to_s+"%","-"]
+              else
+                dd=["-","-","-","-"]
+              end
+
              table_for aa  do
                column("Mes")do |ter|
                 bb[aa.index(ter)]
@@ -770,6 +779,19 @@ end
                end
                lmes=lmes+1
                end
+
+                                  column ("TOTAL") do |ter|
+
+                                  ter.flatten.compact.length
+
+
+
+                              end
+
+                                column("Porcentaje")do |ter|
+                                 dd[aa.index(ter)]
+                                end
+
              end#table
 
 
