@@ -17,7 +17,7 @@ belongs_to :employee
 end
 
 
-    menu  priority: 16, label: "Empleados"
+    menu  priority: 16, label: "Personal"
 
     permit_params :dni, :ape_pat, :ape_mat,
          :nombres, :direccion, :telefono,
@@ -69,7 +69,7 @@ end
   filter :sele, label:'Nivel'
 
 
-  index :title => 'Lista de Empleados' do
+  index :title => 'Lista de Personal' do
 
 
 
@@ -94,11 +94,11 @@ end
                 end
 
            actions
-          
+
        end
 
 
-   form :title => 'Edicion Empleado'  do |f|
+   form :title => 'Edicion Personal'  do |f|
 
 
        f.inputs  do
@@ -141,7 +141,7 @@ end
 
      end
 
-     show :title => ' Empleado'  do
+     show :title => ' Personal'  do
 
              attributes_table  do
 
@@ -317,8 +317,7 @@ ul do
 
  li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
  select('remuneracion as dd').first.dd, delimiter: ",")
- li link_to "Personal por area evaluacion",
-  reports_vhoja4_path(format: "xlsx")
+ 
 end
 
 end
