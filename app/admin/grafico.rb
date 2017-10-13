@@ -898,8 +898,12 @@ end
 
                            case bb.index(aho)
                               when 3
-                              porcc=(presut-procet.sum("sele2"))*100/presut
-                               number_with_delimiter( porcc.to_i, delimiter: ",").to_s+"%"
+                                if presut>0 then
+                                     porcc=(presut-procet.sum("sele2"))*100/presut
+                                     number_with_delimiter( porcc.to_i, delimiter: ",").to_s+"%"
+                                else
+                                  0
+                                end
                              else
                                "-"
                             end

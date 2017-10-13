@@ -57,13 +57,13 @@ end
 
 when 2
 
-sheet.add_row %w( NOMENCLATURA DESCRIPCION),   style: [titu, titu, titu]
+sheet.add_row %w( NOMENCLATURA DESCRIPCION, ADJUDICADO),   style: [titu, titu, titu]
 
 aiitem=@iitem.flatten.compact
 
 Phase.where(id:aiitem).each do |procc|
 
-sheet.add_row [ procc.nomenclatura, procc.descripcion],  style: [izq, izq]
+sheet.add_row [ procc.nomenclatura, procc.descripcion, procc.sele2],  style: [izq, izq, soles]
 
 end
 
