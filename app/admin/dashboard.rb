@@ -882,6 +882,14 @@ if @nliqui>0 then
 @vliqui=Activity.where(phase_id:@idliqui,actividad:300).count
 end
 ##################
+case current_admin_user.id
+when  2,3,10,25 # adm,roy,pedro,salinas
+  vvar=1
+else
+  vvar=0
+end
+
+##################
 
 column("Rol") do |formula|
    if formula.orden==1 then
@@ -889,9 +897,11 @@ column("Rol") do |formula|
         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
         :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
    else
+     if vvar==1 then
      link_to "#{formula.nombre}", reports_vhoja3_path(format:  "xlsx", :param1=> @vxper3,
         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
         :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+     end
    end
 
 end
@@ -907,7 +917,9 @@ column("En Proceso") do |formula|
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv1,
    :param4=>  @titproc1)
  else
+   if vvar==1 then
     Phase.where(id:@vconv1,sele3:2).count
+  end
  end
  end
 
@@ -922,7 +934,9 @@ link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimit
 reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 :param4=>  @titproc1)
 else
+  if vvar==1 then
     Phase.where(id:@vconv2,sele3:2).count
+  end
 end
   end
 
@@ -938,7 +952,9 @@ end
   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
   :param4=>  @titproc1)
 else
+ if vvar==1 then
      Phase.where(id:@vconv3,sele3:2).count
+end
 end
 end
    column("Total") do |formula|
@@ -952,7 +968,9 @@ end
    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
    :param4=>  @titproc1)
  else
+   if vvar==1 then
       Phase.where(id:@vconvt,sele3:2).count
+  end
  end
 
     end
