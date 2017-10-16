@@ -377,7 +377,7 @@ end#table
                           @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
                           panel  "III.- EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
-                                    table_for Formula.where(product_id:8)  do
+                                    table_for Formula.where(product_id:14)  do
                                       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                          column("Fuente  ") do |formula|
                                          formula.nombre
@@ -423,7 +423,7 @@ end#table
                                            @tita1=" "
                                            @vopc1=11
 
-                                           @ls1=   Item.where(ejecucion:4,fuente:formula.orden).where("modalidad<3")
+                                           @ls1=   Item.where(ejecucion:4,seleccion:formula.orden).where("modalidad<3")
                                                    .where(exped2:@vaf).where(obac: @vuobac)
                                            @ls=   @ls1.count.to_s+ "/("+
                                                 number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
