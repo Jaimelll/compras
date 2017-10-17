@@ -86,6 +86,15 @@ end
           column("Perfil") do |emple|
             emple.grado
           end
+          column("area") do |emple|
+                      if emple.area and emple.area>0 then
+
+                         Formula.where(product_id:26, orden:emple.area).
+                                          select('nombre as dd').first.dd
+
+
+                        end
+          end
 
           column("Foto") do   |emple|
                   unless emple.foto.blank?
@@ -317,7 +326,7 @@ ul do
 
  li "remuneracion activa:  "+number_with_delimiter(Employee.where(id:params[:id]).
  select('remuneracion as dd').first.dd, delimiter: ",")
- 
+
 end
 
 end

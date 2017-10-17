@@ -1,6 +1,6 @@
 ActiveAdmin.register_page "Indices" do
 
-  menu  priority: 14,label: "Indices"
+  menu  priority: 14,label: "Indicadores"
 
 
   content title: "Indices" do
@@ -803,12 +803,12 @@ ActiveAdmin.register_page "Indices" do
     table_for Formula.where(product_id:11).where(cantidad:1)  do
 
 
-         column(" Desviaciones" ) do |formula|
+         column(" Devoluciones" ) do |formula|
 
            link_to "PACs", reports_vhoja5_path(format:  "xlsx")
          end
 
-         column(" Desviaciones" ) do |formula|
+         column(" Devoluciones" ) do |formula|
 
            link_to "Procesos", reports_vhoja6_path(format:  "xlsx")
          end
