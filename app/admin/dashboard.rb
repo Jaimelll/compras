@@ -762,11 +762,11 @@ unless current_admin_user.id==24 #personal
               @vconv=4
           end
         end
-        if @deta4.where(actividad:79).count>0 then
-          @vconv=4
-          @vxper2[@vdir]=@vxper2[@vdir]- 1
-          @vdir=0
-        end
+    #    if @deta4.where(actividad:79).count>0 then
+    #      @vconv=4
+    #      @vxper2[@vdir]=@vxper2[@vdir]- 1
+    #      @vdir=0
+    #    end
 
 
 
@@ -838,7 +838,7 @@ unless current_admin_user.id==24 #personal
 
         end
 
-    unless @vactiv3 ==79
+#    unless @vactiv3 ==79
 
              case @vdir
              when 1
@@ -868,7 +868,7 @@ unless current_admin_user.id==24 #personal
             when 1,2,3,4,5,6,7
                 @vprot.push(proceso.id)
             end
-end
+#end
 
 
           end# de if 1
