@@ -53,12 +53,14 @@ class Ability
           can :read, ActiveAdmin::Page, :name =>"grafico"
           can :read, ActiveAdmin::Page, :name =>"grafico0"
           can :read, ActiveAdmin::Page, :name =>"grafico1"
+              can :read, ActiveAdmin::Page, :name =>"Indices"
           can [:create,:read,:update,:destroy],  [Item,Piece,Phase,Activity,Detail,Contract,Element,Package]
 
       when 4,6,8,9 #sectoristas y Bertolotti quite 5 balles
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"grafico"
             can :read, ActiveAdmin::Page, :name =>"grafico0"
+            can :read, ActiveAdmin::Page, :name =>"Indices"
             can [:create,:read,:update, :destroy], [Item, Detail,Activity]
             can [:read], [Phase,Piece]
 
