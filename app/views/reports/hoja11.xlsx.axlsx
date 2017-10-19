@@ -31,7 +31,7 @@ sheet.add_row []
 
 case @tip.to_i
 when 1
-sheet.add_row %w(PAC OBAC DESCRIPCION),   style: [titu, titu, titu]
+sheet.add_row %w(PAC OBAC DESCRIPCION MODALIDAD EXPEDIENTE),   style: [titu, titu, titu, titu, titu]
 
 
 
@@ -47,9 +47,18 @@ vid=@iitem[conta].to_i
 voba=Item.where(id:vid).select('obac as dd').first.dd
 vnoba=Formula.where(product_id:1,orden:voba).select('nombre as dd').first.dd
 
+
+vmod=Item.where(id:vid).select('modalidad as dd').first.dd
+vnmod=Formula.where(product_id:4,orden:vmod).select('nombre as dd').first.dd
+
+
+
+vexped=Item.where(id:vid).select('exped as dd').first.dd
+vnexped=Formula.where(product_id:16,orden:vexped).select('nombre as dd').first.dd
+
 sheet.add_row [ Item.where(id:@iitem[conta]).select('pac as dd').first.dd,
 vnoba,
-  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd  ],   style: [centra, centra, izq]
+  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd ,vnmod ,vnexped],   style: [centra, centra, izq,centra, izq]
 
 conta=conta+1
 
