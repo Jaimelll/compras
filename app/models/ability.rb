@@ -34,7 +34,7 @@ class Ability
 #   when 5 # ballesteros
 #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
 #    can [:read], [Item, Detail]
-      when 11,12 #DEM y DC
+      when 11,12,28 #DEM y DC
         can :read, ActiveAdmin::Page, :name =>"Dashboard"
         can :read, ActiveAdmin::Page, :name =>"grafico"
         can :read, ActiveAdmin::Page, :name =>"grafico0"
