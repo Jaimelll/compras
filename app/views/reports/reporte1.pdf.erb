@@ -56,7 +56,7 @@
         <td ><%= @conta.to_s+".-" %></td>
         <td ><%= item.pac %></td>
 
-        <% if item.exped>0 then %>
+        <% if item.exped>0 or item.exped  then %>
            <td ><h5  ALIGN=center>
            <%= Formula.where(product_id:16,orden:item.exped).select('nombre as dd')
            .first.dd.downcase %><h5></td>
