@@ -87,6 +87,9 @@ form :title => 'Edicion Item'  do |f|
 
 
              f.input :postor, :input_html => { :style =>  'width:30%'}
+             f.input :sele,:label => 'Nuevo proceso', :as => :select, :collection =>
+                     Phase.where('convocatoria>1').map{|u| [u.nomenclatura.downcase, u.id]}
+
 
              f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
@@ -162,6 +165,12 @@ form :title => 'Edicion Item'  do |f|
 
 
                   row :postor
+                  row 'Nuevo proceso' do |detail|
+                    if detail.sele then
+                     Phase.where(id: detail.sele).
+                           select('nomenclatura as dd').first.dd.downcase
+                    end
+                   end
                   row :admin_user_id
 
                 end

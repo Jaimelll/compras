@@ -10,6 +10,8 @@ soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
                         alignment: { horizontal: :center })
+fecha = style.add_style(format_code: "dd/mm/yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center })
 
 centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                alignment: { horizontal: :center })
@@ -222,23 +224,46 @@ wb.add_worksheet(name: "items desiertos") do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PROCESO ITEM DESCRIPCION  PRESUPUESTADO REFERENCIAL),
-  style: [titu, titu, titu, titu, titu, titu]
+  sheet.add_row %w(N PROCESO ITEM DESCRIPCION  PRESUPUESTADO REFERENCIAL NUEVO_PROCESO FECHA_DESIERTO FECHA_CONVOCA),
+  style: [titu, titu, titu, titu, titu, titu, titu]
 
 @conta=0
-Piece.where(phase_id:@vpac3,estado:3).order('phase_id,codigo').each do |vite|
+
+ @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+ vper=Phase.where(periodo:@vaf1).where.not(expediente:0).select('id')
+
+Piece.where(phase_id:vper).where('estado=3 or estado=5').order('phase_id,codigo').each do |vite|
 @conta=@conta+1
-if vite.adjudicado and vite.moneda then
-@vref=vite.adjudicado* Formula.where(product_id:7,orden:vite.moneda).select('cantidad as dd').first.dd/100
+if vite.referencial and vite.moneda then
+@vref=vite.referencial* Formula.where(product_id:7,orden:vite.moneda).select('cantidad as dd').first.dd/100
 
 else
 @vref=0
 end
 
+
+if vite.sele then
+procdes=Phase.where(id:vite.sele).select('nomenclatura as dd').first.dd
+desfec=Activity.where(phase_id:vite.phase_id,actividad:20).select('pfecha as dd').first.dd
+
+if Activity.where(phase_id:vite.sele,actividad:20).count>0 then
+desfec2=Activity.where(phase_id:vite.sele,actividad:20).select('pfecha as dd').first.dd
+else
+desfec2=" "
+end
+
+
+else
+procdes=" "
+desfec=" "
+end
 sheet.add_row [@conta,  Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
  vite.codigo, vite.descripcion, vite.presupuestado,
- @vref],
- style: [centra,izq, centra,  izq, soles,soles]
+ @vref,
+ procdes,
+ desfec,
+ desfec2],
+ style: [centra,izq, centra,  izq, soles,soles,izq,fecha,fecha]
 
 end
 end
