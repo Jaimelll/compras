@@ -232,7 +232,7 @@ wb.add_worksheet(name: "items desiertos") do |sheet|
  @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
  vper=Phase.where(periodo:@vaf1).where.not(expediente:0).select('id')
 
-Piece.where(phase_id:vper).where('estado=3 or estado=5').order('phase_id,codigo').each do |vite|
+Piece.where(phase_id:vper,estado:3).order('phase_id,codigo').each do |vite|
 @conta=@conta+1
 if vite.referencial and vite.moneda then
 @vref=vite.referencial* Formula.where(product_id:7,orden:vite.moneda).select('cantidad as dd').first.dd/100
