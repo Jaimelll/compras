@@ -241,10 +241,11 @@ else
 @vref=0
 end
 
+desfec=Activity.where(phase_id:vite.phase_id,actividad:20).select('pfecha as dd').first.dd
 
 if vite.sele then
 procdes=Phase.where(id:vite.sele).select('nomenclatura as dd').first.dd
-desfec=Activity.where(phase_id:vite.phase_id,actividad:20).select('pfecha as dd').first.dd
+
 
 if Activity.where(phase_id:vite.sele,actividad:20).count>0 then
 desfec2=Activity.where(phase_id:vite.sele,actividad:20).select('pfecha as dd').first.dd
@@ -255,7 +256,7 @@ end
 
 else
 procdes=" "
-desfec=" "
+
 end
 sheet.add_row [@conta,  Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
  vite.codigo, vite.descripcion, vite.presupuestado,
