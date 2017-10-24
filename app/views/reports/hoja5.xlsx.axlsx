@@ -25,8 +25,8 @@ wb.add_worksheet(name: "Indice") do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(1_N_SNC 2_FECHA_DE_REPORTE 3_NUMERO_EXPEDIENTE 4_OBAC 5_AREA_DE_DETECCION 6_ACTIVIDAD 7_DESCRIPCION_DEL_HALLAZAGO 8_AREA_DE_CORRECCION),
-  style: [izq, izq, izq, izq, izq, izq, izq, izq]
+  sheet.add_row %w(1_N_SNC 2_FECHA_DE_REPORTE 3_NUMERO_PAC 4_OBAC 5_MODALIDAD 6_AREA_DE_DETECCION 7_ACTIVIDAD 8_DESCRIPCION_DEL_HALLAZAGO 9_AREA_DE_CORRECCION),
+  style: [izq, izq, izq, izq, izq, izq, izq, izq, izq]
 
  @conta=0
  @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -39,14 +39,17 @@ wb.add_worksheet(name: "Indice") do |sheet|
    @varea1=Formula.where(product_id:12,orden:deta.actividad).select('numero/100 as dd').first.dd
    @varea2=Formula.where(product_id:12,orden:deta.actividad).select('cantidad as dd').first.dd
    @vpfecha=deta.pfecha.strftime("%d/%m/%y")
+   @vmod= Item.where(id:deta.item_id).select('modalidad as dd').first.dd
+   @vmod1=Formula.where(product_id:4,orden:@vmod).select('nombre as dd').first.dd
 
    sheet.add_row [ @conta, @vpfecha,Item.where(id:deta.item_id).select('pac as dd').first.dd ,
     Formula.where(product_id:1,orden:Item.where(id:deta.item_id).select('obac as dd').first.dd ).select('nombre as dd').first.dd,
+     @vmod1,
     Formula.where(product_id:10,orden:@varea1).select('nombre as dd').first.dd ,
     Formula.where(product_id:12,orden:deta.actividad).select('descripcion as dd').first.dd ,
     deta.obs,
     Formula.where(product_id:10,orden:@varea2).select('nombre as dd').first.dd ],
-    style: [centra, centra, centra, centra, centra, izq, izq, centra]
+    style: [centra, centra, centra, centra, centra, izq, izq, izq, centra]
 
 
 
