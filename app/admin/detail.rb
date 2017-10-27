@@ -79,7 +79,7 @@ index :title => "Lista de Actividades"  do
                           select('nombre as dd').first.dd}"
 
   #para gex
-      if n4==25 or n4==15 or n4==17 or n4==26 then
+      if n4==25 or n4==15 or n4==17 or n4==26 or n4==85 then
         n5=1
       else
         n5=0
@@ -203,7 +203,7 @@ end
                         u.orden]}
                   when 6,8,9  #gex
                         Formula.where(product_id:12)
-                          .where("cantidad=1 or cantidad=2 or orden=25 or orden=15 or orden=17 or orden=26")
+                          .where("cantidad=1 or cantidad=2 or orden=25 or orden=15 or orden=17 or orden=26 or orden=85")
                           .order("numero,descripcion").map{|u| [u.descripcion.capitalize,
                              u.orden]}
 
