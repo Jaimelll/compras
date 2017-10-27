@@ -501,7 +501,7 @@ unless current_admin_user.id==24 #personal
 
 
                                                                @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                    .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin )
+                                                                    .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
                                                                    .order('activities.pfecha DESC,activities.id DESC')
 
 
@@ -516,14 +516,10 @@ unless current_admin_user.id==24 #personal
 
 
 
-                                                             @vactiv2=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                        .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin )
-                                                                       .order('activities.pfecha DESC,activities.id DESC').
-                                                                       select('activities.actividad as dd').first.dd
-                                                              @vactiv2fec=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                           .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin )
-                                                                                 .order('activities.pfecha DESC,activities.id DESC').
-                                                                                 select('activities.pfecha as dd').first.dd
+                                                             @vactiv2=@phase3
+                                                                       .select('activities.actividad as dd').first.dd
+                                                              @vactiv2fec=@phase3
+                                                                                 .select('activities.pfecha as dd').first.dd
 
 
                                                                   if    @vactiv2fec>  @vactivfec then
