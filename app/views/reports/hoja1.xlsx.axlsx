@@ -167,8 +167,8 @@ wb.add_worksheet(name: "Autorizados") do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO FUENTE FECHA OBS TIPO NUMERO),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu]
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO FUENTE FECHA OBS TIPO NUMERO ESTIMADO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
 
 
 
@@ -211,8 +211,8 @@ end
       Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
 
       Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
-      @rjfec, @rjobs, @rjtipo, @rjnum],
-     style: [centra,centra,fechas,centra,izq,izq,centra,centra,centra,fechad,izq,izq,izq]
+      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
+     style: [centra,centra,fechas,centra,izq,izq,centra,centra,centra,fechad,izq,izq, soles]
 
     end
 end
