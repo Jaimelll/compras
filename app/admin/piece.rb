@@ -15,7 +15,10 @@ ActiveAdmin.register Piece do
 
 permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
              :referencial, :adjudicado,:estado, :postor,:phase_id,
-             :admin_user_id, :canti_dem,:sele
+             :admin_user_id, :canti_dem,:sele,
+             :prop_obac, :invi_dem,:invi_dpc, :presenta,:admitido,
+             :resulta, :version,:tipo_postor, :motivo,:proceso,
+             :pasan
 
 filter :descripcion
 index :title => "Lista de Items"  do
@@ -74,8 +77,6 @@ form :title => 'Edicion Item'  do |f|
 
              f.input :codigo, :input_html => { :style =>  'width:30%'}
              f.input :descripcion, :input_html => { :style =>  'width:30%'}
-             f.input :cantidad,:label => 'Cantidad de postores DPC', :input_html => { :style =>  'width:30%'}
-             f.input :canti_dem,:label => 'Cantidad de postores DEM', :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
 
@@ -92,6 +93,23 @@ form :title => 'Edicion Item'  do |f|
 
 
              f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+              f.input :prop_obac,:label => 'Propuestos por OBAC', :input_html => { :style =>  'width:30%'}
+              f.input :canti_dem,:label => 'Invitados por DEM', :input_html => { :style =>  'width:30%'}
+              f.input :cantidad,:label => 'Invitados por DPC', :input_html => { :style =>  'width:30%'}
+              f.input :presenta,:label => 'Se presentan', :input_html => { :style =>  'width:30%'}
+              f.input :admitido,:label => 'Admitidos', :input_html => { :style =>  'width:30%'}
+              f.input :pasan, :label => 'Pasan evaluacion ET y EE',:input_html => { :style =>  'width:30%'}
+              f.input :resulta,:label => 'Resultado', :as => :select, :collection =>
+                       Formula.where(product_id:31).map{|u| [u.nombre.capitalize, u.orden]}
+
+              f.input :version,:label => 'Version de Manual', :as => :select, :collection =>
+                       Formula.where(product_id:32).map{|u| [u.nombre.capitalize, u.orden]}
+
+              f.input :tipo_postor,:label => 'Tipo de postor', :as => :select, :collection =>
+                       Formula.where(product_id:33).map{|u| [u.nombre.capitalize, u.orden]}
+
+              f.input :motivo, :label => 'Motivo de no admision',:input_html => { :style =>  'width:30%'}
+              f.input :proceso,:label => 'Proceso', :input_html => { :style =>  'width:30%'}
 
 
                    end
@@ -120,12 +138,8 @@ form :title => 'Edicion Item'  do |f|
                   row :codigo
                   row :descripcion
 
-                  row 'Cantidad de postores DPC' do |item|
-                    item.cantidad
-                  end
-                  row 'Cantidad de postores DEM' do |item|
-                    item.canti_dem
-                  end
+
+
                    row :moneda do |detail|
                        if detail.moneda and detail.moneda>0 then
 
@@ -171,7 +185,73 @@ form :title => 'Edicion Item'  do |f|
                            select('nomenclatura as dd').first.dd.downcase
                     end
                    end
+                  row :prop_obac
+                  row 'Cantidad de Invitados por DEM' do |detail|
+                    detail.canti_dem
+                  end
+
+                  row 'Cantidad de Invitados por DPC' do |detail|
+                    detail.cantidad
+                  end
+
+                  row :presenta
+                  row :admitido
+                  row :pasan
+
+                  row 'Resultado' do |detail|
+                  if detail.resulta and detail.resulta>0 then
+
+                     Formula.where(product_id:31, orden:detail.resulta).
+                      select('nombre as dd').first.dd
+
+                    else
+                        "s/d"
+                    end
+                end
+
+
+                row 'Manual version' do |detail|
+                if detail.version and detail.version>0 then
+
+                   Formula.where(product_id:32, orden:detail.version).
+                    select('nombre as dd').first.dd
+
+                  else
+                      "s/d"
+                  end
+              end
+              
+              row 'Tipo de postor' do |detail|
+              if detail.tipo_postor and detail.tipo_postor>0 then
+
+                 Formula.where(product_id:32, orden:detail.tipo_postor).
+                  select('nombre as dd').first.dd
+
+                else
+                    "s/d"
+                end
+            end
+
+
+
+
+
+
+
+                  row :motivo
+                  row :proceso
+
                   row :admin_user_id
+
+
+
+
+
+
+
+
+
+
 
                 end
 

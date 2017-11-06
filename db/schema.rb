@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011205325) do
+ActiveRecord::Schema.define(version: 20171106161553) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -294,6 +294,17 @@ ActiveRecord::Schema.define(version: 20171011205325) do
     t.integer  "cantidad"
     t.integer  "canti_dem"
     t.integer  "sele"
+    t.integer  "prop_obac"
+    t.integer  "invi_dem"
+    t.integer  "invi_dpc"
+    t.integer  "presenta"
+    t.integer  "admitido"
+    t.integer  "pasan"
+    t.integer  "resulta"
+    t.integer  "version"
+    t.integer  "tipo_postor"
+    t.string   "motivo"
+    t.string   "proceso"
     t.index ["admin_user_id"], name: "index_pieces_on_admin_user_id", using: :btree
     t.index ["phase_id"], name: "index_pieces_on_phase_id", using: :btree
   end
