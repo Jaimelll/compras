@@ -109,7 +109,7 @@ form :title => 'Edicion Item'  do |f|
                        Formula.where(product_id:33).map{|u| [u.nombre.capitalize, u.orden]}
 
               f.input :motivo, :label => 'Motivo de no admision',:input_html => { :style =>  'width:30%'}
-              f.input :proceso,:label => 'Proceso', :input_html => { :style =>  'width:30%'}
+
 
 
                    end
@@ -220,11 +220,11 @@ form :title => 'Edicion Item'  do |f|
                       "s/d"
                   end
               end
-              
+
               row 'Tipo de postor' do |detail|
               if detail.tipo_postor and detail.tipo_postor>0 then
 
-                 Formula.where(product_id:32, orden:detail.tipo_postor).
+                 Formula.where(product_id:33, orden:detail.tipo_postor).
                   select('nombre as dd').first.dd
 
                 else
@@ -239,7 +239,6 @@ form :title => 'Edicion Item'  do |f|
 
 
                   row :motivo
-                  row :proceso
 
                   row :admin_user_id
 

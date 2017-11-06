@@ -21,7 +21,7 @@ ActiveAdmin.register Phase do
 #   permitted
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
-              :admin_user_id, :periodo, :convocatoria, :sele3
+              :admin_user_id, :periodo, :convocatoria, :sele3, :proceso
 
 menu priority: 10, label: "Procesos"
 
@@ -164,6 +164,7 @@ form :title => 'Edicion Procesos' do |f|
 
     f.inputs  do
  f.input :nomenclatura , :input_html => { :style =>  'width:30%'}
+ f.input :proceso , :input_html => { :style =>  'width:30%'}
  f.input :convocatoria , :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del bien o servicio'
  f.input :moneda, :as => :select, :collection =>
@@ -190,6 +191,7 @@ show :title => ' Proceso'  do
     attributes_table  do
 
       row :nomenclatura
+      row :proceso
       row :convocatoria
       row :descripcion
       row :moneda do |phase|
