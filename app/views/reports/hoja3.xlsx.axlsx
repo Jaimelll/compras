@@ -301,8 +301,8 @@ vite.pasan, vite.motivo,@vresu,@vvers,
   vite.referencial,
  vite.adjudicado, vite.postor,@vtipop],
  style: [centra,izq, izq,  izq,izq,centra,centra,centra,centra,
- centra,centra,centra,centra,
- centra, soles,soles,  izq,centra]
+ centra,centra,centra,centra,centra,
+ centra, soles,soles,  izq,izq]
 
 end
 
