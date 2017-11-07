@@ -263,8 +263,10 @@ wb.add_worksheet(name: "LP") do |sheet|
    titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
  @conta=0
-  @vpiec=Piece.order("phase_id,codigo")
- @vpacc3=Phase.where(id:@vpac3).where("nomenclatura ILIKE ?", "lp%").order("proceso").select('id')
+@vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+ 
+  @vpiec=Piece.where("estado=3 or estado=4").order("phase_id,codigo")
+ @vpacc3=Phase.where(periodo:@vaf1).where.not(expediente:0).where("nomenclatura ILIKE ?", "lp%").order("proceso").select('id')
 
 @vpiec.where(phase_id:@vpacc3).each do |vite|
 
