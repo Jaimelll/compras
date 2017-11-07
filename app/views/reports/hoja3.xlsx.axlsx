@@ -201,56 +201,6 @@ end
 end
 
 
-wb.add_worksheet(name: "RES") do |sheet|
-
-  sheet.add_row []
-
-  sheet.add_row %w(N PROCESO ITEM DESCRIPCION PROPU_OBAC INVI_DEM INVI_DPC PRESENTAN ADMITIDOS PASAN MOTIVO RESULTADO VERSION_MANUAL MONEDA REFERENCIAL ADJUDICADO POSTOR_GANADOR TIPO_POSTOR ),
-  style: [titu,titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
-
- @conta=0
- @vpacc3=Phase.where(id:@vpac3).where("nomenclatura ILIKE ?", "res%").order("nomenclatura").select('id')
- @vpiec=Piece.order("phase_id,codigo")
-@vpiec.where(phase_id:@vpacc3).each do |vite|
-
-@conta=@conta+1
-
-
-@vresu=""
-@vvers=""
-@vtipop=""
-if vite.resulta and vite.resulta>0 then
-@vresu=Formula.where(product_id:31,orden:vite.resulta).select('nombre as dd').first.dd
-end
-
-if vite.version and vite.version>0 then
-@vvers=Formula.where(product_id:32,orden:vite.version).select('nombre as dd').first.dd
-end
-
-if vite.tipo_postor and vite.tipo_postor>0 then
-@vtipop=Formula.where(product_id:33,orden:vite.tipo_postor).select('nombre as dd').first.dd
-end
-
-
-
-
-
-sheet.add_row [@conta, Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
- vite.codigo, vite.descripcion,
-vite.prop_obac, vite.canti_dem, vite.cantidad, vite.presenta,vite.admitido,
-vite.pasan, vite.motivo,@vresu,@vvers,
-
- Formula.where(product_id:7,orden:vite.moneda).select('nombre as dd').first.dd,
-  vite.referencial,
- vite.adjudicado, vite.postor,@vtipop],
- style: [centra,izq, centra,  izq,centra,centra,centra,centra,centra,
- centra,centra,centra,centra,
- centra, soles,soles,  izq,centra]
-
-end
-
-end
-
 
 
 
@@ -264,7 +214,7 @@ wb.add_worksheet(name: "LP") do |sheet|
 
  @conta=0
 @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
- 
+
   @vpiec=Piece.where("estado=3 or estado=4").order("phase_id,codigo")
  @vpacc3=Phase.where(periodo:@vaf1).where.not(expediente:0).where("nomenclatura ILIKE ?", "lp%").order("proceso").select('id')
 
@@ -320,6 +270,148 @@ end
 
 end
 
+
+
+
+
+
+
+wb.add_worksheet(name: "CP") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PROCESO NOMENCLATURA PROCESO ESTADO ITEM DESCRIPCION PRES_PROPU PROPU_OBAC INVI_DEM INVI_DPC PRESENTAN ADMITIDOS PASAN MOTIVO RESULTADO VERSION_MANUAL MONEDA REFERENCIAL ADJUDICADO POSTOR_GANADOR TIPO_POSTOR ),
+  style: [titu,titu,titu, titu, titu, titu, titu, titu, titu, titu, titu,
+   titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
+ @conta=0
+@vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+  @vpiec=Piece.where("estado=3 or estado=4").order("phase_id,codigo")
+ @vpacc3=Phase.where(periodo:@vaf1).where.not(expediente:0).where("nomenclatura ILIKE ?", "cp%").order("proceso").select('id')
+
+@vpiec.where(phase_id:@vpacc3).each do |vite|
+
+@conta=@conta+1
+
+
+@vresu=""
+@vvers=""
+@vtipop=""
+if vite.resulta and vite.resulta>0 then
+@vresu=Formula.where(product_id:31,orden:vite.resulta).select('nombre as dd').first.dd
+end
+
+if vite.version and vite.version>0 then
+@vvers=Formula.where(product_id:32,orden:vite.version).select('nombre as dd').first.dd
+end
+
+if vite.tipo_postor and vite.tipo_postor>0 then
+@vtipop=Formula.where(product_id:33,orden:vite.tipo_postor).select('nombre as dd').first.dd
+end
+
+
+
+ Phase.where(id:vite.phase_id).each do |proces|
+@vproces=proces.proceso
+ end
+  @fecpp=""
+ if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+ end
+
+
+sheet.add_row [@conta,@vproces,
+ Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+ Phase.where(id:vite.phase_id).select('descripcion as dd').first.dd,
+  vite.estado,
+ vite.codigo, vite.descripcion,
+ @fecpp,
+vite.prop_obac, vite.canti_dem, vite.cantidad, vite.presenta,vite.admitido,
+vite.pasan, vite.motivo,@vresu,@vvers,
+
+ Formula.where(product_id:7,orden:vite.moneda).select('nombre as dd').first.dd,
+  vite.referencial,
+ vite.adjudicado, vite.postor,@vtipop],
+ style: [centra,izq, izq, izq, centra,  izq,izq,fechad, centra,centra,centra,centra,
+ centra,centra,centra,centra,centra,
+ centra, soles,soles,  izq,izq]
+
+end
+
+end
+
+
+
+
+
+
+wb.add_worksheet(name: "AS") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PROCESO NOMENCLATURA PROCESO ESTADO ITEM DESCRIPCION PRES_PROPU PROPU_OBAC INVI_DEM INVI_DPC PRESENTAN ADMITIDOS PASAN MOTIVO RESULTADO VERSION_MANUAL MONEDA REFERENCIAL ADJUDICADO POSTOR_GANADOR TIPO_POSTOR ),
+  style: [titu,titu,titu, titu, titu, titu, titu, titu, titu, titu, titu,
+   titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
+ @conta=0
+@vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+  @vpiec=Piece.where("estado=3 or estado=4").order("phase_id,codigo")
+ @vpacc3=Phase.where(periodo:@vaf1).where.not(expediente:0).where("nomenclatura ILIKE ?", "as%").order("proceso").select('id')
+
+@vpiec.where(phase_id:@vpacc3).each do |vite|
+
+@conta=@conta+1
+
+
+@vresu=""
+@vvers=""
+@vtipop=""
+if vite.resulta and vite.resulta>0 then
+@vresu=Formula.where(product_id:31,orden:vite.resulta).select('nombre as dd').first.dd
+end
+
+if vite.version and vite.version>0 then
+@vvers=Formula.where(product_id:32,orden:vite.version).select('nombre as dd').first.dd
+end
+
+if vite.tipo_postor and vite.tipo_postor>0 then
+@vtipop=Formula.where(product_id:33,orden:vite.tipo_postor).select('nombre as dd').first.dd
+end
+
+
+
+ Phase.where(id:vite.phase_id).each do |proces|
+@vproces=proces.proceso
+ end
+  @fecpp=""
+ if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+ end
+
+
+sheet.add_row [@conta,@vproces,
+ Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+ Phase.where(id:vite.phase_id).select('descripcion as dd').first.dd,
+  vite.estado,
+ vite.codigo, vite.descripcion,
+ @fecpp,
+vite.prop_obac, vite.canti_dem, vite.cantidad, vite.presenta,vite.admitido,
+vite.pasan, vite.motivo,@vresu,@vvers,
+
+ Formula.where(product_id:7,orden:vite.moneda).select('nombre as dd').first.dd,
+  vite.referencial,
+ vite.adjudicado, vite.postor,@vtipop],
+ style: [centra,izq, izq, izq, centra,  izq,izq,fechad, centra,centra,centra,centra,
+ centra,centra,centra,centra,centra,
+ centra, soles,soles,  izq,izq]
+
+end
+
+end
 
 
 
