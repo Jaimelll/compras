@@ -16,6 +16,8 @@ centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
 
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :left })
+fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center })
 
 
 
@@ -256,8 +258,9 @@ wb.add_worksheet(name: "LP") do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PROCESO NOMENCLATURA ITEM DESCRIPCION PROPU_OBAC INVI_DEM INVI_DPC PRESENTAN ADMITIDOS PASAN MOTIVO RESULTADO VERSION_MANUAL MONEDA REFERENCIAL ADJUDICADO POSTOR_GANADOR TIPO_POSTOR ),
-  style: [titu,titu,titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+  sheet.add_row %w(N PROCESO NOMENCLATURA PROCESO ESTADO ITEM DESCRIPCION PRES_PROPU PROPU_OBAC INVI_DEM INVI_DPC PRESENTAN ADMITIDOS PASAN MOTIVO RESULTADO VERSION_MANUAL MONEDA REFERENCIAL ADJUDICADO POSTOR_GANADOR TIPO_POSTOR ),
+  style: [titu,titu,titu, titu, titu, titu, titu, titu, titu, titu, titu,
+   titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
  @conta=0
   @vpiec=Piece.order("phase_id,codigo")
@@ -288,19 +291,26 @@ end
  Phase.where(id:vite.phase_id).each do |proces|
 @vproces=proces.proceso
  end
+  @fecpp=""
+ if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+ end
 
 
-
-
-sheet.add_row [@conta,@vproces, Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+sheet.add_row [@conta,@vproces,
+ Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+ Phase.where(id:vite.phase_id).select('descripcion as dd').first.dd,
+  vite.estado,
  vite.codigo, vite.descripcion,
+ @fecpp,
 vite.prop_obac, vite.canti_dem, vite.cantidad, vite.presenta,vite.admitido,
 vite.pasan, vite.motivo,@vresu,@vvers,
 
  Formula.where(product_id:7,orden:vite.moneda).select('nombre as dd').first.dd,
   vite.referencial,
  vite.adjudicado, vite.postor,@vtipop],
- style: [centra,izq, izq,  izq,izq,centra,centra,centra,centra,
+ style: [centra,izq, izq, izq, centra,  izq,izq,fechad, centra,centra,centra,centra,
  centra,centra,centra,centra,centra,
  centra, soles,soles,  izq,izq]
 
