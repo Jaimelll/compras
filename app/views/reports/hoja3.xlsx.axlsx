@@ -244,8 +244,8 @@ end
 @vproces=proces.proceso
  end
   @fecpp=""
- if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
-   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ if Activity.where(actividad:19,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:19,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
  end
 
@@ -316,8 +316,8 @@ end
 @vproces=proces.proceso
  end
   @fecpp=""
- if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
-   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ if Activity.where(actividad:19,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:19,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
  end
 
@@ -387,8 +387,8 @@ end
 @vproces=proces.proceso
  end
   @fecpp=""
- if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
-   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ if Activity.where(actividad:19,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:19,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
  end
 
@@ -455,8 +455,8 @@ end
 @vproces=proces.proceso
  end
   @fecpp=""
- if Activity.where(actividad:18,phase_id:vite.phase_id).count>0 then
-   @fecpp= Activity.where(actividad:18,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ if Activity.where(actividad:19,phase_id:vite.phase_id).count>0 then
+   @fecpp= Activity.where(actividad:19,phase_id:vite.phase_id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
  end
 
