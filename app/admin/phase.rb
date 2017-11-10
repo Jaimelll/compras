@@ -117,6 +117,7 @@ index :title => 'Lista de Procesos' do
 column("id") do |phase|
    link_to "#{phase.id} ", admin_phase_pieces_path(phase)
 end
+column("proceso") 
 column("nomenclatura") do |phase|
 
    link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)

@@ -67,15 +67,15 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   case proce.orden
      when 1
-        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) AUDITADO),
+        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) AUDITADO),
         style: [titu,  titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac1
      when 2
-        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) AUDITADO),
+        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) AUDITADO),
         style: [titu,  titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) AUDITADO ),
+        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) AUDITADO ),
         style: [titu,  titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac3
 
@@ -189,7 +189,7 @@ case proce.orden
 
 
 
-  sheet.add_row [ @conta, activ.nomenclatura, activ.descripcion.underscore.capitalize,
+  sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
    @esti.to_i, @presu.to_i, activ.sele2.to_i,   @laudi],
    style: [ centra,  izq, izq, soles, soles, soles,centra]
 
