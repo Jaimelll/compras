@@ -20,6 +20,15 @@ permit_params :actividad, :tipo,:numero, :pfecha,:importe,
               :created_at,:updated_at,:plan,:inicial
 
 
+
+              action_item :view, only:[:show,:new,:index]do
+                if params[:phase_id] then
+              nn=Phase.where(id:params[:phase_id]).
+                       select('proceso as dd').first.dd
+                    link_to "Ir a -#{nn}", admin_phase_path(params[:phase_id])
+                end
+               end
+
 #scope :PAC, :default => true do |activities|
 #   activities.where(phase_id:params[:phase_id])
 #end

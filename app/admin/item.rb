@@ -362,24 +362,49 @@ form :title => 'Edicion PACs' do |f|
   end
 
 
+
+
+
+
+
   show :title => ' PAC'  do
 
       attributes_table  do
+        row "PAC (link actividades)" do |item|
 
-        row "PAC OSCE" do
-           item.pac
-       end
-       row "Expediente" do
-          item.exped
-          if item.exped and item.exped>0 then
+            vsec=1
+        if current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+          vsec=0
+        end
+        if current_admin_user.id==6 and item.obac==2 then
+          vsec=1
+        end
 
-             Formula.where(product_id:16, orden:item.exped).
-              select('nombre as dd').first.dd
+        if current_admin_user.id==8 and item.obac==3 then
+          vsec=1
+        end
 
-            else
-                "s/d"
-            end
+        if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
+          vsec=1
+        end
+
+
+           link_to_if vsec==1, "#{item.pac} ", admin_item_details_path(item)
       end
+      row "Expediente" do
+         item.exped
+         if item.exped and item.exped>0 then
+
+            Formula.where(product_id:16, orden:item.exped).
+             select('nombre as dd').first.dd
+
+           else
+               "s/d"
+           end
+     end
+
+
+
         row :periodo do |item|
             if item.periodo and item.periodo>0 then
 
