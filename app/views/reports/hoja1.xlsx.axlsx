@@ -47,7 +47,7 @@ wb.add_worksheet(name: "Resumen") do |sheet|
 end
 
 
-Formula.where(product_id:10).order('orden').where('orden<5').each do |proce|
+Formula.where(product_id:10).order('orden').where('orden<6').each do |proce|
 wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
@@ -75,6 +75,16 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
 
        @vpacn=@vpac4
+
+       when 5
+         sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
+
+         @vpacn=@vpac5
+
+
+
+
        end
        @conta=0
       @items.where(id:@vpacn).each do |ite|
@@ -133,7 +143,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   ite.certificado.to_i, @vobsr],
   style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, soles, izq]
 
-    when 4
+    when 4,5
 
     sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
     Formula.where(product_id:16, orden:ite.exped).

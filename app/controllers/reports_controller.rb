@@ -289,6 +289,7 @@ def vhoja1
   @vpac2=params[:param4]
   @vpac3=params[:param5]
   @vpac4=params[:param6]
+  @vpac5=params[:param7]
 #  @items=Item.order('tipo,modalidad,exped,certificado DESC')
   @items=Item.order('tipo,modalidad,exped,certificado DESC')
   respond_to do |format|
@@ -375,7 +376,7 @@ def vhoja7
 
   respond_to do |format|
     format.html
-  
+
     format.xlsx{render template: 'reports/hoja7.xlsx.axlsx', xlsx:'Activos'}
   end
 end
