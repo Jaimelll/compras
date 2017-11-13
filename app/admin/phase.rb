@@ -117,7 +117,7 @@ index :title => 'Lista de Procesos' do
 column("id") do |phase|
    link_to "#{phase.id} ", admin_phase_pieces_path(phase)
 end
-column("proceso") 
+column("proceso")
 column("nomenclatura") do |phase|
 
    link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)
@@ -191,8 +191,15 @@ show :title => ' Proceso'  do
 
     attributes_table  do
 
-      row :nomenclatura
-      row :proceso
+
+
+      row "Nomenclatura (link items)" do |phase|
+        link_to "#{phase.nomenclatura} ", admin_phase_pieces_path(phase)
+     end
+      row "Proceso (link actividades)" do |phase|
+        link_to "#{phase.proceso} ", admin_phase_activities_path(phase)
+     end
+
       row :convocatoria
       row :descripcion
       row :moneda do |phase|

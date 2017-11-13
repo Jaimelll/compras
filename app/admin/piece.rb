@@ -20,6 +20,17 @@ permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
              :resulta, :version,:tipo_postor, :motivo,:proceso,
              :pasan
 
+             action_item :view, only:[:show,:new,:index]do
+               if params[:phase_id] then
+             nn=Phase.where(id:params[:phase_id]).
+                      select('proceso as dd').first.dd
+                   link_to "Ir a -#{nn}", admin_phase_path(params[:phase_id])
+               end
+              end
+
+
+
+
 filter :descripcion
 index :title => "Lista de Items"  do
 
