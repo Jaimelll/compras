@@ -371,6 +371,16 @@ def vhoja6
   end
 end
 
+def vhoja7
+
+  respond_to do |format|
+    format.html
+  
+    format.xlsx{render template: 'reports/hoja7.xlsx.axlsx', xlsx:'Activos'}
+  end
+end
+
+
 def vhoja11
     @iitem=params[:param1]
     @lmes=params[:param2].to_i

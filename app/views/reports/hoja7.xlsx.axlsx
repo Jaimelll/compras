@@ -1,0 +1,55 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center })
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center },num_fmt: 8)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left })
+
+
+
+
+
+wb.add_worksheet(name: "Activos") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N NOMBRE AREA VINCULO),
+  style: [centra, centra, centra, centra]
+
+ @conta=0
+
+
+ Employee.where(estado:1).order('tip_tra,ape_nom').each do |emple|
+ @conta=@conta+1
+
+  @varea=Formula.where(product_id:26,orden:emple.area).select('nombre as dd').first.dd
+  @vtipo=Formula.where(product_id:23,orden:emple.tip_tra).select('nombre as dd').first.dd
+
+
+
+
+
+   sheet.add_row [ @conta, emple.ape_nom,   @varea, @vtipo ],
+   style: [centra, izq, centra, centra]
+
+
+
+end
+
+end
+
+
+
+end

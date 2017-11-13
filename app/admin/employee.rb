@@ -128,7 +128,7 @@ end
             Formula.where(product_id:26).order('nombre').map{|u| [u.descripcion, u.orden]}
         f.input :estado, :as => :select, :collection =>
                Formula.where(product_id:22).order('nombre').map{|u| [u.nombre, u.orden]}
-         f.input :tip_tra,:label => 'Tipo Contrato', :as => :select, :collection =>
+         f.input :tip_tra,:label => 'Tipo de vinculo', :as => :select, :collection =>
             Formula.where(product_id:23).order('nombre').map{|u| [u.nombre, u.orden]}
          f.input :fec_nacimiento, :label => 'Fecha de nacimiento' ,:as =>:string, :input_html => { :style =>  'width:30%'}
          f.input :esta_civil, :as => :select, :collection =>
@@ -195,7 +195,7 @@ end
 
                           end
                   end
-              row  'Tipo de contrato' do |emple|
+              row  'Tipo de vinculo' do |emple|
                           if emple.tip_tra and emple.tip_tra>0 then
                            Formula.where(product_id:23, orden:emple.tip_tra).select('nombre as dd').first.dd
                           end
@@ -237,13 +237,15 @@ end
               number_with_delimiter(emple.remuneracion, delimiter: ",")
 
             end
-  row :foto
+            row :foto
 
 
              end
-           end
+                end
 
-
+sidebar "EXCEL", only: :index  do
+  li  link_to "Relacion de Personal Activo", reports_vhoja7_path(format:  "xlsx")
+end
            sidebar "Foto", except: :index  do
 
                       if params[:id] then
@@ -263,6 +265,7 @@ end
                   li      link_to "ESTUDIOS", admin_employee_students_path(params[:id])
                   li      link_to "EXPERIENCIA LABORAL", admin_employee_experiences_path(params[:id])
                   li      link_to "CONTRATOS", admin_employee_agreements_path(params[:id])
+
                            end
              end
              panel  "Datos de Contratos " do
@@ -330,6 +333,7 @@ ul do
 end
 
 end
+
    end #end de sidebar
 
 
