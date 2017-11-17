@@ -931,7 +931,10 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
 :param4=>  @titproc1)
 else
   if vvar==1 then
-    Phase.where(id:@vconv2,sele3:2).count
+     @contconv= Phase.where(id:@vconv2,sele3:2).count
+    link_to "#{@contconv}", reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
+       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
   end
 end
   end
@@ -954,15 +957,27 @@ end
 end
 end
    column("Total") do |formula|
-     if formula.orden==1 then
-     @dpc=  formula.orden
-     @titproc1="Relacion de Procesos"
-     @vopc=3
-     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
 
-   link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
-   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
-   :param4=>  @titproc1)
+
+
+
+     if formula.orden==1 then
+     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
+       link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
+        reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
+         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+         :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+
+
+
+  #   @dpc=  formula.orden
+  #   @titproc1="Relacion de Procesos"
+#     @vopc=3
+#     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
+
+  # link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
+  # reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
+#   :param4=>  @titproc1)
  else
    if vvar==1 then
       Phase.where(id:@vconvt,sele3:2).count

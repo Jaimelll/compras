@@ -21,8 +21,8 @@ ActiveAdmin.register Phase do
 #   permitted
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
-              :admin_user_id, :periodo, :convocatoria, :sele3, :proceso
-
+              :admin_user_id, :periodo, :convocatoria, :sele3, :proceso, :sele4
+#se puede usar sele3 era para autidados
 menu priority: 10, label: "Procesos"
 
 
@@ -48,9 +48,9 @@ scope :Otros, :default => true do |phases|
 
      phases.where(expediente:0).order('id')
 end
-scope :Auditados, :default => true do |phases|
-     phases.where(sele3:2)
-end
+#scope :Auditados, :default => true do |phases|
+#     phases.where(sele3:2)
+#end
 
 
 
@@ -67,57 +67,57 @@ filter :expediente, :as => :select, :collection =>
 
 
 
-action_item :auditado, only: :show do
-        link_to   'Auditado', auditado_admin_phase_path(params[:id]), method: :put
-end
+#action_item :auditado, only: :show do
+#        link_to   'Auditado', auditado_admin_phase_path(params[:id]), method: :put
+#end
 
-action_item :noauditado, only: :show do
-        link_to   'No auditado', noauditado_admin_phase_path(params[:id]), method: :put
-end
+#action_item :noauditado, only: :show do
+#        link_to   'No auditado', noauditado_admin_phase_path(params[:id]), method: :put
+#end
 
-action_item :enproceso, only: :show do
-        link_to   'En progreso', enproceso_admin_phase_path(params[:id]), method: :put
-end
-
-
-member_action :auditado, method: :put do
-  case current_admin_user.id # a_variable is the variable we want to compare
-  when 2,3,10,25 # administrador,roy
-        proc=Phase.find(params[:id])
-        proc.update(sele3:2)
-        redirect_to admin_phase_path(proc)
-    end
-  end
+#action_item :enproceso, only: :show do
+#        link_to   'En progreso', enproceso_admin_phase_path(params[:id]), method: :put
+#end
 
 
+#member_action :auditado, method: :put do
+#  case current_admin_user.id # a_variable is the variable we want to compare
+#  when 2,3,10,25 # administrador,roy
+#        proc=Phase.find(params[:id])
+#        proc.update(sele3:2)
+#      redirect_to admin_phase_path(proc)
+#    end
+#  end
 
 
-  member_action :noauditado, method: :put do
-    case current_admin_user.id # a_variable is the variable we want to compare
-    when 2,3,10,25 # administrador,roy
-           proc=Phase.find(params[:id])
-           proc.update(sele3:1)
-           redirect_to admin_phase_path(proc)
-       end
-    end
 
-    member_action :enproceso, method: :put do
-      case current_admin_user.id # a_variable is the variable we want to compare
-      when 2,3,10,25 # administrador,roy
-            proc=Phase.find(params[:id])
-            proc.update(sele3:3)
-            redirect_to admin_phase_path(proc)
-        end
-      end
+
+#  member_action :noauditado, method: :put do
+#    case current_admin_user.id # a_variable is the variable we want to compare
+#    when 2,3,10,25 # administrador,roy
+#           proc=Phase.find(params[:id])
+#           proc.update(sele3:1)
+#           redirect_to admin_phase_path(proc)
+#       end
+#    end
+
+#    member_action :enproceso, method: :put do
+#      case current_admin_user.id # a_variable is the variable we want to compare
+#      when 2,3,10,25 # administrador,roy
+#            proc=Phase.find(params[:id])
+#            proc.update(sele3:3)
+#            redirect_to admin_phase_path(proc)
+#        end
+#      end
 
 
 
 
 index :title => 'Lista de Procesos' do
-column("id") do |phase|
-   link_to "#{phase.id} ", admin_phase_pieces_path(phase)
+
+column("proceso") do |phase|
+   link_to "#{phase.proceso} ", admin_phase_pieces_path(phase)
 end
-column("proceso")
 column("nomenclatura") do |phase|
 
    link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)
@@ -147,17 +147,17 @@ column("Referencial")  do |phase|
            "s/d"
        end
    end
-   column("auditado") do |phase|
-      if  phase.sele3 and  phase.sele3>0 then
+  # column("auditado") do |phase|
+#      if  phase.sele3 and  phase.sele3>0 then
 
-        Formula.where(product_id:29, orden: phase.sele3).
-          select('descripcion as dd').first.dd
+  #      Formula.where(product_id:29, orden: phase.sele3).
+  #        select('descripcion as dd').first.dd
 
-      else
-           "s/d "
-      end
+  #    else
+  #         "s/d "
+  #    end
 
-   end
+  # end
   actions
 end
 
@@ -176,8 +176,8 @@ form :title => 'Edicion Procesos' do |f|
    Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
  f.input :periodo, :as => :select, :collection =>
     Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
-  #  f.input :sele3,:label => 'Auditado', :as => :select, :collection =>
-  #     Formula.where(product_id:29).order('orden').map{|u| [u.descripcion, u.orden]}
+    f.input :sele4,:label => 'Especialista encargado', :as => :select, :collection =>
+       Formula.where(product_id:34).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
   f.actions
 
@@ -237,10 +237,10 @@ show :title => ' Proceso'  do
              end
 
           end
-          row "auditado" do |phase|
-             if  phase.sele3 and  phase.sele3>0 then
-                Formula.where(product_id:29, orden: phase.sele3).
-                 select('descripcion as dd').first.dd
+          row "Especialista encargado" do |phase|
+             if  phase.sele4 and  phase.sele4>0 then
+                Formula.where(product_id:34, orden: phase.sele4).
+                 select('nombre as dd').first.dd
              else
                    "s/d"
              end
