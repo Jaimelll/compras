@@ -54,7 +54,7 @@ end
 
 
 
-filter :nomenclatura
+filter :proceso
 filter :convocatoria
 filter :descripcion
 filter :expediente, :as => :select, :collection =>
