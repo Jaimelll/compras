@@ -230,15 +230,15 @@ wb.add_worksheet(name: "OBACs") do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC DESCRIPCION MERCADO ESTIMADO ),
-  style: [titu, titu, titu, titu, titu, titu, centra]
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD MERCADO ESTIMADO ),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
 
     @conta3=0
     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item1=Item.where.not(ejecucion:4).where(exped2:@vaf1).order('obac,tipo,pac')
+     @item1=Item.where.not(modalidad:4).where(exped2:@vaf1).order('obac,tipo,pac')
      @item1.each do |ite|
 
     @conta3=@conta3+1
@@ -248,14 +248,21 @@ wb.add_worksheet(name: "OBACs") do |sheet|
   @merdo=Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd
   end
 
+  @modali=" "
+ if ite.modalidad and ite.modalidad>0 then
+  @modali=Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd
+  end
+
 
 
 
      sheet.add_row [ @conta3,ite.pac, ite.mesconvoca,
-      Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
-     ite.descripcion,  @merdo,
+     Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
+
+     ite.descripcion,  @modali,@merdo,
         ite.certificado],
-     style: [centra,centra,fechas,centra,izq,centra,soles]
+     style: [centra,centra,fechas,centra,centra,izq,centra,centra,soles]
 
     end
 end
