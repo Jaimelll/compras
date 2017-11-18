@@ -40,12 +40,12 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   case proce.orden
 
      when 2
-        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu]
+        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO ESPECIALISTA SITUACION ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu]
+        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO ESPECIALISTA SITUACION  ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac3
 
       end
@@ -130,6 +130,10 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
      @fec22=""
    end
 
+    @espec=" "
+   if  activ.sele4 then
+     @espec= Formula.where(product_id:34,orden:activ.sele4).select('nombre as dd').first.dd
+   end
 
 
 
@@ -138,8 +142,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
   sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
-   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr ],
-   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq]
+   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,@vobsr ],
+   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq]
 
 
 
