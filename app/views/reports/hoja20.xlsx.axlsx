@@ -3,21 +3,22 @@ wb = xlsx_package.workbook
 wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                 alignment: { horizontal: :center })
+                                 alignment: { horizontal: :center,vertical: :center },
+                                b: true, sz: 9, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
-                           alignment: { horizontal: :center },num_fmt: 3)
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
-                        alignment: { horizontal: :center })
+                        alignment: { horizontal: :center,vertical: :center })
 
 centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                               alignment: { horizontal: :center })
+                               alignment: { horizontal: :center,vertical: :center })
 
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                alignment: { horizontal: :left })
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
 fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
-                                alignment: { horizontal: :center })
+                                alignment: { horizontal: :center,vertical: :center })
 
 
 
@@ -41,11 +42,11 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
      when 2
         sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO ESPECIALISTA SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
         sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO ESPECIALISTA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
 
       end
@@ -143,7 +144,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
    @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,@vobsr ],
-   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq]
+   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq], height: 30
+   sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, 40
 
 
 
