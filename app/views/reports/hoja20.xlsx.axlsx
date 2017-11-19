@@ -257,8 +257,8 @@ vnum=@conta+2
 
 sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q20", :title => "CALENDARIO") do |chart|
    chart.grouping = :stacked
-   chart.add_series :data => sheet["E3:E+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["E2"], :colors => ['00FF00'],  colors:  vcol1
-   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], :colors => ['FF0000'], colors:  vcol2
+   chart.add_series :data => sheet["E3:E+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["E2"], colors:  vcol1
+   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol2
 
  end
 
