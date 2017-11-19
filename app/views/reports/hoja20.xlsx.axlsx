@@ -19,6 +19,8 @@ izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
 fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :center,vertical: :center })
+ddmm = style.add_style(format_code: "dd-mmm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center })
 
 
 
@@ -153,6 +155,119 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 end
 end
 end
+
+
+
+
+
+
+
+Formula.where(product_id:20).where(orden:2).order('orden').each do |proce|
+wb.add_worksheet(name: "Grafico") do |sheet|
+
+  sheet.add_row []
+
+
+
+
+
+
+
+
+        sheet.add_row %w(N PROCESO   PRES_PROP BUENA_PRO PP_dias DIF_BP_PP ),
+        style: [titu,  titu, titu, titu, titu, titu], height: 40
+        @vpacn=@vpac2
+
+
+
+
+       @conta=0
+     @activities.where(id:@vpacn).each do |activ|
+
+
+        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+       @vdetalle= Activity.order('pfecha')
+       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
+
+
+
+
+
+
+
+
+
+@conta=@conta+1
+
+ @vinicio = Date.parse('2017/01/01')
+ @dpp=0
+ @dif=0
+ @fec21=""
+ @fec22=""
+
+
+   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
+     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd
+     @dpp=(@fec21.to_time-@vinicio.to_time).to_i/86400
+   end
+
+
+   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
+     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd
+     @dif=(@fec22.to_time-@fec21.to_time).to_i/86400
+   end
+
+
+
+
+
+
+  sheet.add_row [ @conta, activ.proceso, @fec21,@fec22, @dpp, @dif],
+   style: [ centra,  izq, fechad,fechad,centra,centra], height: 15
+
+
+
+
+
+end
+
+ vn=0
+ vcol1=[]
+ vcol2=[]
+
+ while @conta>vn do
+
+   vcol1.push("00FF00")
+   vcol2.push("FF0000")
+   vn=vn+1
+ end
+
+vnum=@conta+2
+
+
+
+
+
+
+
+sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q20", :title => "CALENDARIO") do |chart|
+   chart.grouping = :stacked
+   chart.add_series :data => sheet["E3:E+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["E2"], :colors => ['00FF00'],  colors:  vcol1
+   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], :colors => ['FF0000'], colors:  vcol2
+
+ end
+
+end
+
+
+
+
+
+end
+
+
+
+
 
 
 

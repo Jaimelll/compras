@@ -712,7 +712,7 @@ unless current_admin_user.id==24 #personal
 @vconv1=[]# actos previos
 @vconv2=[]# convocados
 @vconv3=[]# adjudicados
-@vconvt=[]# total
+@vconvt=[]# totalvinicio
 
 
 @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
