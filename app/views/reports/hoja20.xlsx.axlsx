@@ -160,12 +160,16 @@ end
 
 
 
+ @vinicio = Date.parse('2017/01/01')
+ @dhoy=(Time.now-@vinicio.to_time).to_i/86400
+ @fhoy=Time.now.strftime("%d-%m-%Y")	
 
 
 Formula.where(product_id:20).where(orden:2).order('orden').each do |proce|
 wb.add_worksheet(name: "Grafico") do |sheet|
 
-  sheet.add_row []
+  sheet.add_row ["","","","","","","","HOY ES EL DIA =",@dhoy,@fhoy],
+  style: [centra, centra,centra,centra,centra,centra,centra, titu, titu, titu], height: 40
 
 
 
@@ -199,11 +203,12 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 @conta=@conta+1
 
- @vinicio = Date.parse('2017/01/01')
+
  @dpp=0
  @dif=0
  @fec21=""
  @fec22=""
+
 
 
    if Activity.where(actividad:19,phase_id:activ.id).count>0 then
