@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171106213129) do
+ActiveRecord::Schema.define(version: 20171120181022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,6 +276,10 @@ ActiveRecord::Schema.define(version: 20171106213129) do
     t.integer  "sele3"
     t.integer  "sele4"
     t.string   "proceso"
+    t.string   "comite"
+    t.string   "postores"
+    t.string   "obs"
+    t.integer  "sele5"
     t.index ["admin_user_id"], name: "index_phases_on_admin_user_id", using: :btree
   end
 

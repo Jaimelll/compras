@@ -21,7 +21,8 @@ ActiveAdmin.register Phase do
 #   permitted
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
-              :admin_user_id, :periodo, :convocatoria, :sele3, :proceso, :sele4
+              :admin_user_id, :periodo, :convocatoria, :sele3, :proceso,
+               :sele4, :comite, :postores, :obs, :sele5
 #se puede usar sele3 era para autidados
 menu priority: 10, label: "Procesos"
 
@@ -179,6 +180,8 @@ form :title => 'Edicion Procesos' do |f|
     f.input :sele4,:label => 'Especialista encargado', :as => :select, :collection =>
        Formula.where(product_id:34).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+f.input :comite ,:label => 'Miembros de comité'
+f.input :postores ,:label => 'Lista de postores'
   f.actions
 
 
@@ -245,6 +248,12 @@ show :title => ' Proceso'  do
                    "s/d"
              end
 
+          end
+          row "Miembros de comité" do |phase|
+            phase.comite
+          end
+          row "Lista de postores" do |phase|
+            phase.postores
           end
   end #de attributes_table
 

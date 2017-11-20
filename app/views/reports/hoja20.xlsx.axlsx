@@ -43,12 +43,12 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   case proce.orden
 
      when 2
-        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO ESPECIALISTA SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO ESPECIALISTA POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
 
       end
@@ -153,15 +153,15 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
       when 2
   sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
-   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,@vobsr ],
-   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq], height: 30
-   sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, 40
+   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.postores,@vobsr ],
+   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq, izq], height: 30
+   sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25,25, 40
 
    when 3
 sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
-@esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,vpost,veadj,@vobsr ],
-style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq,centra, izq, izq], height: 30
-sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, nil, 25, 40
+@esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
+style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 30
+sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, 25, 25, 40
 
    end
 
