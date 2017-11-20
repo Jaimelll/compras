@@ -154,14 +154,14 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
       when 2
   sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
    @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,@vobsr ],
-   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq, izq], height: 30
+   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq, izq], height: 35
    sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25,30, 40
 
    when 3
 sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
 @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
-style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 30
-sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, 30, 25, 40
+style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
+sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
    end
 
