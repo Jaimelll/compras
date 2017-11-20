@@ -242,8 +242,8 @@ end
 
  while @conta>vn do
 
-   vcol1.push("FE642E")
-   vcol2.push("58ACFA")
+   vcol1.push("58ACFA")
+   vcol2.push("FE642E")
    vn=vn+1
  end
 
