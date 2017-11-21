@@ -114,12 +114,21 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
        else
            @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
        end
-      vpost=0
+
+
       veadj=""
-       if Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').count>0  then
-         vpost=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').select("cantidad as dd").first.dd
-         veadj=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').select("postor as dd").first.dd
-      end
+
+        if  Piece.where(phase_id:activ.id.to_s,estado:4).count>0 then
+        Piece.where(phase_id:activ.id.to_s,estado:4).order('codigo').each do |ganador|
+         veadj=veadj+ganador.codigo+":"+ganador.postor+","
+
+        end
+        end
+
+
+
+
+
 
 
 
