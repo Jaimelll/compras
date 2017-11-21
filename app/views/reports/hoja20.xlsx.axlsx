@@ -175,7 +175,7 @@ end
 
 
  @vinicio = Date.parse('2017/01/01')
- @dhoy=(Time.now-@vinicio.to_time).to_i/86400
+ @dhoy=(Time.now-@vinicio.to_time).to_i/86400+2
  @fhoy=Time.now.strftime("%d-%m-%Y")
 
 
