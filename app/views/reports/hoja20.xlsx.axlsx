@@ -216,8 +216,8 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-        sheet.add_row %w(N PROCESO DESCRIPCION  PRES_PROP BUENA_PRO PP_dias DIF_BP_PP ),
-        style: [titu,  titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO DESCRIPCION BUENA_PRO PRES_PROP DIF_BP_PP ),
+        style: [titu,  titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
 
 
@@ -265,9 +265,9 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec21,@fec22, @dpp, @dif],
-   style: [ centra,  izq, izq,fechad,fechad,ddmm,centra], height: 35
-   sheet.column_widths 5,10, 50, 10, 10, 10, 10
+  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec21, @dpp, @dif],
+   style: [ centra,  izq, izq,ddmm,ddmm,centra], height: 35
+   sheet.column_widths 5,10, 50, 10, 10, 10
 
 
 
@@ -294,11 +294,11 @@ vnum=@conta+2
 
 
 
-sheet.add_chart(Axlsx::Bar3DChart, :start_at => "I2", :end_at => "R20", :title => "CALENDARIO") do |chart|
+sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q20", :title => "CALENDARIO") do |chart|
    chart.grouping = :stacked
-   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol1
+   chart.add_series :data => sheet["E3:E+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["E2"], colors:  vcol1
     chart.valAxis.scaling.min =@dhoy-15.0
-   chart.add_series :data => sheet["G3:G+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["G2"], colors:  vcol2
+   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol2
 
  end
 
