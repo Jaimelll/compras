@@ -43,11 +43,11 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   case proce.orden
 
      when 2
-        sheet.add_row %w(N PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO  DESCRIPCION PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+        sheet.add_row %w(N PROCE  DESCRIPCION   PRESUPUESTADO(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
         style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
 
@@ -111,12 +111,14 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
         if proce.orden==3  then
           @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
+
        else
            @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
        end
 
 
       veadj=""
+
 
         if  Piece.where(phase_id:activ.id.to_s,estado:4).count>0 then
         Piece.where(phase_id:activ.id.to_s,estado:4).order('codigo').each do |ganador|
@@ -162,13 +164,14 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
       when 2
   sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
-   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,@vobsr ],
-   style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq, izq], height: 35
+   @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,@vobsr ],
+   style: [ centra,  izq, izq, soles, soles,centra,centra, izq, izq, izq], height: 35
    sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25,30, 40
 
    when 3
+   vahorr=(@presu-activ.sele2).to_i
 sheet.add_row [ @conta, activ.proceso, activ.descripcion.underscore.capitalize,
-@esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
+ @presu.to_i, activ.sele2.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
 style: [ centra,  izq, izq, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
 sheet.column_widths 5, nil, 40, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
@@ -191,8 +194,9 @@ end
 Formula.where(product_id:20).where(orden:2).order('orden').each do |proce|
 wb.add_worksheet(name: "Grafico") do |sheet|
 
-  sheet.add_row ["","","","","","","","HOY ES EL DIA =",@dhoy,@fhoy],
-  style: [centra, centra,centra,centra,centra,centra,centra, titu, titu, titu], height: 40
+ sheet.add_row []
+#  sheet.add_row ["","","","","","","","HOY ES EL DIA =",@dhoy,@fhoy],
+#  style: [centra, centra,centra,centra,centra,centra,centra, titu, titu, titu], height: 30
 
 
 
@@ -201,8 +205,8 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-        sheet.add_row %w(N PROCESO   PRES_PROP BUENA_PRO PP_dias DIF_BP_PP ),
-        style: [titu,  titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO DESCRIPCION  PRES_PROP BUENA_PRO PP_dias DIF_BP_PP ),
+        style: [titu,  titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
 
 
@@ -250,8 +254,9 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-  sheet.add_row [ @conta, activ.proceso, @fec21,@fec22, @dpp, @dif],
-   style: [ centra,  izq, fechad,fechad,ddmm,centra], height: 15
+  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec21,@fec22, @dpp, @dif],
+   style: [ centra,  izq, izq,fechad,fechad,ddmm,centra], height: 35
+   sheet.column_widths 5,10, 50, 10, 10, 10, 10
 
 
 
@@ -278,11 +283,11 @@ vnum=@conta+2
 
 
 
-sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q20", :title => "CALENDARIO") do |chart|
+sheet.add_chart(Axlsx::Bar3DChart, :start_at => "I2", :end_at => "R20", :title => "CALENDARIO") do |chart|
    chart.grouping = :stacked
-   chart.add_series :data => sheet["E3:E+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["E2"], colors:  vcol1
+   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol1
     chart.valAxis.scaling.min =@dhoy-15.0
-   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol2
+   chart.add_series :data => sheet["G3:G+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["G2"], colors:  vcol2
 
  end
 
