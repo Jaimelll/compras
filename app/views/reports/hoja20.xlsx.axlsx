@@ -19,7 +19,7 @@ izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
 fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :center,vertical: :center })
-ddmm = style.add_style(format_code: "dd-mmm", border: Axlsx::STYLE_THIN_BORDER,
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
                             alignment: { horizontal: :center,vertical: :center })
 
 
@@ -242,7 +242,7 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
   sheet.add_row [ @conta, activ.proceso, @fec21,@fec22, @dpp, @dif],
-   style: [ centra,  izq, fechad,fechad,centra,centra], height: 15
+   style: [ centra,  izq, fechad,fechad,ddmm,centra], height: 15
 
 
 
