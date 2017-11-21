@@ -227,7 +227,7 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
    if Activity.where(actividad:19,phase_id:activ.id).count>0 then
      @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd
-     @dpp=(@fec21.to_time-@vinicio.to_time).to_i/86400
+     @dpp=(@fec21.to_time-@vinicio.to_time).to_i/86400+2
    end
 
 
