@@ -23,6 +23,9 @@ ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
                             alignment: { horizontal: :center,vertical: :center })
 
 
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
+
+
 
 
 
@@ -54,7 +57,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
       end
 
 
-
+      tahorro=0
+      tpresup=0
 
        @conta=0
      @activities.where(id:@vpacn).each do |activ|
@@ -81,6 +85,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
          @apac=[]
          @aobac=[]
          @afecing=[]
+
      if activ.expediente>0 then
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
      Item.where(exped:activ.expediente).each do |nobac|
@@ -111,7 +116,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
         if proce.orden==3  then
           @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
-
+         tpresup=tpresup+  @presu
        else
            @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
        end
@@ -181,6 +186,7 @@ end
 
    when 3
    vahorr=(@presu-activ.sele2).to_i
+    tahorro= tahorro+vahorr
 sheet.add_row [ @conta, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,
  @presu.to_i, activ.sele2.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
 style: [ centra,  izq, izq, izq, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
@@ -190,7 +196,37 @@ sheet.column_widths 5, nil, 10, 40, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
 
 end
+
+case proce.orden
+
+   when 3
+
+
+sheet.add_row []
+sheet.add_row ["","","","","PRESUPUESTADO","ADJDICADO","AHORRO","TASA"],
+style: [ normal,  normal, normal, normal, titu, titu, titu, titu], height: 35
+
+
+
+
+tadjd=Phase.where(id:@vpac3).sum("floor(sele2)")
+
+if tpresup>0 then
+aaa=tahorro*100/tpresup
+
+tasa=number_to_percentage(aaa, precision: 0)   
+
+else
+tasa="0%"
 end
+
+sheet.add_row ["","","","",tpresup,tadjd,tahorro,tasa],
+style: [ normal,  normal, normal, normal, soles, soles, soles,centra], height: 35
+
+end
+
+end
+
 end
 
 
@@ -301,6 +337,10 @@ sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q20", :title =
    chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol2
 
  end
+
+
+
+
 
 end
 
