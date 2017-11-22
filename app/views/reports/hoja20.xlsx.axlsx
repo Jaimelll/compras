@@ -265,7 +265,7 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec21, @dpp, @dif],
+  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec22, @dpp, @dif],
    style: [ centra,  izq, izq,ddmm,ddmm,centra], height: 35
    sheet.column_widths 5,10, 50, 10, 10, 10
 
