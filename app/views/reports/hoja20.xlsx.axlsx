@@ -3,7 +3,7 @@ wb = xlsx_package.workbook
 wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                 alignment: { horizontal: :center,vertical: :center },
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
                                 b: true, sz: 9, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
@@ -214,7 +214,7 @@ tadjd=Phase.where(id:@vpac3).sum("floor(sele2)")
 if tpresup>0 then
 aaa=tahorro*100/tpresup
 
-tasa=number_to_percentage(aaa, precision: 0)   
+tasa=number_to_percentage(aaa, precision: 0)
 
 else
 tasa="0%"
@@ -252,7 +252,7 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-        sheet.add_row %w(N PROCESO DESCRIPCION BUENA_PRO PRES_PROP DIF_BP_PP ),
+        sheet.add_row %w(N PROCESO DESCRIPCION BUENA_PRO Preparación_Propuestas Evaluación_Propuestas ),
         style: [titu,  titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
 
