@@ -66,13 +66,20 @@ end
 
 when 2
 
-sheet.add_row %w( NOMENCLATURA DESCRIPCION, ADJUDICADO),   style: [titu, titu, titu]
+sheet.add_row %w( NOMENCLATURA DESCRIPCION MODALIDAD ADJUDICADO),   style: [titu, titu, titu, titu]
 
 aiitem=@iitem.flatten.compact
 
 Phase.where(id:aiitem).each do |procc|
 
-sheet.add_row [ procc.nomenclatura, procc.descripcion, procc.sele2],  style: [izq, izq, soles]
+vmmod=Item.where(exped:procc.expediente).select("modalidad as dd").first.dd
+vnommod=Formula.where(product_id:4,orden:vmmod).select('nombre as dd').first.dd
+
+
+
+
+
+sheet.add_row [ procc.nomenclatura, procc.descripcion,vnommod, procc.sele2],  style: [izq, izq, izq, soles]
 
 end
 
