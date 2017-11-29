@@ -472,10 +472,10 @@ ActiveAdmin.register_page "Indices" do
                    case  item.modalidad
                    when 1 #corporativa
                      vplazo[2]=Formula.where(product_id:10,orden:2).select(' cantidad as dd').first.dd
-                     vplazo[6]=Formula.where(product_id:10,orden:5).select(' cantidad as dd').first.dd
+                     vplazo[6]=Formula.where(product_id:10,orden:6).select(' cantidad as dd').first.dd
                     when 2 #encargo
                       vplazo[2]=Formula.where(product_id:10,orden:2).select(' numero as dd').first.dd
-                      vplazo[6]=Formula.where(product_id:10,orden:5).select(' numero as dd').first.dd
+                      vplazo[6]=Formula.where(product_id:10,orden:6).select(' numero as dd').first.dd
                    end
 
 
