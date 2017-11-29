@@ -38,28 +38,25 @@ ActiveAdmin.register_page "Indices" do
 
 
          #################var plazo
-         #mes con pacs debieron
+         #mes con pacs debieron gex
          mes_deb2=[]
-
-
-
-         #mes con pacs terminados
+         #mes con pacs terminados gex
          mes_ter2=[]
-
-         #mes con pacs debieron
+         #mes con pacs debieron dem
          mes_deb4=[]
-
-
-
-         #mes con pacs terminados
+         #mes con pacs terminados dem
          mes_ter4=[]
+         #mes con pacs debieron dpc
+         mes_deb5=[]
+         #mes con pacs terminados dpc
+         mes_ter5=[]
 
 
          #demoras netas:
-         vnproceso=[0,0,0,0,0]
+         vnproceso=[0,0,0,0,0,0]
 
          #plazos teoricos
-         vplazo=[0,0,0,0,0]
+         vplazo=[0,0,0,0,0,0]
 
          #####################################################para plazo
 
@@ -70,10 +67,12 @@ ActiveAdmin.register_page "Indices" do
          mes_ter2[vcontmes]=[]
          mes_deb4[vcontmes]=[]
          mes_ter4[vcontmes]=[]
+         mes_deb5[vcontmes]=[]
+         mes_ter5[vcontmes]=[]
          vcontmes=vcontmes-1
          end
 
-             prueba=[]
+
          ########################################################
 
          ###################################
@@ -86,7 +85,6 @@ ActiveAdmin.register_page "Indices" do
 
              @vitem.each do |item|
 
-               #prueba conta
 
                #empieza el item
 
@@ -474,8 +472,10 @@ ActiveAdmin.register_page "Indices" do
                    case  item.modalidad
                    when 1 #corporativa
                      vplazo[2]=Formula.where(product_id:10,orden:2).select(' cantidad as dd').first.dd
+                     vplazo[6]=Formula.where(product_id:10,orden:5).select(' cantidad as dd').first.dd
                     when 2 #encargo
                       vplazo[2]=Formula.where(product_id:10,orden:2).select(' numero as dd').first.dd
+                      vplazo[6]=Formula.where(product_id:10,orden:5).select(' numero as dd').first.dd
                    end
 
 
@@ -498,11 +498,15 @@ ActiveAdmin.register_page "Indices" do
 
                 sconta=0
 
-                while sconta<5  #calculo de los vnproceso
-                      prueba.push(sconta)
+                while sconta<7  #calculo de los vnproceso
+                  if sconta==6 then
+                      vss=@vproceso.take(2).compact.reduce :+
+                  else
                       vss=@vproceso.take(sconta).compact.reduce :+
+                  end
 
                       idss=@vproceso.push(0)
+
                       dvss=idss.drop(sconta).compact.reduce :+
 
                       unless vss
@@ -510,9 +514,14 @@ ActiveAdmin.register_page "Indices" do
                       end
                     iplazo  = @vinicio+vss
 
-                     fplazo=iplazo+ @vproceso[sconta]
+                       if sconta==6 then
+                         fplazo=iplazo+ @vproceso[2]+ @vproceso[3]+ @vproceso[4]+ @vproceso[5]+ @vproceso[6]
+                       else
+                        fplazo=iplazo+ @vproceso[sconta]
+                       end
+
                      vddia=iplazo
-                    vlmes=0
+                     vlmes=0
                      vmes=  vddia.month
 
                      vhab=0        #dias laborables
@@ -543,6 +552,8 @@ ActiveAdmin.register_page "Indices" do
                             mes_ter2[vmes].push(item.id)
                         when 4
                             mes_ter4[vmes].push(item.id)
+                        when 6
+                            mes_ter5[vmes].push(item.id)
                     end   #case
                 end #if
 
@@ -552,6 +563,8 @@ ActiveAdmin.register_page "Indices" do
                             mes_deb2[vmes].push(item.id)
                         when 4
                           mes_deb4[vmes].push(item.id)
+                        when 6
+                          mes_deb5[vmes].push(item.id)
                 end #case
 
          end
@@ -595,16 +608,21 @@ ActiveAdmin.register_page "Indices" do
                     ul do
                       @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
                       panel  "Indicadores"+@vaf do
-                       aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4]
+
+                       aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4,mes_ter5,mes_deb5]
                        bb=["Terminados en plazo GEX","Debieron terminar GEX",
-                         "Terminados plazo DEM","Debieron terminar DEM"]
+                           "Terminados en plazo DEM","Debieron terminar DEM",
+                           "Procesos terminados en plazo","Procesos que debieron Terminar"]
                        cc=[aa[0].flatten.compact.length,aa[1].flatten.compact.length,
-                            aa[2].flatten.compact.length,aa[3].flatten.compact.length]
-                       if cc[1]>0 and cc[3]>0 then
-                       dd=[(cc[0]*100/cc[1]).to_s+"%","-",(cc[2]*100/cc[3]).to_s+"%","-"]
-                       else
-                         dd=["-","-","-","-"]
-                       end
+                           aa[2].flatten.compact.length,aa[3].flatten.compact.length,
+                           aa[4].flatten.compact.length,aa[5].flatten.compact.length]
+                      # if cc[1]>0 and cc[3]>0  then
+                       dd=[(cc[0]*100/cc[1]).to_s+"%","-",
+                           (cc[2]*100/cc[3]).to_s+"%","-",
+                           (cc[4]*100/cc[5]).to_s+"%","-"]
+                    #   else
+                    #     dd=["-","-","-","-","-","-"]
+                    #   end
 
                       table_for aa  do
                         column("Mes")do |ter|
