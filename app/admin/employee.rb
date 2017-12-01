@@ -26,7 +26,8 @@ end
          :admin_user_id, :foto, :ape_nom,
          :correo_corp, :fec_inicon, :fec_tercon,
          :cargo, :grado,:area, :sele,
-         :remuneracion, :sele2, :distrito
+         :remuneracion, :sele2, :distrito,
+         :anexo, :celular_corp, :obs, :sele3
 
    action_item :actualiza,only: :show do
          link_to 'Actualiza Contrato', actualiza_admin_employee_path( params[:id]), method: :put
@@ -119,6 +120,8 @@ end
          f.input :direccion, :input_html => { :style =>  'width:30%'}
          f.input :distrito, :input_html => { :style =>  'width:30%'}
          f.input :telefono, :input_html => { :style =>  'width:30%'}
+         f.input :anexo,:label => 'Numero de anexo', :input_html => { :style =>  'width:30%'}
+         f.input :celular_corp,:label => 'Celular Corporativo', :input_html => { :style =>  'width:30%'}
          f.input :correo, :input_html => { :style =>  'width:30%'}
          f.input :correo_corp, :input_html => { :style =>  'width:30%'}
          f.input :cargo,:label => 'Puesto', :input_html => { :style =>  'width:30%'}
@@ -170,9 +173,17 @@ end
                 emple.grado
               end
 
-              row :direccion
+              row 'Puesto' do |emple|
+                emple.cargo
+              end
               row :distrito
               row :telefono
+              row 'Numero de anexo' do |emple|
+                emple.anexo
+              end
+              row 'Celular Corporativo' do |emple|
+                emple.celular_corp
+              end
               row :correo
               row :correo_corp
 
