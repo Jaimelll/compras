@@ -43,15 +43,17 @@ end
               end
 
         scope :CAS, :default => true do |emples|
-                        emples.where(tip_tra:1)
+                        emples.where(tip_tra:1,estado:1)
              end
         scope :Orden_servicio, :default => true do |emples|
-                       emples.where(tip_tra:2)
+                       emples.where(tip_tra:2,estado:1)
             end
         scope :Militares, :default => true do |emples|
-                    emples.where(tip_tra:3)
+                    emples.where(tip_tra:3,estado:1)
                end
-
+        scope :Otros, :default => true do |emples|
+                     emples.where(tip_tra:4,estado:1)
+                      end
 
          scope :Inactivos, :default => true do |emples|
                         emples.where(estado:2)
