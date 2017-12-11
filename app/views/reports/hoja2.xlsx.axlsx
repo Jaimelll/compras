@@ -210,7 +210,7 @@ else
 end
 
 
-sheet.add_row [@conta, Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+sheet.add_row [@conta, Phase.where(id:vite.phase_id).select('proceso as dd').first.dd,
  vite.codigo, vite.descripcion, vite.postor, vite.presupuestado,
  @vadj],
  style: [centra,izq, centra,  izq,  izq, soles,soles]
@@ -258,7 +258,7 @@ else
 procdes=" "
 
 end
-sheet.add_row [@conta,  Phase.where(id:vite.phase_id).select('nomenclatura as dd').first.dd,
+sheet.add_row [@conta,  Phase.where(id:vite.phase_id).select('proceso as dd').first.dd,
  vite.codigo, vite.descripcion, vite.presupuestado,
  @vref,
  procdes,
