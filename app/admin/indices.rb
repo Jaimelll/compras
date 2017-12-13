@@ -524,7 +524,7 @@ ActiveAdmin.register_page "Indices" do
 
                      vddia=iplazo
                      vlmes=0
-                     vmes=  vddia.month
+                     vmes=  fplazo.month
 
                      vhab=0        #dias laborables
 
@@ -545,12 +545,12 @@ ActiveAdmin.register_page "Indices" do
 
        dvss=@vproceso.drop(sconta+1).compact.reduce :+
 
-     if sconta==6 and vmes==11 and dvss>0 and vhab>0 then
-      li dvss
+    # if sconta==6 and vmes==11 and dvss>0 and vhab>0 then
+    #  li dvss
 
-      ul vhab
-      ul item.id
-    end
+    #  ul vhab
+    #  ul item.id
+  #  end
 
          if vhab>0 and dvss>0 then
 
