@@ -56,7 +56,7 @@ ActiveAdmin.register_page "Indices" do
          vnproceso=[0,0,0,0,0,0]
 
          #plazos teoricos
-         vplazo=[0,0,0,0,0,0]
+         vplazo=[0,0,0,0,0,0,0,0,0]
 
          #####################################################para plazo
 
@@ -90,7 +90,7 @@ ActiveAdmin.register_page "Indices" do
 
              @vfec1=Time.now
 
-             @vproceso=[0,0,0,0,0,0,0,0]
+             @vproceso=[0,0,0,0,0,0,0,0,0]
 
              @uproc=8
              @corta=0
@@ -500,16 +500,16 @@ ActiveAdmin.register_page "Indices" do
 
                 sconta=0
 
-                while sconta<7  #calculo de los vnproceso
+                while sconta<8  #calculo de los vnproceso
                   if sconta==6 then
                       vss=@vproceso.take(2).compact.reduce :+
                   else
                       vss=@vproceso.take(sconta).compact.reduce :+
                   end
 
-                      idss=@vproceso.push(0)
 
-                      dvss=idss.drop(sconta).compact.reduce :+
+
+
 
                       unless vss
                         vss=0
@@ -535,19 +535,27 @@ ActiveAdmin.register_page "Indices" do
                                 end   # unless
 
 
-
+                                  # no termino en plazo
                                if vhab>vplazo[sconta] and  vplazo[sconta] >0 and vlmes==0 then
-                                      vmes=  vddia.month
+
                                       vlmes=1
                                end
 
                         end #de while
 
+       dvss=@vproceso.drop(sconta+1).compact.reduce :+
+
+     if sconta==6 and vmes==11 and dvss>0 and vhab>0 then
+      li dvss
+
+      ul vhab
+      ul item.id
+    end
 
          if vhab>0 and dvss>0 then
 
                 if  vlmes==0  then
-                       vmes=  vddia.month
+
 
                    case sconta
                         when 2
