@@ -566,7 +566,7 @@ unless current_admin_user.id==24 #personal
                                          column("Avance") do |formula|
                                      link_to "PAC", reports_vhoja1_path(format:  "xlsx", :param1=> @vxper,
                                       :param2=> @vpresu, :param3=> @vpac1, :param4=> @vpac2,
-                                      :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5)
+                                      :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5,:param8=> @vpac6,:param9=> @vpac7)
                                         #  "PAC"
                                          end
                                          column("S/EXP") do |formula|
