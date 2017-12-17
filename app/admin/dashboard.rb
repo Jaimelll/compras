@@ -662,13 +662,18 @@ unless current_admin_user.id==24 #personal
                                           @vopc1=4
                                           @le=  @vxper.inject(0, :+).to_s+ "/("+
                                           number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
-                                                  link_to "#{@le} ", reports_comment_path(format: :pdf,
-                                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+                                                  link_to "#{@le} ",
+                                          reports_vhoja21_path(format:  "xlsx", :param1=> @vxper,
+                                              :param2=> @vpresu, :param3=> @vpac1, :param4=> @vpac2,
+                                              :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5,:param8=> @vpac6,:param9=> @vpac7)
+
+
+
+                                              #anterior
+                                              # reports_comment_path(format: :pdf,
+                                              # :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
                                        end
-
-
-
 
 
 

@@ -1,0 +1,336 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 9, bg_color: "C1C1C1")
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center,vertical: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
+fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center })
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center })
+
+
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
+
+
+def merge_last_row(sheet,options ={})
+  last_row = sheet.rows.last.index + 1
+  first_col,last_col = options[:columns]
+  if first_col && last_col
+    sheet.merge_cells "#{first_col}#{last_row}:#{last_col}#{last_row}"
+  else
+    sheet.merge_cells sheet.rows.last
+  end
+  sheet.rows.last.style = style if options[:style]
+end
+
+
+
+
+
+
+wb.add_worksheet(name: "Resumen") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(AVANCE S/EXP C/EXP DC DEM DPC FC EC TOTAL),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
+
+
+
+  sheet.add_row ["PAC", @vnpac[1], @vnpac[2], @vnpac[3], @vnpac[4], @vnpac[5],
+   @vnpac[6], @vnpac[7],@vnpac[1].to_i+@vnpac[2].to_i+@vnpac[3].to_i+@vnpac[4].to_i+@vnpac[5].to_i+
+   @vnpac[6].to_i+@vnpac[7].to_i],
+   style: [izq, centra, centra, centra, centra, centra, centra, centra, centra]
+
+   sheet.add_row ["Estimado(soles)", @vmpac[1], @vmpac[2], @vmpac[3], @vmpac[4], @vmpac[5],
+    @vmpac[6], @vmpac[7],@vmpac[1].to_i+@vmpac[2].to_i+@vmpac[3].to_i+@vmpac[4].to_i+@vmpac[5].to_i+
+    @vmpac[6].to_i+@vmpac[7].to_i],
+    style: [izq, soles, soles, soles, soles, soles, soles, soles, soles]
+
+
+end
+
+
+Formula.where(product_id:10).order('orden').where('orden<5').each do |proce|
+case proce.orden
+   when 1
+          @vpacn=@vpac1
+   when 2
+           @vpacn=@vpac2
+   when 3
+         @vpacn=@vpac3
+   when 4
+        @vpacn=@vpac4
+   end
+
+nuitem="_("+@items.where(id:@vpacn).count.to_s+")"
+
+wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
+
+
+  sheet.add_row []
+
+    sheet.add_row [proce.descripcion]
+
+
+
+
+
+   Formula.where(product_id:6).order('orden').each do  |merca|
+   if @items.where(tipo:merca.orden).count>0 then
+
+
+
+  Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
+  if @items.where(tipo:merca.orden,modalidad:modal.orden).count>0 then
+
+
+
+   mercmod="MERCADO_"+Formula.where(product_id:6,orden:merca.orden).
+           select('nombre as dd').first.dd+"_"+Formula.where(product_id:4,orden:modal.orden).
+           select('nombre as dd').first.dd
+
+
+   sheet.add_row []
+
+  sheet.add_row [mercmod.upcase],style: [titu]
+ merge_last_row sheet, columns:["A","I"]
+
+  case proce.orden
+     when 1
+       sheet.add_row %w(N OBAC PAC FECHA_PAC  EXPED DESCRIPCION  FUENTE VALOR_SEGUN_PAC_(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+
+
+     when 2
+         sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
+     when 3
+       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
+      style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu]
+
+
+     when 4
+       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,titu, titu]
+
+
+
+
+       end
+
+
+
+
+       @conta=0
+       vcorpo=0
+       vconta2=0
+       vlineai=1
+       vlineaf=1
+       vexp =   "s/d"
+      @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
+
+
+        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+       @vdetalle= Detail.where(actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
+       @vdetalle= @vdetalle.where(actividad:@vpact3,item_id:ite.id)
+
+       @vobsr=" "
+       if @vdetalle.count>0
+      @vdetalle.each do |deta|
+
+      if deta.obs then
+      @vobsr=deta.obs.capitalize
+       end
+     end
+    end
+
+
+
+    if ite.exped and ite.exped>0 then
+
+      exp =Formula.where(product_id:16, orden:ite.exped).
+        select('nombre as dd').first.dd
+
+      else
+        exp =   "s/d"
+      end
+
+
+
+if exp =="s/d" or exp!=vexp then
+   @conta=@conta+1
+   vexp=exp
+   vconta2=@conta
+
+  
+
+   vcorpo=0
+else
+  if vcorpo==0 then
+      vlineai = sheet.rows.last.index+1
+  end
+     vcorpo=vcorpo+1
+     vconta2=nil
+     vlineaf = sheet.rows.last.index+2
+     sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
+end
+
+
+
+ if Detail.where(actividad:13,item_id:ite.id).count>0 then
+   @fecing=Detail.where(actividad:13,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ else
+   @fecing=""
+ end
+
+ if Detail.where(actividad:33,item_id:ite.id).count>0 then
+   @epom1=Detail.where(actividad:33,item_id:ite.id).select('plan as dd').first.dd.strftime("%d/%m/%y")
+   @epom2=Detail.where(actividad:33,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+    @epom3=Detail.where(actividad:33,itemitem_id:ite.id).select('pfecha+21 as dd').first.dd.strftime("%d/%m/%y")
+ else
+   @epom1=""
+   @epom2=""
+    @epom3=""
+ end
+
+
+
+
+
+
+ case proce.orden
+   when 1
+    sheet.add_row [  vconta2,Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,ite.pac, ite.mesconvoca,
+    exp,
+    ite.descripcion,
+
+    Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+    ite.certificado.to_i, @vobsr],
+    style: [centra, centra,centra, fechas,  izq, izq, centra,  soles, izq], height: 35
+    sheet.column_widths 5, 10,10,12, 10,40, nil,10, 30
+
+    when 2,3
+  sheet.add_row [ @conta,Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,ite.pac, ite.mesconvoca,
+  exp,
+  ite.descripcion,
+
+
+   Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+    ite.solicita,
+    @fecing,
+  ite.certificado.to_i, @vobsr],
+  style: [centra, centra,centra, fechas,  izq, izq, centra, fechad, centra, soles, izq]
+
+    when 4,5,6,7
+
+    sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     exp,
+    ite.descripcion,
+
+     Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+      ite.solicita,
+      @fecing, @epom1,  @epom2, @epom3,
+    ite.certificado.to_i, @vobsr],
+    style: [centra, centra, fechas, centra, izq, izq, centra, fechad, centra, centra, centra, centra, soles, izq]
+
+    end
+
+
+
+
+
+end
+end
+
+end
+end
+end
+end
+
+
+end
+
+
+
+wb.add_worksheet(name: "Autorizados") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO FUENTE FECHA OBS TIPO NUMERO ESTIMADO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
+
+
+
+
+    @conta2=0
+    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     @item1=Item.where(ejecucion:4,modalidad:3,exped2:@vaf1).order('obac,pac')
+     @item1.each do |ite|
+
+    @conta2=@conta2+1
+
+if Detail.where(actividad:8,item_id:ite.id).count>0 then
+@rjfec=Detail.where(actividad:8,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+@rjobs=Detail.where(actividad:8,item_id:ite.id).select('obs as dd').first.dd
+@rjtipo=Detail.where(actividad:8,item_id:ite.id).select('tipo as dd').first.dd
+@rjnum=Detail.where(actividad:8,item_id:ite.id).select('numero as dd').first.dd
+else
+    if Detail.where(actividad:30,item_id:ite.id).count>0 then
+          @rjfec=Detail.where(actividad:30,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+          @rjobs=Detail.where(actividad:30,item_id:ite.id).select('obs as dd').first.dd
+          @rjtipo=Detail.where(actividad:30,item_id:ite.id).select('tipo as dd').first.dd
+          @rjnum=Detail.where(actividad:30,item_id:ite.id).select('numero as dd').first.dd
+
+   else
+      @rjfec=" "
+      @rjobs=" "
+      @rjtipo=" "
+      @rjnum=" "
+
+  end
+end
+
+
+
+
+     sheet.add_row [ @conta2,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     Formula.where(product_id:16, orden:ite.exped).
+      select('nombre as dd').first.dd,
+     ite.descripcion,
+      Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
+
+      Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
+     style: [centra,centra,fechas,centra,izq,izq,centra,centra,centra,fechad,izq,izq, soles]
+
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+end
