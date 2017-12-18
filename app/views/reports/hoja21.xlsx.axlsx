@@ -127,7 +127,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        vlineai=1
        vlineaf=1
        vexp = "s/d"
-
+       vncorp=0
       @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
 
         vdesc=ite.descripcion
@@ -151,7 +151,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
     if ite.exped and ite.exped>0 then
-
+     vncorp=@items.where(exped:ite.exped,tipo:merca.orden,modalidad:modal.orden).count
       exp =Formula.where(product_id:16, orden:ite.exped).
         select('nombre as dd').first.dd
 
@@ -189,18 +189,18 @@ else
 
 
 
-
+    if vncorp==(vcorpo+1) then
 
       case proce.orden
 
             when 1
                   sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
                   sheet.merge_cells "F#{vlineai}:F#{vlineaf}"
-            when 2,3     #,4
+            when 2,3,4
                  sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
                  sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
         end
-
+   end
 
 
 
