@@ -660,18 +660,20 @@ unless current_admin_user.id==24 #personal
                                           @auto=  @vaf1
                                           @tita1="Total Procesos en Curso ACFFAA - PERIODO"
                                           @vopc1=4
+                                          @vxper0=@vxper
+                                          @vpresu0=@vpresu
+                                          @vpac10=@vpac1
+                                          @vpac20=@vpac2
+                                          @vpac30=@vpac3
+                                          @vpac40= @vpac4
+
                                           @le=  @vxper.inject(0, :+).to_s+ "/("+
                                           number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
                                                   link_to "#{@le} ",
-                                          reports_vhoja21_path(format:  "xlsx", :param1=> @vxper,
-                                              :param2=> @vpresu, :param3=> @vpac1, :param4=> @vpac2,
-                                              :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5,:param8=> @vpac6,:param9=> @vpac7)
+                                          reports_vhoja21_path(format:  "xlsx", :param11=> @vxper0,
+                                              :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
+                                              :param15=> @vpac30,:param16=> @vpac40)
 
-
-
-                                              #anterior
-                                              # reports_comment_path(format: :pdf,
-                                              # :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
                                        end
 
@@ -899,9 +901,9 @@ column("Rol") do |formula|
         :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
    else
      if vvar==1 then
-     link_to "#{formula.nombre}", reports_vhoja3_path(format:  "xlsx", :param1=> @vxper3,
-        :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-        :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+     link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx", :param11=> @vxper0,
+         :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
+         :param15=> @vpac30,:param16=> @vpac40)
      end
    end
 

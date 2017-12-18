@@ -415,20 +415,18 @@ def vhoja20
 end
 
 def vhoja21
-  @vnpac=params[:param1]
-  @vmpac=params[:param2]
-  @vpac1=params[:param3]
-  @vpac2=params[:param4]
-  @vpac3=params[:param5]
-  @vpac4=params[:param6]
-  @vpac5=params[:param7]
-  @vpac6=params[:param8]
-  @vpac7=params[:param9]
-#  @items=Item.order('tipo,modalidad,exped,certificado DESC')
+  @vnpac0=params[:param1]
+  @vmpac0=params[:param2]
+  @vpac10=params[:param3]
+  @vpac20=params[:param4]
+  @vpac30=params[:param5]
+  @vpac40=params[:param6]
+
+
   @items=Item.order('tipo,modalidad,exped,certificado DESC')
   respond_to do |format|
     format.html
-  
+
     format.xlsx{render template: 'reports/hoja21.xlsx.axlsx', xlsx:'CuadroPac'}
   end
 end
