@@ -63,20 +63,20 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
   sheet.add_row []
 
     sheet.add_row [nil,proce.descripcion]
-    merge_last_row sheet, columns:["B","D"]
+    merge_last_row sheet, columns:["B","E"]
      sheet.column_widths nil,25
 
 
 
    Formula.where(product_id:6).order('orden').each do  |merca|
-   if @items.where(tipo:merca.orden).count>0 then
+   if @items.where(id:@vpacn,tipo:merca.orden).count>0 then
 
 
 
   Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
 
 
-  if @items.where(tipo:merca.orden,modalidad:modal.orden).count>0 then
+  if @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).count>0 then
 
 
 
