@@ -74,7 +74,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
   Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
-  
+
 
   if @items.where(tipo:merca.orden,modalidad:modal.orden).count>0 then
 
@@ -127,7 +127,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        vlineai=1
        vlineaf=1
        vexp =   "s/d"
-       vmerge=0
+
       @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
 
         vdesc=ite.descripcion
@@ -145,6 +145,8 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        end
      end
     end
+
+
 
 
 
@@ -166,18 +168,6 @@ if exp =="s/d" or exp!=vexp then
 
 
 
-   if vmerge==1 then
-    sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
-    case proce.orden
-
-           when 1
-
-                sheet.merge_cells "F#{vlineai}:F#{vlineaf}"
-          when 2,3,4
-
-               sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
-      end
-   end
 
 
 
@@ -186,7 +176,7 @@ if exp =="s/d" or exp!=vexp then
 
    vcorpo=0
 else
-  vmerge=1
+
   if vcorpo==0 then
       vlineai = sheet.rows.last.index+1
       vdesc=Formula.where(product_id:16,orden:ite.exped).select('nombre as dd').first.dd
@@ -195,6 +185,22 @@ else
      vconta2=nil
      vdesc=nil
      vlineaf = sheet.rows.last.index+2
+
+
+
+
+      sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
+      
+      case proce.orden
+
+             when 1
+
+                  sheet.merge_cells "F#{vlineai}:F#{vlineaf}"
+            when 2,3,4
+
+                 sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
+        end
+
 
 
 
