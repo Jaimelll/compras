@@ -436,10 +436,10 @@ case proce.orden
            sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
            sheet.merge_cells "E#{vlineai1}:E#{vlineaf1}"
            sheet.merge_cells "F#{vlineai1}:F#{vlineaf1}"
-           sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
            sheet.merge_cells "H#{vlineai1}:H#{vlineaf1}"
            sheet.merge_cells "I#{vlineai1}:I#{vlineaf1}"
            sheet.merge_cells "J#{vlineai1}:J#{vlineaf1}"
+           sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
            sheet.merge_cells "L#{vlineai1}:L#{vlineaf1}"
          end
 
