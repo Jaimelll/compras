@@ -285,7 +285,7 @@ end
 ############
 
 Formula.where(product_id:20).order('orden').each do |proce|
-wb.add_worksheet(name: proce.nombre) do |sheet|
+wb.add_worksheet(name: proce.descripcion) do |sheet|
 
   sheet.add_row []
 
