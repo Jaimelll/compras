@@ -669,10 +669,7 @@ unless current_admin_user.id==24 #personal
 
                                           @le=  @vxper.inject(0, :+).to_s+ "/("+
                                           number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
-                                                  link_to "#{@le} ",
-                                          reports_vhoja21_path(format:  "xlsx", :param11=> @vxper0,
-                                              :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
-                                              :param15=> @vpac30,:param16=> @vpac40)
+                                                  link_to "#{@le} "
 
 
                                        end
@@ -896,14 +893,18 @@ end
 
 column("Rol") do |formula|
    if formula.orden==1 then
-     link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
-        :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-        :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
-   else
-     if vvar==1 then
-     link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx", :param11=> @vxper0,
+     link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
+     :param1=> @vxper3,
+       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuoba,
+        :param11=> @vxper0,
          :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
          :param15=> @vpac30,:param16=> @vpac40)
+   else
+     if vvar==1 then
+             link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
+            :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+            :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
      end
    end
 

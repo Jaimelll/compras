@@ -260,6 +260,153 @@ end
 
 ############
 
+Formula.where(product_id:20).order('orden').each do |proce|
+wb.add_worksheet(name: proce.nombre) do |sheet|
+
+  sheet.add_row []
+
+
+
+
+
+
+
+
+  case proce.orden
+     when 1
+        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac1
+     when 2
+        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac2
+     when 3
+        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        @vpacn=@vpac3
+
+      end
+
+
+
+
+       @conta=0
+     @activities.where(id:@vpacn).each do |activ|
+
+
+        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+       @vdetalle= Activity.order('pfecha')
+       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
+
+       @vobsr=" "
+       if @vdetalle.count>0
+      @vdetalle.each do |deta|
+
+      if deta.obs then
+      @vobsr=deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize
+       end
+     end
+    end
+
+
+
+     @vobac=" "
+         @esti=0
+         @apac=[]
+         @aobac=[]
+         @afecing=[]
+     if activ.expediente>0 then
+      @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
+     Item.where(exped:activ.expediente).each do |nobac|
+
+     @apac.push(nobac.pac)
+     @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
+
+     if Detail.where(actividad:13,item_id:nobac.id).count>0 then
+      @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
+     else
+        @afecing.push("")
+     end
+
+
+     end
+     end
+
+
+
+
+
+
+
+
+
+
+
+
+        if proce.orden==3  then
+          @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
+       else
+           @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
+       end
+
+
+
+
+@conta=@conta+1
+
+case proce.orden
+   when 1
+
+     if Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').count>0 then
+       @fec21= Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec21=""
+     end
+     if Activity.where(actividad:18,phase_id:activ.id).count>0 then
+       @fec22= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec22=""
+     end
+
+   when 2,3
+
+   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
+     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec21=""
+   end
+   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
+     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec22=""
+   end
+
+
+
+
+    end
+
+
+
+
+  sheet.add_row [ @conta, activ.proceso,@apac[0],@aobac[0],@afecing[0], activ.nomenclatura, activ.descripcion.underscore.capitalize,
+   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr ],
+   style: [centra, centra, centra, centra, centra,  izq, izq, soles, soles, soles,centra,centra, izq]
+
+    nn=1
+         while @aobac.length>nn
+         sheet.add_row [ @conta,activ.proceso ,@apac[nn],@aobac[nn],@afecing[nn] ],
+          style: [centra, centra, centra, centra, centra]
+         nn=nn+1
+         end
+
+
+end
+end
+end
+
+
 
 
 ####################
