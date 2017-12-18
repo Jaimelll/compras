@@ -175,9 +175,12 @@ else
      vlineaf = sheet.rows.last.index+2
      sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
      case proce.orden
+
         when 1
+             sheet.merge_cells "F#{vlineai}:F#{vlineai}"
              sheet.merge_cells "F#{vlineai}:F#{vlineaf}"
        when 2,3,4
+            sheet.merge_cells "E#{vlineai}:E#{vlineai}"
             sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
      end
 end
