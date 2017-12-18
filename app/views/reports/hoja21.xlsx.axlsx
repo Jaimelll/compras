@@ -126,7 +126,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        vconta2=0
        vlineai=1
        vlineaf=1
-       vexp =   "s/d"
+       vexp = "s/d"
 
       @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
 
@@ -189,15 +189,15 @@ else
 
 
 
-      sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
-      
+
+
       case proce.orden
 
-             when 1
-
+            when 1
+                  sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
                   sheet.merge_cells "F#{vlineai}:F#{vlineaf}"
-            when 2,3,4
-
+            when 2,3     #,4
+                 sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
                  sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
         end
 
