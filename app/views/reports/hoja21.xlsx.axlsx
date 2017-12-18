@@ -285,11 +285,53 @@ end
 ############
 
 Formula.where(product_id:20).order('orden').each do |proce|
-wb.add_worksheet(name: proce.descripcion) do |sheet|
+
+case proce.orden
+   when 1
+          @vpacn=@vpac1
+   when 2
+          @vpacn=@vpac2
+   when 3
+          @vpacn=@vpac3
+
+   end
+
+   vexp=Phase.where(id:@vpacn).select('distinct expediente ')
+
+   nuitem1="_("+Item.where(exped:vexp).count.to_s+")"
+
+wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   sheet.add_row []
 
+  sheet.add_row [nil,proce.descripcion]
+  merge_last_row sheet, columns:["B","E"]
+   sheet.column_widths nil,25
 
+
+
+   Formula.where(product_id:6).order('orden').each do  |merca|
+
+  vtipo2=Item.where(tipo: merca.orden).where('exped>0').select('distinct exped as dd')
+
+  if @activities.where(id:@vpacn,expediente:vtipo2).count then
+
+
+    Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
+  vmoda2=Item.where(tipo:merca.orden,modalidad:modal.orden).where('exped>0').select('distinct exped as dd')
+
+  if @activities.where(id:@vpacn,expediente:vmoda2).count then
+
+  mercmod="MERCADO_"+Formula.where(product_id:6,orden:merca.orden).
+          select('nombre as dd').first.dd+"_"+Formula.where(product_id:4,orden:modal.orden).
+          select('nombre as dd').first.dd
+
+
+  sheet.add_row []
+
+  sheet.add_row [mercmod.upcase],style: [titu]
+
+  merge_last_row sheet, columns:["A","G"]
 
 
 
@@ -301,17 +343,16 @@ wb.add_worksheet(name: proce.descripcion) do |sheet|
         sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu, titu, titu], height: 40
         sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,30
-        @vpacn=@vpac1
+
      when 2
         sheet.add_row %w(N OBAC PAC FEC_ING PROCE DESCRIPCION FUENTE PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,30
-        @vpacn=@vpac2
+
      when 3
         sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
         style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu, titu, titu], height: 40
         sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,30
-        @vpacn=@vpac3
 
       end
 
@@ -319,7 +360,8 @@ wb.add_worksheet(name: proce.descripcion) do |sheet|
 
 
        @conta=0
-     @activities.where(id:@vpacn).each do |activ|
+
+  @activities.where(id:@vpacn,expediente:vmoda2).each do |activ|
 
 
         @vpact3=Formula.where(product_id:12,acti:3).select('orden')
@@ -384,6 +426,7 @@ wb.add_worksheet(name: proce.descripcion) do |sheet|
 
 @conta=@conta+1
 
+
 case proce.orden
    when 1
 
@@ -447,7 +490,10 @@ end
 end
 end
 
-
+end
+end
+end
+end
 
 
 ####################
