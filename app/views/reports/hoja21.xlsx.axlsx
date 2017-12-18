@@ -173,6 +173,7 @@ else
      vconta2=nil
      vdesc=nil
      vlineaf = sheet.rows.last.index+2
+     sheet.merge_cells "A#{vlineai}:A#{vlineai}"
      sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
      case proce.orden
 
