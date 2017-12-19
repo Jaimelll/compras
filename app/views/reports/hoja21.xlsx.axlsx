@@ -37,11 +37,82 @@ def merge_last_row(sheet,options ={})
   sheet.rows.last.style = style if options[:style]
 end
 
+############################
+
+wb.add_worksheet(name: "RESUMEN") do |sheet|
+
+  sheet.add_row []
+
+
+   sheet.add_row %w(SITUACION_DE_LOS_EXPEDIENTES_Y_PROCESOS_DE_CONTRATACION_A_CARGO_DE_LA_ACCFFA ),   style: [titu], height: 40
+    merge_last_row sheet, columns:["A","F"]
+
+  sheet.add_row %w(ESTADO_SITUACIONAL CCFFAA EP MGP FAP CANTIDAD_PAC),
+        style: [titu, titu, titu, titu, titu, titu], height: 40
+        sheet.column_widths 30, 10,10,10,10,10
+
+
+
+Formula.where(product_id:10).order('orden').where('orden<5').each do |proce|
+
+case proce.orden
+   when 1
+          @vpacn=@vpac10
+   when 2
+           @vpacn=@vpac20
+   when 3
+         @vpacn=@vpac30
+   when 4
+        @vpacn=@vpac40
+   end
+
+
+  sheet.add_row [proce.descripcion, @items.where(id:@vpacn, obac:6).count, @items.where(id:@vpacn, obac:1).count , @items.where(id:@vpacn, obac:2).count , @items.where(id:@vpacn, obac:3).count , @items.where(id:@vpacn).count ],
+   style: [izq, centra, centra, centra,  centra,centra]
+
+end
+Formula.where(product_id:20).order('orden').each do |proce|
+
+case proce.orden
+   when 1
+          @vpacn=@vpac1
+   when 2
+          @vpacn=@vpac2
+   when 3
+          @vpacn=@vpac3
+
+   end
+
+ vexp=Phase.where(id:@vpacn).select('distinct expediente ')
+
+  Item.where(exped:vexp).count
+sheet.add_row [proce.descripcion,  Item.where(exped:vexp, obac:6).count,  Item.where(exped:vexp, obac:1).count ,  Item.where(exped:vexp, obac:2).count ,  Item.where(exped:vexp, obac:3).count ,  Item.where(exped:vexp).count],
+    style: [izq, centra, centra, centra,  centra,centra]
 
 
 
 
 
+
+end
+
+"=SUM(A2:C2)"
+tot="TOTAL"
+sheet.add_row [tot,"=SUM(B4:B10)","=SUM(C4:C10)","=SUM(D4:D10)","=SUM(E4:E10)","=SUM(F4:F10)" ],
+    style: [titu, titu, titu, titu, titu, titu]
+
+
+
+end
+
+
+
+
+
+
+
+
+#########################
 
 Formula.where(product_id:10).order('orden').where('orden<5').each do |proce|
 case proce.orden
