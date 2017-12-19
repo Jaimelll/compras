@@ -385,13 +385,13 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   vtipo2=Item.where(tipo: merca.orden).where('exped>0').select('distinct exped as dd')
 
-  if @activities.where(id:@vpacn,expediente:vtipo2).count then
+  if @activities.where(id:@vpacn,expediente:vtipo2).count>0 then
 
 
     Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
   vmoda2=Item.where(tipo:merca.orden,modalidad:modal.orden).where('exped>0').select('distinct exped as dd')
 
-  if @activities.where(id:@vpacn,expediente:vmoda2).count then
+  if @activities.where(id:@vpacn,expediente:vmoda2).count>0 then
 
   mercmod="MERCADO_"+Formula.where(product_id:6,orden:merca.orden).
           select('nombre as dd').first.dd+"_"+Formula.where(product_id:4,orden:modal.orden).
