@@ -393,7 +393,8 @@ ActiveAdmin.register_page "Indices" do
              # empieza @vlog
              if @vlog then
 
-
+ Item.where(id:item.id).update_all( dobac: @vproceso[0], dsexp: @vproceso[1], dcexp: @vproceso[2],
+  ddc: @vproceso[3],ddem: @vproceso[4],ddpc: @vproceso[5],dfc: @vproceso[6],ddec: @vproceso[7])
 
 
 

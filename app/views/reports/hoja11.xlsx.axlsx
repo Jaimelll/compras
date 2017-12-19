@@ -31,7 +31,8 @@ sheet.add_row []
 
 case @tip.to_i
 when 1
-sheet.add_row %w(PAC OBAC DESCRIPCION MODALIDAD EXPEDIENTE),   style: [titu, titu, titu, titu, titu]
+sheet.add_row %w(PAC OBAC DESCRIPCION MODALIDAD EXPEDIENTE OBAC S/EXP C/EXP DC DEM DPC FC),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -57,8 +58,18 @@ vexped=Item.where(id:vid).select('exped as dd').first.dd
 vnexped=Formula.where(product_id:16,orden:vexped).select('nombre as dd').first.dd
 
 sheet.add_row [ Item.where(id:@iitem[conta]).select('pac as dd').first.dd,
+
 vnoba,
-  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd ,vnmod ,vnexped],   style: [centra, centra, izq,centra, izq]
+  Item.where(id:@iitem[conta]).select('descripcion as dd').first.dd ,vnmod ,vnexped,
+  Item.where(id:@iitem[conta]).select('dobac as dd').first.dd,
+  Item.where(id:@iitem[conta]).select('dsexp as dd').first.dd,
+  Item.where(id:@iitem[conta]).select('dcexp as dd').first.dd,
+  Item.where(id:@iitem[conta]).select('ddc as dd').first.dd,
+  Item.where(id:@iitem[conta]).select('ddem as dd').first.dd,
+  Item.where(id:@iitem[conta]).select('ddpc as dd').first.dd,
+  Item.where(id:@iitem[conta]).select('dfc as dd').first.dd
+
+  ],   style: [centra, centra, izq,centra, izq,centra,centra,centra,centra,centra,centra,centra,centra]
 
 conta=conta+1
 

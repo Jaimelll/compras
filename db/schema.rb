@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171201191638) do
+ActiveRecord::Schema.define(version: 20171219145324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,14 @@ ActiveRecord::Schema.define(version: 20171201191638) do
     t.float    "ccp"
     t.float    "cpr"
     t.integer  "sele3"
+    t.integer  "dobac"
+    t.integer  "dsexp"
+    t.integer  "dcexp"
+    t.integer  "ddc"
+    t.integer  "ddem"
+    t.integer  "ddpc"
+    t.integer  "dfc"
+    t.integer  "ddec"
     t.index ["admin_user_id"], name: "index_items_on_admin_user_id", using: :btree
   end
 
