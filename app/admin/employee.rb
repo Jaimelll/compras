@@ -16,7 +16,7 @@ ActiveAdmin.register Agreement do
 belongs_to :employee
 end
 
-
+#menu false
     menu  priority: 16, label: "Personal"
 
     permit_params :dni, :ape_pat, :ape_mat,
