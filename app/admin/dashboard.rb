@@ -204,8 +204,9 @@ end
                         end   #de table for
     #########personal
 
-                        li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
-                        li    link_to "visitas", "https://secure-harbor-85875.herokuapp.com"
+                      #  li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
+                      #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
+                       li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
                       end #de panel historial periodos
 
 ###############################
