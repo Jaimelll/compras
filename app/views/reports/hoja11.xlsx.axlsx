@@ -77,7 +77,7 @@ end
 
 when 2
 
-sheet.add_row %w( NOMENCLATURA DESCRIPCION MODALIDAD ADJUDICADO),   style: [titu, titu, titu, titu]
+sheet.add_row %w( NOMENCLATURA DESCRIPCION MODALIDAD PRESUPUESTADO REFERENCIAL ADJUDICADO AHORRO),   style: [titu, titu, titu, titu, titu, titu, titu]
 
 aiitem=@iitem.flatten.compact
 
@@ -87,10 +87,11 @@ vmmod=Item.where(exped:procc.expediente).select("modalidad as dd").first.dd
 vnommod=Formula.where(product_id:4,orden:vmmod).select('nombre as dd').first.dd
 
 
-
-
-
-sheet.add_row [ procc.nomenclatura, procc.descripcion,vnommod, procc.sele2],  style: [izq, izq, izq, soles]
+  ref1=Piece.where(phase_id:procc.id.to_s).where('adjudicado>0').sum(:referencial)
+  ref2=ref1*Formula.where(product_id:7,orden:procc.moneda).select('cantidad as dd').first.dd/100.to_i
+  presu1=Piece.where(phase_id:procc.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
+  aho2=presu1-procc.sele2
+sheet.add_row [ procc.nomenclatura, procc.descripcion,vnommod,presu1, ref2, procc.sele2,aho2],  style: [izq, izq, izq,soles,soles,soles,soles]
 
 end
 
