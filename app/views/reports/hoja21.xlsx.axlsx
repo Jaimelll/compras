@@ -80,6 +80,8 @@ case proce.orden
           @vpacn=@vpac2
    when 3
           @vpacn=@vpac3
+  when 4
+         @vpacn=@vpac4
 
    end
 
