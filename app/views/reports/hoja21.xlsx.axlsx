@@ -100,7 +100,7 @@ end
 
 "=SUM(A2:C2)"
 tot="TOTAL"
-sheet.add_row [tot,"=SUM(B4:B10)","=SUM(C4:C10)","=SUM(D4:D10)","=SUM(E4:E10)","=SUM(F4:F10)" ],
+sheet.add_row [tot,"=SUM(B4:B11)","=SUM(C4:C11)","=SUM(D4:D11)","=SUM(E4:E11)","=SUM(F4:F11)" ],
     style: [titu, titu, titu, titu, titu, titu]
 
 
