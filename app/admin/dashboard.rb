@@ -717,6 +717,7 @@ unless current_admin_user.id==24 #personal
 @vconv1=[]# actos previos
 @vconv2=[]# convocados
 @vconv3=[]# adjudicados
+@vconv4=[]# desiertos
 @vconvt=[]# totalvinicio
 
 
@@ -757,11 +758,14 @@ unless current_admin_user.id==24 #personal
             end
 
         else
-          if @vdir==5 then
-              @vconv=1
-          else
-              @vconv=4
-          end
+
+          case @vdir
+            when 5
+                @vconv=1
+            when 2,3,4
+                @vconv=4
+            end
+
         end
     #    if @deta4.where(actividad:79).count>0 then
     #      @vconv=4
@@ -828,10 +832,31 @@ unless current_admin_user.id==24 #personal
               .select('pfecha as dd').first.dd
               Phase.where(id:proceso.id).update_all( pp:@vpp )
 
+            when 4
+              @vconv4.push(proceso.id)
+              @vxper3[4]=@vxper3[4]+1
+
+           if proceso.moneda and proceso.valor then
+
+               @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                     .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+
+
+               @contavus[4]=  @contavus[4]+ @vpv
+               Phase.where(id:proceso.id).update_all( sele2:@vpv )
+          end
+
+              if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
+              @vpp=Activity.where(phase_id:proceso.id,actividad:34)
+              .select('pfecha as dd').first.dd
+              Phase.where(id:proceso.id).update_all( pp:@vpp )
+              else
+              Phase.where(id:proceso.id).update_all( pp:Time.now )
+              end
         end #case
 
         case @vconv
-        when 1,2,3
+        when 1,2,3,4
            @vconvt.push(proceso.id)
            @vxper3[0]=@vxper3[0]+1
 
@@ -896,8 +921,8 @@ column("Rol") do |formula|
    if formula.orden==1 then
      link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
      :param1=> @vxper3,
-       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuoba,
+       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
+       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuoba,:param8=>@vconv2,
         :param11=> @vxper0,
          :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
          :param15=> @vpac30,:param16=> @vpac40)
@@ -965,6 +990,29 @@ else
 end
 end
 end
+
+
+column("Desiertos") do |formula|
+  if formula.orden==1 then
+  @dpc=  formula.orden
+  @titproc1="Procesos Desiertos"
+  @vopc=1
+
+
+link_to "#{@vxper3[4]}"+"/("+"#{number_with_delimiter(@contavus[4].to_i, delimiter: ",")}"+")",
+reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv4,
+:param4=>  @titproc1)
+else
+ if vvar==1 then
+    @contconv= Phase.where(id:@vconv2,sele3:2).count
+   link_to "#{@contconv}", reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
+      :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+      :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+ end
+end
+ end
+
+
    column("Total") do |formula|
 
 

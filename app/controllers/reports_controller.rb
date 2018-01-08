@@ -418,10 +418,11 @@ def vhoja21
   @vnpac=params[:param1]
   @vmpac=params[:param2]
   @vpac1=params[:param3]
-  @vpac2=params[:param4]
+  @vpac2=params[:param8]
   @vpac3=params[:param5]
   @vpact=params[:param6]
   @vuobac=params[:param7]
+  @vpac4=params[:param4]
   @activities=Phase.order('pp ASC')
 
 
