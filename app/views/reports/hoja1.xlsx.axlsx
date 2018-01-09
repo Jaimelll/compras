@@ -301,17 +301,24 @@ wb.add_worksheet(name: "Excluidos") do |sheet|
 
     @conta2=0
     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item2=Item.where(exped2:@vaf1,id:var).order('obac,pac')
+     @item2=Item.where(exped2:@vaf1,modalidad:4,ejecucion:4).order('obac,certificado DESC')
      @item2.each do |ite|
 
     @conta2=@conta2+1
 
+    var=Detail.where(actividad:vact,item_id:ite.id).count
+if var>0 then
 
 @rjfec=Detail.where(actividad:vact,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 @rjobs=Detail.where(actividad:vact,item_id:ite.id).select('obs as dd').first.dd
 @rjtipo=Detail.where(actividad:vact,item_id:ite.id).select('tipo as dd').first.dd
 @rjnum=Detail.where(actividad:vact,item_id:ite.id).select('numero as dd').first.dd
-
+else
+@rjfec=" "
+@rjobs=" "
+@rjtipo=" "
+@rjnum=" "
+end
 
 
 
