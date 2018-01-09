@@ -758,14 +758,13 @@ unless current_admin_user.id==24 #personal
             end
 
         else
-
-          case @vdir
-            when 5
-                @vconv=1
-            when 2,3,4
-                @vconv=4
+          if @vdir>1 then
+            if proceso.convocatoria==1 then
+              @vconv=1
+            else
+           @vconv=4
             end
-
+          end
         end
     #    if @deta4.where(actividad:79).count>0 then
     #      @vconv=4
@@ -1019,7 +1018,7 @@ end
 
 
      if formula.orden==1 then
-     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
+     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]
        link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
         reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
          :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,

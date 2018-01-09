@@ -572,11 +572,41 @@ end
 
 ####################
 
+####ITEM ADJUDICADOS
+
+wb.add_worksheet(name: "items adjudicados") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PROCESO ITEM DESCRIPCION POSTOR_GANADOR PRESUPUESTADO ADJUDICADO),
+  style: [titu,titu, titu, titu, titu, titu, titu]
+
+ @conta=0
+Phase.where(id:@vpac3).order('proceso').each do |vvpro|
+Piece.where(phase_id:vvpro.id,estado:4).order('phase_id,codigo').each do |vite|
+
+@conta=@conta+1
+if vite.adjudicado and vite.moneda then
+@vadj=vite.adjudicado* Formula.where(product_id:7,orden:vite.moneda).select('cantidad as dd').first.dd/100
+
+else
+@vadj=0
+end
+
+
+sheet.add_row [@conta, Phase.where(id:vite.phase_id).select('proceso as dd').first.dd,
+ vite.codigo, vite.descripcion, vite.postor, vite.presupuestado,
+ @vadj],
+ style: [centra,izq, centra,  izq,  izq, soles,soles]
+
+end
+end
+end
 
 
 
 
-
+####ITEM ADJUDICADOS CIERRE
 
 wb.add_worksheet(name: "Autorizados") do |sheet|
 
@@ -632,9 +662,111 @@ end
     end
 end
 
+##########excluidos
+
+################1
+
+wb.add_worksheet(name: "Excluidos") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FECHA OBS TIPO NUMERO ESTIMADO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
+
+ vact=86
+  var=Detail.where(actividad:vact).select('item_id')
+
+    @conta2=0
+    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     @item2=Item.where(exped2:@vaf1,modalidad:4,ejecucion:4).order('obac,certificado DESC')
+     @item2.each do |ite|
+
+    @conta2=@conta2+1
+
+    var=Detail.where(actividad:vact,item_id:ite.id).count
+if var>0 then
+
+@rjfec=Detail.where(actividad:vact,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+@rjobs=Detail.where(actividad:vact,item_id:ite.id).select('obs as dd').first.dd
+@rjtipo=Detail.where(actividad:vact,item_id:ite.id).select('tipo as dd').first.dd
+@rjnum=Detail.where(actividad:vact,item_id:ite.id).select('numero as dd').first.dd
+else
+@rjfec=" "
+@rjobs=" "
+@rjtipo=" "
+@rjnum=" "
+end
 
 
 
+
+
+     sheet.add_row [ @conta2,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     Formula.where(product_id:16, orden:ite.exped).
+      select('nombre as dd').first.dd,
+     ite.descripcion,
+
+
+      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
+     style: [centra,centra,fechas,centra,izq,izq,centra,fechad,izq,izq, soles]
+
+    end
+end
+
+
+
+########excluidos cierre
+
+################incluidos
+
+wb.add_worksheet(name: "Incluidos") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FECHA OBS TIPO NUMERO ESTIMADO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
+
+ vact=7
+  var=Detail.where(actividad:vact).select('item_id')
+
+    @conta2=0
+    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     @item2=Item.where(exped2:@vaf1,id:var).order('obac,pac')
+     @item2.each do |ite|
+
+    @conta2=@conta2+1
+
+
+@rjfec=Detail.where(actividad:vact,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+@rjobs=Detail.where(actividad:vact,item_id:ite.id).select('obs as dd').first.dd
+@rjtipo=Detail.where(actividad:vact,item_id:ite.id).select('tipo as dd').first.dd
+@rjnum=Detail.where(actividad:vact,item_id:ite.id).select('numero as dd').first.dd
+
+
+
+
+
+
+     sheet.add_row [ @conta2,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     Formula.where(product_id:16, orden:ite.exped).
+      select('nombre as dd').first.dd,
+     ite.descripcion,
+
+
+      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
+     style: [centra,centra,fechas,centra,izq,izq,centra,fechad,izq,izq, soles]
+
+    end
+end
+
+
+
+
+
+
+
+
+####################incluidos cierre
 
 
 
