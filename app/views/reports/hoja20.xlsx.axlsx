@@ -53,7 +53,10 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
         sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
         style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
-
+    when 4
+           sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+           style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+           @vpacn=@vpac4
       end
 
 
@@ -185,7 +188,7 @@ end
 
    case proce.orden
 
-      when 2
+      when 2,4
   sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
    @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,@vobsr ],
    style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra, izq, izq, izq], height: 35

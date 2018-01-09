@@ -1022,7 +1022,8 @@ end
        link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
         reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
          :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-         :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+         :param5=> @vconv3,:param6=> @vconvt, :param7=> @vuobac,
+         :param8=> @vconv4, )
 
 
 
