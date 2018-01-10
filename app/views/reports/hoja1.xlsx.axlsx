@@ -3,22 +3,29 @@ wb = xlsx_package.workbook
 wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                 alignment: { horizontal: :center })
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 9, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
-                           alignment: { horizontal: :center },num_fmt: 3)
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
-                        alignment: { horizontal: :center })
+                        alignment: { horizontal: :center,vertical: :center })
 
 centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                               alignment: { horizontal: :center })
+                               alignment: { horizontal: :center,vertical: :center })
 
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                alignment: { horizontal: :left })
-
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
 fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
-                              alignment: { horizontal: :center })
+                                alignment: { horizontal: :center,vertical: :center })
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center })
+
+
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
+
+
 
 
 
@@ -183,167 +190,7 @@ end
 
 
 
-wb.add_worksheet(name: "Autorizados") do |sheet|
 
-  sheet.add_row []
-
-  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO FUENTE FECHA OBS TIPO NUMERO ESTIMADO),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
-
-
-
-
-    @conta2=0
-    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item1=Item.where(ejecucion:4,modalidad:3,exped2:@vaf1).order('obac,pac')
-     @item1.each do |ite|
-
-    @conta2=@conta2+1
-
-if Detail.where(actividad:8,item_id:ite.id).count>0 then
-@rjfec=Detail.where(actividad:8,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-@rjobs=Detail.where(actividad:8,item_id:ite.id).select('obs as dd').first.dd
-@rjtipo=Detail.where(actividad:8,item_id:ite.id).select('tipo as dd').first.dd
-@rjnum=Detail.where(actividad:8,item_id:ite.id).select('numero as dd').first.dd
-else
-    if Detail.where(actividad:30,item_id:ite.id).count>0 then
-          @rjfec=Detail.where(actividad:30,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-          @rjobs=Detail.where(actividad:30,item_id:ite.id).select('obs as dd').first.dd
-          @rjtipo=Detail.where(actividad:30,item_id:ite.id).select('tipo as dd').first.dd
-          @rjnum=Detail.where(actividad:30,item_id:ite.id).select('numero as dd').first.dd
-
-   else
-      @rjfec=" "
-      @rjobs=" "
-      @rjtipo=" "
-      @rjnum=" "
-
-  end
-end
-
-
-
-
-     sheet.add_row [ @conta2,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
-     Formula.where(product_id:16, orden:ite.exped).
-      select('nombre as dd').first.dd,
-     ite.descripcion,
-      Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
-
-      Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
-      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
-     style: [centra,centra,fechas,centra,izq,izq,centra,centra,centra,fechad,izq,izq, soles]
-
-    end
-end
-
-################1
-
-wb.add_worksheet(name: "Incluidos") do |sheet|
-
-  sheet.add_row []
-
-  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FECHA OBS TIPO NUMERO ESTIMADO),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
-
- vact=7
-  var=Detail.where(actividad:vact).select('item_id')
-
-    @conta2=0
-    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item2=Item.where(exped2:@vaf1,id:var).order('obac,pac')
-     @item2.each do |ite|
-
-    @conta2=@conta2+1
-
-
-@rjfec=Detail.where(actividad:vact,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-@rjobs=Detail.where(actividad:vact,item_id:ite.id).select('obs as dd').first.dd
-@rjtipo=Detail.where(actividad:vact,item_id:ite.id).select('tipo as dd').first.dd
-@rjnum=Detail.where(actividad:vact,item_id:ite.id).select('numero as dd').first.dd
-
-
-
-
-
-
-     sheet.add_row [ @conta2,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
-     Formula.where(product_id:16, orden:ite.exped).
-      select('nombre as dd').first.dd,
-     ite.descripcion,
-
-
-      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
-     style: [centra,centra,fechas,centra,izq,izq,centra,fechad,izq,izq, soles]
-
-    end
-end
-
-
-
-
-
-
-
-
-####################
-################1
-
-wb.add_worksheet(name: "Excluidos") do |sheet|
-
-  sheet.add_row []
-
-  sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION  FECHA OBS TIPO NUMERO ESTIMADO),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu,  titu]
-
- vact=86
-  var=Detail.where(actividad:vact).select('item_id')
-
-    @conta2=0
-    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item2=Item.where(exped2:@vaf1,modalidad:4,ejecucion:4).order('obac,certificado DESC')
-     @item2.each do |ite|
-
-    @conta2=@conta2+1
-
-    var=Detail.where(actividad:vact,item_id:ite.id).count
-if var>0 then
-
-@rjfec=Detail.where(actividad:vact,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-@rjobs=Detail.where(actividad:vact,item_id:ite.id).select('obs as dd').first.dd
-@rjtipo=Detail.where(actividad:vact,item_id:ite.id).select('tipo as dd').first.dd
-@rjnum=Detail.where(actividad:vact,item_id:ite.id).select('numero as dd').first.dd
-else
-@rjfec=" "
-@rjobs=" "
-@rjtipo=" "
-@rjnum=" "
-end
-
-
-
-
-
-     sheet.add_row [ @conta2,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
-     Formula.where(product_id:16, orden:ite.exped).
-      select('nombre as dd').first.dd,
-     ite.descripcion,
-
-
-      @rjfec, @rjobs, @rjtipo, @rjnum, ite.certificado],
-     style: [centra,centra,fechas,centra,izq,izq,centra,fechad,izq,izq, soles]
-
-    end
-end
-
-
-
-
-
-
-
-
-####################
 
 wb.add_worksheet(name: "OBACs") do |sheet|
 
@@ -385,15 +232,134 @@ wb.add_worksheet(name: "OBACs") do |sheet|
 
     end
 end
+####################ep
+Formula.where(product_id:1,cantidad:1).order('orden').each do |proce|
+wb.add_worksheet(name: proce.nombre) do |sheet|
+
+
+  sheet.add_row []
+
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD MERCADO ESTIMADO CCP CPR PROCESO ADJUDICADO SALDO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+
+
+
+
+    @conta3=0
+    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     @item1=Item.where('modalidad<3').where(exped2:@vaf1,ejecucion:4,obac:proce.orden).order('pac')
+     @item1.each do |ite|
+
+    @conta3=@conta3+1
+
+  @merdo=" "
+ if ite.tipo and ite.tipo>0 then
+  @merdo=Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd
+  end
+
+  @modali=" "
+ if ite.modalidad and ite.modalidad>0 then
+  @modali=Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd
+  end
+
+####proceso
+
+  vnproc=0
+ @nomproc=[]
+ @montadj=[]
+  vsadj=0
+
+  if ite.exped and ite.exped>0 then
+        vnproc=  Phase.where(expediente:ite.exped,periodo:@vaf1).count
+
+
+
+   else
+        @nomproc[0]=""
+        @montadj[0]=0
+ end
+ ##var de entidad
+ venti=proce.nombre
+     if  ite.ccp then
+         vsadj=ite.ccp-(Phase.where(expediente:ite.exped,periodo:@vaf1).sum(:"#{venti}"))
+     else
+         vsadj=0-(Phase.where(expediente:ite.exped,periodo:@vaf1).sum(:"#{venti}"))
+     end
+
+if vnproc>0 then
+   vcont=0
+   Phase.where(expediente:ite.exped,periodo:@vaf1).order('id').each do  |nphase|
+
+         @nomproc[vcont]=nphase.proceso
+               case proce.orden
+                 when 1
+                  @montadj[vcont]=nphase.ep
+                 when 2
+                  @montadj[vcont]=nphase.mgp
+                 when 3
+                  @montadj[vcont]=nphase.fap
+                 when 6
+                 @montadj[vcont]=nphase.ccffaa
+               end
+
+       vcont= vcont+1
+   end
+end
+
+#####fin de proceso
+
+
+
+
+
+     sheet.add_row [ @conta3,ite.pac, ite.mesconvoca,
+     Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
+
+     ite.descripcion,  @modali,@merdo,
+        ite.certificado,ite.ccp,ite.cpr,@nomproc[0], @montadj[0],vsadj ],
+     style: [centra,centra,fechas,centra,centra,izq,centra,centra,soles,soles,soles,centra,soles,soles]
+
+
+         nn=1
+              while @nomproc.length>nn
+              sheet.add_row [ nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,@nomproc[nn], @montadj[nn] ],
+               style: [centra,centra,fechas,centra,centra,izq,centra,centra,soles,soles,soles,centra,soles]
+              nn=nn+1
+              end
+              if @nomproc.length>1 then
+                vlineaf1 = sheet.rows.last.index+1
+                vlineai1 = vlineaf1-@nomproc.length+1
+
+                sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
+                sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
+                sheet.merge_cells "C#{vlineai1}:C#{vlineaf1}"
+                sheet.merge_cells "D#{vlineai1}:D#{vlineaf1}"
+                sheet.merge_cells "E#{vlineai1}:E#{vlineaf1}"
+                sheet.merge_cells "F#{vlineai1}:F#{vlineaf1}"
+                sheet.merge_cells "G#{vlineai1}:G#{vlineaf1}"
+                sheet.merge_cells "H#{vlineai1}:H#{vlineaf1}"
+                sheet.merge_cells "I#{vlineai1}:I#{vlineaf1}"
+                sheet.merge_cells "J#{vlineai1}:J#{vlineaf1}"
+                sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
+
+                sheet.merge_cells "N#{vlineai1}:N#{vlineaf1}"
+
+              end
+
+
+
+
+
+    end
+end
+end
 
 
 
 
 
 
-
-
-
-
+###################ep cierre
 
 end
