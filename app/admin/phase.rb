@@ -22,7 +22,8 @@ ActiveAdmin.register Phase do
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :admin_user_id, :periodo, :convocatoria, :sele3, :proceso,
-               :sele4, :comite, :postores, :obs, :sele5
+              :sele4, :comite, :postores, :obs, :sele5,
+              :ep, :mgp, :fap, :ccffaa
 #se puede usar sele3 era para autidados
 menu priority: 10, label: "Procesos"
 
@@ -182,6 +183,11 @@ form :title => 'Edicion Procesos' do |f|
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 f.input :comite ,:label => 'Miembros de comité'
 f.input :postores ,:label => 'Lista de postores'
+f.input :ep,:label => 'Monto Adjudicado EP', :as => :string, :input_html => { :style =>  'width:30%'}
+f.input :mgp,:label => 'Monto Adjudicado MGP', :as => :string, :input_html => { :style =>  'width:30%'}
+f.input :fap,:label => 'Monto Adjudicado FAP', :as => :string, :input_html => { :style =>  'width:30%'}
+f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
+
   f.actions
 
 
@@ -255,6 +261,20 @@ show :title => ' Proceso'  do
           row "Lista de postores" do |phase|
             phase.postores
           end
+          row "Monto Adjudicado EP" do |phase|
+            phase.ep
+          end
+          row "Monto Adjudicado MGP" do |phase|
+            phase.mgp
+          end
+          row "Monto Adjudicado FAP" do |phase|
+            phase.fap
+          end
+          row "Monto Adjudicado CCFFAA" do |phase|
+            phase.ccffaa
+          end
+
+
   end #de attributes_table
 
 end # de show
