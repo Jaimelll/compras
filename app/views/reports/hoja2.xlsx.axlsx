@@ -58,16 +58,16 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   case proce.orden
      when 1
-        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION EXPEDIENTE),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac1
      when 2
-        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION EXPEDIENTE),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+        sheet.add_row %w(N PROCE PAC OBAC FEC_ING PROCESO  DESCRIPCION  ESTIM_PAC(soles) PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION EXPEDIENTE),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
         @vpacn=@vpac3
 
       end
@@ -172,11 +172,13 @@ case proce.orden
     end
 
 
+vexp=Formula.where(product_id:16,orden:activ.expediente).select('nombre as dd').first.dd
+
 
 
   sheet.add_row [ @conta, activ.proceso,@apac[0],@aobac[0],@afecing[0], activ.nomenclatura, activ.descripcion.underscore.capitalize,
-   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr ],
-   style: [centra, centra, centra, centra, centra,  izq, izq, soles, soles, soles,centra,centra, izq]
+   @esti.to_i, @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr, vexp],
+   style: [centra, centra, centra, centra, centra,  izq, izq, soles, soles, soles,centra,centra, izq, izq]
 
     nn=1
          while @aobac.length>nn
