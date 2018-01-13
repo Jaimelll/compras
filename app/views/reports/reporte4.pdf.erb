@@ -120,7 +120,7 @@
 
 
 
-  <%   if @vopc==2  then %>
+  <%   if @vopc==2 or  @vopc==3  then %>
 
       <% @presu=Piece.where(phase_id:activity.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i%>
               <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
@@ -326,11 +326,11 @@
     <%@scert=0 %>
   <% @activities.each do |activity2| %>
 
-  <%@scert= @scert+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
+  <%@scert= @scert+ Piece.where(phase:activity2.id).where('estado=2 or estado=11')
   .sum(:presupuestado).to_i %>
 
 
-    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('adjudicado>0 and adjudicado is not null')
+    <%@srefs= @srefs+ Piece.where(phase:activity2.id).where('estado=2 or estado=11')
     .sum(:referencial)*
     Formula.where(product_id:7,orden:activity2.moneda)
           .select('cantidad as dd').first.dd/100.to_i %>

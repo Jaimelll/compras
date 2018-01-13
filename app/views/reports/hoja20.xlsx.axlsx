@@ -57,6 +57,10 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
            sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
            style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
            @vpacn=@vpac4
+     when 5
+          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+          @vpacn=@vpac5
       end
 
 
@@ -107,24 +111,25 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
      end
 
 
+     case proce.orden
+        when 3
+           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
+           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
+           tpresup=tpresup+  @presu
+        when 5
+          @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
+          @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').count
+          tpresup=tpresup+  @presu
+        else
+          @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
+          @nitems=Piece.where(phase_id:activ.id.to_s).count
+     end
 
 
 
 
 
 
-
-
-
-
-        if proce.orden==3  then
-          @presu=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
-          @nitems=Piece.where(phase_id:activ.id.to_s).where('adjudicado>0').count
-         tpresup=tpresup+  @presu
-       else
-           @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
-           @nitems=Piece.where(phase_id:activ.id.to_s).count
-       end
 
 
       veadj=""
@@ -194,7 +199,7 @@ end
    style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra, izq, izq, izq], height: 35
    sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, 25,30, 40
 
-   when 3
+   when 3,5
    vahorr=(@presu-activ.sele2).to_i
     tahorro= tahorro+vahorr
 sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
@@ -238,6 +243,20 @@ end
 end
 
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

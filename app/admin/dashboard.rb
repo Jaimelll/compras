@@ -667,7 +667,7 @@ unless current_admin_user.id==24 #personal
                                           @vpac20=@vpac2
                                           @vpac30=@vpac3
                                           @vpac40= @vpac4
-
+                                          @vpac50= @vpac5
                                           @le=  @vxper.inject(0, :+).to_s+ "/("+
                                           number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
                                                   link_to "#{@le} "
@@ -718,6 +718,7 @@ unless current_admin_user.id==24 #personal
 @vconv2=[]# convocados
 @vconv3=[]# adjudicados
 @vconv4=[]# desiertos
+@vconv5=[]# no consenti
 @vconvt=[]# totalvinicio
 
 
@@ -750,27 +751,36 @@ unless current_admin_user.id==24 #personal
 
 
      #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
-           @vconv=0
-        if @deta4.where(actividad:20).count>0 and @vdir>4 then
-              @vconv=2
-            if @deta4.where(actividad:20).sum(:importe)>0 then
-              @vconv=3
-            end
 
-        else
-          if @vdir>1 then
-            if proceso.convocatoria==1 then
-              @vconv=1
-            else
-           @vconv=4
-            end
-          end
-        end
-    #    if @deta4.where(actividad:79).count>0 then
-    #      @vconv=4
-    #      @vxper2[@vdir]=@vxper2[@vdir]- 1
-    #      @vdir=0
-    #    end
+@vconv=0
+
+  vconsen=Piece.where(phase_id:proceso.id).where('estado=2 or estado=11 ').count
+  vadjud=Piece.where(phase_id:proceso.id,estado:4).count
+  vapel=Piece.where(phase_id:proceso.id,estado:9).count
+
+
+  if @deta4.where(actividad:20).count>0 and @vdir>4 then
+        @vconv=2
+
+
+  else
+    if @vdir>1 then
+      if proceso.convocatoria==1 then
+        @vconv=1
+      else
+     @vconv=4
+      end
+    end
+  end
+
+  if  vapel>0 or vadjud>0    then
+      @vconv=5
+  end
+
+  if vconsen>0   then
+    @vconv=3
+  end
+
 
 
 
@@ -817,9 +827,9 @@ unless current_admin_user.id==24 #personal
           when 3
             @vconv3.push(proceso.id)
               @vxper3[3]=@vxper3[3]+1
-@vpv=0
-      if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL").count>0  then
-        Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL").each do |adju|
+          @vpv=0
+      if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL and (estado=2 or estado=11)").count>0  then
+        Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL  and moneda IS NOT NULL and (estado=2 or estado=11)").each do |adju|
            @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
         end
       end
@@ -831,6 +841,19 @@ unless current_admin_user.id==24 #personal
               .select('pfecha as dd').first.dd
               Phase.where(id:proceso.id).update_all( pp:@vpp )
 
+                  if  vapel>0 or vadjud>0    then
+                      @vconv5.push(proceso.id)
+                      @vpv=0
+                      if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
+                          Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
+                          @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+                         end
+                      end
+
+                      @contavus[5]=  @contavus[5]+@vpv
+                    
+
+                  end
             when 4
               @vconv4.push(proceso.id)
               @vxper3[4]=@vxper3[4]+1
@@ -852,16 +875,39 @@ unless current_admin_user.id==24 #personal
               else
               Phase.where(id:proceso.id).update_all( pp:Time.now )
               end
+
+
+            when 5
+
+                    @vxper3[5]=@vxper3[5]+1
+                      @vconv5.push(proceso.id)
+        @vpv=0
+              if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
+                Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
+                   @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+                end
+              end
+
+                      @contavus[5]=  @contavus[5]+@vpv
+                        Phase.where(id:proceso.id).update_all( sele2:@vpv )
+
+                      @vpp=Activity.where(phase_id:proceso.id,actividad:20)
+                      .select('pfecha as dd').first.dd
+                      Phase.where(id:proceso.id).update_all( pp:@vpp )
+
+
+
         end #case
 
-        case @vconv
-        when 1,2,3,4
-           @vconvt.push(proceso.id)
-           @vxper3[0]=@vxper3[0]+1
+
+  case @vconv
+  when 1,2,3,4,5
+             @vconvt.push(proceso.id)
+             @vxper3[0]=@vxper3[0]+1
 
 
+          end
 
-        end
 
 #    unless @vactiv3 ==79
 
@@ -924,7 +970,8 @@ column("Rol") do |formula|
        :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuoba,:param8=>@vconv2,
         :param11=> @vxper0,
          :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
-         :param15=> @vpac30,:param16=> @vpac40)
+         :param15=> @vpac30,:param16=> @vpac40,
+         :param17=> @vconv5,      :param18=> @vpac50)
    else
      if vvar==1 then
              link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
@@ -934,7 +981,6 @@ column("Rol") do |formula|
    end
 
 end
-
 column("En Proceso") do |formula|
   if formula.orden==1 then
   @dpc=  formula.orden
@@ -972,7 +1018,6 @@ else
 end
   end
 
-
   column("Adjudicados") do |formula|
        if formula.orden==1 then
     @dpc=  formula.orden
@@ -995,7 +1040,7 @@ column("Desiertos") do |formula|
   if formula.orden==1 then
   @dpc=  formula.orden
   @titproc1="Procesos Desiertos"
-  @vopc=1
+  @vopc=3
 
 
 link_to "#{@vxper3[4]}"+"/("+"#{number_with_delimiter(@contavus[4].to_i, delimiter: ",")}"+")",
@@ -1011,30 +1056,37 @@ else
 end
  end
 
+ column("No Consentidos") do |formula|
+        if formula.orden==1 then
+     @dpc=  formula.orden
+     @titproc1="Procesos No Consentidos"
+     @vopc=3
 
-   column("Total") do |formula|
+
+   link_to "#{@vxper3[5]}"+"/("+"#{number_with_delimiter(@contavus[5].to_i, delimiter: ",")}"+")",
+   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv5,
+   :param4=>  @titproc1)
+ else
+  if vvar==1 then
+      Phase.where(id:@vconv5,sele3:2).count
+ end
+ end
+ end
+
+ column("Total") do |formula|
 
 
 
 
      if formula.orden==1 then
-     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]
+     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]+@contavus[5]
        link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
         reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
          :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
          :param5=> @vconv3,:param6=> @vconvt, :param7=> @vuobac,
-         :param8=> @vconv4, )
+         :param8=> @vconv4,   :param9=> @vconv5)
 
 
-
-  #   @dpc=  formula.orden
-  #   @titproc1="Relacion de Procesos"
-#     @vopc=3
-#     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]
-
-  # link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
-  # reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconvt,
-#   :param4=>  @titproc1)
  else
    if vvar==1 then
       Phase.where(id:@vconvt,sele3:2).count
@@ -1042,7 +1094,6 @@ end
  end
 
     end
-
 
 
 

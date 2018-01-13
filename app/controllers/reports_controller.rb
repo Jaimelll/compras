@@ -405,6 +405,7 @@ def vhoja20
   @vpac4=params[:param8]
   @vpact=params[:param6]
   @vuobac=params[:param7]
+  @vpac5=params[:param9]
   @activities=Phase.order('pp ASC')
 
 
@@ -424,6 +425,7 @@ def vhoja21
   @vpact=params[:param6]
   @vuobac=params[:param7]
   @vpac4=params[:param4]
+  @vpac5=params[:param17]
   @activities=Phase.order('pp ASC')
 
 
@@ -437,6 +439,7 @@ def vhoja21
   @vpac20=params[:param14]
   @vpac30=params[:param15]
   @vpac40=params[:param16]
+  @vpac50=params[:param18]
 
 
   @items=Item.order('tipo,modalidad,exped,certificado DESC')
