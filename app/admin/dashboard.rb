@@ -43,15 +43,20 @@ end
     # columns do
     #   column do
     #     panel "Recent Posts" do
+    Formula.where(product_id:1).update_all( numero:2 )
     case current_admin_user.id # a_variable is the variable we want to compare
     when 21
-      @vuobac=[1]
+      @vuobac=[1,6]
+        Formula.where(product_id:1).where('orden=1 or orden=6').update_all( numero:1 )
     when 22
       @vuobac=[2]
+        Formula.where(product_id:1,orden:2).update_all( numero:1 )
     when 23
       @vuobac=[3]
+      Formula.where(product_id:1,orden:3).update_all( numero:1 )
     else
       @vuobac=[1,2,3,4,5,6]
+      Formula.where(product_id:1).where.not(orden:4).update_all( numero:1 )
     end
 
     #comienza case
@@ -567,7 +572,8 @@ unless current_admin_user.id==24 #personal
                                          column("Avance") do |formula|
                                      link_to "PAC", reports_vhoja1_path(format:  "xlsx", :param1=> @vxper,
                                       :param2=> @vpresu, :param3=> @vpac1, :param4=> @vpac2,
-                                      :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5,:param8=> @vpac6,:param9=> @vpac7)
+                                      :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5,
+                                      :param8=> @vpac6,:param9=> @vpac7,:param10=> @vuobac)
                                         #  "PAC"
                                          end
                                          column("S/EXP") do |formula|
@@ -725,7 +731,7 @@ unless current_admin_user.id==24 #personal
 @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
 
 
-@procp=Phase.where(periodo:@vaf1).where(expediente:@vexped).order('id')
+@procp=Phase.where(periodo:@vaf1,expediente:@vexped).order('id')
 
 @procp .each do |proceso|
 
@@ -851,7 +857,7 @@ unless current_admin_user.id==24 #personal
                       end
 
                       @contavus[5]=  @contavus[5]+@vpv
-                    
+
 
                   end
             when 4

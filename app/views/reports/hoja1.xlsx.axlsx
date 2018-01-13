@@ -204,7 +204,7 @@ wb.add_worksheet(name: "OBACs") do |sheet|
 
     @conta3=0
     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item1=Item.where.not(modalidad:4).where(exped2:@vaf1).order('obac,tipo,pac')
+     @item1=Item.where.not(modalidad:4).where(exped2:@vaf1,obac:@vuobac).order('obac,tipo,pac')
      @item1.each do |ite|
 
     @conta3=@conta3+1
@@ -233,7 +233,7 @@ wb.add_worksheet(name: "OBACs") do |sheet|
     end
 end
 ####################ep
-Formula.where(product_id:1,cantidad:1).order('orden').each do |proce|
+Formula.where(product_id:1,numero:1).order('orden').each do |proce|
 wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
