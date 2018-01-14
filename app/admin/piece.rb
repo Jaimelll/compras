@@ -18,7 +18,8 @@ permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
              :admin_user_id, :canti_dem,:sele,
              :prop_obac, :invi_dem,:invi_dpc, :presenta,:admitido,
              :resulta, :version,:tipo_postor, :motivo,:proceso,
-             :pasan
+             :pasan,
+             :ep, :mgp, :fap, :ccffaa
 
              action_item :view, only:[:show,:new,:index]do
                if params[:phase_id] then
@@ -99,6 +100,12 @@ form :title => 'Edicion Item'  do |f|
 
 
              f.input :postor, :input_html => { :style =>  'width:30%'}
+
+             f.input :ep,:label => 'Monto Adjudicado EP', :as => :string, :input_html => { :style =>  'width:30%'}
+             f.input :mgp,:label => 'Monto Adjudicado MGP', :as => :string, :input_html => { :style =>  'width:30%'}
+             f.input :fap,:label => 'Monto Adjudicado FAP', :as => :string, :input_html => { :style =>  'width:30%'}
+             f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
+             
              f.input :sele,:label => 'Nuevo proceso', :as => :select, :collection =>
                      Phase.where('convocatoria>1').map{|u| [u.nomenclatura.downcase, u.id]}
 
@@ -190,6 +197,20 @@ form :title => 'Edicion Item'  do |f|
 
 
                   row :postor
+
+                  row "Monto Adjudicado EP" do |phase|
+                    phase.ep
+                  end
+                  row "Monto Adjudicado MGP" do |phase|
+                    phase.mgp
+                  end
+                  row "Monto Adjudicado FAP" do |phase|
+                    phase.fap
+                  end
+                  row "Monto Adjudicado CCFFAA" do |phase|
+                    phase.ccffaa
+                  end
+
                   row 'Nuevo proceso' do |detail|
                     if detail.sele then
                      Phase.where(id: detail.sele).

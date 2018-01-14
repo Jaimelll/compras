@@ -64,40 +64,40 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   case proce.orden
      when 1
        sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
-       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
         @vpacn=@vpac1
      when 2
          sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
-         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
        @vpacn=@vpac2
      when 3
        sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
-      style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+      style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
        @vpacn=@vpac3
      when 4
        sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
        @vpacn=@vpac4
 
        when 5
          sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
          @vpacn=@vpac5
 
          when 6
            sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-           style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
+           style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
            @vpacn=@vpac6
 
            when 7
              sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-             style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu]
+             style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
              @vpacn=@vpac7
 
@@ -197,7 +197,7 @@ wb.add_worksheet(name: "OBACs") do |sheet|
   sheet.add_row []
 
   sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD MERCADO ESTIMADO ),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu]
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -268,40 +268,47 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
  @nomproc=[]
  @montadj=[]
   vsadj=0
-
+  nphas=[]
   if ite.exped and ite.exped>0 then
         vnproc=  Phase.where(expediente:ite.exped,periodo:@vaf1).count
+        nphas=  Phase.where(expediente:ite.exped,periodo:@vaf1).select('DISTINCT id')
 
 
-
-   else
+  else
         @nomproc[0]=""
         @montadj[0]=0
- end
+  end
+
  ##var de entidad
  venti=proce.nombre
-     if  ite.ccp then
-         vsadj=ite.ccp-(Phase.where(expediente:ite.exped,periodo:@vaf1).sum(:"#{venti}"))
-     else
-         vsadj=0-(Phase.where(expediente:ite.exped,periodo:@vaf1).sum(:"#{venti}"))
+     vvccp=0
+     vvcpr=0
+     if  ite.ccp  then
+         vvccp=ite.ccp
      end
+     if  ite.cpr  then
+         vvcpr=ite.cpr
+     end
+     vvtcc=vvccp+vvcpr
+
+
+
+
+
+
+
+  vsadj=vvtcc-Piece.where(phase_id:nphas).sum(:"#{venti}*(SELECT  cantidad FROM formulas
+   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+
+
 
 if vnproc>0 then
    vcont=0
    Phase.where(expediente:ite.exped,periodo:@vaf1).order('id').each do  |nphase|
 
          @nomproc[vcont]=nphase.proceso
-               case proce.orden
-                 when 1
-                  @montadj[vcont]=nphase.ep
-                 when 2
-                  @montadj[vcont]=nphase.mgp
-                 when 3
-                  @montadj[vcont]=nphase.fap
-                 when 6
-                 @montadj[vcont]=nphase.ccffaa
-               end
-
+         @montadj[vcont]=Piece.where(phase_id:nphase.id).sum(:"#{venti}*(SELECT  cantidad FROM formulas
+          WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
        vcont= vcont+1
    end
 end

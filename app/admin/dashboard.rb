@@ -57,6 +57,8 @@ end
     else
       @vuobac=[1,2,3,4,5,6]
       Formula.where(product_id:1).where.not(orden:4).update_all( numero:1 )
+      Formula.where(product_id:1,orden:5).update_all( numero:2 )
+      Formula.where(product_id:1,orden:4).update_all( numero:2 )
     end
 
     #comienza case

@@ -469,6 +469,8 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
          @afecing=[]
      if activ.expediente>0 then
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
+
+      #por pac
      @items.where(exped:activ.expediente).each do |nobac|
 
      @apac.push(nobac.pac)
@@ -482,8 +484,41 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
      end
 
 
+     ##adjudicado por obac
+
+
+     vajud2=0
+     Formula.where(product_id:1,numero:1).order('orden').each do |institu|
+     venti=institu.nombre
+     case institu.orden
+        when 3
+            vajud2=vajud2+Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
+            sum(:"#{venti}*(SELECT  cantidad FROM formulas
+            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+        when 5
+            vajud2=vajud2+Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
+            sum(:"#{venti}*(SELECT  cantidad FROM formulas
+            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+
+        else
+          vajud2=0
      end
+
+
      end
+
+
+     ##adjudicado fin
+
+
+
+
+
+
+
+
+     end # fin de obac
+     end  # fin de if obac
 
 
 
@@ -501,6 +536,19 @@ case proce.orden
    else
      @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -551,7 +599,7 @@ case proce.orden
 
     nn=1
          while @aobac.length>nn
-         sheet.add_row [ @conta,@aobac[nn] ,@apac[nn],@afecing[nn],activ.proceso,nil,@afuente[nn] ,nil,nil,nil,nil,nil ],
+         sheet.add_row [ @conta,@aobac[nn] ,@apac[nn],@afecing[nn],activ.proceso,nil,@afuente[nn],nil ,nil,nil,nil,nil,nil ],
           style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles,centra,centra, izq]
          nn=nn+1
          end
@@ -567,6 +615,7 @@ case proce.orden
            sheet.merge_cells "J#{vlineai1}:J#{vlineaf1}"
            sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
            sheet.merge_cells "L#{vlineai1}:L#{vlineaf1}"
+
          end
 
 end

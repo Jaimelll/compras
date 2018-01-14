@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110124656) do
+ActiveRecord::Schema.define(version: 20180114165125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -327,6 +327,10 @@ ActiveRecord::Schema.define(version: 20180110124656) do
     t.integer  "tipo_postor"
     t.string   "motivo"
     t.string   "proceso"
+    t.float    "ep"
+    t.float    "mgp"
+    t.float    "fap"
+    t.float    "ccffaa"
     t.index ["admin_user_id"], name: "index_pieces_on_admin_user_id", using: :btree
     t.index ["phase_id"], name: "index_pieces_on_phase_id", using: :btree
   end
