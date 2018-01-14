@@ -90,8 +90,10 @@ case proce.orden
 
  vexp=Phase.where(id:@vpacn).select('distinct expediente ')
 
-  Item.where(exped:vexp).count
-sheet.add_row [proce.descripcion,  Item.where(exped:vexp, obac:6).count,  Item.where(exped:vexp, obac:1).count ,  Item.where(exped:vexp, obac:2).count ,  Item.where(exped:vexp, obac:3).count ,  Item.where(exped:vexp).count],
+
+
+
+sheet.add_row [proce.descripcion,  @items.where(exped:vexp, obac:6).count,  @items.where(exped:vexp, obac:1).count ,  @items.where(exped:vexp, obac:2).count ,  @items.where(exped:vexp, obac:3).count ,  @items.where(exped:vexp).count],
     style: [izq, centra, centra, centra,  centra,centra]
 
 
@@ -377,7 +379,7 @@ case proce.orden
 
    vexp=Phase.where(id:@vpacn).select('distinct expediente ')
 
-   nuitem1="_("+Item.where(exped:vexp).count.to_s+")"
+   nuitem1="_("+@items.where(exped:vexp).count.to_s+")"
 
 wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
@@ -467,7 +469,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
          @afecing=[]
      if activ.expediente>0 then
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
-     Item.where(exped:activ.expediente).each do |nobac|
+     @items.where(exped:activ.expediente).each do |nobac|
 
      @apac.push(nobac.pac)
      @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
@@ -590,7 +592,7 @@ wb.add_worksheet(name: "items adjudicados") do |sheet|
 
  @conta=0
 Phase.where(id:@vpac3).order('proceso').each do |vvpro|
-Piece.where(phase_id:vvpro.id,estado:4).order('phase_id,codigo').each do |vite|
+Piece.where(phase_id:vvpro.id).where('estado=2 or estado=11').order('phase_id,codigo').each do |vite|
 
 @conta=@conta+1
 if vite.adjudicado and vite.moneda then
@@ -627,7 +629,7 @@ wb.add_worksheet(name: "Autorizados") do |sheet|
 
     @conta2=0
     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item1=Item.where(ejecucion:4,modalidad:3,exped2:@vaf1).order('obac,pac')
+     @item1=@items.where(ejecucion:4,modalidad:3,exped2:@vaf1).order('obac,pac')
      @item1.each do |ite|
 
     @conta2=@conta2+1
@@ -685,7 +687,7 @@ wb.add_worksheet(name: "Excluidos") do |sheet|
 
     @conta2=0
     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item2=Item.where(exped2:@vaf1,modalidad:4,ejecucion:4).order('obac,certificado DESC')
+     @item2=@items.where(exped2:@vaf1,modalidad:4,ejecucion:4).order('obac,certificado DESC')
      @item2.each do |ite|
 
     @conta2=@conta2+1
@@ -738,7 +740,7 @@ wb.add_worksheet(name: "Incluidos") do |sheet|
 
     @conta2=0
     @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item2=Item.where(exped2:@vaf1,id:var).order('obac,pac')
+     @item2=@items.where(exped2:@vaf1,id:var).order('obac,pac')
      @item2.each do |ite|
 
     @conta2=@conta2+1

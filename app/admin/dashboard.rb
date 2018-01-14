@@ -973,11 +973,11 @@ column("Rol") do |formula|
      link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
      :param1=> @vxper3,
        :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
-       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuoba,:param8=>@vconv2,
+       :param5=> @vconv3,:param6=> @vconvt,:param8=>@vconv2,
         :param11=> @vxper0,
          :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
          :param15=> @vpac30,:param16=> @vpac40,
-         :param17=> @vconv5,      :param18=> @vpac50)
+         :param17=> @vconv5,:param18=> @vpac50,:param7=> @vuobac)
    else
      if vvar==1 then
              link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,

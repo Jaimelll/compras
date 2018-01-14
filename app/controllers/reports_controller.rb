@@ -428,6 +428,7 @@ def vhoja21
   @vuobac=params[:param7]
   @vpac4=params[:param4]
   @vpac5=params[:param17]
+
   @activities=Phase.order('pp ASC')
 
 
@@ -444,7 +445,7 @@ def vhoja21
   @vpac50=params[:param18]
 
 
-  @items=Item.order('tipo,modalidad,exped,certificado DESC')
+  @items=Item.where(obac:@vuobac).order('tipo,modalidad,exped,certificado DESC')
   respond_to do |format|
     format.html
 
