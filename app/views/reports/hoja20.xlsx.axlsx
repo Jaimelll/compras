@@ -117,7 +117,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
            @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
            sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
 
-
+           viadj= activ.sele2
 
 
            @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
@@ -126,6 +126,10 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
           @refe=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
           sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+
+           viadj=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
+          sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+
 
           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').count
           tpresup=tpresup+  @presu
@@ -209,10 +213,10 @@ end
    sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, 25,30, 40
 
    when 3,5
-   vahorr=(@presu-activ.sele2).to_i
+   vahorr=(@presu- viadj).to_i
     tahorro= tahorro+vahorr
 sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
- @presu.to_i, @refe, activ.sele2.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
+ @presu.to_i, @refe,  viadj.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
 style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
 sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 

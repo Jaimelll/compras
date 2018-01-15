@@ -526,7 +526,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
  else
     @vajud2.push(0)
- end    
+ end
 
      ##adjudicado fin
 
@@ -551,8 +551,12 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 case proce.orden
    when 3
     @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
+     viadj= activ.sele2
    when 5
     @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
+    viadj=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
+   sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+
    else
      @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
 end
@@ -614,7 +618,7 @@ case proce.orden
 
 
   sheet.add_row [ @conta,@aobac[0],@apac[0],@afecing[0], activ.proceso, activ.descripcion.underscore.capitalize,
-    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr ],
+    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ],
    style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles, soles, soles,centra,centra, izq]
 
     nn=1
