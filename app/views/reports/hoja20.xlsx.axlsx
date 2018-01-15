@@ -50,16 +50,16 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
         style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
     when 4
            sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
            style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
            @vpacn=@vpac4
      when 5
-          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
           @vpacn=@vpac5
       end
 
@@ -114,10 +114,19 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
      case proce.orden
         when 3
            @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
+           @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
+           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
+
+
+
+
            @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
            tpresup=tpresup+  @presu
         when 5
           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
+          @refe=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
+          sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+
           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').count
           tpresup=tpresup+  @presu
         else
@@ -135,8 +144,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
       veadj=""
 
 
-        if  Piece.where(phase_id:activ.id.to_s,estado:4).count>0 then
-        Piece.where(phase_id:activ.id.to_s,estado:4).order('codigo').each do |ganador|
+        if  Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').count>0 then
+        Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').order('codigo').each do |ganador|
          veadj=veadj+ganador.codigo+":"+ganador.postor+","
 
         end
@@ -203,9 +212,9 @@ end
    vahorr=(@presu-activ.sele2).to_i
     tahorro= tahorro+vahorr
 sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
- @presu.to_i, activ.sele2.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
-style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
-sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
+ @presu.to_i, @refe, activ.sele2.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
+style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
+sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
    end
 
