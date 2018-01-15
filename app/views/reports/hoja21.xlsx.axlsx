@@ -473,6 +473,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
 
       #por pac
+      vpadj=0 ##para no repetir ajdudicado para el mismo obac
     Item.where(exped:activ.expediente,obac:@vuobac).order('obac').each do |nobac|
 
      @apac.push(nobac.pac)
@@ -504,7 +505,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
      ##adjudicado por obac
 
 
-
+  if vpadj!=nobac.obac then
 
      venti=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd
      case proce.orden
@@ -521,9 +522,11 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
             @vajud2.push(0)
      end
 
+   vpadj=nobac.obac
 
-
-
+ else
+    @vajud2.push(0)
+ end    
 
      ##adjudicado fin
 
