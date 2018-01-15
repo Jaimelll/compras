@@ -46,14 +46,17 @@ end
     Formula.where(product_id:1).update_all( numero:2 )
     case current_admin_user.id # a_variable is the variable we want to compare
     when 21
-      @vuobac=[1,6]
-        Formula.where(product_id:1).where('orden=1 or orden=6').update_all( numero:1 )
+      @vuobac=[1]
+      Formula.where(product_id:1,orden:1).update_all( numero:1 )
     when 22
       @vuobac=[2]
         Formula.where(product_id:1,orden:2).update_all( numero:1 )
     when 23
       @vuobac=[3]
       Formula.where(product_id:1,orden:3).update_all( numero:1 )
+    when 29
+      @vuobac=[6]
+      Formula.where(product_id:1,orden:6).update_all( numero:1 )
     else
       @vuobac=[1,2,3,4,5,6]
       Formula.where(product_id:1).where.not(orden:4).update_all( numero:1 )
@@ -97,7 +100,7 @@ end
                      column do
 
                        case current_admin_user.id
-                       when 21,22,23,24
+                       when 21,22,23,24,29
 
 
                        else
@@ -132,7 +135,7 @@ end
                             @le= @le1.count.to_s+ "/("+
                                    number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                            case current_admin_user.id
-                           when 21,22,23
+                           when 21,22,23,29
                               @le
                              else
                                link_to "#{@le} ", reports_comment_path(format: :pdf,
@@ -162,7 +165,7 @@ end
 
 
                               case current_admin_user.id
-                              when 21,22,23
+                              when 21,22,23,29
                                  @le
                                 else
                                   link_to "#{@le} ", reports_comment2_path(format: :pdf,
@@ -1112,21 +1115,21 @@ end #de table
 
  #end
 
-table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
-  column("Resumen ") do |formula|
-  "Procesos acumulados"
-  end
-column("convocados") do |formula|
-  @vxper3[2]+@vxper3[3]
-end
-column("Adjudicados") do |formula|
-  @vxper3[3]
-end
-column("Culminados") do |formula|
-  @vliqui
-end
+#table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
+#  column("Resumen ") do |formula|
+#  "Procesos acumulados"
+#  end
+#column("convocados") do |formula|
+#  @vxper3[2]+@vxper3[3]
+#end
+#column("Adjudicados") do |formula|
+#  @vxper3[3]
+#end
+#column("Culminados") do |formula|
+#  @vliqui
+#end
 
-end
+#end
 
 
 
@@ -1139,7 +1142,7 @@ end #panel
 end #personal de column
 #########################################
 case current_admin_user.id
-when 21,22,23,24
+when 21,22,23,24,29
 
 
 else
