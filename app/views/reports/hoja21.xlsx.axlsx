@@ -421,19 +421,19 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   case proce.orden
      when 1,4
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu, titu, titu], height: 40
-        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,30
+        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu,  titu, titu, titu], height: 40
+        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
 
      when 2
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE DESCRIPCION FUENTE PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,30
+        sheet.add_row %w(N OBAC PAC FEC_ING PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu, titu, titu], height: 40
+        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
 
      when 3,5
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
-        style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu, titu, titu], height: 40
-        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,30
+        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
+        style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu], height: 40
+        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
 
       end
 
@@ -467,15 +467,32 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
          @aobac=[]
           @afuente=[]
          @afecing=[]
+         @acerti=[]
+          @vajud2=[]
      if activ.expediente>0 then
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
 
       #por pac
-     @items.where(exped:activ.expediente).each do |nobac|
+    Item.where(exped:activ.expediente,obac:@vuobac).order('obac').each do |nobac|
 
      @apac.push(nobac.pac)
      @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
      @afuente.push(Formula.where(product_id:8,orden:nobac.obac).select('nombre as dd').first.dd)
+
+
+     vvccp=0
+     vvcpr=0
+     if  nobac.ccp  then
+         vvccp=nobac.ccp
+     end
+     if  nobac.cpr  then
+         vvcpr=nobac.cpr
+     end
+     vvtcc=vvccp+vvcpr
+
+     @acerti.push(vvtcc)
+
+
 
      if Detail.where(actividad:13,item_id:nobac.id).count>0 then
       @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
@@ -487,25 +504,25 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
      ##adjudicado por obac
 
 
-     vajud2=0
-     Formula.where(product_id:1,numero:1).order('orden').each do |institu|
-     venti=institu.nombre
-     case institu.orden
+
+
+     venti=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd
+     case proce.orden
         when 3
-            vajud2=vajud2+Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
+              @vajud2.push(Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
             sum(:"#{venti}*(SELECT  cantidad FROM formulas
-            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
         when 5
-            vajud2=vajud2+Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
+            @vajud2.push(Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
             sum(:"#{venti}*(SELECT  cantidad FROM formulas
-            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
 
         else
-          vajud2=0
+            @vajud2.push(0)
      end
 
 
-     end
+
 
 
      ##adjudicado fin
@@ -594,13 +611,14 @@ case proce.orden
 
 
   sheet.add_row [ @conta,@aobac[0],@apac[0],@afecing[0], activ.proceso, activ.descripcion.underscore.capitalize,
-    @afuente[0],@presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr ],
-   style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles,centra,centra, izq]
+    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, activ.sele2.to_i, @fec21,@fec22,@vobsr ],
+   style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles, soles, soles,centra,centra, izq]
 
     nn=1
          while @aobac.length>nn
-         sheet.add_row [ @conta,@aobac[nn] ,@apac[nn],@afecing[nn],activ.proceso,nil,@afuente[nn],nil ,nil,nil,nil,nil,nil ],
-          style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles,centra,centra, izq]
+         sheet.add_row [ @conta,@aobac[nn] ,@apac[nn],@afecing[nn],activ.proceso,nil,@afuente[nn],@acerti[nn], @vajud2[nn],
+         nil ,nil,nil,nil,nil,nil ],
+          style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles, soles, soles,centra,centra, izq]
          nn=nn+1
          end
          if @aobac.length>1 then
@@ -608,14 +626,15 @@ case proce.orden
            vlineai1 = vlineaf1-@aobac.length+1
 
            sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
-           sheet.merge_cells "E#{vlineai1}:E#{vlineaf1}"
+
            sheet.merge_cells "F#{vlineai1}:F#{vlineaf1}"
-           sheet.merge_cells "H#{vlineai1}:H#{vlineaf1}"
-           sheet.merge_cells "I#{vlineai1}:I#{vlineaf1}"
+
+
            sheet.merge_cells "J#{vlineai1}:J#{vlineaf1}"
            sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
            sheet.merge_cells "L#{vlineai1}:L#{vlineaf1}"
-
+           sheet.merge_cells "M#{vlineai1}:M#{vlineaf1}"
+           sheet.merge_cells "N#{vlineai1}:N#{vlineaf1}"
          end
 
 end
