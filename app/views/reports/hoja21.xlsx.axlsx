@@ -549,6 +549,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
 
 case proce.orden
+
    when 3
     @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
      viadj= activ.sele2
@@ -559,6 +560,9 @@ case proce.orden
 
    else
      @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
+     viadj=Piece.where(phase_id:activ.id.to_s).
+    sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+
 end
 
 
