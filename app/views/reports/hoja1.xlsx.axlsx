@@ -239,8 +239,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD MERCADO ESTIMADO CCP CPR PROCESO ADJUDICADO SALDO),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD LISTA MERCADO ESTIMADO CCP CPR PROCESO ADJUDICADO SALDO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -261,6 +261,12 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
  if ite.modalidad and ite.modalidad>0 then
   @modali=Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd
   end
+
+  @nlista=" "
+ if ite.lista and ite.lista>0 then
+  @nlista=Formula.where(product_id:3,orden:ite.lista).select('nombre as dd').first.dd
+  end
+
 
 ####proceso
 
@@ -323,15 +329,15 @@ end
      Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
      Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
 
-     ite.descripcion,  @modali,@merdo,
+     ite.descripcion,  @modali,@nlista,@merdo,
         ite.certificado,ite.ccp,ite.cpr,@nomproc[0], @montadj[0],vsadj ],
-     style: [centra,centra,fechas,centra,centra,izq,centra,centra,soles,soles,soles,centra,soles,soles]
+             style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles]
 
 
          nn=1
               while @nomproc.length>nn
-              sheet.add_row [ nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,@nomproc[nn], @montadj[nn] ],
-               style: [centra,centra,fechas,centra,centra,izq,centra,centra,soles,soles,soles,centra,soles]
+              sheet.add_row [ nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,@nomproc[nn], @montadj[nn] ],
+               style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles]
               nn=nn+1
               end
               if @nomproc.length>1 then
@@ -349,8 +355,8 @@ end
                 sheet.merge_cells "I#{vlineai1}:I#{vlineaf1}"
                 sheet.merge_cells "J#{vlineai1}:J#{vlineaf1}"
                 sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
-
-                sheet.merge_cells "N#{vlineai1}:N#{vlineaf1}"
+               sheet.merge_cells "L#{vlineai1}:L#{vlineaf1}"
+                sheet.merge_cells "O#{vlineai1}:O#{vlineaf1}"
 
               end
 
