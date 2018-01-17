@@ -19,7 +19,8 @@ permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
              :prop_obac, :invi_dem,:invi_dpc, :presenta,:admitido,
              :resulta, :version,:tipo_postor, :motivo,:proceso,
              :pasan,
-             :ep, :mgp, :fap, :ccffaa
+             :ep, :mgp, :fap, :ccffaa,
+              :ref_ep, :ref_mgp, :ref_fap, :ref_ccffaa
 
              action_item :view, only:[:show,:new,:index]do
                if params[:phase_id] then
@@ -105,7 +106,13 @@ form :title => 'Edicion Item'  do |f|
              f.input :mgp,:label => 'Monto Adjudicado MGP', :as => :string, :input_html => { :style =>  'width:30%'}
              f.input :fap,:label => 'Monto Adjudicado FAP', :as => :string, :input_html => { :style =>  'width:30%'}
              f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
-             
+
+             f.input :ref_ep,:label => 'Monto Referencial EP', :as => :string, :input_html => { :style =>  'width:30%'}
+             f.input :ref_mgp,:label => 'Monto Referencial MGP', :as => :string, :input_html => { :style =>  'width:30%'}
+             f.input :ref_fap,:label => 'Monto Referencial FAP', :as => :string, :input_html => { :style =>  'width:30%'}
+             f.input :ref_ccffaa,:label => 'Monto Referencial CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
+
+
              f.input :sele,:label => 'Nuevo proceso', :as => :select, :collection =>
                      Phase.where('convocatoria>1').map{|u| [u.nomenclatura.downcase, u.id]}
 
@@ -209,6 +216,19 @@ form :title => 'Edicion Item'  do |f|
                   end
                   row "Monto Adjudicado CCFFAA" do |phase|
                     phase.ccffaa
+                  end
+
+                  row "Monto Referencial EP" do |phase|
+                    phase.ref_ep
+                  end
+                  row "Monto Referencial MGP" do |phase|
+                    phase.ref_mgp
+                  end
+                  row "Monto Referencial FAP" do |phase|
+                    phase.ref_fap
+                  end
+                  row "Monto Referencial CCFFAA" do |phase|
+                    phase.ref_ccffaa
                   end
 
                   row 'Nuevo proceso' do |detail|
