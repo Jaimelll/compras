@@ -508,6 +508,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
   if vpadj!=nobac.obac then
 
      venti=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd
+     venti2="ref_"+Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd
      case proce.orden
         when 3
               @vajud2.push(Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
@@ -519,7 +520,9 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
             WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
 
         else
-            @vajud2.push(0)
+            @vajud2.push(Piece.where(phase_id:activ.id.to_s).
+            sum(:"#{venti2}*(SELECT  cantidad FROM formulas
+            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
      end
 
    vpadj=nobac.obac

@@ -239,8 +239,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
 
-  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD LISTA MERCADO ESTIMADO CCP CPR PROCESO ADJUDICADO SALDO),
-  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD LISTA MERCADO ESTIMADO CCP CPR PROCESO ADJUDICADO REFERENCIAL SALDO),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -273,6 +273,7 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   vnproc=0
  @nomproc=[]
  @montadj=[]
+ @montref=[]
   vsadj=0
   nphas=[]
   if ite.exped and ite.exped>0 then
@@ -283,10 +284,12 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   else
         @nomproc[0]=""
         @montadj[0]=0
+        @montref[0]=0
   end
 
  ##var de entidad
  venti=proce.nombre
+ venti2="ref_"+proce.nombre
      vvccp=0
      vvcpr=0
      if  ite.ccp  then
@@ -315,6 +318,8 @@ if vnproc>0 then
          @nomproc[vcont]=nphase.proceso
          @montadj[vcont]=Piece.where(phase_id:nphase.id).sum(:"#{venti}*(SELECT  cantidad FROM formulas
           WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+          @montref[vcont]=Piece.where(phase_id:nphase.id).sum(:"#{venti2}*(SELECT  cantidad FROM formulas
+           WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
        vcont= vcont+1
    end
 end
@@ -330,14 +335,14 @@ end
      Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
 
      ite.descripcion,  @modali,@nlista,@merdo,
-        ite.certificado,ite.ccp,ite.cpr,@nomproc[0], @montadj[0],vsadj ],
-             style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles]
+        ite.certificado,ite.ccp,ite.cpr,@nomproc[0], @montadj[0], @montref[0],vsadj ],
+             style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles,soles]
 
 
          nn=1
               while @nomproc.length>nn
-              sheet.add_row [ nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,@nomproc[nn], @montadj[nn] ],
-               style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles]
+              sheet.add_row [ nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,@nomproc[nn], @montadj[nn], @montref[nn] ],
+                style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles,soles]
               nn=nn+1
               end
               if @nomproc.length>1 then
@@ -356,7 +361,7 @@ end
                 sheet.merge_cells "J#{vlineai1}:J#{vlineaf1}"
                 sheet.merge_cells "K#{vlineai1}:K#{vlineaf1}"
                sheet.merge_cells "L#{vlineai1}:L#{vlineaf1}"
-                sheet.merge_cells "O#{vlineai1}:O#{vlineaf1}"
+                sheet.merge_cells "P#{vlineai1}:P#{vlineaf1}"
 
               end
 
