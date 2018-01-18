@@ -378,9 +378,10 @@ end
 
 def vhoja7
 
+@vuobac=params[:param1]
+
   respond_to do |format|
     format.html
-
     format.xlsx{render template: 'reports/hoja7.xlsx.axlsx', xlsx:'Activos'}
   end
 end

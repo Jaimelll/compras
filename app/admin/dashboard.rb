@@ -300,7 +300,10 @@ unless current_admin_user.id==24
 
 
 table_for "A"  do
-  column("Total=")
+
+  column(link_to "Total=", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac)) 
+
+
   column("#{@let.where(modalidad:2).count.to_s+"/("+
            number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
   column("#{@let.where(modalidad:1).count.to_s+"/("+

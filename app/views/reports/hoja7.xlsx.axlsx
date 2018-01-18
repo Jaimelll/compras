@@ -3,53 +3,97 @@ wb = xlsx_package.workbook
 wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                 alignment: { horizontal: :center })
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 9, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
-                           alignment: { horizontal: :center },num_fmt: 8)
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
-                        alignment: { horizontal: :center })
+                        alignment: { horizontal: :center,vertical: :center })
 
 centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                               alignment: { horizontal: :center })
+                               alignment: { horizontal: :center,vertical: :center })
 
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                alignment: { horizontal: :left })
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
+fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center })
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center })
+
+
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
 
 
 
 
-wb.add_worksheet(name: "Activos") do |sheet|
+
+
+####################pacs
+wb.add_worksheet(name: "PAC's") do |sheet|
+
 
   sheet.add_row []
 
-  sheet.add_row %w(N NOMBRE AREA VINCULO),
-  style: [centra, centra, centra, centra]
-
- @conta=0
-
-
- Employee.where(estado:1).order('tip_tra,ape_nom').each do |emple|
- @conta=@conta+1
-
-  @varea=Formula.where(product_id:26,orden:emple.area).select('nombre as dd').first.dd
-  @vtipo=Formula.where(product_id:23,orden:emple.tip_tra).select('nombre as dd').first.dd
+  sheet.add_row %w(N PAC FECHA_PAC OBAC EJECUCION DESCRIPCION MODALIDAD LISTA MERCADO ESTIMADO ),
+  style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
 
+    @conta3=0
+    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     @item1=Item.where('modalidad<3').where(exped2:@vaf1,ejecucion:4,obac:@vuobac).order('obac,pac')
 
-   sheet.add_row [ @conta, emple.ape_nom,   @varea, @vtipo ],
-   style: [centra, izq, centra, centra]
+
+     @item1.each do |ite|
+
+    @conta3=@conta3+1
+
+  @merdo=" "
+ if ite.tipo and ite.tipo>0 then
+  @merdo=Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd
+  end
+
+  @modali=" "
+ if ite.modalidad and ite.modalidad>0 then
+  @modali=Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd
+  end
+
+  @nlista=" "
+ if ite.lista and ite.lista>0 then
+  @nlista=Formula.where(product_id:3,orden:ite.lista).select('nombre as dd').first.dd
+  end
+
+
+
+
+
+
+
+     sheet.add_row [ @conta3,ite.pac, ite.mesconvoca,
+     Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+     Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
+
+     ite.descripcion,  @modali,@nlista,@merdo,
+        ite.certificado ],
+             style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles]
+
+
+
 
 
 
 end
-
 end
 
 
+
+
+
+
+###################cierre
 
 end
