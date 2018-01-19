@@ -46,20 +46,20 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   case proce.orden
 
      when 2
-        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
     when 4
-           sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-           style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+           sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+           style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
            @vpacn=@vpac4
      when 5
-          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
           @vpacn=@vpac5
       end
 
@@ -181,7 +181,11 @@ end
 
 @conta=@conta+1
 
-
+if Activity.where(actividad:18,phase_id:activ.id).count>0 then
+  @fec20= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+else
+  @fec20=""
+end
 
    if Activity.where(actividad:19,phase_id:activ.id).count>0 then
      @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
@@ -208,17 +212,17 @@ end
 
       when 2,4
   sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
-   @presu.to_i, activ.sele2.to_i, @fec21,@fec22,@espec,activ.comite,@vobsr ],
-   style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra, izq, izq, izq], height: 35
-   sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, 25,30, 40
+   @presu.to_i, activ.sele2.to_i, @fec20, @fec21,@fec22,@espec,activ.comite,@vobsr ],
+   style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra,centra, izq, izq, izq], height: 35
+   sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, nil, 25,30, 40
 
    when 3,5
    vahorr=(@presu- viadj).to_i
     tahorro= tahorro+vahorr
 sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
- @presu.to_i, @refe,  viadj.to_i,vahorr, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
-style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra, izq,izq,izq, izq, izq], height: 35
-sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
+ @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
+style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra,centra, izq,izq,izq, izq, izq], height: 35
+sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
    end
 

@@ -431,7 +431,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
         sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
 
      when 3,5
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) PRES_PROP BUENA_PRO SITUACION),
+        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION),
         style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu], height: 40
         sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
 
@@ -603,10 +603,23 @@ case proce.orden
        @fec22=""
      end
 
-   when 2,3
+   when 2
 
    if Activity.where(actividad:19,phase_id:activ.id).count>0 then
      @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec21=""
+   end
+   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
+     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec22=""
+   end
+
+   when 3,5
+
+   if Activity.where(actividad:18,phase_id:activ.id).count>0 then
+     @fec21= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
    else
      @fec21=""
    end
