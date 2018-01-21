@@ -429,6 +429,7 @@ Formula.where(product_id:6).each do |proce|
      vprocesele5=0
        @conta=0
       conta2=0
+      conta4=1
      Phase.where(id:@vpacn,expediente:varrmerc).order('sele5').each do |activ|
 
 
@@ -519,10 +520,11 @@ if vprocesele5!=activ.sele5 then
 
 @conta=@conta+1
 conta2=0
+conta4=1
 else
 
-conta2=conta2+1
-
+conta2=1
+conta4=conta4+1
 end
 
 vprocesele5=activ.sele5
@@ -558,25 +560,31 @@ vorige=Phase.where(id:activ.sele5).select('proceso as dd').first.dd
     tahorro= tahorro+vahorr
 
     if conta2>0 then
+
     conta3=nil
     vorigen3=nil
     else
+
     conta3=@conta
     vorigen3=vorige
     end
+
+
 sheet.add_row [ conta3, vorigen3, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,@nitems,
  @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22],
 style: [ centra,  izq,  izq, izq, izq,centra, soles, soles, soles, soles,centra,centra,centra], height: 35
 sheet.column_widths 5, nil, nil, 10, 40,5, nil, nil, nil, nil, nil, nil, nil
 
+ vancho=Phase.where(sele5:activ.sele5,id:@vpacn,expediente:varrmerc).count
 
-#if conta2>0 then
-#  vlineaf1 = sheet.rows.last.index
-#  vlineai1 = vlineaf1-conta2+2
+if vancho>1 and vancho==conta4  then
 
-#  sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
-#  sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
-#end
+  vlineaf1 = sheet.rows.last.index+1
+  vlineai1 = vlineaf1-vancho+1
+
+  sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
+  sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
+end
 
 
 
