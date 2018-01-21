@@ -570,13 +570,13 @@ style: [ centra,  izq,  izq, izq, izq,centra, soles, soles, soles, soles,centra,
 sheet.column_widths 5, nil, nil, 10, 40,5, nil, nil, nil, nil, nil, nil, nil
 
 
-if conta2>0 then
-  vlineaf1 = sheet.rows.last.index
-  vlineai1 = vlineaf1-conta2+2
+#if conta2>0 then
+#  vlineaf1 = sheet.rows.last.index
+#  vlineai1 = vlineaf1-conta2+2
 
-  sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
-  sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
-end
+#  sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
+#  sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
+#end
 
 
 
