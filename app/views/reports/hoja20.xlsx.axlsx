@@ -550,7 +550,7 @@ end
    end
 
 
-vorige=Phase.where(id:activ.id).select('proceso as dd').first.dd
+vorige=Phase.where(id:activ.sele5).select('proceso as dd').first.dd
 
 
 
