@@ -556,7 +556,15 @@ vorige=Phase.where(id:activ.id).select('proceso as dd').first.dd
 
    vahorr=(@presu- viadj).to_i
     tahorro= tahorro+vahorr
-sheet.add_row [ @conta, vorige, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,@nitems,
+
+    if conta2>0 then
+    conta3=nil
+    vorigen3=nil
+    else
+    conta3=@conta
+    vorigen3=vorige
+    end
+sheet.add_row [ conta3, vorigen3, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,@nitems,
  @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22],
 style: [ centra,  izq,  izq, izq, izq,centra, soles, soles, soles, soles,centra,centra,centra], height: 35
 sheet.column_widths 5, nil, nil, 10, 40,5, nil, nil, nil, nil, nil, nil, nil
