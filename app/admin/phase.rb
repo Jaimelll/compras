@@ -23,7 +23,7 @@ ActiveAdmin.register Phase do
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :admin_user_id, :periodo, :convocatoria, :sele3, :proceso,
               :sele4, :comite, :postores, :obs, :sele5,
-              :ep, :mgp, :fap, :ccffaa
+              :ep, :mgp, :fap, :ccffaa,  :sele5
 #se puede usar sele3 era para autidados
 menu priority: 10, label: "Procesos"
 
@@ -188,6 +188,9 @@ f.input :mgp,:label => 'Monto Adjudicado MGP', :as => :string, :input_html => { 
 f.input :fap,:label => 'Monto Adjudicado FAP', :as => :string, :input_html => { :style =>  'width:30%'}
 f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
 
+f.input :sele5,:label => 'Proceso de origen', :as => :select, :collection =>
+   Phase.order('proceso').map{|u| [u.proceso, u.id]}
+
   f.actions
 
 
@@ -272,6 +275,13 @@ show :title => ' Proceso'  do
           end
           row "Monto Adjudicado CCFFAA" do |phase|
             phase.ccffaa
+          end
+          row "Proceso de origen" do |phase|
+            if  phase.sele5 and  phase.sele5>0 then
+              Phase.where(id:phase.sele5).select('proceso as dd').first.dd
+            else
+                  "s/d"
+            end
           end
 
 
