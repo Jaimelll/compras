@@ -422,7 +422,7 @@ Formula.where(product_id:6).each do |proce|
         style: [titu,  titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
 
-
+       vahorr=0
       tahorro=0
       tpresup=0
       trefe=0
@@ -430,6 +430,7 @@ Formula.where(product_id:6).each do |proce|
        @conta=0
       conta2=0
       conta4=1
+      viadj=0
      Phase.where(id:@vpacn,expediente:varrmerc).order('sele5').each do |activ|
 
 
@@ -474,8 +475,6 @@ Formula.where(product_id:6).each do |proce|
 
 
            @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
-           tpresup=tpresup+  @presu
-          trefe=trefe+  @refe
 
 
 
@@ -556,8 +555,7 @@ vorige=Phase.where(id:activ.sele5).select('proceso as dd').first.dd
 
 
 
-   vahorr=(@presu- viadj).to_i
-    tahorro= tahorro+vahorr
+
 
     if conta2>0 then
 
@@ -599,7 +597,12 @@ sheet.add_row ["","","","","MERCADO","PROCESOS","PRESUPUESTADO","REFERENCIAL","A
 style: [normal, normal, normal,  normal,titu, titu, titu, titu, titu, titu, titu], height: 35
 
 
+tpresup=tpresup+  @presu
+trefe=trefe+  @refe
 
+
+vahorr=(@presu- viadj).to_i
+ tahorro= tahorro+vahorr
 
 
 
@@ -619,7 +622,7 @@ style: [ normal,  normal, normal, normal, izq, centra, soles, soles, soles, sole
 
 
 
-end
+end #end de each procesos
 
 
 
