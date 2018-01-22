@@ -431,7 +431,7 @@ Formula.where(product_id:6).each do |proce|
       conta2=0
       conta4=1
       viadj=0
-     Phase.where(id:@vpacn,expediente:varrmerc).order('sele5').each do |activ|
+     Phase.where(id:@vpacn,expediente:varrmerc).order('sele5,pp').each do |activ|
 
 
         @vpact3=Formula.where(product_id:12,acti:3).select('orden')
