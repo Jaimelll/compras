@@ -433,7 +433,15 @@ Formula.where(product_id:6).each do |proce|
       conta2=0
       conta4=1
       viadj=0
-     Phase.where(id:@vpacn,expediente:varrmerc).order('sele5,pp').each do |activ|
+
+
+
+    Phase.where(id:@vpacn,expediente:varrmerc).order('proceso').pluck(:sele5).uniq.each do |arr1|
+
+      Phase.where(id:@vpacn,expediente:varrmerc,sele5:arr1).order('pp').each do |activ|
+
+
+  #   Phase.where(id:@vpacn,expediente:varrmerc).order('sele5,pp').each do |activ|
 
 
         @vpact3=Formula.where(product_id:12,acti:3).select('orden')
@@ -592,6 +600,10 @@ trefe=trefe+  @refe
 
 vahorr=(@presu- viadj).to_i
  tahorro= tahorro+vahorr
+
+
+end #fin de grupo de proceso sele5
+
 
 
 
