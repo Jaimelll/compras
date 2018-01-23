@@ -426,6 +426,8 @@ Formula.where(product_id:6).each do |proce|
       tahorro=0
       tpresup=0
       trefe=0
+
+      @refe
      vprocesele5=0
        @conta=0
       conta2=0
@@ -584,10 +586,16 @@ if vancho>1 and vancho==conta4  then
   sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
 end
 
+tpresup=tpresup+  @presu
+trefe=trefe+  @refe
+
+
+vahorr=(@presu- viadj).to_i
+ tahorro= tahorro+vahorr
 
 
 
-end
+end  # end de each procesos
 
 
 
@@ -597,12 +605,7 @@ sheet.add_row ["","","","","MERCADO","PROCESOS","PRESUPUESTADO","REFERENCIAL","A
 style: [normal, normal, normal,  normal,titu, titu, titu, titu, titu, titu, titu], height: 35
 
 
-tpresup=tpresup+  @presu
-trefe=trefe+  @refe
 
-
-vahorr=(@presu- viadj).to_i
- tahorro= tahorro+vahorr
 
 
 
@@ -622,7 +625,7 @@ style: [ normal,  normal, normal, normal, izq, centra, soles, soles, soles, sole
 
 
 
-end #end de each procesos
+end
 
 
 
