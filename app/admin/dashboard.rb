@@ -55,8 +55,8 @@ end
       @vuobac=[3]
       Formula.where(product_id:1,orden:3).update_all( numero:1 )
     when 29
-      @vuobac=[6]
-      Formula.where(product_id:1,orden:6).update_all( numero:1 )
+      @vuobac=[1,2,3,6]
+      Formula.where(product_id:1).where('orden=1 or orden=2 or orden=3 or orden=6').update_all( numero:1 )
     else
       @vuobac=[1,2,3,4,5,6]
       Formula.where(product_id:1).where.not(orden:4).update_all( numero:1 )
@@ -301,7 +301,7 @@ unless current_admin_user.id==24
 
 table_for "A"  do
 
-  column(link_to "Total=", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac)) 
+  column(link_to "Total=", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
 
 
   column("#{@let.where(modalidad:2).count.to_s+"/("+
