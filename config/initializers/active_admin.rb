@@ -276,7 +276,7 @@ ActiveAdmin.setup do |config|
   # By default, the footer shows the current Active Admin version. You can
   # override the content of the footer here.
   #
-   config.footer = 'Sistema de Gestion de Expediente'
+   config.footer = 'Sistema de seguimiento y control de procesos de compra'
 
   # == Sorting
   #
