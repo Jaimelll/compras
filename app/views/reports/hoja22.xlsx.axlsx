@@ -1,0 +1,294 @@
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+
+titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 9, bg_color: "C1C1C1")
+
+soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
+
+fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                        alignment: { horizontal: :center,vertical: :center })
+
+centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                               alignment: { horizontal: :center,vertical: :center })
+
+izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
+fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center })
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center })
+
+
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
+
+
+
+
+#########resumen
+
+a=[1,2]
+a.each do |hoj|
+if hoj==1 then
+  vnomh="Hasta_diciembre"
+    @vpacn=@vpac3
+else
+  vnomh="Despues_de_diciembre"
+    @vpacn=@vpac4
+end
+
+
+wb.add_worksheet(name: vnomh) do |sheet|
+
+  sheet.add_row []
+
+#mercado
+
+Formula.where(product_id:6).each do |proce|
+  sheet.add_row []
+
+ sheet.add_row ["","","","",proce.descripcion],
+  style: [centra,centra,centra,centra], height: 30
+
+
+
+
+ varrmerc=Item.where(tipo:proce.orden).select('DISTINCT exped' )
+
+
+
+
+
+
+        sheet.add_row %w(N ORIGEN PROCE OBAC DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO  ),
+        style: [titu,  titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+
+
+       vahorr=0
+      tahorro=0
+      tpresup=0
+      trefe=0
+
+      @refe
+     vprocesele5=0
+       @conta=0
+      conta2=0
+      conta4=1
+      viadj=0
+
+
+
+    vsele5=Phase.where(id:@vpacn,expediente:varrmerc).pluck(:sele5).uniq
+     Phase.where(id:vsele5).order('proceso').pluck(:sele5).uniq.each do |arr1|
+      Phase.where(id:@vpacn,expediente:varrmerc,sele5:arr1).order('pp').each do |activ|
+
+
+
+
+
+        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+       @vdetalle= Activity.order('pfecha')
+       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
+
+
+
+
+
+     @vobac=" "
+         @esti=0
+         @apac=[]
+         @aobac=[]
+         @afecing=[]
+
+     if activ.expediente>0 then
+      @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
+     Item.where(exped:activ.expediente).each do |nobac|
+
+     @apac.push(nobac.pac)
+     @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
+
+     if Detail.where(actividad:13,item_id:nobac.id).count>0 then
+      @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
+     else
+        @afecing.push("")
+     end
+
+
+     end
+     end
+
+
+
+           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').sum(:presupuestado).to_i
+           @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').
+           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
+
+           viadj= activ.sele2
+
+
+           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
+
+
+
+
+
+
+
+
+
+      veadj=""
+
+
+        if  Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').count>0 then
+        Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').order('codigo').each do |ganador|
+         veadj=veadj+ganador.codigo+":"+ganador.postor+","
+
+        end
+        end
+
+ @vobac=" "
+ var=0
+
+ if activ.expediente>0 then
+
+
+  Item.where(exped:activ.expediente).order("obac").each do |nobac|
+
+     if nobac.obac!=var then
+     @vobac=@vobac +Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd+"-"
+     var=nobac.obac
+     end
+
+  end
+end
+
+
+
+
+
+
+if vprocesele5!=activ.sele5 then
+
+@conta=@conta+1
+conta2=0
+conta4=1
+else
+
+conta2=1
+conta4=conta4+1
+end
+
+vprocesele5=activ.sele5
+
+
+
+
+
+
+if Activity.where(actividad:18,phase_id:activ.id).count>0 then
+  @fec20= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+else
+  @fec20=""
+end
+
+   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
+     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec21=""
+   end
+   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
+     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec22=""
+   end
+
+
+vorige=Phase.where(id:activ.sele5).select('proceso as dd').first.dd
+
+
+
+
+
+    if conta2>0 then
+
+    conta3=nil
+    vorigen3=nil
+    else
+
+    conta3=@conta
+    vorigen3=vorige
+    end
+
+
+sheet.add_row [ conta3, vorigen3, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,@nitems,
+ @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22],
+style: [ centra,  izq,  izq, izq, izq,centra, soles, soles, soles, soles,centra,centra,centra], height: 35
+sheet.column_widths 5, nil, nil, 10, 40,5, nil, nil, nil, nil, nil, nil, nil
+
+ vancho=Phase.where(sele5:activ.sele5,id:@vpacn,expediente:varrmerc).count
+
+if vancho>1 and vancho==conta4  then
+
+  vlineaf1 = sheet.rows.last.index+1
+  vlineai1 = vlineaf1-vancho+1
+
+  sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
+  sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
+end
+
+tpresup=tpresup+  @presu
+trefe=trefe+  @refe
+
+
+vahorr=(@presu- viadj).to_i
+ tahorro= tahorro+vahorr
+
+
+end #fin de grupo de proceso sele5
+
+
+
+
+end  # end de each procesos
+
+
+
+
+sheet.add_row []
+sheet.add_row ["","","","PROCESOS","MERCADO","ORIGENES","PRESUPUESTADO","REFERENCIAL","ADJUDICADO","AHORRO","TASA"],
+style: [normal, normal, normal,  titu,titu, titu, titu, titu, titu, titu, titu], height: 35
+
+
+
+
+
+
+tadjd=Phase.where(id:@vpacn,expediente:varrmerc).sum("floor(sele2)")
+tnproceso=Phase.where(id:@vpacn,expediente:varrmerc).count
+
+
+if tpresup>0 then
+   aaa=tahorro*100/tpresup
+
+   tasa=number_to_percentage(aaa, precision: 0)
+
+else
+   tasa="0%"
+end
+
+sheet.add_row ["","","",tnproceso,proce.nombre,@conta,tpresup, trefe,tadjd,tahorro,tasa],
+style: [ normal,  normal, normal, centra, izq, centra, soles, soles, soles, soles,centra], height: 35
+
+
+
+end #mercado
+
+
+
+end ##estilos
+
+end #nombre
+end

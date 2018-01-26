@@ -71,7 +71,7 @@ match 'reports/vhoja7', via: [:get]
 match 'reports/vhoja11', via: [:get]
 match 'reports/vhoja20', via: [:get]
 match 'reports/vhoja21', via: [:get]
-
+match 'reports/vhoja22', via: [:get]
 
 
 end

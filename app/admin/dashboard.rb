@@ -1160,23 +1160,31 @@ end #personal de column
 
                   conta2017=0
                   conta2018=0
+                  id2017=[]
+                  id2018=[]
                   Phase.where(id:vidproce).each do |contaano|
                       vfee1=Phase.where(id:contaano.id).select('pp as dd').first.dd.strftime("%Y")
                     if vfee1==vanno then
                      conta2017=conta2017+1
+                     id2017.push(contaano.id)
                    else
                      conta2018=conta2018+1
+                      id2018.push(contaano.id)
                    end
                  end
          column("Avance") do |formula|
-                 "Proceso"
+            link_to     "Proceso",
+            reports_vhoja22_path(format:  "xlsx",
+
+             :param5=> id2017, :param6=> id2018, :param7=> @vuobac)
+
          end
          column("Hasta dicembre") do |formula|
 
 
 
+           "#{conta2017}"+"/("+"#{number_with_delimiter(vsadjd1.to_i, delimiter: ",")}"+")"
 
-          "#{conta2017}"+"/("+"#{number_with_delimiter(vsadjd1.to_i, delimiter: ",")}"+")"
 
           end
 

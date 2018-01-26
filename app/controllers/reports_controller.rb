@@ -455,6 +455,24 @@ def vhoja21
 end
 
 
+def vhoja22
+
+  @vpac3=params[:param5]
+  @vpac4=params[:param6]
+  @vuobac=params[:param7]
+
+  @activities=Phase.order('pp ASC')
+
+
+
+  respond_to do |format|
+    format.html
+    format.xlsx{render template: 'reports/hoja22.xlsx.axlsx', xlsx:'Adjudicados'}
+  end
+end
+
+
+
 
 
 end
