@@ -1032,7 +1032,7 @@ else
 end
   end
 
-  column("Adjudicados") do |formula|
+  column("Adjudicados-Consentidos") do |formula|
        if formula.orden==1 then
     @dpc=  formula.orden
     @titproc1="Procesos Adjudicados"
@@ -1070,7 +1070,7 @@ else
 end
  end
 
- column("No Consentidos") do |formula|
+ column("Apelados") do |formula|
         if formula.orden==1 then
      @dpc=  formula.orden
      @titproc1="Procesos No Consentidos"
@@ -1113,26 +1113,9 @@ end
 
 end #de table
 
- #if @vliqui>0 then
- #strong("* Procesos culminados = "+@vliqui.to_s)
 
- #end
 
-#table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
-#  column("Resumen ") do |formula|
-#  "Procesos acumulados"
-#  end
-#column("convocados") do |formula|
-#  @vxper3[2]+@vxper3[3]
-#end
-#column("Adjudicados") do |formula|
-#  @vxper3[3]
-#end
-#column("Culminados") do |formula|
-#  @vliqui
-#end
 
-#end
 
 
 
@@ -1143,13 +1126,96 @@ end #de table
 end #panel
 
 end #personal de column
+
+
+######Adjudicados
+
+   panel  "VI.- ADJUDICADOS ACFFAA AF-" +@vaf  do
+
+
+      table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
+
+          vidproce=(@vconv3+@vconv5).uniq
+
+                    vsadjd1=0
+                    vsadjd2=0
+                    vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                    vpiece1=Piece.where(phase_id:vidproce).
+                            where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9 or estado=2 or estado=11)")
+                    vndpro=Phase.where(id:vidproce).count
+                  if vpiece1.count>0  then
+
+
+                     vpiece1.each do |adju|
+                        vfecadj=Phase.where(id:adju.phase_id).select('pp as dd').first.dd.strftime("%Y")
+                        if vfecadj==vanno then
+                         vsadjd1=  vsadjd1+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
+                         select('cantidad as dd').first.dd.to_i/100
+                        else
+                         vsadjd2=  vsadjd2+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
+                         select('cantidad as dd').first.dd.to_i/100
+                       end
+                    end
+                  end
+
+                  conta2017=0
+                  conta2018=0
+                  Phase.where(id:vidproce).each do |contaano|
+                      vfee1=Phase.where(id:contaano.id).select('pp as dd').first.dd.strftime("%Y")
+                    if vfee1==vanno then
+                     conta2017=conta2017+1
+                   else
+                     conta2018=conta2018+1
+                   end
+                 end
+         column("Avance") do |formula|
+                 "Proceso"
+         end
+         column("Hasta dicembre") do |formula|
+
+
+
+
+          "#{conta2017}"+"/("+"#{number_with_delimiter(vsadjd1.to_i, delimiter: ",")}"+")"
+
+          end
+
+
+         column("Despues de dicembre") do |formula|
+             "#{conta2018}"+"/("+"#{number_with_delimiter(vsadjd2.to_i, delimiter: ",")}"+")"
+
+         end
+
+
+
+          column("TOTAL") do |formula|
+               "#{vndpro}"+"/("+"#{number_with_delimiter((vsadjd1+vsadjd2).to_i, delimiter: ",")}"+")"
+
+          end
+
+
+
+
+
+   end
+
+   end
+
+
+
+
+
+
+
+
+############fin de adjudicados
 #########################################
 case current_admin_user.id
 when 21,22,23,24,29
 
 
 else
-   panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
+   panel  "VII.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1282,7 +1348,7 @@ else
    end
 
 if current_admin_user.id==2 then
-   panel  "VII.-SEGUIMIENTO DE CONTRATOS ACFFAA-"+@vaf  do
+   panel  "VIII.-SEGUIMIENTO DE CONTRATOS ACFFAA-"+@vaf  do
           table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
 
             ##################
