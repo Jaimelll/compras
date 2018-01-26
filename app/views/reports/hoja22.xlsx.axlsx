@@ -71,7 +71,7 @@ Formula.where(product_id:6).each do |proce|
       tahorro=0
       tpresup=0
       trefe=0
-
+      tadj2=0
       @refe
      vprocesele5=0
        @conta=0
@@ -126,7 +126,8 @@ Formula.where(product_id:6).each do |proce|
            @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').
            sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
 
-           viadj= activ.sele2
+           viadj= Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').
+           sum(:"adjudicado*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
 
 
            @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
@@ -241,7 +242,7 @@ end
 
 tpresup=tpresup+  @presu
 trefe=trefe+  @refe
-
+tadj2=tadj2+viadj
 
 vahorr=(@presu- viadj).to_i
  tahorro= tahorro+vahorr
@@ -266,7 +267,7 @@ style: [normal, normal, normal,  titu,titu, titu, titu, titu, titu, titu, titu],
 
 
 
-tadjd=Phase.where(id:@vpacn,expediente:varrmerc).sum("floor(sele2)")
+
 tnproceso=Phase.where(id:@vpacn,expediente:varrmerc).count
 
 
@@ -279,7 +280,7 @@ else
    tasa="0%"
 end
 
-sheet.add_row ["","","",tnproceso,proce.nombre,@conta,tpresup, trefe,tadjd,tahorro,tasa],
+sheet.add_row ["","","",tnproceso,proce.nombre,@conta,tpresup, trefe,tadj2,tahorro,tasa],
 style: [ normal,  normal, normal, centra, izq, centra, soles, soles, soles, soles,centra], height: 35
 
 

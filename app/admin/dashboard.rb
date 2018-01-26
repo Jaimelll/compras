@@ -1150,10 +1150,10 @@ end #personal de column
                         vfecadj=Phase.where(id:adju.phase_id).select('pp as dd').first.dd.strftime("%Y")
                         if vfecadj==vanno then
                          vsadjd1=  vsadjd1+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
-                         select('cantidad as dd').first.dd.to_i/100
+                         select('cantidad as dd').first.dd/100.to_i
                         else
                          vsadjd2=  vsadjd2+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
-                         select('cantidad as dd').first.dd.to_i/100
+                         select('cantidad as dd').first.dd/100.to_i
                        end
                     end
                   end
