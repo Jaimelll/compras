@@ -244,6 +244,14 @@ end
             @vrang=15
             @vtitun=" AF-2017"
 
+          when 4
+            @vinicio = Date.parse('2018/01/01')
+            @dfin=(Time.now-@vinicio.to_time).to_i/86400
+            @vfin=Time.now
+             @vrang=15
+             @vtitun=" AF-2018"
+
+
 
       end #termina case
 

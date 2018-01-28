@@ -126,6 +126,12 @@ ActiveAdmin.register_page "Indices" do
                      @vrang=15
                      @vtitun=" AF-2017"
 
+                   when 4
+                     @vinicio = Date.parse('2018/01/01')
+                     @dfin=(Time.now-@vinicio.to_time).to_i/86400
+                     @vfin=Time.now
+                      @vrang=15
+                      @vtitun=" AF-2018"
 
                end #termina case
 
@@ -627,13 +633,13 @@ ActiveAdmin.register_page "Indices" do
                        cc=[aa[0].flatten.compact.length,aa[1].flatten.compact.length,
                            aa[2].flatten.compact.length,aa[3].flatten.compact.length,
                            aa[4].flatten.compact.length,aa[5].flatten.compact.length]
-                      # if cc[1]>0 and cc[3]>0  then
+                       if cc[1]>0 and cc[3]>0 and cc[5]>0  then
                        dd=[(cc[0]*100/cc[1]).to_s+"%","-",
                            (cc[2]*100/cc[3]).to_s+"%","-",
                            (cc[4]*100/cc[5]).to_s+"%","-"]
-                    #   else
-                    #     dd=["-","-","-","-","-","-"]
-                    #   end
+                       else
+                         dd=["-","-","-","-","-","-"]
+                       end
 
                       table_for aa  do
                         column("Mes")do |ter|

@@ -27,7 +27,14 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
 #se puede usar sele3 era para autidados
 menu priority: 10, label: "Procesos"
 
+scope :ACFFAA, :default => true do |phases|
+  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     phases.where(periodo:@vaf).where.not(expediente:0)
+end
 
+scope :AF_2018, :default => true do |phases|
+     phases.where(periodo:4).where.not(expediente:0)
+end
 
 scope :AF_2017, :default => true do |phases|
      phases.where(periodo:3).where.not(expediente:0)
