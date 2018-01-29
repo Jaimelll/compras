@@ -515,10 +515,15 @@ unless current_admin_user.id==24 #personal
                                                              select('actividad as dd').first.dd
                                                              @vactivfec= @deta3.
                                                                 select('pfecha as dd').first.dd
+                                                              else
+                                                                @vactiv=78
+                                                                @vactivfec=@vinicio
 
+                                                          end
 
-                                                            if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 and
-                                                              Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities  .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
+                                                            if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 then
+                                                            if    Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
+                                                              activities.where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
 
 
                                                                @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
@@ -528,26 +533,41 @@ unless current_admin_user.id==24 #personal
 
 
 
+                                                             @vactiv2=@phase3.select('activities.actividad as dd').first.dd
+                                                              @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
 
-
-
-
-
-
-
-
-
-                                                             @vactiv2=@phase3
-                                                                       .select('activities.actividad as dd').first.dd
-                                                              @vactiv2fec=@phase3
-                                                                                 .select('activities.pfecha as dd').first.dd
 
 
                                                                   if    @vactiv2fec>  @vactivfec then
                                                                      @vactiv=@vactiv2
                                                                   end
-                                                            end
+                                                            else
+                                                              vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                                                              if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
+                                                                activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
 
+
+
+                                                                @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                                                     .where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
+                                                                    .order('activities.pfecha DESC,activities.id DESC')
+
+
+
+
+                                                              @vactiv2=@phase3.select('activities.actividad as dd').first.dd
+                                                               @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
+
+
+
+                                                                   if    @vactiv2fec>  @vactivfec then
+                                                                      @vactiv=@vactiv2
+                                                                   end
+
+                                                              end
+
+
+                                                          end
 
 
 
