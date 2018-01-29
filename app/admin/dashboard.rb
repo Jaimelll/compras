@@ -86,7 +86,7 @@ end
        when 3
          @vinicio = Date.parse('2017/01/01')
          @dfin=(Time.now-@vinicio.to_time).to_i/86400
-         @vfin=Time.now
+         @vfin=Date.parse('2017/12/31')
           @vrang=15
           @vtitun=" AF-2017"
 
@@ -760,16 +760,20 @@ unless current_admin_user.id==24 #personal
 
 
 
-         if @deta4.count>0  then
+         if @deta4.count>0 then
+           if @deta4.where("pfecha<=?  ", @vfin ).count>0 then
             @vactiv3= @deta4.where("pfecha<=?  ", @vfin ).select('actividad as dd').first.dd
 
-          @vdir=Formula.where(product_id:12,orden:@vactiv3).
+             @vdir=Formula.where(product_id:12,orden:@vactiv3).
                 select('cantidad as dd').first.dd
 
 
 
                 @vxper2[@vdir]=@vxper2[@vdir]+ 1
-
+           else
+              @vdir=5
+                @vxper2[@vdir]=@vxper2[@vdir]+ 1
+           end
 
      #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
 
