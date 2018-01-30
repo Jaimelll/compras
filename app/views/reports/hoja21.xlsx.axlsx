@@ -653,7 +653,7 @@ case proce.orden
            vlineai1 = vlineaf1-@aobac.length+1
 
            sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
-
+           sheet.merge_cells "E#{vlineai1}:E#{vlineaf1}"
            sheet.merge_cells "F#{vlineai1}:F#{vlineaf1}"
 
 
