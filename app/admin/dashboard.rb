@@ -308,7 +308,7 @@ unless current_admin_user.id==24
 
 table_for "A"  do
 
-  column(link_to "Total=", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
+  column(link_to "Total", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
 
 
   column("#{@let.where(modalidad:2).count.to_s+"/("+
@@ -392,10 +392,27 @@ end#table
 
                                      end # de table for Mercado
 
+                                     @let=Item.where(ejecucion:4)
+                                            .where(exped2:@vaf).where(obac: @vuobac)
 
+
+                               table_for "A"  do
+
+                                column("Totales = ")
+
+
+                               column("#{@let.where(modalidad:2).count.to_s+"/("+
+                                        number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                               column("#{@let.where(modalidad:1).count.to_s+"/("+
+                                        number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                               column("#{@let.where('modalidad<=2').count.to_s+"/("+
+                                        number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                               end#table
 
 
                                    end # panel mercado
+
+
 
         end# de columns
 
@@ -497,6 +514,22 @@ unless current_admin_user.id==24 #personal
                  end
 
 
+                         @let=Item.where(ejecucion:4)
+                                .where(exped2:@vaf).where(obac: @vuobac)
+
+
+                 table_for "A"  do
+
+                   column("Totales =")
+
+
+                   column("#{@let.where(modalidad:2).count.to_s+"/("+
+                            number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                   column("#{@let.where(modalidad:1).count.to_s+"/("+
+                            number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                   column("#{@let.where('modalidad<=2').count.to_s+"/("+
+                            number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                 end#table
 
 
 
@@ -1179,7 +1212,7 @@ end #personal de column
 
 
 ######Adjudicados
-
+if current_admin_user.id==2 then
    panel  "VI.- ADJUDICADOS ACFFAA AF-" +@vaf  do
 
 
@@ -1396,7 +1429,7 @@ else
    end
    end
 
-if current_admin_user.id==2 then
+
    panel  "VIII.-SEGUIMIENTO DE CONTRATOS ACFFAA-"+@vaf  do
           table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
 
