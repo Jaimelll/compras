@@ -1063,7 +1063,7 @@ else
 end
   end
 
-  column("Adjudicados-Consentidos") do |formula|
+  column("Consentidos") do |formula|
        if formula.orden==1 then
     @dpc=  formula.orden
     @titproc1="Procesos Adjudicados"
@@ -1081,7 +1081,7 @@ end
 end
 
 
-column("Desiertos") do |formula|
+column("Vienen de Desiertos") do |formula|
   if formula.orden==1 then
   @dpc=  formula.orden
   @titproc1="Procesos Desiertos"
@@ -1101,7 +1101,7 @@ else
 end
  end
 
- column("Apelados") do |formula|
+ column("No consentidos") do |formula|
         if formula.orden==1 then
      @dpc=  formula.orden
      @titproc1="Procesos No Consentidos"
