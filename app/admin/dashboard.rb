@@ -322,81 +322,10 @@ end#table
 
 
                         end # panel listas
-                        @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                        panel  "II.- TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
-                                  table_for Formula.where(product_id:6)  do
-                                    @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-                                       column("Mercado ") do |formula|
-                                       formula.nombre
-                                       end
-
-                                       column("Por Encargo ") do |formula|
-                                         @auto=  formula.orden
-                                         @tita1=" "
-                                         @vopc1=6
-
-                                       @le1=Item.where(ejecucion:4,modalidad:2,tipo:formula.orden)
-                                            .where(exped2:@vaf).where(obac: @vuobac)
-
-                                       @le= @le1.count.to_s+ "/("+
-                                              number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                                       link_to "#{@le} ", reports_comment_path(format: :pdf,
-                                       :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
-
-
-
-                                       end
-                                       column("Corporativos") do |formula|
-                                         @auto=  formula.orden
-                                         @tita1=" "
-                                         @vopc1=7
-
-                                       @le1=Item.where(ejecucion:4,modalidad:1,tipo:formula.orden)
-                                             .where(exped2:@vaf).where(obac: @vuobac)
-
-                                       @le= @le1.count.to_s+ "/("+
-                                              number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                                       link_to "#{@le} ", reports_comment_path(format: :pdf,
-                                       :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
-
-
-                                       end
-
-                                       column("TOTAL") do |formula|
-
-                                         @auto=  formula.orden
-                                         @tita1=" "
-                                         @vopc1=8
-
-                                         @ls1=   Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3")
-                                                 .where(exped2:@vaf).where(obac: @vuobac)
-                                         @ls=   @ls1.count.to_s+ "/("+
-                                              number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-
-                                              link_to "#{@ls} ", reports_comment_path(format: :pdf,
-                                              :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
-
-
-
-                                       end
-
-
-
-
-
-
-                                   end # de table for Mercado
-
-
-
-
-                                 end # panel mercado
 
                           @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                          panel  "III.- EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+                          panel  "II.- EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                                     table_for Formula.where(product_id:8)  do
                                       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -470,6 +399,33 @@ end#table
 
         end# de columns
 
+
+        #personal
+        unless current_admin_user.id==24
+
+
+          panel  "Leyenda" do
+           li "RO: Recursos ordinarios"
+             li "RO-Vraem: Recursos ordinarios Vraem"
+               li "RD: Recurso determinado"
+                 li "RO,RDR/RP: Recursos ordinarios,
+                   R. direct. recaudados/R. propios"
+                   li "D y T: Donaciones y transferencias"
+                    li "ROOC: Recursos por operacion oficiales de credito"
+                     li "RDR y RP/RP: Recursos directamente recaudados"
+
+
+
+
+
+          end
+        else
+        #  li link_to "Personal por area evaluacion",    reports_vhoja4_path(format: "xlsx")
+          li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
+        end
+
+
+
       end # de unless de personal
 
 
@@ -477,6 +433,82 @@ end#table
         column do
 
 unless current_admin_user.id==24 #personal
+
+
+  @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+  panel  "III.- TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+
+            table_for Formula.where(product_id:6)  do
+              @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                 column("Mercado ") do |formula|
+                 formula.nombre
+                 end
+
+                 column("Por Encargo ") do |formula|
+                   @auto=  formula.orden
+                   @tita1=" "
+                   @vopc1=6
+
+                 @le1=Item.where(ejecucion:4,modalidad:2,tipo:formula.orden)
+                      .where(exped2:@vaf).where(obac: @vuobac)
+
+                 @le= @le1.count.to_s+ "/("+
+                        number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                 link_to "#{@le} ", reports_comment_path(format: :pdf,
+                 :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+
+                 end
+                 column("Corporativos") do |formula|
+                   @auto=  formula.orden
+                   @tita1=" "
+                   @vopc1=7
+
+                 @le1=Item.where(ejecucion:4,modalidad:1,tipo:formula.orden)
+                       .where(exped2:@vaf).where(obac: @vuobac)
+
+                 @le= @le1.count.to_s+ "/("+
+                        number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                 link_to "#{@le} ", reports_comment_path(format: :pdf,
+                 :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+                 end
+
+                 column("TOTAL") do |formula|
+
+                   @auto=  formula.orden
+                   @tita1=" "
+                   @vopc1=8
+
+                   @ls1=   Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3")
+                           .where(exped2:@vaf).where(obac: @vuobac)
+                   @ls=   @ls1.count.to_s+ "/("+
+                        number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+                        link_to "#{@ls} ", reports_comment_path(format: :pdf,
+                        :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+
+
+                 end
+
+
+
+
+
+
+             end # de table for Mercado
+
+
+
+
+           end # panel mercado
+
+
 
                                    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
                                    @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
@@ -1026,7 +1058,7 @@ column("Rol") do |formula|
    end
 
 end
-column("En Proceso") do |formula|
+column("C/EPOM") do |formula|
   if formula.orden==1 then
   @dpc=  formula.orden
   @titproc1="En Proceso"
@@ -1101,7 +1133,7 @@ else
 end
  end
 
- column("Por consentir") do |formula|
+ column("Adjudicados") do |formula|
         if formula.orden==1 then
      @dpc=  formula.orden
      @titproc1="Procesos No Consentidos"
@@ -1210,7 +1242,7 @@ end #personal de column
              :param5=> id2017, :param6=> id2018, :param7=> @vuobac)
 
          end
-         column("Hasta dicembre") do |formula|
+         column("Adjudicados") do |formula|
 
 
 
@@ -1220,17 +1252,8 @@ end #personal de column
           end
 
 
-         column("Despues de dicembre") do |formula|
-             "#{conta2018}"+"/("+"#{number_with_delimiter(vsadjd2.to_i, delimiter: ",")}"+")"
-
-         end
 
 
-
-          column("TOTAL") do |formula|
-               "#{vndpro}"+"/("+"#{number_with_delimiter((vsadjd1+vsadjd2).to_i, delimiter: ",")}"+")"
-
-          end
 
 
 

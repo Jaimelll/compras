@@ -33,10 +33,10 @@ normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 a=[1,2]
 a.each do |hoj|
 if hoj==1 then
-  vnomh="Hasta_diciembre"
+  vnomh="Adjudicados "
     @vpacn=@vpac3
 else
-  vnomh="Despues_de_diciembre"
+  vnomh="Fuera de periodo"
     @vpacn=@vpac4
 end
 
