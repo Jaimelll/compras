@@ -223,7 +223,7 @@ vorige=Phase.where(id:activ.sele5).select('proceso as dd').first.dd
     vorigen3=vorige
     end
 
-
+vahorr=(@presu- viadj).to_i
 sheet.add_row [ conta3, vorigen3, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,@nitems,
  @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22],
 style: [ centra,  izq,  izq, izq, izq,centra, soles, soles, soles, soles,centra,centra,centra], height: 35
@@ -244,7 +244,7 @@ tpresup=tpresup+  @presu
 trefe=trefe+  @refe
 tadj2=tadj2+viadj
 
-vahorr=(@presu- viadj).to_i
+
  tahorro= tahorro+vahorr
 
 
