@@ -454,7 +454,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
       @vdetalle.each do |deta|
 
       if deta.obs then
-      @vobsr=deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize
+      @vobsr=deta.obs.capitalize
        end
      end
     end

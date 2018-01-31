@@ -298,8 +298,8 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-        sheet.add_row %w(N PROCESO DESCRIPCION BUENA_PRO Preparación_Propuestas Evaluación_Propuestas ),
-        style: [titu,  titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO DESCRIPCION BUENA_PRO Preparación_Propuestas Evaluación_Propuestas Situación),
+        style: [titu,  titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
 
 
@@ -312,6 +312,25 @@ wb.add_worksheet(name: "Grafico") do |sheet|
         @vpact3=Formula.where(product_id:12,acti:3).select('orden')
        @vdetalle= Activity.order('pfecha')
        @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
+
+
+
+
+
+
+         @vobsr=" "
+         if @vdetalle.count>0
+        @vdetalle.each do |deta|
+
+        if deta.obs then
+            @vobsr= deta.obs.capitalize
+         end
+       end
+      end
+
+
+
+
 
 
 
@@ -347,9 +366,9 @@ wb.add_worksheet(name: "Grafico") do |sheet|
 
 
 
-  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec22, @dpp, @dif],
-   style: [ centra,  izq, izq,ddmm,ddmm,centra], height: 35
-   sheet.column_widths 5,10, 50, 10, 10, 10
+  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec22, @dpp, @dif, @vobsr],
+   style: [ centra,  izq, izq,ddmm,ddmm,centra, izq], height: 35
+   sheet.column_widths 5,10, 50, 10, 10, 10,10
 
 
 
