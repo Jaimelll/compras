@@ -764,7 +764,7 @@ unless current_admin_user.id==24 #personal
 
 
 
-                                   panel  "V.- CALENDARIO DE PROCESOS  ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
+                                   panel  "V.- CALENDARIO DE PROCESOS EN DPC-ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
                                    #  ul do
 
                                    #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
@@ -1063,10 +1063,10 @@ column("C/EPOM") do |formula|
   @dpc=  formula.orden
   @titproc1="En Proceso"
   @vopc=4
+@vconv14=@vconv1+@vconv4
 
-
- link_to "#{@vxper3[1]}"+"/("+"#{number_with_delimiter(@contavus[1].to_i, delimiter: ",")}"+")",
-  reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv1,
+ link_to "#{@vxper3[1]+@vxper3[4]}"+"/("+"#{number_with_delimiter((@contavus[1]+@contavus[4]).to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv14,
    :param4=>  @titproc1)
  else
    if vvar==1 then
@@ -1074,6 +1074,12 @@ column("C/EPOM") do |formula|
   end
  end
  end
+
+
+
+
+
+
 
  column("convocados") do |formula|
    if formula.orden==1 then
@@ -1094,7 +1100,22 @@ else
   end
 end
   end
+  column("Adjudicados") do |formula|
+         if formula.orden==1 then
+      @dpc=  formula.orden
+      @titproc1="Procesos No Consentidos"
+      @vopc=3
 
+
+    link_to "#{@vxper3[5]}"+"/("+"#{number_with_delimiter(@contavus[5].to_i, delimiter: ",")}"+")",
+    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv5,
+    :param4=>  @titproc1)
+  else
+   if vvar==1 then
+       Phase.where(id:@vconv5,sele3:2).count
+  end
+  end
+  end
   column("Consentidos") do |formula|
        if formula.orden==1 then
     @dpc=  formula.orden
@@ -1113,42 +1134,8 @@ end
 end
 
 
-column("Vienen de Desiertos") do |formula|
-  if formula.orden==1 then
-  @dpc=  formula.orden
-  @titproc1="Procesos Desiertos"
-  @vopc=3
 
 
-link_to "#{@vxper3[4]}"+"/("+"#{number_with_delimiter(@contavus[4].to_i, delimiter: ",")}"+")",
-reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv4,
-:param4=>  @titproc1)
-else
- if vvar==1 then
-    @contconv= Phase.where(id:@vconv2,sele3:2).count
-   link_to "#{@contconv}", reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
-      :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-      :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
- end
-end
- end
-
- column("Adjudicados") do |formula|
-        if formula.orden==1 then
-     @dpc=  formula.orden
-     @titproc1="Procesos No Consentidos"
-     @vopc=3
-
-
-   link_to "#{@vxper3[5]}"+"/("+"#{number_with_delimiter(@contavus[5].to_i, delimiter: ",")}"+")",
-   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv5,
-   :param4=>  @titproc1)
- else
-  if vvar==1 then
-      Phase.where(id:@vconv5,sele3:2).count
- end
- end
- end
 
  column("Total") do |formula|
 
