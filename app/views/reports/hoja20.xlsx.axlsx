@@ -31,7 +31,7 @@ normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
 
 
-Formula.where(product_id:20).where.not(orden:1).order('orden').each do |proce|
+Formula.where(product_id:20).where.not(orden:1).order('cantidad').each do |proce|
 wb.add_worksheet(name: proce.nombre) do |sheet|
 
   sheet.add_row []
