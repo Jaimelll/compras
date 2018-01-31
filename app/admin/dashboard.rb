@@ -1101,7 +1101,7 @@ else
 end
  end
 
- column("No consentidos") do |formula|
+ column("Por consentir") do |formula|
         if formula.orden==1 then
      @dpc=  formula.orden
      @titproc1="Procesos No Consentidos"
