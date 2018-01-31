@@ -46,20 +46,20 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
   case proce.orden
 
      when 2
-        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
     when 4
-           sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-           style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-           @vpacn=@vpac4
+        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
+        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        @vpacn=@vpac4
      when 5
-          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
           @vpacn=@vpac5
       end
 
@@ -198,6 +198,43 @@ end
      @fec22=""
    end
 
+##para 3 y 5
+   if Activity.where(actividad:21,phase_id:activ.id).count>0 then
+     @fec23= Activity.where(actividad:21,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+   else
+     @fec23=""
+   end
+
+
+
+   ##para 2 y 4
+   ##observaciones
+      if Activity.where(actividad:43,phase_id:activ.id).count>0 then
+        @fec24= Activity.where(actividad:43,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+      else
+        @fec24=""
+      end
+
+  ##absolucion
+     if Activity.where(actividad:44,phase_id:activ.id).count>0 then
+       @fec25= Activity.where(actividad:44,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     else
+       @fec25=""
+     end
+
+   ##integracion
+    if Activity.where(actividad:45,phase_id:activ.id).count>0 then
+          @fec26= Activity.where(actividad:45,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+    else
+          @fec26=""
+    end
+
+
+
+
+
+
+
     @espec=" "
    if  activ.sele4 then
      @espec= Formula.where(product_id:34,orden:activ.sele4).select('nombre as dd').first.dd
@@ -212,17 +249,17 @@ end
 
       when 2,4
   sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
-   @presu.to_i, activ.sele2.to_i, @fec20, @fec21,@fec22,@espec,activ.comite,@vobsr ],
-   style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra,centra, izq, izq, izq], height: 35
-   sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, nil, 25,30, 40
+   @presu.to_i, activ.sele2.to_i, @fec20,@fec24,@fec25,@fec26, @fec21,@fec22,@espec,activ.comite,@vobsr ],
+   style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra,centra,centra,centra,centra, izq, izq, izq], height: 35
+   sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, nil, nil, nil, nil, 25,30, 40
 
    when 3,5
    vahorr=(@presu- viadj).to_i
     tahorro= tahorro+vahorr
 sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
- @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22,@espec,activ.comite,activ.postores,veadj,@vobsr ],
-style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra,centra, izq,izq,izq, izq, izq], height: 35
-sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
+ @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22,@fec23,@espec,activ.comite,activ.postores,veadj,@vobsr ],
+style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra,centra,centra, izq,izq,izq, izq, izq], height: 35
+sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
    end
 
