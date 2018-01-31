@@ -167,7 +167,7 @@ end
                               @le= number_with_delimiter((@le1.count).to_i, delimiter: ",").to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                                 case   formula.orden
-                            when 3
+                            when 3,4
 
 
 
@@ -208,7 +208,7 @@ end
                                number_with_delimiter((@vtproc.count+1711).to_i, delimiter: ",").to_s+ "/("+
 
                                     number_with_delimiter((@vtproc.sum(:certificado)+1277507620).to_i, delimiter: ",").to_s+ ")"
-                               when 3
+                               when 3,4
                                   number_with_delimiter((@vtproc.count).to_i, delimiter: ",").to_s+ "/("+
 
                                    number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
