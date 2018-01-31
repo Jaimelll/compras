@@ -362,7 +362,7 @@ end
 
 ############
 
-Formula.where(product_id:20).order('orden').each do |proce|
+Formula.where(product_id:20).order('cantidad').each do |proce|
 
 case proce.orden
     when 1
