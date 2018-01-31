@@ -130,7 +130,7 @@ Formula.where(product_id:6).each do |proce|
            sum(:"adjudicado*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
 
 
-           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
+           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').count
 
 
 
