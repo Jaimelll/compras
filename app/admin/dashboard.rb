@@ -310,7 +310,7 @@ unless current_admin_user.id==24
 
 table_for "A"  do
 
-  column(link_to "Total", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
+  column(link_to "Totales", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
 
 
   column("#{@let.where(modalidad:2).count.to_s+"/("+
@@ -400,7 +400,7 @@ end#table
 
                                table_for "A"  do
 
-                                column("Total  ")
+                                column("Totales  ")
 
 
                                column("#{@let.where(modalidad:2).count.to_s+"/("+
@@ -522,7 +522,7 @@ unless current_admin_user.id==24 #personal
 
                  table_for "A"  do
 
-                   column("Total =")
+                   column("Totales")
 
 
                    column("#{@let.where(modalidad:2).count.to_s+"/("+
@@ -1136,7 +1136,7 @@ else
 end
   end
   column("Adjudicados", :class => 'text-right') do |formula|
-         if formula.orden==1 then
+         if formula.orden==1 then@vconv1=[]# actos previos
       @dpc=  formula.orden
       @titproc1="Procesos No Consentidos"
       @vopc=3
