@@ -131,7 +131,7 @@ end
                                 formula.descripcion
                               end
 
-                              column("EN ACFFAA ") do |formula|
+                              column("EN ACFFAA ", :class => 'text-right') do |formula|
                               @auto=  formula.orden
                               @tita1="PACs en ACFFAA - PERIODO"
                               @vopc1=4
@@ -154,7 +154,7 @@ end
 
 
 
-                              column("EN OBAC " ) do |formula|
+                              column("EN OBAC ", :class => 'text-right' ) do |formula|
 
 
                                 @auto=  formula.orden
@@ -196,7 +196,7 @@ end
                                end
 
 
-                              column("TOTAL  ") do |formula|
+                              column("TOTAL  ", :class => 'text-right') do |formula|
                                 @vtproc=Item.where(exped2:formula.orden).where.not(modalidad:4)
 
                              case   formula.orden
@@ -236,13 +236,15 @@ unless current_admin_user.id==24
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
                panel  "I.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
-                         table_for Formula.where(product_id:3)  do
-                           @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                         table_for Formula.where(product_id:3).order('orden')  do
+                             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                        #     @vult=Formula.where(product_id:3).maximum('orden')
                               column("Listas ") do |formula|
-                              formula.nombre
+                                 formula.nombre
                               end
 
-                              column("Por Encargo ") do |formula|
+
+                              column("Por Encargo ", :class => 'text-right') do |formula|
                                 @auto=  formula.orden
                                 @tita1="-"
                                 @vopc1=1
@@ -259,7 +261,7 @@ unless current_admin_user.id==24
 
 
                               end
-                              column("Corporativos") do |formula|
+                              column("Corporativos", :class => 'text-right') do |formula|
                                 @auto=  formula.orden
                                 @tita1="-"
                                 @vopc1=2
@@ -276,7 +278,7 @@ unless current_admin_user.id==24
 
                               end
 
-                              column("TOTAL") do |formula|
+                              column("TOTAL", :class => 'text-right') do |formula|
 
                                 @auto=  formula.orden
                                 @tita1="-"
@@ -312,11 +314,11 @@ table_for "A"  do
 
 
   column("#{@let.where(modalidad:2).count.to_s+"/("+
-           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
   column("#{@let.where(modalidad:1).count.to_s+"/("+
-           number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+           number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
   column("#{@let.where('modalidad<=2').count.to_s+"/("+
-           number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+           number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
 end#table
 
 
@@ -333,7 +335,7 @@ end#table
                                          formula.nombre
                                          end
 
-                                         column("Por Encargo ") do |formula|
+                                         column("Por Encargo ", :class => 'text-right') do |formula|
                                            @auto=  formula.orden
                                            @tita1=" "
                                            @vopc1=9
@@ -350,7 +352,7 @@ end#table
 
 
                                          end
-                                         column("Corporativos") do |formula|
+                                         column("Corporativos", :class => 'text-right') do |formula|
                                            @auto=  formula.orden
                                            @tita1=" "
                                            @vopc1=10
@@ -367,7 +369,7 @@ end#table
 
                                          end
 
-                                         column("TOTAL") do |formula|
+                                         column("TOTAL", :class => 'text-right') do |formula|
 
                                            @auto=  formula.orden
                                            @tita1=" "
@@ -398,15 +400,15 @@ end#table
 
                                table_for "A"  do
 
-                                column("Totales = ")
+                                column("Total  ")
 
 
                                column("#{@let.where(modalidad:2).count.to_s+"/("+
-                                        number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                                        number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
                                column("#{@let.where(modalidad:1).count.to_s+"/("+
-                                        number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                                        number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
                                column("#{@let.where('modalidad<=2').count.to_s+"/("+
-                                        number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                                        number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
                                end#table
 
 
@@ -461,7 +463,7 @@ unless current_admin_user.id==24 #personal
                  formula.nombre
                  end
 
-                 column("Por Encargo ") do |formula|
+                 column("Por Encargo ", :class => 'text-right') do |formula|
                    @auto=  formula.orden
                    @tita1=" "
                    @vopc1=6
@@ -478,7 +480,7 @@ unless current_admin_user.id==24 #personal
 
 
                  end
-                 column("Corporativos") do |formula|
+                 column("Corporativos", :class => 'text-right') do |formula|
                    @auto=  formula.orden
                    @tita1=" "
                    @vopc1=7
@@ -495,7 +497,7 @@ unless current_admin_user.id==24 #personal
 
                  end
 
-                 column("TOTAL") do |formula|
+                 column("TOTAL", :class => 'text-right') do |formula|
 
                    @auto=  formula.orden
                    @tita1=" "
@@ -520,15 +522,15 @@ unless current_admin_user.id==24 #personal
 
                  table_for "A"  do
 
-                   column("Totales =")
+                   column("Total =")
 
 
                    column("#{@let.where(modalidad:2).count.to_s+"/("+
-                            number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                            number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
                    column("#{@let.where(modalidad:1).count.to_s+"/("+
-                            number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                            number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
                    column("#{@let.where('modalidad<=2').count.to_s+"/("+
-                            number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ")
+                            number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
                  end#table
 
 
@@ -676,7 +678,7 @@ unless current_admin_user.id==24 #personal
                                       :param8=> @vpac6,:param9=> @vpac7,:param10=> @vuobac)
                                         #  "PAC"
                                          end
-                                         column("S/EXP") do |formula|
+                                         column("S/EXP", :class => 'text-right') do |formula|
 
                                            @titproc1="PAC SIN EXPEDIENTE DE INICIO "
                                            @vpas=[0,1]
@@ -687,7 +689,7 @@ unless current_admin_user.id==24 #personal
                                                   :param4=> @titproc1,:param5=> @vpac1)
                                           end
 
-                                       column("C/EXP") do |formula|
+                                       column("C/EXP", :class => 'text-right') do |formula|
                                         @dpc=  formula.orden
                                         @vpas=[2]
                                         @titproc1="PAC CON EXPEDIENTE DE INICIO"
@@ -701,7 +703,7 @@ unless current_admin_user.id==24 #personal
                                               :param4=> @titproc1,:param5=> @vpac2)
                                          end
 
-                                         column("DC") do |formula|
+                                         column("DC", :class => 'text-right') do |formula|
 
                                            @dpc=  formula.orden
                                            @vpas=[3]
@@ -714,7 +716,7 @@ unless current_admin_user.id==24 #personal
 
                                           end
 
-                                         column("DEM") do |formula|
+                                         column("DEM", :class => 'text-right') do |formula|
                                            @dpc=  formula.orden
                                            @vpas=[4]
                                            @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
@@ -727,7 +729,7 @@ unless current_admin_user.id==24 #personal
 
                                           end
 
-                                         column("DPC") do |formula|
+                                         column("DPC", :class => 'text-right') do |formula|
                                          @dpc=  formula.orden
                                           @vpas=[5]
                                           @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
@@ -739,7 +741,7 @@ unless current_admin_user.id==24 #personal
 
                                           end
 
-                                         column("FC ") do |formula|
+                                         column("FC ", :class => 'text-right') do |formula|
                                            @dpc=  formula.orden
                                            @vpas=[6]
                                            @titproc1="EXPEDIENTES POR FIRMA DE CONTRATO"
@@ -750,7 +752,7 @@ unless current_admin_user.id==24 #personal
                                                    :param4=> @titproc1,:param5=> @vpac6)
 
                                          end
-                                         column("EC ") do |formula|
+                                         column("EC ", :class => 'text-right') do |formula|
                                            @dpc=  formula.orden
                                            @vpas=[7]
                                            @titproc1="EXPEDIENTES EN DEC"
@@ -762,7 +764,7 @@ unless current_admin_user.id==24 #personal
 
                                          end
 
-                                        column("TOTAL ") do |formula|
+                                        column("TOTAL ", :class => 'text-right') do |formula|
 
                                           @auto=  @vaf1
                                           @tita1="Total Procesos en Curso ACFFAA - PERIODO"
@@ -1091,7 +1093,7 @@ column("Rol") do |formula|
    end
 
 end
-column("C/EPOM") do |formula|
+column("C/EPOM", :class => 'text-right') do |formula|
   if formula.orden==1 then
   @dpc=  formula.orden
   @titproc1="En Proceso"
@@ -1114,7 +1116,7 @@ column("C/EPOM") do |formula|
 
 
 
- column("convocados") do |formula|
+ column("convocados", :class => 'text-right') do |formula|
    if formula.orden==1 then
    @dpc=  formula.orden
    @titproc1="Procesos Convocados"
@@ -1133,7 +1135,7 @@ else
   end
 end
   end
-  column("Adjudicados") do |formula|
+  column("Adjudicados", :class => 'text-right') do |formula|
          if formula.orden==1 then
       @dpc=  formula.orden
       @titproc1="Procesos No Consentidos"
@@ -1149,7 +1151,7 @@ end
   end
   end
   end
-  column("Consentidos") do |formula|
+  column("Consentidos", :class => 'text-right') do |formula|
        if formula.orden==1 then
     @dpc=  formula.orden
     @titproc1="Procesos Adjudicados"
@@ -1170,7 +1172,7 @@ end
 
 
 
- column("Total") do |formula|
+ column("Total", :class => 'text-right') do |formula|
 
 
 
@@ -1262,7 +1264,7 @@ if current_admin_user.id==2 then
              :param5=> id2017, :param6=> id2018, :param7=> @vuobac)
 
          end
-         column("Adjudicados") do |formula|
+         column("Adjudicados", :class => 'text-right') do |formula|
 
 
 
@@ -1305,7 +1307,7 @@ else
          column("Avance") do |formula|
                  "Proceso"
          end
-         column("Des./nulo") do |formula|
+         column("Des./nulo", :class => 'text-right') do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=1
@@ -1319,7 +1321,7 @@ else
           end
 
 
-         column("C/EXP") do |formula|
+         column("C/EXP", :class => 'text-right') do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=2
@@ -1333,7 +1335,7 @@ else
           end
 
 
-         column("DC") do |formula|
+         column("DC", :class => 'text-right') do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=3
@@ -1347,7 +1349,7 @@ else
           end
 
 
-         column("DEM") do |formula|
+         column("DEM", :class => 'text-right') do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=4
@@ -1362,7 +1364,7 @@ else
 
 
 
-         column("DPC") do |formula|
+         column("DPC", :class => 'text-right') do |formula|
            @dpc=  formula.orden
            @vpaso=0
            @vpas=5
@@ -1375,7 +1377,7 @@ else
 
           end
 
-          column("FC") do |formula|
+          column("FC", :class => 'text-right') do |formula|
             @dpc=  formula.orden
               @vpaso=0
             @vpas=6
@@ -1387,7 +1389,7 @@ else
             :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
           end
 
-            column("EC") do |formula|
+            column("EC", :class => 'text-right') do |formula|
               @dpc=  formula.orden
                 @vpaso=0
               @vpas=7
@@ -1401,7 +1403,7 @@ else
 
 
           end
-          column("TOTAL") do |formula|
+          column("TOTAL", :class => 'text-right') do |formula|
             @dpc=  formula.orden
               @vpaso=1
             @vpas=[1,2,3,4,5,6,7]
@@ -1521,7 +1523,7 @@ else
             column("Avance") do |formula|
                     "Contrato"
             end
-            column("Recp Contrato") do |formula|
+            column("Recp Contrato", :class => 'text-right') do |formula|
               @dpc=  formula.orden
 
               @vpas=1
@@ -1535,7 +1537,7 @@ else
              end
 
 
-            column("Recp Bien") do |formula|
+            column("Recp Bien", :class => 'text-right') do |formula|
               @dpc=  formula.orden
 
               @vpas=2
@@ -1548,7 +1550,7 @@ else
 
              end
 
-             column("Recp Guia") do |formula|
+             column("Recp Guia", :class => 'text-right') do |formula|
                @dpc=  formula.orden
 
                @vpas=3
@@ -1562,7 +1564,7 @@ else
               end
 
 
-             column("Recp Pago") do |formula|
+             column("Recp Pago", :class => 'text-right') do |formula|
                @dpc=  formula.orden
 
                @vpas=4
@@ -1574,7 +1576,7 @@ else
                :param4=> @titproc1,:param5=> @vpro4)
 
               end
-              column("TOTAL") do |formula|
+              column("TOTAL", :class => 'text-right') do |formula|
                 @dpc=  formula.orden
 
                 @vpas=[1,2,3,4]
