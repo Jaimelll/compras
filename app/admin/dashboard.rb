@@ -1200,106 +1200,12 @@ end #de table
 
 
 
-
-
-
-
-
-
-
-
-end #panel
-
-end #personal de column
-
-
-######Adjudicados
-if current_admin_user.id==2 then
-   panel  "VI.- ADJUDICADOS ACFFAA AF-" +@vaf  do
-
-
-      table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
-
-          vidproce=(@vconv3+@vconv5).uniq
-
-                    vsadjd1=0
-                    vsadjd2=0
-                    vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-                    vpiece1=Piece.where(phase_id:vidproce).
-                            where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9 or estado=2 or estado=11)")
-                    vndpro=Phase.where(id:vidproce).count
-                  if vpiece1.count>0  then
-
-
-                     vpiece1.each do |adju|
-                        vfecadj=Phase.where(id:adju.phase_id).select('pp as dd').first.dd.strftime("%Y")
-                        if vfecadj==vanno then
-                         vsadjd1=  vsadjd1+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
-                         select('cantidad as dd').first.dd/100.to_i
-                        else
-                         vsadjd2=  vsadjd2+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
-                         select('cantidad as dd').first.dd/100.to_i
-                       end
-                    end
-                  end
-
-                  conta2017=0
-                  conta2018=0
-                  id2017=[]
-                  id2018=[]
-                  Phase.where(id:vidproce).each do |contaano|
-                      vfee1=Phase.where(id:contaano.id).select('pp as dd').first.dd.strftime("%Y")
-                    if vfee1==vanno then
-                     conta2017=conta2017+1
-                     id2017.push(contaano.id)
-                   else
-                     conta2018=conta2018+1
-                      id2018.push(contaano.id)
-                   end
-                 end
-         column("Avance") do |formula|
-            link_to     "Proceso",
-            reports_vhoja22_path(format:  "xlsx",
-
-             :param5=> id2017, :param6=> id2018, :param7=> @vuobac)
-
-         end
-         column("Adjudicados", :class => 'text-right') do |formula|
-
-
-
-           "#{conta2017}"+"/("+"#{number_with_delimiter(vsadjd1.to_i, delimiter: ",")}"+")"
-
-
-          end
-
-
-
-
-
-
-
-
-
-   end
-
-   end
-
-
-
-
-
-
-
-
-############fin de adjudicados
-#########################################
 case current_admin_user.id
 when 21,22,23,24,29
 
 
 else
-   panel  "VII.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
+   panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1431,7 +1337,101 @@ else
    end
    end
 
+   #####Adjudicados
 
+
+
+
+
+
+
+end #panel
+
+end #personal de column
+
+
+#
+#########################################
+
+   if current_admin_user.id==2 then
+      panel  "VII.- ADJUDICADOS ACFFAA AF-" +@vaf  do
+
+
+         table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
+
+             vidproce=(@vconv3+@vconv5).uniq
+
+                       vsadjd1=0
+                       vsadjd2=0
+                       vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                       vpiece1=Piece.where(phase_id:vidproce).
+                               where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9 or estado=2 or estado=11)")
+                       vndpro=Phase.where(id:vidproce).count
+                     if vpiece1.count>0  then
+
+
+                        vpiece1.each do |adju|
+                           vfecadj=Phase.where(id:adju.phase_id).select('pp as dd').first.dd.strftime("%Y")
+                           if vfecadj==vanno then
+                            vsadjd1=  vsadjd1+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
+                            select('cantidad as dd').first.dd/100.to_i
+                           else
+                            vsadjd2=  vsadjd2+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).
+                            select('cantidad as dd').first.dd/100.to_i
+                          end
+                       end
+                     end
+
+                     conta2017=0
+                     conta2018=0
+                     id2017=[]
+                     id2018=[]
+                     Phase.where(id:vidproce).each do |contaano|
+                         vfee1=Phase.where(id:contaano.id).select('pp as dd').first.dd.strftime("%Y")
+                       if vfee1==vanno then
+                        conta2017=conta2017+1
+                        id2017.push(contaano.id)
+                      else
+                        conta2018=conta2018+1
+                         id2018.push(contaano.id)
+                      end
+                    end
+            column("Avance") do |formula|
+               link_to     "Proceso",
+               reports_vhoja22_path(format:  "xlsx",
+
+                :param5=> id2017, :param6=> id2018, :param7=> @vuobac)
+
+            end
+            column("Adjudicados", :class => 'text-right') do |formula|
+
+
+
+              "#{conta2017}"+"/("+"#{number_with_delimiter(vsadjd1.to_i, delimiter: ",")}"+")"
+
+
+             end
+
+
+
+
+
+
+
+
+
+      end
+
+      end
+
+
+
+
+
+
+
+
+   ############fin de adjudicados
    panel  "VIII.-SEGUIMIENTO DE CONTRATOS ACFFAA-"+@vaf  do
           table_for  Formula.where(product_id:11,orden:@vaf1).order('orden') do
 
