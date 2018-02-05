@@ -645,6 +645,8 @@ unless current_admin_user.id==24 #personal
                                           #                @vdir=2
                                                           @vxper[@vdir]=@vxper[@vdir]+ 1
                                                           @vpresu[@vdir]=@vpresu[@vdir]+ ite.certificado
+
+
                                                            case @vdir
                                                            when 1
                                                                @vpac1.push(ite.id)
@@ -664,8 +666,8 @@ unless current_admin_user.id==24 #personal
                                                           end #case
 
                                                         else
-                                                           @vxper[0]=@vxper[0]+ 1
-                                                           @vpresu[0]=@vpresu[0]+ ite.certificado
+                                                           @vxper[1]=@vxper[1]+ 1
+                                                           @vpresu[1]=@vpresu[1]+ ite.certificado
                                                            @vpac1.push(ite.id)
 
 
