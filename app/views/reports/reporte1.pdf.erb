@@ -33,6 +33,7 @@
 
            <th>N°</th>
            <th>Pac</th>
+           <th>Periodo</th>
            <th>Expediente</th>
            <th>Obac</th>
 
@@ -55,6 +56,14 @@
 
         <td ><%= @conta.to_s+".-" %></td>
         <td ><%= item.pac %></td>
+        <% if item.periodo>0 or item.periodo  then %>
+           <td ><h5  ALIGN=center>
+           <%= Formula.where(product_id:11,orden:item.periodo).select('descripcion as dd').first.dd %><h5></td>
+
+          <% else %>
+        <td><h5  ALIGN=center><%= " s/d"   %><h5></td>
+
+          <% end %>
 
         <% if item.exped>0 or item.exped  then %>
            <td ><h5  ALIGN=center>
