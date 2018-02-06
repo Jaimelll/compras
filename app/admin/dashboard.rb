@@ -588,56 +588,65 @@ unless current_admin_user.id==24 #personal
 
                                                           end
 
-                                                            if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 then
-                                                            if    Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
-                                                              activities.where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
+                                                          ################phase
 
 
-                                                               @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                    .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
-                                                                   .order('activities.pfecha DESC,activities.id DESC')
+                                                          if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 then
+                                                          if    Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
+                                                            activities.where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
 
 
-
-
-                                                             @vactiv2=@phase3.select('activities.actividad as dd').first.dd
-                                                              @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
-
-
-
-                                                                  if    @vactiv2fec>  @vactivfec then
-                                                                     @vactiv=@vactiv2
-                                                                  end
-                                                            else
-                                                              vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-                                                              if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
-                                                                activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
-
-
-
-                                                                @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                     .where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
-                                                                    .order('activities.pfecha DESC,activities.id DESC')
+                                                             @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                                                  .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
+                                                                 .order('activities.pfecha DESC,activities.id DESC')
 
 
 
 
-                                                              @vactiv2=@phase3.select('activities.actividad as dd').first.dd
-                                                               @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
+                                                           @vactiv2=@phase3.select('activities.actividad as dd').first.dd
+                                                            @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
 
 
 
-                                                                   if    @vactiv2fec>  @vactivfec then
-                                                                      @vactiv=@vactiv2
-                                                                   end
-
-                                                              end
-
-
-                                                          end
-
+                                                                if    @vactiv2fec>  @vactivfec then
+                                                                   @vactiv=@vactiv2
+                                                                end
+                                                          else
+                                                            vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                                                            if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
+                                                              activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
 
 
+
+                                                              @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                                                   .where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
+                                                                  .order('activities.pfecha DESC,activities.id DESC')
+
+
+
+
+                                                            @vactiv2=@phase3.select('activities.actividad as dd').first.dd
+                                                             @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
+
+
+
+                                                                 if    @vactiv2fec>  @vactivfec then
+                                                                    @vactiv=@vactiv2
+                                                                 end
+
+                                                            end
+
+
+                                                        end
+
+                                                    end
+
+
+
+
+
+
+################phase end
 
                                                                 #linea 209
                                                         @vdir=Formula.where(product_id:12,orden:@vactiv).
@@ -645,8 +654,6 @@ unless current_admin_user.id==24 #personal
                                           #                @vdir=2
                                                           @vxper[@vdir]=@vxper[@vdir]+ 1
                                                           @vpresu[@vdir]=@vpresu[@vdir]+ ite.certificado
-
-
                                                            case @vdir
                                                            when 1
                                                                @vpac1.push(ite.id)
@@ -665,13 +672,7 @@ unless current_admin_user.id==24 #personal
 
                                                           end #case
 
-                                                        else
-                                                           @vxper[1]=@vxper[1]+ 1
-                                                           @vpresu[1]=@vpresu[1]+ ite.certificado
-                                                           @vpac1.push(ite.id)
 
-
-                        end# de if 1
                                                  end
                                          column("Avance") do |formula|
                                      link_to "PAC", reports_vhoja1_path(format:  "xlsx", :param1=> @vxper,

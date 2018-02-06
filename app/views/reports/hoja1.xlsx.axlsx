@@ -275,8 +275,19 @@ wb.add_worksheet(name: "OBACs") do |sheet|
     end
 end
 ####################ep
+
+
+
 Formula.where(product_id:1,numero:1).order('orden').each do |proce|
-wb.add_worksheet(name: proce.nombre) do |sheet|
+
+nuitem1="_("+Item.where('modalidad<3').where(exped2:@vaf1,ejecucion:4,obac:proce.orden).count.to_s+")"
+
+wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
+
+
+
+
+
 
 
   sheet.add_row []
