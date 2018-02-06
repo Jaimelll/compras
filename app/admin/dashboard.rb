@@ -234,7 +234,7 @@ unless current_admin_user.id==24
 
 
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-               panel  "I.- LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+               panel  "I.- PAC_LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                          table_for Formula.where(product_id:3).order('orden')  do
                              @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -327,7 +327,7 @@ end#table
 
 
                           @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                          panel  "II.- EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+                          panel  "II.- PAC_EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                                     table_for Formula.where(product_id:8)  do
                                       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -455,7 +455,7 @@ unless current_admin_user.id==24 #personal
 
 
   @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-  panel  "III.- TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+  panel  "III.- PAC_TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
             table_for Formula.where(product_id:6)  do
               @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -802,14 +802,7 @@ unless current_admin_user.id==24 #personal
 
 
 
-                                   panel  "V.- CALENDARIO DE PROCESOS EN DPC-ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
-                                   #  ul do
 
-                                   #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
-                                     #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
-
-                                   #  end
-                                       table_for  Formula.where(product_id:29).where('orden<3').order('orden') do
 ##################
 @vxper2=[0,0,0,0,0,0,0,0]
 @vxper3=[0,0,0,0,0,0,0,0]
@@ -1067,139 +1060,7 @@ if @nliqui>0 then
 @idliqui=@procp.where(sele:7).select('id')
 @vliqui=Activity.where(phase_id:@idliqui,actividad:300).count
 end
-##################
-case current_admin_user.id
-when  2,3,10,25 # adm,roy,pedro,salinas
-  vvar=1
-else
-  vvar=0
-end
 
-##################
-
-column("Rol") do |formula|
-   if formula.orden==1 then
-     link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
-     :param1=> @vxper3,
-       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
-       :param5=> @vconv3,:param6=> @vconvt,:param8=>@vconv2,
-        :param11=> @vxper0,
-         :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
-         :param15=> @vpac30,:param16=> @vpac40,
-         :param17=> @vconv5,:param18=> @vpac50,:param7=> @vuobac)
-   else
-     if vvar==1 then
-             link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
-            :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-            :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
-     end
-   end
-
-end
-column("C/EPOM", :class => 'text-right') do |formula|
-  if formula.orden==1 then
-  @dpc=  formula.orden
-  @titproc1="En Proceso"
-  @vopc=4
-@vconv14=@vconv1+@vconv4
-
- link_to "#{@vxper3[1]+@vxper3[4]}"+"/("+"#{number_with_delimiter((@contavus[1]+@contavus[4]).to_i, delimiter: ",")}"+")",
-  reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv14,
-   :param4=>  @titproc1)
- else
-   if vvar==1 then
-    Phase.where(id:@vconv1,sele3:2).count
-  end
- end
- end
-
-
-
-
-
-
-
- column("convocados", :class => 'text-right') do |formula|
-   if formula.orden==1 then
-   @dpc=  formula.orden
-   @titproc1="Procesos Convocados"
-   @vopc=1
-
-
-link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
-reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
-:param4=>  @titproc1)
-else
-  if vvar==1 then
-     @contconv= Phase.where(id:@vconv2,sele3:2).count
-    link_to "#{@contconv}", reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
-       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
-  end
-end
-  end
-  column("Adjudicados", :class => 'text-right') do |formula|
-         if formula.orden==1 then@vconv1=[]# actos previos
-      @dpc=  formula.orden
-      @titproc1="Procesos No Consentidos"
-      @vopc=3
-
-
-    link_to "#{@vxper3[5]}"+"/("+"#{number_with_delimiter(@contavus[5].to_i, delimiter: ",")}"+")",
-    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv5,
-    :param4=>  @titproc1)
-  else
-   if vvar==1 then
-       Phase.where(id:@vconv5,sele3:2).count
-  end
-  end
-  end
-  column("Consentidos", :class => 'text-right') do |formula|
-       if formula.orden==1 then
-    @dpc=  formula.orden
-    @titproc1="Procesos Adjudicados"
-    @vopc=2
-
-
-  link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
-  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
-  :param4=>  @titproc1)
-else
- if vvar==1 then
-     Phase.where(id:@vconv3,sele3:2).count
-end
-end
-end
-
-
-
-
-
- column("Total", :class => 'text-right') do |formula|
-
-
-
-
-     if formula.orden==1 then
-     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]+@contavus[5]
-       link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
-        reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
-         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-         :param5=> @vconv3,:param6=> @vconvt, :param7=> @vuobac,
-         :param8=> @vconv4,   :param9=> @vconv5)
-
-
- else
-   if vvar==1 then
-      Phase.where(id:@vconvt,sele3:2).count
-  end
- end
-
-    end
-
-
-
-end #de table
 
 
 
@@ -1208,7 +1069,7 @@ when 21,22,23,24,29
 
 
 else
-   panel  "VI.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
+   panel  "V.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
 
 
       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1351,6 +1212,150 @@ else
 end #panel
 
 end #personal de column
+##################
+case current_admin_user.id
+when  2,10,25 # adm,pedro,salinas
+  vvar=1
+else
+  vvar=0
+end
+
+##################
+panel  "VI.- ESTATUS DE PROCESOS EN DPC-ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
+#  ul do
+
+#li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
+  #    li link_to "Programados ", reports_comment4_path(format: :pdf,  :param1=> 1)
+
+#  end
+    table_for  Formula.where(product_id:29).where('orden<3').order('orden') do
+column("Rol") do |formula|
+   if formula.orden==1 then
+     link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
+     :param1=> @vxper3,
+       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
+       :param5=> @vconv3,:param6=> @vconvt,:param8=>@vconv2,
+        :param11=> @vxper0,
+         :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
+         :param15=> @vpac30,:param16=> @vpac40,
+         :param17=> @vconv5,:param18=> @vpac50,:param7=> @vuobac)
+   else
+     if vvar==1 then
+             link_to "#{formula.nombre}", reports_vhoja2_path(format:  "xlsx", :param1=> @vxper3,
+            :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+            :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+     end
+   end
+
+end
+column("C/EPOM", :class => 'text-right') do |formula|
+  if formula.orden==1 then
+  @dpc=  formula.orden
+  @titproc1="En Proceso"
+  @vopc=4
+@vconv14=@vconv1+@vconv4
+
+ link_to "#{@vxper3[1]+@vxper3[4]}"+"/("+"#{number_with_delimiter((@contavus[1]+@contavus[4]).to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv14,
+   :param4=>  @titproc1)
+ else
+   if vvar==1 then
+    Phase.where(id:@vconv1,sele3:2).count
+  end
+ end
+ end
+
+
+
+
+
+
+
+ column("convocados", :class => 'text-right') do |formula|
+   if formula.orden==1 then
+   @dpc=  formula.orden
+   @titproc1="Procesos Convocados"
+   @vopc=1
+
+
+link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
+reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
+:param4=>  @titproc1)
+else
+  if vvar==1 then
+     @contconv= Phase.where(id:@vconv2,sele3:2).count
+    link_to "#{@contconv}", reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
+       :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+       :param5=> @vconv3,:param6=> @vconvt,:param7=> @vuobac)
+  end
+end
+  end
+  column("Adjudicados", :class => 'text-right') do |formula|
+         if formula.orden==1 then@vconv1=[]# actos previos
+      @dpc=  formula.orden
+      @titproc1="Procesos No Consentidos"
+      @vopc=3
+
+
+    link_to "#{@vxper3[5]}"+"/("+"#{number_with_delimiter(@contavus[5].to_i, delimiter: ",")}"+")",
+    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv5,
+    :param4=>  @titproc1)
+  else
+   if vvar==1 then
+       Phase.where(id:@vconv5,sele3:2).count
+  end
+  end
+  end
+  column("Consentidos", :class => 'text-right') do |formula|
+       if formula.orden==1 then
+    @dpc=  formula.orden
+    @titproc1="Procesos Adjudicados"
+    @vopc=2
+
+
+  link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
+  :param4=>  @titproc1)
+else
+ if vvar==1 then
+     Phase.where(id:@vconv3,sele3:2).count
+end
+end
+end
+
+
+
+
+
+ column("Total", :class => 'text-right') do |formula|
+
+
+
+
+     if formula.orden==1 then
+     @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]+@contavus[5]
+       link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
+        reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
+         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
+         :param5=> @vconv3,:param6=> @vconvt, :param7=> @vuobac,
+         :param8=> @vconv4,   :param9=> @vconv5)
+
+
+ else
+   if vvar==1 then
+      Phase.where(id:@vconvt,sele3:2).count
+  end
+ end
+
+    end
+
+
+
+end #de table
+
+
+
+
 
 
 #

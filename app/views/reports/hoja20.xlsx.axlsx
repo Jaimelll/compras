@@ -47,19 +47,19 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
      when 2
         sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
         sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
     when 4
         sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac4
      when 5
           sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-          style: [titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+          style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
           @vpacn=@vpac5
       end
 
