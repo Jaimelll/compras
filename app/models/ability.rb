@@ -12,12 +12,12 @@ class Ability
 
         when 3,26#Roy,amador
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
-            can :read, ActiveAdmin::Page, :name =>"grafico"
-            can :read, ActiveAdmin::Page, :name =>"grafico0"
-            can :read, ActiveAdmin::Page, :name =>"grafico1"
-            can :read, ActiveAdmin::Page, :name =>"Indices"
-            can [:read], [Item, Detail,Employee]
-            can [:read], [Phase,Activity,Piece,Contract,Element,Package,Family,Agreement,Student,Experience]
+          #  can :read, ActiveAdmin::Page, :name =>"grafico"
+          #  can :read, ActiveAdmin::Page, :name =>"grafico0"
+          #  can :read, ActiveAdmin::Page, :name =>"grafico1"
+          #  can :read, ActiveAdmin::Page, :name =>"Indices"
+            can [:read], [Item, Detail]
+            can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
     when 7,15,16,17,18,19 #asesor,ballesteros
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
@@ -64,9 +64,9 @@ class Ability
             can [:create,:read,:update, :destroy], [Item, Detail,Activity]
             can [:read], [Phase,Piece]
 
-      when 24  #neil
-             can :read, ActiveAdmin::Page, :name =>"Dashboard"
-             can [:create,:read,:update, :destroy], [Agreement, Employee, Experience, Family, Student]
+    #  when 24  #neil
+      #       can :read, ActiveAdmin::Page, :name =>"Dashboard"
+        #     can [:create,:read,:update, :destroy], [Agreement, Employee, Experience, Family, Student]
      when 10,25  #pedro y salinas
               can :read, ActiveAdmin::Page, :name =>"Dashboard"
                 can [:read], [Phase, Activity,Piece]

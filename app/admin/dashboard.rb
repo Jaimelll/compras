@@ -224,7 +224,7 @@ end
                       #  li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
                       #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
                        li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
-                       li    link_to "Hoja", "C:\Users\AUXILIAR.PROCESOS\Downloads\Actos.xlsx"
+
                       end #de panel historial periodos
 
 ###############################
@@ -235,7 +235,7 @@ unless current_admin_user.id==24
 
 
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-               panel  "I.- PAC_LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+               panel  "I.- PAC-LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                          table_for Formula.where(product_id:3).order('orden')  do
                              @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -328,7 +328,7 @@ end#table
 
 
                           @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                          panel  "II.- PAC_EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+                          panel  "II.- PAC-EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
                                     table_for Formula.where(product_id:8)  do
                                       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -456,7 +456,7 @@ unless current_admin_user.id==24 #personal
 
 
   @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-  panel  "III.- PAC_TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+  panel  "III.- PAC-TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
 
             table_for Formula.where(product_id:6)  do
               @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
@@ -550,7 +550,7 @@ unless current_admin_user.id==24 #personal
                                    @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
 
 
-                                   panel  "IV.- SEGUIMIENTO DE PACs EN CURSO ACFFAA AF-" +@vaf+ " - 'PAC/(SOLES)'" do
+                                   panel  "IV.- SEGUIMIENTO DE PAC-" +@vaf+ " - 'PAC/(SOLES)'" do
 
 
                                       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1070,7 +1070,7 @@ when 21,22,23,24,29
 
 
 else
-   panel  "V.- SEGUIMIENTO DE PROCESOS EN CURSO ACFFAA AF-" +@vaf  do
+   panel  "V.- SEGUIMIENTO DE PROCESOS-" +@vaf  do
 
 
       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1222,7 +1222,7 @@ else
 end
 
 ##################
-panel  "VI.- ESTATUS DE PROCESOS EN DPC-ACFFAA "+@vaf + " - 'PROCESOS/(SOLES)'" do
+panel  "VI.- ESTATUS DE PROCESOS EN DPC-"+@vaf + " - 'PROCESOS/(SOLES)'" do
 #  ul do
 
 #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
