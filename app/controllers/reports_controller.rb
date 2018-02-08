@@ -91,6 +91,11 @@ when 3
                    @lista=" "
                     @items=Item.where(ejecucion:4,modalidad:1).order('tipo,certificado DESC')
                    .where(exped2:@vaf).where(obac: @vuobac)
+
+     when 15
+                  @lista=" "
+                   @items=Item.where(ejecucion:4).where("modalidad<3")
+                           .where(exped2:@vaf).where(obac: @vuobac).order('tipo,modalidad,certificado DESC')
   end
 
 

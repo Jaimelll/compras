@@ -327,16 +327,28 @@ table_for "A"  do
    @tita1="-"
    @vopc1=14
 
-   column(link_to "#{@let.where(modalidad:1).count.to_s+"/("+
+
+   vnometi="#{@let.where(modalidad:1).count.to_s+"/("+
             number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i,
-             delimiter: ",").to_s+ ")"} ",
+             delimiter: ",").to_s+ ")"} "
+
+   column(link_to vnometi,
                reports_comment_path(format: :pdf, :param3=>   @tita1,
               :param4=>   @vopc1 ))
 
+              @tita1="-"
+              @vopc1=15
 
-  column("#{@let.where('modalidad<=2').count.to_s+"/("+
-           number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ",
-            :class => 'text-right')
+
+              vnometi="#{@let.where('modalidad<=2').count.to_s+"/("+
+                       number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i,
+                        delimiter: ",").to_s+ ")"} "
+              column(link_to vnometi,
+                        reports_comment_path(format: :pdf, :param3=>   @tita1,
+                         :param4=>   @vopc1 ))
+
+
+      #      :class => 'text-right')
 end#table
 
 
@@ -567,7 +579,7 @@ unless current_admin_user.id==24 #personal
                                    @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
 
 
-                                   panel  "IV.- SEGUIMIENTO DE PAC-" +@vaf+ " - 'PAC/(SOLES)'" do
+                                   panel  "IV.- SEGUIMIENTO DE PAC AF-" +@vaf+ " - 'PAC/(SOLES)'" do
 
 
                                       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1087,7 +1099,7 @@ when 21,22,23,24,29
 
 
 else
-   panel  "V.- SEGUIMIENTO DE PROCESOS-" +@vaf  do
+   panel  "V.- SEGUIMIENTO DE PROCESOS AF-" +@vaf  do
 
 
       table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
@@ -1239,7 +1251,7 @@ else
 end
 
 ##################
-panel  "VI.- ESTATUS DE PROCESOS EN DPC-"+@vaf + " - 'PROCESOS/(SOLES)'" do
+panel  "VI.- ESTATUS DE PROCESOS EN DPC AF-"+@vaf + " - 'PROCESOS/(SOLES)'" do
 #  ul do
 
 #li link_to "Historial  ", reports_comment4_path(format: :pdf,  :param1=> 2)
