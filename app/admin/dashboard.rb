@@ -313,13 +313,30 @@ table_for "A"  do
 
   column(link_to "Totales", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
 
+  @tita1="-"
+  @vopc1=13
+  vnometi="#{@let.where(modalidad:2).count.to_s+"/("+
+           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i,
+            delimiter: ",").to_s+ ")"} "
 
-  column("#{@let.where(modalidad:2).count.to_s+"/("+
-           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
-  column("#{@let.where(modalidad:1).count.to_s+"/("+
-           number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
+  column(link_to vnometi,
+              reports_comment_path(format: :pdf, :param3=>   @tita1,
+             :param4=>   @vopc1 ))
+
+
+   @tita1="-"
+   @vopc1=14
+
+   column(link_to "#{@let.where(modalidad:1).count.to_s+"/("+
+            number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i,
+             delimiter: ",").to_s+ ")"} ",
+               reports_comment_path(format: :pdf, :param3=>   @tita1,
+              :param4=>   @vopc1 ))
+
+
   column("#{@let.where('modalidad<=2').count.to_s+"/("+
-           number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ", :class => 'text-right')
+           number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i, delimiter: ",").to_s+ ")"} ",
+            :class => 'text-right')
 end#table
 
 

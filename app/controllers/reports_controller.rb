@@ -82,6 +82,15 @@ when 3
          @items= Item.where(ejecucion:4,fuente:params[:param2]).where("modalidad<3")
              .where(exped2:@vaf).order('tipo,modalidad,exped,obac,pac').where(obac: @vuobac)
 
+# en totales
+     when 13
+             @lista=" "
+              @items=Item.where(ejecucion:4,modalidad:2).order('tipo,certificado DESC')
+             .where(exped2:@vaf).where(obac: @vuobac)
+     when 14
+                   @lista=" "
+                    @items=Item.where(ejecucion:4,modalidad:1).order('tipo,certificado DESC')
+                   .where(exped2:@vaf).where(obac: @vuobac)
   end
 
 
