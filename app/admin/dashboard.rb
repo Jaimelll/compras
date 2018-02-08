@@ -187,7 +187,6 @@ end
 
 
 
-
                             when 2
                               "1,711/(1,277,507,620)"
                             when 1
@@ -582,7 +581,7 @@ unless current_admin_user.id==24 #personal
                                    panel  "IV.- SEGUIMIENTO DE PAC AF-" +@vaf+ " - 'PAC/(SOLES)'" do
 
 
-                                      table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
+                                      table_for Formula.where(product_id:11).where('orden<=2').order('orden')  do
                                               @vxper=[0,0,0,0,0,0,0,0]
                                               @vpresu=[0,0,0,0,0,0,0,0]
                                               @vpac1=[]
@@ -705,14 +704,18 @@ unless current_admin_user.id==24 #personal
 
                                                  end
                                          column("Avance") do |formula|
-                                     link_to "PAC", reports_vhoja1_path(format:  "xlsx", :param1=> @vxper,
+                                           if formula.orden==1 then
+                                     link_to "ACFFAA", reports_vhoja1_path(format:  "xlsx", :param1=> @vxper,
                                       :param2=> @vpresu, :param3=> @vpac1, :param4=> @vpac2,
                                       :param5=> @vpac3,:param6=> @vpac4,:param7=> @vpac5,
                                       :param8=> @vpac6,:param9=> @vpac7,:param10=> @vuobac)
                                         #  "PAC"
+                                          else
+                                            "Autorizados"
+                                          end
                                          end
                                          column("S/EXP", :class => 'text-right') do |formula|
-
+                                        if formula.orden==1 then
                                            @titproc1="PAC SIN EXPEDIENTE DE INICIO "
                                            @vpas=[0,1]
                                            @dpcl=   @vxper[0]+ @vxper[1]
@@ -721,8 +724,10 @@ unless current_admin_user.id==24 #personal
                                                   :param3=> @vpas,
                                                   :param4=> @titproc1,:param5=> @vpac1)
                                           end
+                                        end
 
                                        column("C/EXP", :class => 'text-right') do |formula|
+                                         if formula.orden==1 then
                                         @dpc=  formula.orden
                                         @vpas=[2]
                                         @titproc1="PAC CON EXPEDIENTE DE INICIO"
@@ -735,8 +740,10 @@ unless current_admin_user.id==24 #personal
                                               :param3=> @vpas,
                                               :param4=> @titproc1,:param5=> @vpac2)
                                          end
+                                       end
 
                                          column("DC", :class => 'text-right') do |formula|
+                                           if formula.orden==1 then
 
                                            @dpc=  formula.orden
                                            @vpas=[3]
@@ -748,8 +755,10 @@ unless current_admin_user.id==24 #personal
                                                   :param4=> @titproc1,:param5=> @vpac3)
 
                                           end
+                                        end
 
                                          column("DEM", :class => 'text-right') do |formula|
+                                           if formula.orden==1 then
                                            @dpc=  formula.orden
                                            @vpas=[4]
                                            @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
@@ -761,8 +770,10 @@ unless current_admin_user.id==24 #personal
                                                   :param4=> @titproc1,:param5=> @vpac4)
 
                                           end
+                                        end
 
                                          column("DPC", :class => 'text-right') do |formula|
+                                           if formula.orden==1 then
                                          @dpc=  formula.orden
                                           @vpas=[5]
                                           @titproc1="EXPEDIENTES EN PROCESO DE COMPRAS"
@@ -773,8 +784,10 @@ unless current_admin_user.id==24 #personal
                                                   :param4=> @titproc1,:param5=> @vpac5)
 
                                           end
+                                        end
 
                                          column("FC ", :class => 'text-right') do |formula|
+                                           if formula.orden==1 then
                                            @dpc=  formula.orden
                                            @vpas=[6]
                                            @titproc1="EXPEDIENTES POR FIRMA DE CONTRATO"
@@ -785,7 +798,9 @@ unless current_admin_user.id==24 #personal
                                                    :param4=> @titproc1,:param5=> @vpac6)
 
                                          end
+                                       end
                                          column("EC ", :class => 'text-right') do |formula|
+                                           if formula.orden==1 then
                                            @dpc=  formula.orden
                                            @vpas=[7]
                                            @titproc1="EXPEDIENTES EN DEC"
@@ -796,8 +811,10 @@ unless current_admin_user.id==24 #personal
                                                    :param4=> @titproc1,:param5=> @vpac7)
 
                                          end
+                                       end
 
                                         column("TOTAL ", :class => 'text-right') do |formula|
+                                          if formula.orden==1 then
 
                                           @auto=  @vaf1
                                           @tita1="Total Procesos en Curso ACFFAA - PERIODO"
@@ -811,10 +828,24 @@ unless current_admin_user.id==24 #personal
                                           @vpac50= @vpac5
                                           @le=  @vxper.inject(0, :+).to_s+ "/("+
                                           number_with_delimiter(@vpresu.inject(0, :+).to_i, delimiter: ",").to_s+ ")"
-                                                  link_to "#{@le} "
+                                                "#{@le} "
+                                         else
 
+                                        vautoro=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf1,obac: @vuobac)
+                                        vautors=  vautoro.sum(:certificado)
+                                        vautorc=  vautoro.count.to_s
+                                        vautor1=  number_with_delimiter(vautors.to_i, delimiter: ",").to_s
+                                        vautor2= vautorc+"/("+vautor1+")"
+
+
+                                        @tita1="AUTORIZADOS - PERIODO"
+                                        @vopc1=6
+
+                                        link_to vautor2, reports_comment2_path(format: :pdf,
+                                        :param2=>  @vuobac,  :param3=>   @tita1,:param4=>   @vopc1)
 
                                        end
+                                     end
 
 
 

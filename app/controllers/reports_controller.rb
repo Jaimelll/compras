@@ -111,12 +111,13 @@ end
 
 
 def comment2
-
-  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+  @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
   @tit1=params[:param3].to_s
 
 
   @vopc=params[:param4].to_i
+
 
   case @vopc
 
@@ -124,7 +125,11 @@ def comment2
        @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
        @items= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
        .where(exped2:params[:param2]).order('obac,certificado DESC')
-
+  when 6
+       @vuobac=params[:param2]
+       @lista=  @vaf
+       @items=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf1,obac:@vuobac).
+       order('obac,certificado DESC')
 
   end
 
