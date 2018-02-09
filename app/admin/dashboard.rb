@@ -1118,12 +1118,6 @@ unless current_admin_user.id==24 #personal
 
 end# del each
 
-@nliqui=@procp.where(sele:7).count
-if @nliqui>0 then
-@idliqui=@procp.where(sele:7).select('id')
-@vliqui=Activity.where(phase_id:@idliqui,actividad:300).count
-end
-
 
 
 

@@ -23,7 +23,7 @@ ActiveAdmin.register Phase do
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :admin_user_id, :periodo, :convocatoria, :sele3, :proceso,
               :sele4, :comite, :postores, :obs, :sele5,
-              :ep, :mgp, :fap, :ccffaa,  :sele5
+              :ep, :mgp, :fap, :ccffaa,  :sele5,  :convo
 #se puede usar sele3 era para autidados
 menu priority: 10, label: "Procesos"
 
@@ -194,7 +194,8 @@ f.input :ep,:label => 'Monto Adjudicado EP', :as => :string, :input_html => { :s
 f.input :mgp,:label => 'Monto Adjudicado MGP', :as => :string, :input_html => { :style =>  'width:30%'}
 f.input :fap,:label => 'Monto Adjudicado FAP', :as => :string, :input_html => { :style =>  'width:30%'}
 f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
-
+f.input :convo,:label => 'Año de Convocatoria' , :as => :select, :collection =>
+   Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :sele5,:label => 'Proceso de origen', :as => :select, :collection =>
    Phase.order('proceso').map{|u| [u.proceso, u.id]}
 
@@ -282,6 +283,15 @@ show :title => ' Proceso'  do
           end
           row "Monto Adjudicado CCFFAA" do |phase|
             phase.ccffaa
+          end
+          row "Año de Convocatoria" do |phase|
+             if  phase.convo and  phase.convo>0 then
+                Formula.where(product_id:11, orden: phase.convo).
+                 select('nombre as dd').first.dd
+             else
+                   "s/d"
+             end
+
           end
           row "Proceso de origen" do |phase|
             if  phase.sele5 and  phase.sele5>0 then
