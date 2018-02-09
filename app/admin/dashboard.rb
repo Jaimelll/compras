@@ -881,11 +881,12 @@ when 21,22,23,24,29
 else
    panel  "V.- SEGUIMIENTO DE PROCESOS AF-" +@vaf  do
 
+     aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
+         table_for aa do
 
-      table_for Formula.where(product_id:11,orden:@vaf1).order('orden')  do
 
         # ###############   empieza seguimiento
-
+def execute2(var)
 
         @vpro1=[]
         @vpro2=[]
@@ -899,7 +900,7 @@ else
 
 
         @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
-        @procp=Phase.where(periodo:@vaf1,expediente:@vexped).order('id')
+        @procp=Phase.where(convo:var,periodo:@vaf1,expediente:@vexped).order('id')
         @procp .each do |proceso|  #each hasta el final
 
             @deta4=Activity.where(phase_id:proceso.id).
@@ -951,7 +952,7 @@ else
                          when 1,2,3,4,5,6,7
                             @vprot.push(proceso.id)
                     end
-        #end
+        end
 
 
                   end# de if 1
@@ -966,10 +967,12 @@ else
 
 
 
-         column("Avance") do |formula|
-                 "Proceso"
+         column("Convocatoria") do |formula|
+
+                 formula.nombre
          end
          column("Des./nulo", :class => 'text-right') do |formula|
+            execute2(formula.orden)
            @dpc=  formula.orden
            @vpaso=0
            @vpas=1
@@ -984,6 +987,7 @@ else
 
 
          column("C/EXP", :class => 'text-right') do |formula|
+           execute2(formula.orden)
            @dpc=  formula.orden
            @vpaso=0
            @vpas=2
@@ -998,6 +1002,7 @@ else
 
 
          column("DC", :class => 'text-right') do |formula|
+           execute2(formula.orden)
            @dpc=  formula.orden
            @vpaso=0
            @vpas=3
@@ -1012,6 +1017,7 @@ else
 
 
          column("DEM", :class => 'text-right') do |formula|
+           execute2(formula.orden)
            @dpc=  formula.orden
            @vpaso=0
            @vpas=4
@@ -1027,6 +1033,7 @@ else
 
 
          column("DPC", :class => 'text-right') do |formula|
+           execute2(formula.orden)
            @dpc=  formula.orden
            @vpaso=0
            @vpas=5
@@ -1040,6 +1047,7 @@ else
           end
 
           column("FC", :class => 'text-right') do |formula|
+            execute2(formula.orden)
             @dpc=  formula.orden
               @vpaso=0
             @vpas=6
@@ -1052,6 +1060,7 @@ else
           end
 
             column("EC", :class => 'text-right') do |formula|
+              execute2(formula.orden)
               @dpc=  formula.orden
                 @vpaso=0
               @vpas=7
@@ -1066,6 +1075,7 @@ else
 
           end
           column("TOTAL", :class => 'text-right') do |formula|
+            execute2(formula.orden)
             @dpc=  formula.orden
               @vpaso=1
             @vpas=[1,2,3,4,5,6,7]
