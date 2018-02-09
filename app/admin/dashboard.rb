@@ -879,7 +879,7 @@ when 21,22,23,24,29
 
 
 else
-   panel  "V.- SEGUIMIENTO DE PROCESOS AF-" +@vaf  do
+   panel  "V.- SEGUIMIENTO DE PROCESOS-AF" +@vaf  do
 
      aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
          table_for aa do
@@ -967,9 +967,9 @@ def execute2(var)
 
 
 
-         column("Convocatoria") do |formula|
+         column("Procesos") do |formula|
 
-                 formula.nombre
+                 "PAC-AF"+formula.nombre
          end
          column("Des./nulo", :class => 'text-right') do |formula|
             execute2(formula.orden)
@@ -1118,7 +1118,7 @@ end #personal de column
 
 
 ##################
-panel  "VI.- ESTATUS DE PROCESOS EN DPC AF-"+@vaf + " - 'PROCESOS/(SOLES)'" do
+panel  "VI.- ESTATUS DE PROCESOS EN DPC-AF"+@vaf + " - 'PROCESOS/(SOLES)'" do
 @tabconta=0
 aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
     table_for aa do
@@ -1353,9 +1353,7 @@ column("Convocatoria") do |formula|
 
 execute(formula.orden)
 
-
-
-     link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
+     link_to "PAC-AF"+"#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
      :param1=> @vxper3,
        :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
        :param5=> @vconv3,:param6=> @vconvt,:param8=>@vconv2,
