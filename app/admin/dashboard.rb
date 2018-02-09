@@ -894,11 +894,11 @@ unless current_admin_user.id==24 #personal
 
 @procp=Phase.where(periodo:@vaf1,expediente:@vexped).order('id')
 
-@procp .each do |proceso|
+@procp .each do |proceso|  #each hata el final
 
     @deta4=Activity.where(phase_id:proceso.id).
-      where("pfecha>=?  ", @vinicio ).
-    order('pfecha DESC,id DESC')
+           where("pfecha>=?  ", @vinicio ).
+           order('pfecha DESC,id DESC')
 
 
 
@@ -906,51 +906,50 @@ unless current_admin_user.id==24 #personal
 
 
 
-         if @deta4.count>0 then
+         if @deta4.count>0 then  #if 1
            if @deta4.where("pfecha<=?  ", @vfin ).count>0 then
-            @vactiv3= @deta4.where("pfecha<=?  ", @vfin ).select('actividad as dd').first.dd
-
-             @vdir=Formula.where(product_id:12,orden:@vactiv3).
-                select('cantidad as dd').first.dd
-
-
-
-                @vxper2[@vdir]=@vxper2[@vdir]+ 1
+              @vactiv3= @deta4.where("pfecha<=?  ", @vfin ).select('actividad as dd').first.dd
+              @vdir=Formula.where(product_id:12,orden:@vactiv3).
+                   select('cantidad as dd').first.dd
+              @vxper2[@vdir]=@vxper2[@vdir]+ 1
            else
               @vdir=5
-                @vxper2[@vdir]=@vxper2[@vdir]+ 1
+              @vxper2[@vdir]=@vxper2[@vdir]+ 1
            end
 
-     #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
-
-@vconv=0
-
-  vconsen=Piece.where(phase_id:proceso.id).where('estado=2 or estado=11 ').count
-  vadjud=Piece.where(phase_id:proceso.id,estado:4).count
-  vapel=Piece.where(phase_id:proceso.id,estado:9).count
+  
 
 
-  if @deta4.where(actividad:20).count>0 and @vdir>4 then
-        @vconv=2
 
 
-  else
-    if @vdir>1 then
-      if proceso.convocatoria==1 then
-        @vconv=1
-      else
-     @vconv=4
-      end
-    end
-  end
 
-  if  vapel>0 or vadjud>0    then
-      @vconv=5
-  end
 
-  if vconsen>0   then
-    @vconv=3
-  end
+         @vconv=0
+
+          vconsen=Piece.where(phase_id:proceso.id).where('estado=2 or estado=11 ').count
+          vadjud=Piece.where(phase_id:proceso.id,estado:4).count
+          vapel=Piece.where(phase_id:proceso.id,estado:9).count
+
+
+           if @deta4.where(actividad:20).count>0 and @vdir>4 then
+              @vconv=2
+           else
+              if @vdir>1 then
+                 if proceso.convocatoria==1 then
+                   @vconv=1
+                 else
+                   @vconv=4
+                 end
+              end
+            end
+
+            if  vapel>0 or vadjud>0    then
+               @vconv=5
+            end
+
+            if vconsen>0   then
+               @vconv=3
+            end
 
 
 
@@ -960,34 +959,34 @@ unless current_admin_user.id==24 #personal
             @vconv1.push(proceso.id)
             @vxper3[1]=@vxper3[1]+1
 
-         if proceso.moneda and proceso.valor then
+             if proceso.moneda and proceso.valor then
 
-             @vpv=Formula.where(product_id:7,orden:proceso.moneda)
-                   .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+                  @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                        .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
 
-             @contavus[1]=  @contavus[1]+ @vpv
-             Phase.where(id:proceso.id).update_all( sele2:@vpv )
-        end
+                   @contavus[1]=  @contavus[1]+ @vpv
+                  Phase.where(id:proceso.id).update_all( sele2:@vpv )
+             end
 
-            if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
-            @vpp=Activity.where(phase_id:proceso.id,actividad:34)
-            .select('pfecha as dd').first.dd
-            Phase.where(id:proceso.id).update_all( pp:@vpp )
-            else
-            Phase.where(id:proceso.id).update_all( pp:Time.now )
-            end
+             if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
+                 @vpp=Activity.where(phase_id:proceso.id,actividad:34)
+                      .select('pfecha as dd').first.dd
+                 Phase.where(id:proceso.id).update_all( pp:@vpp )
+             else
+                 Phase.where(id:proceso.id).update_all( pp:Time.now )
+             end
 
          when 2
-            @vconv2.push(proceso.id)
+              @vconv2.push(proceso.id)
               @vxper3[2]=@vxper3[2]+1
               if proceso.valor then
 
-             @vpv=Formula.where(product_id:7,orden:proceso.moneda)
-                   .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+                 @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                       .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
-              @contavus[2]=  @contavus[2]+@vpv
-               Phase.where(id:proceso.id).update_all( sele2:@vpv )
+                 @contavus[2]=  @contavus[2]+@vpv
+                  Phase.where(id:proceso.id).update_all( sele2:@vpv )
               end
               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
               .select('pfecha as dd').first.dd
@@ -996,25 +995,27 @@ unless current_admin_user.id==24 #personal
 
 
           when 3
-            @vconv3.push(proceso.id)
+              @vconv3.push(proceso.id)
               @vxper3[3]=@vxper3[3]+1
-          @vpv=0
-      if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL and (estado=2 or estado=11)").count>0  then
-        Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL  and moneda IS NOT NULL and (estado=2 or estado=11)").each do |adju|
-           @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
-        end
-      end
+              @vpv=0
+               if  Piece.where(phase_id:proceso.id).
+                     where("adjudicado IS NOT NULL and moneda IS NOT NULL and (estado=2 or estado=11)").count>0  then
+                     Piece.where(phase_id:proceso.id).
+                     where("adjudicado IS NOT NULL  and moneda IS NOT NULL and (estado=2 or estado=11)").each do |adju|
+                     @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+               end
+               end
 
-              @contavus[3]=  @contavus[3]+@vpv
-                Phase.where(id:proceso.id).update_all( sele2:@vpv )
+                    @contavus[3]=  @contavus[3]+@vpv
+                    Phase.where(id:proceso.id).update_all( sele2:@vpv )
 
-              @vpp=Activity.where(phase_id:proceso.id,actividad:20)
-              .select('pfecha as dd').first.dd
-              Phase.where(id:proceso.id).update_all( pp:@vpp )
+                   @vpp=Activity.where(phase_id:proceso.id,actividad:20)
+                       .select('pfecha as dd').first.dd
+                     Phase.where(id:proceso.id).update_all( pp:@vpp )
 
-                  if  vapel>0 or vadjud>0    then
-                      @vconv5.push(proceso.id)
-                      @vpv=0
+                   if  vapel>0 or vadjud>0    then
+                        @vconv5.push(proceso.id)
+                        @vpv=0
                       if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
                           Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
                           @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
@@ -1026,40 +1027,42 @@ unless current_admin_user.id==24 #personal
 
                   end
             when 4
-              @vconv4.push(proceso.id)
-              @vxper3[4]=@vxper3[4]+1
+                @vconv4.push(proceso.id)
+                @vxper3[4]=@vxper3[4]+1
 
-           if proceso.moneda and proceso.valor then
+               if proceso.moneda and proceso.valor then
 
-               @vpv=Formula.where(product_id:7,orden:proceso.moneda)
-                     .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+                   @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                        .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
 
-               @contavus[4]=  @contavus[4]+ @vpv
-               Phase.where(id:proceso.id).update_all( sele2:@vpv )
-          end
+                   @contavus[4]=  @contavus[4]+ @vpv
+                   Phase.where(id:proceso.id).update_all( sele2:@vpv )
+               end
 
-              if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
-              @vpp=Activity.where(phase_id:proceso.id,actividad:34)
-              .select('pfecha as dd').first.dd
-              Phase.where(id:proceso.id).update_all( pp:@vpp )
-              else
-              Phase.where(id:proceso.id).update_all( pp:Time.now )
-              end
+                 if Activity.where(phase_id:proceso.id,actividad:34).count>0 then
+                  @vpp=Activity.where(phase_id:proceso.id,actividad:34)
+                       .select('pfecha as dd').first.dd
+                    Phase.where(id:proceso.id).update_all( pp:@vpp )
+                 else
+                   Phase.where(id:proceso.id).update_all( pp:Time.now )
+                 end
 
 
             when 5
 
                     @vxper3[5]=@vxper3[5]+1
-                      @vconv5.push(proceso.id)
-        @vpv=0
-              if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
-                Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
-                   @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
-                end
-              end
+                    @vconv5.push(proceso.id)
+                    @vpv=0
+                   if  Piece.where(phase_id:proceso.id).
+                     where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
+                         Piece.where(phase_id:proceso.id).
+                         where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
+                      @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+                  end
+                  end
 
-                      @contavus[5]=  @contavus[5]+@vpv
+                       @contavus[5]=  @contavus[5]+@vpv
                         Phase.where(id:proceso.id).update_all( sele2:@vpv )
 
                       @vpp=Activity.where(phase_id:proceso.id,actividad:20)
@@ -1068,11 +1071,11 @@ unless current_admin_user.id==24 #personal
 
 
 
-        end #case
+           end #case
 
 
-  case @vconv
-  when 1,2,3,4,5
+         case @vconv
+            when 1,2,3,4,5
              @vconvt.push(proceso.id)
              @vxper3[0]=@vxper3[0]+1
 
@@ -1080,7 +1083,7 @@ unless current_admin_user.id==24 #personal
           end
 
 
-#    unless @vactiv3 ==79
+#    empieza seguimiento
 
              case @vdir
              when 1
@@ -1107,8 +1110,8 @@ unless current_admin_user.id==24 #personal
               end #case
 
             case @vdir
-            when 1,2,3,4,5,6,7
-                @vprot.push(proceso.id)
+                 when 1,2,3,4,5,6,7
+                    @vprot.push(proceso.id)
             end
 #end
 
@@ -1117,6 +1120,14 @@ unless current_admin_user.id==24 #personal
 
 
 end# del each
+
+
+
+
+
+
+
+
 
 
 
