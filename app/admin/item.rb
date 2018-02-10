@@ -136,18 +136,18 @@ index :title => 'Lista de PACs' do
 
   column("NoPac", :sortable => :pac) {|item|
     vsec=1
-if current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+if current_admin_user.categoria==6 or current_admin_user.categoria==8 or current_admin_user.categoria==9 then
   vsec=0
 end
-if current_admin_user.id==6 and item.obac==2 then
+if current_admin_user.categoria==6 and item.obac==2 then
   vsec=1
 end
 
-if current_admin_user.id==8 and item.obac==3 then
+if current_admin_user.categoria==8 and item.obac==3 then
   vsec=1
 end
 
-if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
+if current_admin_user.categoria==9 and (item.obac==1 or item.obac==6) then
   vsec=1
 end
 
@@ -168,18 +168,18 @@ column("exped")do |item|
 
 
   vsec=1
-if current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+if current_admin_user.categoria==6 or current_admin_user.categoria==8 or current_admin_user.categoria==9 then
 vsec=0
 end
-if current_admin_user.id==6 and item.obac==2 then
+if current_admin_user.categoria==6 and item.obac==2 then
 vsec=1
 end
 
-if current_admin_user.id==8 and item.obac==3 then
+if current_admin_user.categoria==8 and item.obac==3 then
 vsec=1
 end
 
-if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
+if current_admin_user.categoria==9 and (item.obac==1 or item.obac==6) then
 vsec=1
 end
  link_to_if vsec==1, "#{exp } ", admin_item_path(item)
@@ -259,7 +259,7 @@ end
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 
-#unless current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+#unless current_admin_user.categoria==6 or current_admin_user.categoria==8 or current_admin_user.categoria==9 then
 
 #  actions
 #end
@@ -281,7 +281,7 @@ form :title => 'Edicion PACs' do |f|
                Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
 
        f.input :obac, :as => :select, :collection =>
-       case current_admin_user.id # a_variable is the variable we want to compare
+       case current_admin_user.categoria # a_variable is the variable we want to compare
          when 6   #mgp
             Formula.where(product_id:1,orden:2).map{|u| [u.nombre, u.orden]}
         when 8   #fap
@@ -298,7 +298,7 @@ form :title => 'Edicion PACs' do |f|
         f.input :lista, :as => :select, :collection =>
            Formula.where(product_id:3).map{|u| [u.descripcion, u.orden]}
         f.input :ejecucion,:label => 'Ejecucion Responsable', :as => :select, :collection =>
-        case current_admin_user.id # a_variable is the variable we want to compare
+        case current_admin_user.categoria # a_variable is the variable we want to compare
           when 6   #mgp
           Formula.where(product_id:1).where("orden= 2 OR orden = 4").map{|u| [u.nombre, u.orden]}
         when 8   #fap
@@ -317,7 +317,7 @@ form :title => 'Edicion PACs' do |f|
            Formula.where(product_id:4).map{|u| [u.nombre, u.orden]}
         f.input :dependencia,:label => 'Dependencia ejecutante OBAC', :as => :select, :collection =>
 
-               case current_admin_user.id # a_variable is the variable we want to compare
+               case current_admin_user.categoria # a_variable is the variable we want to compare
                  when 6   #mgp
                   Formula.where(product_id:5,cantidad:2).map{|u| [u.nombre, u.orden]}
                 when 8   #fap
@@ -356,7 +356,7 @@ form :title => 'Edicion PACs' do |f|
                     Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
-          case current_admin_user.id # a_variable is the variable we want to compare
+          case current_admin_user.categoria # a_variable is the variable we want to compare
           when 1,2,4,6,8,9 #solo gex
               f.actions
 
@@ -377,18 +377,18 @@ form :title => 'Edicion PACs' do |f|
         row "PAC (link actividades)" do |item|
 
             vsec=1
-        if current_admin_user.id==6 or current_admin_user.id==8 or current_admin_user.id==9 then
+        if current_admin_user.categoria==6 or current_admin_user.categoria==8 or current_admin_user.categoria==9 then
           vsec=0
         end
-        if current_admin_user.id==6 and item.obac==2 then
+        if current_admin_user.categoria==6 and item.obac==2 then
           vsec=1
         end
 
-        if current_admin_user.id==8 and item.obac==3 then
+        if current_admin_user.categoria==8 and item.obac==3 then
           vsec=1
         end
 
-        if current_admin_user.id==9 and (item.obac==1 or item.obac==6) then
+        if current_admin_user.categoria==9 and (item.obac==1 or item.obac==6) then
           vsec=1
         end
 

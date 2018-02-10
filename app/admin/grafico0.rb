@@ -17,7 +17,7 @@ ActiveAdmin.register_page "grafico0" do
 
   content title: "Grafico" do
 
-    case current_admin_user.id # a_variable is the variable we want to compare
+    case current_admin_user.categoria # a_variable is the variable we want to compare
     when 21
       @vuobac=[1]
     when 22

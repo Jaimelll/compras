@@ -2,7 +2,7 @@ ActiveAdmin.register_page "Dashboard" do
 
 menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
-#action_item :Encargo,  if: proc{ current_admin_user.id==2 } do
+#action_item :Encargo,  if: proc{ current_admin_user.categoria==2 } do
 #Formula.where( product_id:15 ).update_all( cantidad:0 )
 #Formula.where( product_id:15 ,orden:2).update_all( cantidad:1 )
 #link_to 'Encargo',admin_dashboard_path
@@ -44,7 +44,7 @@ end
     #   column do
     #     panel "Recent Posts" do
     Formula.where(product_id:1).update_all( numero:2 )
-    case current_admin_user.id # a_variable is the variable we want to compare
+    case current_admin_user.categoria # a_variable is the variable we want to compare
     when 21
       @vuobac=[1]
       Formula.where(product_id:1,orden:1).update_all( numero:1 )
@@ -106,7 +106,7 @@ end
 
                      column do
 
-                       case current_admin_user.id
+                       case current_admin_user.categoria
                        when 21,22,23,24,29
 
 
@@ -121,7 +121,7 @@ end
 
 
 
-          case current_admin_user.id
+          case current_admin_user.categoria
           when 2,3,26
                        panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).order('orden')  do
@@ -141,7 +141,7 @@ end
 
                             @le= @le1.count.to_s+ "/("+
                                    number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
-                           case current_admin_user.id
+                           case current_admin_user.categoria
                            when 21,22,23,29
                               @le
                              else
@@ -171,7 +171,7 @@ end
 
 
 
-                              case current_admin_user.id
+                              case current_admin_user.categoria
                               when 21,22,23,29
                                  @le
                                 else
@@ -232,7 +232,7 @@ end
         end
 
 end # de case
-unless current_admin_user.id==24
+unless current_admin_user.categoria==24
 
 
                @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
@@ -451,7 +451,7 @@ end#table
 
 
         #personal
-        unless current_admin_user.id==24
+        unless current_admin_user.categoria==24
 
 
           panel  "Leyenda" do
@@ -482,7 +482,7 @@ end#table
 
         column do
 
-unless current_admin_user.id==24 #personal
+unless current_admin_user.categoria==24 #personal
 
 
   @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
@@ -874,7 +874,7 @@ unless current_admin_user.id==24 #personal
 
 
 
-case current_admin_user.id
+case current_admin_user.categoria
 when 21,22,23,24,29
 
 
@@ -1453,7 +1453,7 @@ end #de table
 #
 #########################################
 
-   if current_admin_user.id==2 then
+   if current_admin_user.categoria==2 then
       panel  "VII.- ADJUDICADOS ACFFAA AF-" +@vaf  do
 
 
@@ -1697,7 +1697,7 @@ end #de table
 
   end
 #personal
-unless current_admin_user.id==24
+unless current_admin_user.categoria==24
 
 
   panel  "Leyenda" do

@@ -78,7 +78,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
 
 
                    # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
-                   case current_admin_user.id # a_variable is the variable we want to compare
+                   case current_admin_user.categoria # a_variable is the variable we want to compare
                    when 1,2,4,5 #gex
                             n3=1
                         when 6,8,9 #gex
@@ -168,7 +168,7 @@ form :title => 'Edicion Actividad'  do |f|
 
              f.input :actividad, :as => :select, :collection =>
 
-             case current_admin_user.id # a_variable is the variable we want to compare
+             case current_admin_user.categoria # a_variable is the variable we want to compare
              when 1,2,4  #admi
                  Formula.where(product_id:12).order("numero,descripcion").
                    map{|u| [u.descripcion.capitalize,

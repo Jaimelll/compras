@@ -10,7 +10,7 @@ menu  priority: 17,label: "Usuarios"
 
 
 
-#actions :all, :if => proc { current_admin_user.id == 2 }
+#actions :all, :if => proc { current_admin_user.categoria == 2 }
 
   index do
     selectable_column
@@ -39,7 +39,7 @@ menu  priority: 17,label: "Usuarios"
       f.input :password_confirmation
       f.input :categoria
     end
-    if current_admin_user.id==2 then
+    if current_admin_user.categoria==2 then
       f.actions
     end
   end

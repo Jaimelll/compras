@@ -90,7 +90,7 @@ filter :expediente, :as => :select, :collection =>
 
 
 #member_action :auditado, method: :put do
-#  case current_admin_user.id # a_variable is the variable we want to compare
+#  case current_admin_user.categoria # a_variable is the variable we want to compare
 #  when 2,3,10,25 # administrador,roy
 #        proc=Phase.find(params[:id])
 #        proc.update(sele3:2)
@@ -102,7 +102,7 @@ filter :expediente, :as => :select, :collection =>
 
 
 #  member_action :noauditado, method: :put do
-#    case current_admin_user.id # a_variable is the variable we want to compare
+#    case current_admin_user.categoria # a_variable is the variable we want to compare
 #    when 2,3,10,25 # administrador,roy
 #           proc=Phase.find(params[:id])
 #           proc.update(sele3:1)
@@ -111,7 +111,7 @@ filter :expediente, :as => :select, :collection =>
 #    end
 
 #    member_action :enproceso, method: :put do
-#      case current_admin_user.id # a_variable is the variable we want to compare
+#      case current_admin_user.categoria # a_variable is the variable we want to compare
 #      when 2,3,10,25 # administrador,roy
 #            proc=Phase.find(params[:id])
 #            proc.update(sele3:3)
@@ -187,7 +187,7 @@ form :title => 'Edicion Procesos' do |f|
     Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
     f.input :sele4,:label => 'Especialista encargado', :as => :select, :collection =>
        Formula.where(product_id:34).order('orden').map{|u| [u.nombre, u.orden]}
-f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+f.input :admin_user_id, :input_html => { :value => current_admin_user.categoria }, :as => :hidden
 f.input :comite ,:label => 'Miembros de comité'
 f.input :postores ,:label => 'Lista de postores'
 f.input :ep,:label => 'Monto Adjudicado EP', :as => :string, :input_html => { :style =>  'width:30%'}

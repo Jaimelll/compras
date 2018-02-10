@@ -6,7 +6,7 @@ class Ability
     #
      user ||= AdminUser.new # guest user (not logged in)
 
-  case user.id # a_variable is the variable we want to compare
+  case user.categoria # a_variable is the variable we want to compare
      when 1,2
           can :manage, :all
 

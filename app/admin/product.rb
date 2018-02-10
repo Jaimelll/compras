@@ -12,7 +12,7 @@ ActiveAdmin.register Product do
 #   permitted
 # end
 
-#menu if: proc{ current_admin_user.id==2 }, priority: 3, label: "Productos"
+#menu if: proc{ current_admin_user.categoria==2 }, priority: 3, label: "Productos"
 
 ActiveAdmin.register Formula do
   belongs_to :product

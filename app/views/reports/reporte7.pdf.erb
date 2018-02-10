@@ -105,7 +105,7 @@
      </tr>
       <% end %>
 
-    <%  case current_admin_user.id %>
+    <%  case current_admin_user.categoria %>
     <%    when 21,22,23 %>
 
       <%  @vpact=Formula.where(product_id:12,acti:2).select('orden')%>
