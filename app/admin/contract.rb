@@ -29,20 +29,31 @@ permit_params :numero, :fecha,:descripcion, :obac,:postor,
 
 menu priority: 12, label: "Contratos"
 
-scope :AF_2017, :default => true do |phases|
-     phases.where(periodo:3)
+
+
+scope :ACFFAA, :default => true do |contracts|
+@vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      contracts.where(periodo:@vaf)
 end
 
-scope :AF_2016, :default => true do |phases|
-phases.where(periodo:2)
+scope :AF_2018, :default => true do |contracts|
+     contracts.where(periodo:4)
 end
 
-scope :AF_2015, :default => true do |phases|
-phases.where(periodo:1)
+scope :AF_2017, :default => true do |contracts|
+     contracts.where(periodo:3)
 end
 
-scope :Todos, :default => true do |phases|
-     phases
+scope :AF_2016, :default => true do |contracts|
+contracts.where(periodo:2)
+end
+
+scope :AF_2015, :default => true do |contracts|
+contracts.where(periodo:1)
+end
+
+scope :Todos, :default => true do |contracts|
+     contracts
 end
 
 
@@ -53,10 +64,28 @@ end
 filter :numero
 filter :descripcion
 
+filter :proceso,  :as => :select, :collection =>
+        Phase.order('periodo,nomenclatura ASC').map{|u| ["#{u.nomenclatura}", u.id]}
+filter :obac,  :as => :select, :collection =>
+        Formula.where(product_id:1,cantidad:1).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :periodo , :as => :select, :collection =>
+        Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+
+
 index :title => 'Lista de Contratos' do
-column("id") do |contra|
-   link_to "#{contra.id} ", admin_contract_packages_path(contra)
-end
+
+  column("proceso") do |contra|
+       if contra.proceso and contra.proceso>0 then
+
+      nom= Phase.where(id:contra.proceso).
+           select('nomenclatura as dd').first.dd
+
+         else
+      nom=  "s/d"
+         end
+         link_to nom, admin_contract_packages_path(contra)
+     end
+
 column("numero") do |contra|
 
    link_to "#{contra.numero} ", admin_contract_elements_path(contra)
@@ -71,16 +100,7 @@ column("Fecha ", :sortable => :fecha) do |contra|
 end
  column("descripcion")
 
-column("proceso") do |contra|
-     if contra.proceso and contra.proceso>0 then
 
-        Phase.where(id:contra.proceso).
-         select('nomenclatura as dd').first.dd
-
-       else
-           "s/d"
-       end
-   end
 
  column("obac") do |contra|
          if contra.obac and contra.obac>0 then
@@ -93,18 +113,6 @@ column("proceso") do |contra|
 
 column("postor")
 
-column("moneda") do |contra|
-  if contra.moneda then
-    Formula.where(product_id:7,orden:contra.moneda).select('nombre as dd').first.dd.to_s
-
-  end
-end
-column("adjudicado") do |contra|
- number_with_delimiter(contra.adjudicado, delimiter: ",")
-end
-column("presupuestado") do |contra|
- number_with_delimiter(contra.presupuestado, delimiter: ",")
-end
 
   actions
 end
