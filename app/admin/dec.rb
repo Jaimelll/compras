@@ -1,4 +1,4 @@
-ActiveAdmin.register_page "DEC" do
+ActiveAdmin.register_page "Dec" do
 
   menu  priority: 2,label: "DEC"
 
@@ -65,13 +65,12 @@ ActiveAdmin.register_page "DEC" do
                     @deta4=Element.where(contract_id:proceso.id).
                                       order('pfecha DESC,id DESC')
 
+                  vculmi=Element.where(contract_id:proceso.id,actividad:300).count
 
 
 
 
-
-
-                         if @deta4.count>0 then
+                         if @deta4.count>0 and vculmi==0 then
                             @vactiv3= @deta4.select('actividad as dd').first.dd
 
                           @vdir=Formula.where(product_id:19,orden:@vactiv3).
@@ -124,7 +123,7 @@ ActiveAdmin.register_page "DEC" do
                      end
                 end# del each
 
-                column("Avance") do |formula|
+                column("Periodo") do |formula|
                         formula.nombre
                 end
                 column("Recp Contrato", :class => 'text-right') do |formula|
@@ -214,20 +213,14 @@ panel  "II.-CONTRATOS CULMINADOS" do
 
 
 
-def calcu1(var)
-
-         @vxper2=[0,0,0,0,0,0,0,0]
+def calcu2(var)
 
 
 
-         @vpro1=[]
-         @vpro2=[]
-         @vpro3=[]
-         @vpro4=[]
-         @vpro5=[]
-         @vpro6=[]
-         @vpro7=[]
-         @vprot=[]
+
+
+         @vcul=[]
+
 
 
 
@@ -241,57 +234,13 @@ def calcu1(var)
                                order('pfecha DESC,id DESC')
 
 
+               vculmi=Element.where(contract_id:proceso.id,actividad:300).count
 
 
 
 
-
-                  if @deta4.count>0 then
-                     @vactiv3= @deta4.select('actividad as dd').first.dd
-
-                   @vdir=Formula.where(product_id:19,orden:@vactiv3).
-                         select('cantidad as dd').first.dd
-
-                     @vxper2[@vdir]=@vxper2[@vdir]+ 1
-              #     @vpresu2[@vdir]=@vpresu2[@vdir]+ proceso.certificado
-
-
-
-
-
-
-
-
-
-                      case @vdir
-                      when 1
-                        @vpro1.push(proceso.id)
-                        Contract.where(id:proceso.id).update_all( sele:1 )
-                      when 2
-                        @vpro2.push(proceso.id)
-                        Contract.where(id:proceso.id).update_all( sele:2 )
-                      when 3
-                        @vpro3.push(proceso.id)
-                        Contract.where(id:proceso.id).update_all( sele:3 )
-                      when 4
-                        @vpro4.push(proceso.id)
-                        Contract.where(id:proceso.id).update_all( sele:4 )
-                        when 5
-                          @vpro5.push(proceso.id)
-                          Contract.where(id:proceso.id).update_all( sele:5 )
-                        when 6
-                          @vpro6.push(proceso.id)
-                           Contract.where(id:proceso.id).update_all(sele:6  )
-                         when 7
-                           @vpro7.push(proceso.id)
-                            Contract.where(id:proceso.id).update_all(sele:7  )
-                       end #case
-
-                     case @vdir
-                     when 1,2,3,4,5,6,7
-                         @vprot.push(proceso.id)
-                     end
-
+                  if vculmi>0   then
+                    @vcul.push(proceso.id)
 
 
                    end# de if 1
@@ -299,89 +248,29 @@ def calcu1(var)
               end
          end# del each
 
-         column("Avance") do |formula|
+         column("Periodo") do |formula|
                  formula.nombre
          end
-         column("Recp Contrato", :class => 'text-right') do |formula|
-             calcu1(formula.orden)
+         column("Contrato culminado") do |formula|
+             calcu2(formula.orden)
            @dpc=  formula.orden
 
-           @vpas=1
-           @titproc1="FASE RECEPCION DE CONTRATO"
-           @le= @vxper2[1]
+           @vpas=4
+           @titproc1="Contratos culminados"
+           @le= @vcul.length
            link_to "#{@le}",
            reports_comment6_path(format: :pdf,
            :param3=> @vpas,
-           :param4=> @titproc1,:param5=> @vpro1)
+           :param4=> @titproc1,:param5=> @vcul)
 
           end
 
 
-         column("Recp Bien", :class => 'text-right') do |formula|
-             calcu1(formula.orden)
-           @dpc=  formula.orden
-
-           @vpas=2
-           @titproc1="FASE RECEPCION DE BIEN O SERVICIO"
-           @le= @vxper2[2]
-           link_to "#{@le}",
-           reports_comment6_path(format: :pdf,
-           :param3=> @vpas,
-           :param4=> @titproc1,:param5=> @vpro2)
-
-          end
-
-          column("Recp Guia", :class => 'text-right') do |formula|
-              calcu1(formula.orden)
-              @dpc=  formula.orden
-
-            @vpas=3
-            @titproc1="FASE RECEPCION DE GUIAS"
-            @le= @vxper2[3]
-            link_to "#{@le}",
-            reports_comment6_path(format: :pdf,
-            :param3=> @vpas,
-            :param4=> @titproc1,:param5=> @vpro3)
-
-           end
-
-
-          column("Recp Pago", :class => 'text-right') do |formula|
-              calcu1(formula.orden)
-            @dpc=  formula.orden
-
-            @vpas=4
-            @titproc1="FASE RECEPCION DE PAGO"
-            @le= @vxper2[4]
-            link_to "#{@le}",
-            reports_comment6_path(format: :pdf,
-            :param3=> @vpas,
-            :param4=> @titproc1,:param5=> @vpro4)
-
-           end
-           column("TOTAL", :class => 'text-right') do |formula|
-               calcu1(formula.orden)
-             @dpc=  formula.orden
-
-             @vpas=[1,2,3,4]
-             @titproc1="Relacion de Procesos"
-             @le=@vxper2[1]+@vxper2[2]+@vxper2[3]+@vxper2[4]+ @vxper2[5]+  @vxper2[6]+  @vxper2[7]
-             link_to "#{@le}",
-             reports_comment6_path(format: :pdf,
-             :param3=> @endvpas,
-             :param4=> @titproc1,:param5=> @vprot)
-
-           end
-
+        end
 
 
    end#panel
  end   #table fo
-
-
-
-################fin 2
-end
 end
 end
 end

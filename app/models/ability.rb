@@ -12,6 +12,7 @@ class Ability
 
       when 3,26#Roy,amador
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
+            can :read, ActiveAdmin::Page, :name =>"Dec"
           #  can :read, ActiveAdmin::Page, :name =>"grafico"
           #  can :read, ActiveAdmin::Page, :name =>"grafico0"
           #  can :read, ActiveAdmin::Page, :name =>"grafico1"
@@ -53,6 +54,7 @@ class Ability
   #        can :read, ActiveAdmin::Page, :name =>"grafico"
   #        can :read, ActiveAdmin::Page, :name =>"grafico0"
            can :read, ActiveAdmin::Page, :name =>"grafico1"
+
            can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:create,:read,:update,:destroy],  [Item,Piece,Phase,Activity,Detail,Contract,Element,Package]
 
