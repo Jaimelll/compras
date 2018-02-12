@@ -14,7 +14,7 @@ permit_params  :nombre, :descripcion,  :orden,
 
       member_action :af, method: :put do
         case current_admin_user.categoria # a_variable is the variable we want to compare
-        when 2,3,13,14 # administrador,roy, dpc, dec
+        when 2,3 # administrador,roy, dpc, dec
 
          @vaf=Formula.where(product_id:11,cantidad:1).select('numero as dd').first.dd
          @num=Formula.where(product_id: 11, orden:@vaf).
