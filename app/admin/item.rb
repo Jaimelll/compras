@@ -255,7 +255,7 @@ end
     #        end
     #    end
 
-    column("estimado") do |item|
+    column("estimado", :class => 'text-right') do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 

@@ -141,7 +141,7 @@ end
         Formula.where(product_id:7,orden:phase.moneda).select('nombre as dd').first.dd.to_s
       end
   end
-column("Referencial")  do |phase|
+column("Referencial", :class => 'text-right')  do |phase|
    if phase.valor then
    number_with_delimiter(phase.valor.to_int, delimiter: ",")
    end
