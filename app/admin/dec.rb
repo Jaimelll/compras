@@ -251,7 +251,7 @@ def calcu2(var)
          column("Periodo") do |formula|
                  formula.nombre
          end
-         column("Contrato culminado") do |formula|
+         column("Culminados") do |formula|
              calcu2(formula.orden)
            @dpc=  formula.orden
 
