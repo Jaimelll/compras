@@ -874,11 +874,7 @@ unless current_admin_user.categoria==24 #personal
 
 
 
-case current_admin_user.categoria
-when 21,22,23,24,29
 
-
-else
    panel  "V.- SEGUIMIENTO DE PROCESOS-AF" +@vaf  do
 
      aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
@@ -1100,7 +1096,7 @@ def execute2(var)
 
 
 
-   end
+
    end
 
    #####Adjudicados
@@ -1532,7 +1528,7 @@ end #de table
 
 
    ############fin de adjudicados
-  
+
   end # de if  panel contratos current 2
 
   end
