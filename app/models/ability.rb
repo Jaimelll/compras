@@ -62,7 +62,7 @@ class Ability
            can :read, ActiveAdmin::Page, :name =>"Dashboard"
   #          can :read, ActiveAdmin::Page, :name =>"grafico"
   #          can :read, ActiveAdmin::Page, :name =>"grafico0"
-  #          can :read, ActiveAdmin::Page, :name =>"Indices"
+          can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:create,:read,:update, :destroy], [Item, Detail,Activity]
            can [:read], [Phase,Piece]
 
