@@ -85,6 +85,65 @@
 
 
       </td>
+      <%  if @vobac1>0 and @conta==@vobac1 and  item.obac==1  then %>
+
+     <tr>
+       <td ></td>
+       <td ></td>
+       <td ></td>
+
+
+       <td ALIGN=right> <h4><%="PAC = "+@vobac1.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:1).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:1).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
+
+
+
+      </tr>
+
+      <% end %>
+
+      <%  if @vobac2>0 and @conta==@vobac1+@vobac2 and  item.obac==2  then %>
+
+
+           <tr>
+             <td ></td>
+             <td ></td>
+             <td ></td>
+
+
+             <td ALIGN=right> <h4><%="PAC = "+@vobac2.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:2).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:2).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
+
+
+
+            </tr>
+
+      <% end %>
+      <%  if @vobac3>0 and @conta==@vobac1+@vobac2+@vobac3 and  item.obac==3  then %>
+      <tr>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+
+
+        <td ALIGN=right> <h4><%="PAC = "+@vobac3.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:3).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:3).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
+
+
+
+       </tr>
+      <% end %>
+
+      <%  if @vobac4>0 and @conta==@vobac1+@vobac2+@vobac3+@vobac4 and  item.obac==6 then %>
+      <tr>
+        <td ></td>
+        <td ></td>
+        <td ></td>
+
+
+        <td ALIGN=right> <h4><%="PAC = "+@vobac4.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:6).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:6).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
+
+
+
+       </tr>
+      <% end %>
       </tr>
 
     <% end %>

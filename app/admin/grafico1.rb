@@ -1,7 +1,7 @@
 
 ActiveAdmin.register_page "grafico1" do
 
-  menu  priority: 5,label: "Grafico Contratos"
+  menu  priority: 6,label: "Grafico Contratos"
 
 
 

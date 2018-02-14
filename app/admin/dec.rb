@@ -1,6 +1,6 @@
 ActiveAdmin.register_page "Dec" do
 
-  menu  priority: 2,label: "DEC"
+  menu  priority: 3,label: "DEC"
 
 
   content title: "Direccion de Ejecucion Contractual" do

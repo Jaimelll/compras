@@ -1,7 +1,7 @@
 
 ActiveAdmin.register_page "grafico0" do
 
-  menu  priority: 4,label: "Grafico Procesos"
+  menu  priority: 5,label: "Grafico Procesos"
 
   action_item :only=> :index do
       link_to 'DPC', dpc2_admin_product_formula_path(1, :@num), method: :put
