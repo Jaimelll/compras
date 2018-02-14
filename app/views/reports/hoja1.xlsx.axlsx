@@ -181,11 +181,12 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
     @epom3=""
  end
 
+loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Destop/'
+#loca1='/home/desarrollo/'
+vlink=ite.pac+Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd
+localiz=loca1+vlink+'.xlsx'
 
-
-
-
-
+#  //acffaa-archivo/usuarios(10gb)$/jaime.duran/
  case proce.orden
     when 1,2,3
 
@@ -199,9 +200,9 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
    Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
     ite.solicita,
     @fecing,
-  ite.certificado.to_i, @vobsr],
-  style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, soles, izq]
-
+  ite.certificado.to_i, @vobsr,vlink],
+  style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, soles, izq, centra]
+sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.last
     when 4,5,6,7
 
     sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
@@ -213,8 +214,8 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
      Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
       ite.solicita,
       @fecing, @epom1,  @epom2, @epom3,
-    ite.certificado.to_i, @vobsr],
-    style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, centra, centra, centra, soles, izq]
+    ite.certificado.to_i, @vobsr,vlink],
+    style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, centra, centra, centra, soles, izq, centra]
 
     end
 
