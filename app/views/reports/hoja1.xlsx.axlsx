@@ -181,7 +181,7 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
     @epom3=""
  end
 
-loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Destop/'
+loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Desktop/'
 #loca1='/home/desarrollo/'
 vlink=ite.pac+Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd
 localiz=loca1+vlink+'.xlsx'
