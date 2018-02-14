@@ -145,7 +145,8 @@ end
                            when 21,22,23,29
                               @le
                              else
-                               link_to "#{@le} ", reports_comment_path(format: :pdf,
+                               #cambiar comment2 por comment para ver modalidalidad y mercado
+                               link_to "#{@le} ", reports_comment2_path(format: :pdf,
                                :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
 
                             end

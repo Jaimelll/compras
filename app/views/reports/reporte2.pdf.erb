@@ -9,11 +9,7 @@
 </head>
 
   <% if @items.count>0 then %>
-
-    <%  @vobac1=@items.where(obac:1).count %>
-    <%  @vobac2=@items.where(obac:2).count %>
-    <%  @vobac3=@items.where(obac:3).count %>
-    <%  @vobac4=@items.where(obac:6).count %>
+<% Formula.where(product_id:1,numero:1).order('orden').each do |formula| %>
 
 
 
@@ -41,39 +37,18 @@
 
     <%  @conta=0 %>
 
-    <% @items.each do |item| %>
+    <% @items.where(obac:formula.orden).each do |item| %>
 
         <tr>
           <% @conta=@conta+1 %>
 
-          <%  if @vobac1>0 and @conta==1 and  item.obac==1  then %>
 
-         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:1).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
-
-          <% end %>
-
-          <%  if @vobac2>0 and @conta==@vobac1+1 and  item.obac==2  then %>
-
-         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:2).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
-
-          <% end %>
-          <%  if @vobac3>0 and @conta==@vobac1+@vobac2+1 and  item.obac==3  then %>
-
-         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:3).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
-
-          <% end %>
-
-          <%  if @vobac4>0 and @conta==@vobac1+@vobac2+@vobac3+1 and  item.obac==6 then %>
-
-         <tr> <td colspan="5"> <h4><%= Formula.where(product_id:1,orden:6).select('descripcion as dd').first.dd.upcase %></h4> </td> </tr>
-
-          <% end %>
 
 
 
 
         <td ALIGN=center><%= @conta.to_s+".-" %></td>
-        <td ALIGN=center><%= item.pac %></td>
+        <td ALIGN=left><%= item.pac %></td>
 
 
 
@@ -85,73 +60,28 @@
 
 
       </td>
-      <%  if @vobac1>0 and @conta==@vobac1 and  item.obac==1  then %>
 
-     <tr>
-       <td ></td>
-       <td ></td>
-       <td ></td>
+    </tr>
+   <% end %>
+   </tr>
 
 
-       <td ALIGN=right> <h4><%="PAC = "+@vobac1.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:1).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:1).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
-
-
-
-      </tr>
-
-      <% end %>
-
-      <%  if @vobac2>0 and @conta==@vobac1+@vobac2 and  item.obac==2  then %>
-
-
-           <tr>
-             <td ></td>
-             <td ></td>
-             <td ></td>
-
-
-             <td ALIGN=right> <h4><%="PAC = "+@vobac2.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:2).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:2).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
+           <td colspan="2" ><h4><%="PAC = "%></h4></td>
+                <td ><h4><%=@items.where(obac:formula.orden).count %></h4></td>
+        <td ALIGN=right><h4><%=" Monto Total de "+formula.nombre.upcase+" =" %></h4> </td>
+        <td ><h4><%= number_with_delimiter(@items.where(obac:formula.orden).sum(:certificado).to_i, delimiter: ",")   %></td>
 
 
 
-            </tr>
-
-      <% end %>
-      <%  if @vobac3>0 and @conta==@vobac1+@vobac2+@vobac3 and  item.obac==3  then %>
-      <tr>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-
-
-        <td ALIGN=right> <h4><%="PAC = "+@vobac3.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:3).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:3).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
 
 
 
-       </tr>
-      <% end %>
-
-      <%  if @vobac4>0 and @conta==@vobac1+@vobac2+@vobac3+@vobac4 and  item.obac==6 then %>
-      <tr>
-        <td ></td>
-        <td ></td>
-        <td ></td>
-
-
-        <td ALIGN=right> <h4><%="PAC = "+@vobac4.to_s+" "+"   Monto Total de "+"  "+Formula.where(product_id:1,orden:6).select('nombre as dd').first.dd.upcase+"="+number_with_delimiter(@items.where(obac:6).sum(:certificado).to_i, delimiter: ",").to_s %></h4> </td>
-
-
-
-       </tr>
-      <% end %>
-      </tr>
-
-    <% end %>
 
   </tbody>
 
 </table>
-<h3>PACs = <%=   @conta %></h3>
+<% end %>
+<h3>PACs = <%=   @items.count %></h3>
 <h3>Total(Soles) = <%=   number_with_delimiter(@items.sum(:certificado).to_i, delimiter: ",") %></h3>
 
 <br>

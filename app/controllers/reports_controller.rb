@@ -120,7 +120,10 @@ def comment2
 
 
   case @vopc
-
+  when 4
+       @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
+       @items= Item.where(ejecucion:4,exped2:params[:param2])
+           .where("modalidad<3").order('obac,certificado DESC')
   when 5
        @lista=Formula.where(product_id:11,orden:params[:param2]).select('nombre as dd').first.dd
        @items= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
