@@ -718,8 +718,8 @@ ActiveAdmin.register_page "Indices" do
 
                                    vite=Phase.where(id:vpac3).where('extract(month from pp) = ?',
                                    lmes).select("id")
-
-                                   presu=Piece.where(phase_id:vite,estado:4).sum(:presupuestado)
+                                   vestado=[2,4,9]
+                                   presu=Piece.where(phase_id:vite,estado:vestado).sum(:presupuestado)
                                     column ("#{lmes}") do |aho|
                                         case bb.index(aho)
                                           when 0
@@ -760,7 +760,7 @@ ActiveAdmin.register_page "Indices" do
 
                                 procet=Phase.where(id:vpac3)
                                 vitet=Phase.where(id:vpac3).select("id")
-                                presut=Piece.where(phase_id:vitet,estado:4).sum(:presupuestado)
+                                presut=Piece.where(phase_id:vitet,estado:vestado).sum(:presupuestado)
 
                                 column ("TOTAL") do |aho|
 
