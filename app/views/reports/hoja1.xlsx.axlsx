@@ -383,11 +383,11 @@ end
 #####fin de proceso
 
 
-loca1='//w:/SG ACFFAA/Oenlace/Proyectos/'
+loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
 #loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Desktop/'
 #loca1='/home/desarrollo/'
 #vlink=ite.pac+Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd
-vlink='Plantilla-Proceso Avionica PAC006'
+vlink='Plantilla-Proceso Avionica PAC 006'
 #localiz=loca1+vlink+'.xlsx'
 localiz=loca1+vlink+'.mpp'
 
