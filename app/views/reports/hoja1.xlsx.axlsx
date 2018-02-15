@@ -181,13 +181,14 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
     @epom3=""
  end
 
-loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Desktop/'
+loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
+#loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Desktop/'
 #loca1='/home/desarrollo/'
-vlink=ite.pac+Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd
+#vlink=ite.pac+Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd
+vlink='Plantilla-Proceso Avionica PAC 006'
+#localiz=loca1+vlink+'.xlsx'
+localiz=loca1+vlink+'.mpp'
 
-localiz=loca1+vlink+'.xlsx'
-
-#  //acffaa-archivo/usuarios(10gb)$/jaime.duran/
  case proce.orden
     when 1,2,3
 
