@@ -13,7 +13,7 @@ class Ability
       when 3,26#Roy,amador
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"Dpc"
-            can :read, ActiveAdmin::Page, :name =>"Dec"
+          #  can :read, ActiveAdmin::Page, :name =>"Dec"
           #  can :read, ActiveAdmin::Page, :name =>"grafico"
           #  can :read, ActiveAdmin::Page, :name =>"grafico0"
           #  can :read, ActiveAdmin::Page, :name =>"grafico1"
