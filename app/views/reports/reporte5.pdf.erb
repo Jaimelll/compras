@@ -173,9 +173,9 @@
                    <td><%= deta.pfecha.strftime("%d-%m") %></td>
 
 
-                   <td colspan="3"><%=Formula.where(product_id:12,orden:deta.actividad).
+                   <td colspan="2"><%=Formula.where(product_id:12,orden:deta.actividad).
                                select('descripcion as dd').first.dd.capitalize  %></td>
-                   <td colspan="3"><%= deta.obs.capitalize %></td>
+                   <td colspan="4"><%= deta.obs.capitalize %></td>
                    <td ></td>
            </tr>
 
