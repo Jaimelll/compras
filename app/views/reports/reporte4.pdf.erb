@@ -152,13 +152,15 @@
              <% end %>
             <% else %>
 
+            <% @reff=Piece.where(phase_id:activity.id.to_s).sum(:referencial)*
+              Formula.where(product_id:7,orden:activity.moneda)
+                   .select('cantidad as dd').first.dd/100%>
 
 
 
 
 
-
-<td  ><h5  ALIGN=center><%= number_with_delimiter(activity.sele2.to_i, delimiter: ",") %></h5></td>
+<td  ><h5  ALIGN=center><%= number_with_delimiter( @reff.to_i, delimiter: ",") %></h5></td>
 
 
 
