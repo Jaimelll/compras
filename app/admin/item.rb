@@ -189,7 +189,8 @@ end
    loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    vlink='Plantilla-Proceso Avionica PAC 006'
    localiz=loca1+vlink+'.mpp'
-    link_to item.descripcion,localiz, :target=>"_blank"
+  #  link_to item.descripcion,localiz, :target=>"_blank"
+  item.descripcion
   end
 
   column("periodo")do |item|
