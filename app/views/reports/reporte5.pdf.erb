@@ -94,9 +94,11 @@
                   <td ><h5  ALIGN=center><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></h5></td>
         <%  else %>
 
-                  <td ><h5  ALIGN=center><%= number_with_delimiter((variable.valor*
-                  Formula.where(product_id:7,orden:variable.moneda)
-                        .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></h5></td>
+        <% @reff=Piece.where(phase_id:variable.id.to_s).sum(:referencial)*
+        Formula.where(product_id:7,orden:variable.moneda)
+              .select('cantidad as dd').first.dd/100%>
+
+                  <td ><h5  ALIGN=center><%= number_with_delimiter(@reff.to_i, delimiter: ",") %></h5></td>
         <% end%>
 
 
@@ -167,7 +169,7 @@
 
 
                     <td ></td>
-                  
+
                    <td><%= deta.pfecha.strftime("%d-%m") %></td>
 
 
