@@ -4,15 +4,14 @@ ActiveAdmin.register AdminUser do
 
 
 
-menu  priority: 17,label: "Usuarios"
+#menu  priority: 17,label: "Usuarios"
 
+menu false
 
+#actions :all
 
-
-
-#actions :all, :if => proc { current_admin_user.categoria == 2 }
-
-  index do
+  index  do
+    if current_admin_user.categoria==2 then
     selectable_column
     id_column
     column :email
@@ -25,11 +24,9 @@ menu  priority: 17,label: "Usuarios"
     actions
 
   end
+end
 
   filter :email
-  filter :current_sign_in_at
-  filter :sign_in_count
-  filter :created_at
   filter :categoria
 
   form do |f|
@@ -37,15 +34,34 @@ menu  priority: 17,label: "Usuarios"
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :categoria
-    end
-    if current_admin_user.categoria==2 then
-      f.actions
-    end
+      if current_admin_user.categoria==2 then
+         f.input :categoria
+
+      end
+       f.actions
   end
 
+end
+
+show :title => ' Usuario'  do
+
+    attributes_table  do
 
 
+
+
+
+      row :email
+      row :password
+      row :password_confirmation
+      if current_admin_user.categoria==2 then
+      row :categoria
+
+      end
+
+  end #de attributes_table
+
+end # de show
 
 
 

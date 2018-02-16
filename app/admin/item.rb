@@ -184,9 +184,13 @@ vsec=1
 end
  link_to_if vsec==1, "#{exp } ", admin_item_path(item)
   end
-   column("descripcion")
+   column("descripcion") do |item|
 
-
+   loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
+   vlink='Plantilla-Proceso Avionica PAC 006'
+   localiz=loca1+vlink+'.mpp'
+    link_to item.descripcion,localiz, :target=>"_blank"
+  end
 
   column("periodo")do |item|
       if item.periodo and item.periodo>0 then
