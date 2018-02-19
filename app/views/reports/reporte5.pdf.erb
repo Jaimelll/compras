@@ -116,21 +116,7 @@
 
             <% if @vdetalle.where(phase_id:variable.id).where(actividad: @vpact3).count>0 then %>
             <%  @vdetalle.where(phase_id:variable.id).where(actividad:@vpact3).each do |deta| %>
-              <tr  style="font-size:80%;"  class="detl">
-            <td ></td>
-
-
-              <% if deta.actividad==300 then%>
-              <% @vestado='PROCESO CULMINADO:-'+deta.pfecha.strftime("%d/%m/%y")+"-"+ deta.obs.capitalize%>
-              <% else%>
-            <% @vestado='ESTADO='+deta.pfecha.strftime("%d/%m/%y").to_s+"-"+ deta.obs.capitalize    %>
-              <% end%>
-
-
-           <td colspan="8"><%=@vestado %></td>
-
-
-            </tr>
+      
 
 
               <% end %>

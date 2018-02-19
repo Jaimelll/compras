@@ -1,9 +1,9 @@
 ActiveAdmin.register_page "Dec" do
 
-  menu  priority: 3,label: "DEC"
+  menu  priority: 3,label: "Contratos"
 
 
-  content title: "Direccion de Ejecucion Contractual" do
+  content title: "Contratos" do
 
     ##################
     Formula.where(product_id:1).update_all( numero:2 )

@@ -25,7 +25,7 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :sele4, :comite, :postores, :obs, :sele5,
               :ep, :mgp, :fap, :ccffaa,  :sele5,  :convo
 #se puede usar sele3 era para autidados
-menu priority: 10, label: "Procesos"
+menu priority: 10, label: "Proceso buscar"
 
 scope :ACFFAA, :default => true do |phases|
   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd

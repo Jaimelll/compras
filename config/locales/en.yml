@@ -21,7 +21,7 @@
 
 en:
   active_admin:
-    dashboard: Tablero
+    dashboard: PAC
 
     edit: "Editar"
     delete: "Eliminar"

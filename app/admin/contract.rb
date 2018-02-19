@@ -27,7 +27,7 @@ permit_params :numero, :fecha,:descripcion, :obac,:postor,
               :presupuestado, :admin_user_id,
               :periodo, :proceso,  :plazo, :sele
 
-menu priority: 12, label: "Contratos"
+menu priority: 12, label: "Contrato buscar"
 
 
 

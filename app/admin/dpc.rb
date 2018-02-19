@@ -1,9 +1,9 @@
 ActiveAdmin.register_page "Dpc" do
 
-  menu  priority: 2,label: "DPC"
+  menu  priority: 2,label: "Procesos"
 
 
-  content title: "Direccion de Proceso de Compras" do
+  content title: "Procesos" do
 
     ##################
     Formula.where(product_id:1).update_all( numero:2 )

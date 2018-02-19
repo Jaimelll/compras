@@ -32,7 +32,7 @@ permit_params :pac, :periodo,:obac, :lista,:ejecucion,
 #   permitted << :other if params[:action] == 'create' && current_user.admin?
 #   permitted
 # end
-menu priority: 8, label: "PACs"
+menu priority: 8, label: "PAC buscar"
 
  #action_item :encargo, only: :index do
 #  link_to 'Encargo',encargo_admin_post_path
