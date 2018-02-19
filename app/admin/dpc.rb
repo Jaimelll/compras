@@ -179,7 +179,7 @@ def execute2(var)
       end
 
 
-     column("C/EXP", :class => 'text-right') do |formula|
+     column("GEX", :class => 'text-right') do |formula|
        execute2(formula.orden)
        @dpc=  formula.orden
        @vpaso=0
@@ -305,8 +305,8 @@ end
 
 ###### leyenda
 panel  "Leyenda" do
-li "S/EXP: Expediente en OBAC"
-  li "C/EXP: Expediente en ACFFAA"
+li "DES/NULO: Expediente en OBAC"
+  li "GEX: Proceso en Gestion de Expediente ACFFAA"
     li "DC: Dirección de Catalogación ACFFAA"
       li "DEM: Dirección de Estudio de Mercado ACFFAA"
         li "DPC: Dirección de Procesos de Compras ACFFAA"
@@ -328,7 +328,7 @@ end
 column do
 
   #################dddd estatus
-  panel  "II.- ESTATUS DE PROCESOS EN DPC-AF"+@vaf + " - 'PROCESOS/(SOLES)'" do
+  panel  "II.- ESTATUS DE PROCESOS-AF"+@vaf + " - 'PROCESOS/(SOLES)'" do
   @tabconta=0
   aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
       table_for aa do
@@ -574,7 +574,7 @@ column do
 
 
   end
-  column("C/EPOM", :class => 'text-right') do |formula|
+  column("PREVIOS", :class => 'text-right') do |formula|
   execute(formula.orden)
     @dpc=  formula.orden
     @titproc1="En Proceso"
