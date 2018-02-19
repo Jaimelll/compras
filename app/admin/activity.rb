@@ -126,9 +126,14 @@ column("Fecha ", :sortable => :pfecha) do |activity|
 end
 
 
+column("Documento de recepcion") do |detail|
+  detail.tipo
+end
 
-column("tipo")
-column("numero")
+column("Numero de documento") do |detail|
+  detail.numero
+end
+
 column("obs")
 
 

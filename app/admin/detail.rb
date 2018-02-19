@@ -154,8 +154,14 @@ column("Fecha", :sortable => :pfecha) do |detail|
   end
 end
 
-column("tipo")
-column("numero")
+column("Documento de recepcion") do |detail|
+  detail.tipo
+end
+
+column("Numero de documento") do |detail|
+  detail.numero
+end
+
 column("obs")
 
 
@@ -213,7 +219,6 @@ end
                  f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
                  f.input :pfecha, :label => 'fecha' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
                           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
