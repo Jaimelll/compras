@@ -117,7 +117,7 @@ column("Actividad", :sortable => :phase_id) do |activity|
                      end
                   link_to_if n3==1 ,"#{n1} ", admin_phase_activity_path(params[:phase_id],activity)
 end
-column("Fecha Final", :sortable => :pfecha) do |activity|
+column("Fecha ", :sortable => :pfecha) do |activity|
   if activity.pfecha then
     activity.pfecha.strftime("%d-%m-%Y")
   else
@@ -125,36 +125,13 @@ column("Fecha Final", :sortable => :pfecha) do |activity|
   end
 end
 
-column("Fecha Inicial", :sortable => :pfecha) do |activity|
-  if activity.inicial then
-    activity.inicial.strftime("%d-%m-%Y")
-  else
-    "s/d"
-  end
-end
 
-column("Programada", :sortable => :plan) do |activity|
-  if activity.plan then
-     activity.plan.strftime("%d-%m-%Y")
-  else
 
-  "s/d"
-
-   end
-end
 column("tipo")
 column("numero")
 column("obs")
-column("importe") do |activity|
- number_with_delimiter(activity.importe, delimiter: ",")
-end
-column("moneda") do |activity|
-  if activity.moneda and activity.moneda>0 then
 
-    Formula.where(product_id:7,orden:activity.moneda).select('nombre as dd').first.dd.to_s
 
-  end# de if column
-end# de column
 actions
 
 
@@ -207,9 +184,7 @@ form :title => 'Edicion Actividad'  do |f|
 
              f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
              f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
-             f.input :pfecha, :label => 'fecha final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-             f.input :inicial, :label => 'fecha inicial' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-             f.input :plan, :label => 'fecha programada ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+             f.input :pfecha, :label => 'fecha' ,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :importe,:label => 'Importe ',:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
                       Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -250,34 +225,20 @@ form :title => 'Edicion Actividad'  do |f|
                             "s/d"
                         end
                     end
-                  row :tipo
-                  row :numero
+                    row "Documento de recepcion" do |detail|
+                       detail.tipo
+                    end
+                    row "Numero de documento" do |detail|
+                       detail.numero
+                    end
 
 
-
-                  row "fecha final " do |activity|
+                  row "fecha  " do |activity|
 
                      activity.pfecha.strftime("%d-%m-%Y")
                    end
 
-                   row "fecha inicial " do |activity|
-                     if activity.inicial then
 
-                        activity.inicial.strftime("%d-%m-%Y")
-                     else
-                        "s/d"
-                      end
-                    end
-
-
-                  row "Fecha Programada " do |activity|
-                    if activity.plan then
-                       activity.plan.strftime("%d-%m-%Y")
-                    else
-                      Activity.where( phase_id:activity.phase_id,id:activity.id).update_all( plan:activity.pfecha )
-                      "s/d"
-                     end
-                   end
 
                   row :importe do |activity|
 

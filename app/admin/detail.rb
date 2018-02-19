@@ -146,7 +146,7 @@ index :title => "Lista de Actividades"  do
   link_to_if n3==1 ,"#{n1} ",  admin_item_detail_path(params[:item_id],detail)
 
 end
-column("Fecha Final", :sortable => :pfecha) do |detail|
+column("Fecha", :sortable => :pfecha) do |detail|
   if detail.pfecha then
     detail.pfecha.strftime("%d-%m-%Y")
   else
@@ -154,33 +154,10 @@ column("Fecha Final", :sortable => :pfecha) do |detail|
   end
 end
 
-column("Fecha Inicial", :sortable => :inicial) do |detail|
-  if detail.inicial then
-    detail.inicial.strftime("%d-%m-%Y")
-  else
-    "s/d"
-  end
-end
-
-column("Fecha Programada Final", :sortable => :plan) do |detail|
-  if detail.plan then
-     detail.plan.strftime("%d-%m-%Y")
-  else
-     "s/d"
-   end
-end
 column("tipo")
 column("numero")
 column("obs")
-column("importe") do |detail|
- number_with_delimiter(detail.importe, delimiter: ",")
-end
-column("moneda") do |detail|
-  if detail.moneda then
-    Formula.where(product_id:7,orden:detail.moneda).select('nombre as dd').first.dd.to_s
 
-  end
-end
 
 #if @n3==1 then
 #actions
@@ -235,9 +212,8 @@ end
 
                  f.input :tipo,:label => 'Documento de recepcion', :input_html => { :style =>  'width:30%'}
                  f.input :numero,:label => 'Numero de documento', :input_html => { :style =>  'width:30%'}
-                 f.input :pfecha, :label => 'fecha Final' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-                 f.input :inicial, :label => 'fecha Inicial' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-                 f.input :plan, :label => 'fecha programada ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                 f.input :pfecha, :label => 'fecha' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+
                  f.input :importe,:label => 'Importe de CPP,CPR o Valoracion',:as =>:string, :input_html => { :style =>  'width:30%'}
                  f.input :moneda, :as => :select, :collection =>
                           Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
@@ -283,31 +259,20 @@ end
                                 "s/d"
                             end
                         end
-                      row :tipo
-                      row :numero
-                      row "Fecha Final " do |detail|
+                      row "Documento de recepcion" do |detail|
+                         detail.tipo
+                      end
+                      row "Numero de documento" do |detail|
+                         detail.numero
+                      end
+
+                      row "Fecha  " do |detail|
                         if detail.pfecha then
                            detail.pfecha.strftime("%d-%m-%Y")
                         else
                            "s/d"
                          end
                        end
-                       row "Fecha Inicial " do |detail|
-                         if detail.inicial then
-                            detail.inicial.strftime("%d-%m-%Y")
-                         else
-                            "s/d"
-                          end
-                        end
-
-                       row "Fecha Programada " do |detail|
-                         if detail.plan then
-                            detail.plan.strftime("%d-%m-%Y")
-                         else
-                             Detail.where( item_id:detail.item_id,id:detail.id).update_all( plan:detail.pfecha )
-                            "s/d"
-                          end
-                        end
 
 
                       row :importe do |detail|
