@@ -3,6 +3,10 @@ Rails.application.routes.draw do
 
 
 
+  resources :movements
+  resources :suppliers
+  resources :lists
+  resources :sheets
   resources :agreements
   resources :experiences
   resources :students
