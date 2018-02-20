@@ -58,7 +58,7 @@
 
 
 
-        <td colspan="2"><%= variable.nomenclatura %></td>
+        <td colspan="2"><%= variable.proceso %></td>
         <% @vobac=" " %>
 
         <% if variable.expediente>0 then %>
@@ -81,7 +81,7 @@
 
 
 
-        <td colspan="3"><%= variable.descripcion.capitalize %>  </td>
+        <td colspan="3"><%= variable.descripcion.upcase %>  </td>
 
         <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
                 <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>

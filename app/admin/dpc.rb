@@ -305,7 +305,7 @@ end
 
 ###### leyenda
 panel  "Leyenda" do
-li "DES/NULO: Expediente en OBAC"
+li "DES/NULO:Viene de Desierto o Nulo"
   li "GEX: Proceso en Gestion de Expediente ACFFAA"
     li "DC: Dirección de Catalogación ACFFAA"
       li "DEM: Dirección de Estudio de Mercado ACFFAA"
