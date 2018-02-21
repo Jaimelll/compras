@@ -50,16 +50,16 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
         style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac2
      when 3
-        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ESTADO ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac3
     when 4
         sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
         style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
         @vpacn=@vpac4
      when 5
-          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-          style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ESTADO ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
+          style: [titu,  titu, titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
           @vpacn=@vpac5
       end
 
@@ -121,6 +121,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
            @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
+            @nestado=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').select('estado as dd').first.dd
+            @nestado1=Formula.where(product_id:17,orden:@nestado).select('nombre as dd').first.dd
            tpresup=tpresup+  @presu
         when 5
           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
@@ -132,6 +134,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
 
 
           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').count
+          @nestado=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').select('estado as dd').first.dd
+          @nestado1=Formula.where(product_id:17,orden:@nestado).select('nombre as dd').first.dd
           tpresup=tpresup+  @presu
         else
           @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
@@ -248,7 +252,7 @@ end
    case proce.orden
 
       when 2,4
-  sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
+  sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.upcase,@nitems,
    @presu.to_i, activ.sele2.to_i, @fec20,@fec24,@fec25,@fec26, @fec21,@fec22,@espec,activ.comite,@vobsr ],
    style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra,centra,centra,centra,centra, izq, izq, izq], height: 35
    sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, nil, nil, nil, nil, 25,30, 40
@@ -256,10 +260,10 @@ end
    when 3,5
    vahorr=(@presu- viadj).to_i
     tahorro= tahorro+vahorr
-sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.underscore.capitalize,@nitems,
+sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.upcase,@nestado1,@nitems,
  @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22,@fec23,@espec,activ.comite,activ.postores,veadj,@vobsr ],
-style: [ centra,  izq, izq,centra, izq,centra, soles, soles, soles, soles,centra,centra,centra,centra, izq,izq,izq, izq, izq], height: 35
-sheet.column_widths 5, nil, 10,12, 40,5, nil, nil, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
+style: [ centra,  izq, izq,centra, izq,centra,centra, soles, soles, soles, soles,centra,centra,centra,centra, izq,izq,izq, izq, izq], height: 35
+sheet.column_widths 5, nil, 10,12, 40,nil,5, nil, nil, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
 
    end
 
@@ -272,8 +276,8 @@ case proce.orden
 
 
 sheet.add_row []
-sheet.add_row ["","","","","PRESUPUESTADO","ADJUDICADO","AHORRO","TASA"],
-style: [ normal,  normal, normal, normal, titu, titu, titu, titu], height: 35
+sheet.add_row ["","","","","","PRESUPUESTADO","ADJUDICADO","AHORRO","TASA"],
+style: [ normal,  normal, normal,normal, normal, titu, titu, titu, titu], height: 35
 
 
 
@@ -289,8 +293,8 @@ else
 tasa="0%"
 end
 
-sheet.add_row ["","","","",tpresup,tadjd,tahorro,tasa],
-style: [ normal,  normal, normal, normal, soles, soles, soles,centra], height: 35
+sheet.add_row ["","","","","",tpresup,tadjd,tahorro,tasa],
+style: [ normal,  normal, normal,normal, normal, soles, soles, soles,centra], height: 35
 
 end
 

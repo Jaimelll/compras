@@ -49,9 +49,11 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
       column("descripcion")
 
       column("clase") do |ficha|
-          if ficha.clase then
-            List.where(id:ficha.clase).
-              select('clase as dd').first.dd
+        cfic=List.where(id:ficha.clase).count
+          if cfic>0 then
+            List.where(id:ficha.clase).select('clase as dd').first.dd
+          else
+            "s/d"  
          end
       end
       column("cna")
