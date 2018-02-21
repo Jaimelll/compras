@@ -20,7 +20,7 @@ permit_params :numero_proveedor, :num_documento_pais, :des_proveedor,
   :tipo_proveedor, :calificacion, :observacion, :admin_user_id, :actividad, :num_traba
 
 
-  form :title => 'Edicion Fichas' do |f|
+  form :title => 'Edicion Proveedor' do |f|
 
       f.inputs  do
 
