@@ -146,7 +146,7 @@
 
 
 
-        <td colspan="3" ><%= variable.descripcion.capitalize %>  </td>
+        <td colspan="3" ><%= variable.descripcion.upcase %>  </td>
 
 
        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
@@ -257,7 +257,7 @@
 
                   <td > </td>
             <td ><%= deta2.pfecha.strftime("%d-%m") %></td>
-          
+
 
             <td  colspan="2"><%=Formula.where(product_id:12,orden:deta2.actividad).
                         select('descripcion as dd').first.dd.capitalize  %></td>
@@ -265,15 +265,15 @@
                <td > </td>
     </tr>
 
-<% end %>
-
-
-
-<% end %>
-
 
        <% end %>
 
+
+
+
+       <% end %>
+    
+       <% end %>
 
 
 

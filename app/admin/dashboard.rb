@@ -122,7 +122,7 @@ end
 
 
           case current_admin_user.categoria
-          when 2,3,26
+          when 2,3,26,4,6,8,9 #adm roy amador italo sectoristas
                        panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).order('orden')  do
 
@@ -167,6 +167,9 @@ end
 
                               @le= number_with_delimiter((@le1.count).to_i, delimiter: ",").to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+
+
                                 case   formula.orden
                             when 3,4
 
@@ -189,25 +192,32 @@ end
 
 
                             when 2
-                              "1,711/(1,277,507,620)"
+
+                                a3="1,711/(1,277,507,620)"
                             when 1
-                                "3,566/(1,295,058,915)"
+
+                                b3="3,566/(1,295,058,915)"
+
                             end
                                end
 
 
                               column("TOTAL  ", :class => 'text-right') do |formula|
+                                a1=1711
+                                a2=1277507620
+                                b1=3566
+                                b2=1295058915
                                 @vtproc=Item.where(exped2:formula.orden).where.not(modalidad:4)
 
                              case   formula.orden
                              when 1
-                                 number_with_delimiter((@vtproc.count+3566).to_i, delimiter: ",").to_s+ "/("+
+                                 number_with_delimiter((@vtproc.where(ejecucion:4).count+b1).to_i, delimiter: ",").to_s+ "/("+
 
-                                    number_with_delimiter((@vtproc.sum(:certificado)+1295058915).to_i, delimiter: ",").to_s+ ")"
+                                    number_with_delimiter((@vtproc.where(ejecucion:4).sum(:certificado)+b2).to_i, delimiter: ",").to_s+ ")"
                              when 2
-                               number_with_delimiter((@vtproc.count+1711).to_i, delimiter: ",").to_s+ "/("+
+                               number_with_delimiter((@vtproc.where(ejecucion:4).count+a1).to_i, delimiter: ",").to_s+ "/("+
 
-                                    number_with_delimiter((@vtproc.sum(:certificado)+1277507620).to_i, delimiter: ",").to_s+ ")"
+                                    number_with_delimiter((@vtproc.where(ejecucion:4).sum(:certificado)+a2).to_i, delimiter: ",").to_s+ ")"
                                when 3,4
                                   number_with_delimiter((@vtproc.count).to_i, delimiter: ",").to_s+ "/("+
 
@@ -220,13 +230,14 @@ end
                           #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
                         end   #de table for
     #########personal
+                         case current_admin_user.categoria
+                             when 2,3
+                           #  li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
+                           #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
+                              li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
+                             li    link_to "Compras local", "http://172.25.10.6:3000/admin/login"
 
-                      #  li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
-                      #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
-                       li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
-                       li    link_to "Compras local", "http://172.25.10.6:3000/admin/login"
-
-
+                         end
                       end #de panel historial periodos
 
 ###############################
@@ -735,8 +746,7 @@ unless current_admin_user.categoria==24 #personal
                                         @vpas=[2]
                                         @titproc1="PAC CON EXPEDIENTE DE INICIO"
 
-                                        @dpcl=   @vxper[2].to_s+ "/("+
-                                        number_with_delimiter(@vpresu[2].to_i, delimiter: ",").to_s+ ")"
+                                        @dpcl=   @vxper[2]
 
                                                link_to "#{@dpcl} ",
                                                reports_comment7_path(format: :pdf,
@@ -765,8 +775,8 @@ unless current_admin_user.categoria==24 #personal
                                            @dpc=  formula.orden
                                            @vpas=[4]
                                            @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
-                                           @dpcl=   @vxper[4].to_s+ "/("+
-                                           number_with_delimiter(@vpresu[4].to_i, delimiter: ",").to_s+ ")"
+                                           @dpcl=   @vxper[4]
+                                           
                                                  link_to "#{@dpcl} ",
                                                   reports_comment7_path(format: :pdf,
                                                   :param3=> @vpas,
