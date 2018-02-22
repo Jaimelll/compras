@@ -195,7 +195,7 @@ localiz=loca1+vlink+'.mpp'
   sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
   Formula.where(product_id:16, orden:ite.exped).
    select('nombre as dd').first.dd,
-  ite.descripcion,
+  ite.descripcion.upcase,
    Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
 
@@ -211,7 +211,7 @@ sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
     sheet.add_row [ @conta,ite.pac, ite.mesconvoca, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
     Formula.where(product_id:16, orden:ite.exped).
      select('nombre as dd').first.dd,
-    ite.descripcion,
+    ite.descripcion.upcase,
      Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
      Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
      Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
@@ -272,7 +272,7 @@ wb.add_worksheet(name: "OBACs") do |sheet|
      Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
      Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
 
-     ite.descripcion,  @modali,@merdo,
+     ite.descripcion.upcase,  @modali,@merdo,
         ite.certificado],
      style: [centra,centra,fechas,centra,centra,izq,centra,centra,soles]
 
@@ -398,7 +398,7 @@ localiz=loca1+vlink+'.mpp'
      Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
      Formula.where(product_id:1,orden:ite.ejecucion).select('nombre as dd').first.dd,
 
-     ite.descripcion,  @modali,@nlista,@merdo,
+     ite.descripcion.upcase,  @modali,@nlista,@merdo,
         ite.certificado,ite.ccp,ite.cpr,@nomproc[0], @montadj[0], @montref[0],vsadj ],
              style: [centra,centra,fechas,centra,centra,izq,centra,centra,centra,soles,soles,soles,centra,soles,soles,soles]
 

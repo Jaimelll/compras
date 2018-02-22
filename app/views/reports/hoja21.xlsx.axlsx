@@ -208,7 +208,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        vncorp=0
       @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
 
-        vdesc=ite.descripcion
+        vdesc=ite.descripcion.upcase
 
         @vpact3=Formula.where(product_id:12,acti:3).select('orden')
        @vdetalle= Detail.where(actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
@@ -311,7 +311,7 @@ end
    when 1
     sheet.add_row [  vconta2,Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,ite.pac, ite.mesconvoca,
     exp,
-    vdesc,
+    vdesc.upcase,
 
     Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
     ite.certificado.to_i, @vobsr],
@@ -321,7 +321,7 @@ end
     when 2,3
     sheet.add_row [  vconta2,Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,ite.pac,
     exp,
-    vdesc,
+    vdesc.upcase,
 
     Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
     ite.certificado.to_i, @vobsr],
@@ -334,7 +334,7 @@ end
 
     sheet.add_row [  vconta2,Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,ite.pac,
     exp,
-    vdesc,
+    vdesc.upcase,
 
      Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
 
@@ -637,7 +637,7 @@ case proce.orden
 
 
 
-  sheet.add_row [ @conta,@aobac[0],@apac[0],@afecing[0], activ.proceso, activ.descripcion.underscore.capitalize,
+  sheet.add_row [ @conta,@aobac[0],@apac[0],@afecing[0], activ.proceso, activ.descripcion.upcase,
     @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ],
    style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles, soles, soles,centra,centra, izq]
 
