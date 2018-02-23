@@ -26,7 +26,8 @@ ActiveAdmin.register_page "Dpc" do
       Formula.where(product_id:1,orden:5).update_all( numero:2 )
       Formula.where(product_id:1,orden:4).update_all( numero:2 )
     end
-    case   @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+    case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
        when 1
          @vinicio = Date.parse('2015/01/01')
          @dfin=365
@@ -67,14 +68,14 @@ ActiveAdmin.register_page "Dpc" do
 
 
 
-       @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+       @vaf2=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
 
 
 #################
 #################   ani 1
-   panel  "I.- SEGUIMIENTO DE PROCESOS-AF" +@vaf  do
+   panel  "I.- SEGUIMIENTO DE PROCESOS-AF" +@vaf2  do
 
- aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
+ aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf, @vaf-1).order('orden')
      table_for aa do
 
 
@@ -93,7 +94,7 @@ def execute2(var)
 
 
     @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
-    @procp=Phase.where(convo:var,periodo:@vaf1,expediente:@vexped).order('id')
+    @procp=Phase.where(convo:var,periodo:@vaf,expediente:@vexped).order('id')
     @procp .each do |proceso|  #each hasta el final
 
         @deta4=Activity.where(phase_id:proceso.id).
@@ -328,9 +329,9 @@ end
 column do
 
   #################dddd estatus
-  panel  "II.- ESTATUS DE PROCESOS-AF"+@vaf + " - 'PROCESOS/(SOLES)'" do
+  panel  "II.- ESTATUS DE PROCESOS-AF"+@vaf2 + " - 'PROCESOS/(SOLES)'" do
   @tabconta=0
-  aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf1, @vaf1-1).order('orden')
+  aa=Formula.where(product_id:11).where('orden=? or orden=?', @vaf, @vaf-1).order('orden')
       table_for aa do
 
 
@@ -356,7 +357,7 @@ column do
 
 
         @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
-        @procp=Phase.where(convo:var,periodo:@vaf1,expediente:@vexped).order('id')
+        @procp=Phase.where(convo:var,periodo:@vaf,expediente:@vexped).order('id')
         @procp .each do |proceso|  #each hata el final
 
             @deta4=Activity.where(phase_id:proceso.id).

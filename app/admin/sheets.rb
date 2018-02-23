@@ -22,7 +22,7 @@ menu  priority: 24, label: "Fichas"
 permit_params :codigo_ficha, :codigo_revision, :creada,
      :revisada, :descripcion_original, :descripcion,
      :grupo, :clase, :cna, :na, :soc, :caracteristica,
-     :vigencia, :unidad_medida,
+     :vigencia, :unidad_medida, :categoria
      :admin_user_id
 
      index :title => 'Lista de Fichas' do
@@ -53,7 +53,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
           if cfic>0 then
             List.where(id:ficha.clase).select('clase as dd').first.dd
           else
-            "s/d"  
+            "s/d"
          end
       end
       column("cna")
@@ -72,7 +72,12 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                   select('nombre as dd').first.dd
             end
       end
-
+      column("Categoria") do |ficha|
+            if ficha.categoria then
+                 Formula.where(product_id:37, orden:ficha.categoria).
+                  select('descripcion as dd').first.dd
+            end
+      end
            actions
 
        end
@@ -90,7 +95,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
               f.input :descripcion_original, :input_html => { :style =>  'width:30%'}
               f.input :descripcion, :input_html => { :style =>  'width:30%'}
               f.input :clase, :as => :select, :collection =>
-                List.order('orden').map{|u| [u.clase+"-"+u.descripcion, u.orden]}
+                List.order('orden').map{|u| [u.clase+"-"+u.descripcion, u.id]}
 
               f.input :cna, :input_html => { :style =>  'width:30%'}
               f.input :na, :input_html => { :style =>  'width:30%'}
@@ -101,6 +106,8 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
 
               f.input :vigencia,:label => 'Estado de la ficha', :as => :select, :collection =>
                       Formula.where(product_id:36).order('nombre').map{|u| [u.nombre, u.orden]}
+             f.input :categoria,:label => 'Categoria', :as => :select, :collection =>
+                      Formula.where(product_id:37).order('nombre').map{|u| [u.descripcion, u.orden]}
 
               f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
@@ -126,13 +133,15 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                 row :descripcion_original
                 row :descripcion
 
+                row("clase") do |ficha|
+                  cfic=List.where(id:ficha.clase).count
+                    if cfic>0 then
+                      List.where(id:ficha.clase).select('clase as dd').first.dd
+                    else
+                      "s/d"
+                   end
+                end
 
-              row("clase") do |ficha|
-                  if ficha.clase then
-                    List.where(id:ficha.clase).
-                      select('clase as dd').first.dd
-                 end
-              end
 
                 row :cna
                 row :na
@@ -151,7 +160,12 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                             select('nombre as dd').first.dd
                       end
                 end
-
+                row :categoria  do |ficha|
+                      if ficha.categoria then
+                           Formula.where(product_id:37, orden:ficha.categoria).
+                            select('descripcion as dd').first.dd
+                      end
+                    end
 
 
 

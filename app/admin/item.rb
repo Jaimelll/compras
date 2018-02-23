@@ -52,7 +52,6 @@ action_item :view, only: :show do
 
 
 
-
     scope :ACFFAA, :default => true do |items|
 @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
          items.where(ejecucion:4,exped2:@vaf).order('pac')
@@ -616,7 +615,7 @@ sidebar  " RESPONSABILIDAD Obac ", only: :index do
       end
        table_for "A"  do
 
-         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
        @ite= Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)").where(exped2:@vaf)
        @vpac=  @ite.count
        @vmonto=  number_with_delimiter(  @ite

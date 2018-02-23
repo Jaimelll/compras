@@ -5,7 +5,7 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
      user ||= AdminUser.new # guest user (not logged in)
-
+# sectoristas 21,22,23,29
   case user.categoria # a_variable is the variable we want to compare
      when 1,2
           can :manage, :all

@@ -65,7 +65,10 @@ end
     end
 
     #comienza case
-  case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+    @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+    @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+  case @vaf  #comienza case
+
      when 1
        @vinicio = Date.parse('2015/01/01')
        @dfin=365
@@ -247,11 +250,11 @@ end # de case
 unless current_admin_user.categoria==24
 
 
-               @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-               panel  "I.- PAC-LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+
+               panel  "I.- PAC-LISTAS GENERALES DE COMPRAS ACFFAA "+@vaf1+ " - 'PAC/(SOLES)'" do
 
                          table_for Formula.where(product_id:3).order('orden')  do
-                             @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
                         #     @vult=Formula.where(product_id:3).maximum('orden')
                               column("Listas ") do |formula|
                                  formula.nombre
@@ -369,11 +372,11 @@ end#table
                         end # panel listas
 
 
-                          @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                          panel  "II.- PAC-EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+
+                          panel  "II.- PAC-EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf1+ " - 'PAC/(SOLES)'" do
 
                                     table_for Formula.where(product_id:8)  do
-                                      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
                                          column("Fuente  ") do |formula|
                                          formula.nombre
                                          end
@@ -497,11 +500,11 @@ end#table
 unless current_admin_user.categoria==24 #personal
 
 
-  @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-  panel  "III.- PAC-TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf+ " - 'PAC/(SOLES)'" do
+
+  panel  "III.- PAC-TIPO DE COMPRA POR MERCADO  ACFFAA "+@vaf1+ " - 'PAC/(SOLES)'" do
 
             table_for Formula.where(product_id:6)  do
-              @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
                  column("Mercado ") do |formula|
                  formula.nombre
                  end
@@ -588,11 +591,9 @@ unless current_admin_user.categoria==24 #personal
 
 
 
-                                   @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-                                   @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
 
 
-                                   panel  "IV.- SEGUIMIENTO DE PAC AF-" +@vaf+ " - 'PAC/(SOLES)'" do
+                                   panel  "IV.- SEGUIMIENTO DE PAC AF-" +@vaf1+ " - 'PAC/(SOLES)'" do
 
 
                                       table_for Formula.where(product_id:11).where('orden<=2').order('orden')  do
@@ -605,7 +606,7 @@ unless current_admin_user.categoria==24 #personal
                                               @vpac5=[]
                                               @vpac6=[]
                                               @vpac7=[]
-                                              @itep=Item.where(ejecucion:4,exped2:@vaf1).where("modalidad<3").where(obac: @vuobac)
+                                              @itep=Item.where(ejecucion:4,exped2:@vaf).where("modalidad<3").where(obac: @vuobac)
                                               @itep.each do |ite|
 
                                               @deta3=Detail.where(item_id:ite.id).
@@ -776,7 +777,7 @@ unless current_admin_user.categoria==24 #personal
                                            @vpas=[4]
                                            @titproc1="EXPEDIENTES EN ESTUDIO DE MERCADO"
                                            @dpcl=   @vxper[4]
-                                           
+
                                                  link_to "#{@dpcl} ",
                                                   reports_comment7_path(format: :pdf,
                                                   :param3=> @vpas,
@@ -829,7 +830,7 @@ unless current_admin_user.categoria==24 #personal
                                         column("TOTAL ", :class => 'text-right') do |formula|
                                           if formula.orden==1 then
 
-                                          @auto=  @vaf1
+                                          @auto=  @vaf
                                           @tita1="Total Procesos en Curso ACFFAA - PERIODO"
                                           @vopc1=4
                                           @vxper0=@vxper
@@ -844,7 +845,7 @@ unless current_admin_user.categoria==24 #personal
                                                 "#{@le} "
                                          else
 
-                                        vautoro=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf1,obac: @vuobac)
+                                        vautoro=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf,obac: @vuobac)
                                         vautors=  vautoro.sum(:certificado)
                                         vautorc=  vautoro.count.to_s
                                         vautor1=  number_with_delimiter(vautors.to_i, delimiter: ",").to_s

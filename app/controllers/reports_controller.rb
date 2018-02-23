@@ -111,8 +111,8 @@ end
 
 
 def comment2
-  @vaf=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-  @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf2=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
   @tit1=params[:param3].to_s
 
 
@@ -130,8 +130,8 @@ def comment2
        .where(exped2:params[:param2]).order('obac,certificado DESC')
   when 6
        @vuobac=params[:param2]
-       @lista=  @vaf
-       @items=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf1,obac:@vuobac).
+       @lista=  @vaf2
+       @items=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf,obac:@vuobac).
        order('obac,certificado DESC')
 
   end
