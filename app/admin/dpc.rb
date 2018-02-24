@@ -27,7 +27,7 @@ ActiveAdmin.register_page "Dpc" do
       Formula.where(product_id:1,orden:4).update_all( numero:2 )
     end
 
-       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+       @vaf=@vaf=current_admin_user.periodo
        @vaf2=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
     case   @vaf
        when 1

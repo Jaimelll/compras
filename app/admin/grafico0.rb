@@ -32,7 +32,7 @@ ActiveAdmin.register_page "grafico0" do
                           select('orden as dd').first.dd
      @titulo=Formula.where(product_id:15,numero:1).
                           select('nombre as dd').first.dd
-      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      @vaf=current_admin_user.periodo
 
 
 

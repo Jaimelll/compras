@@ -65,8 +65,8 @@ ActiveAdmin.register_page "grafico" do
                           select('orden as dd').first.dd
      @titulo=Formula.where(product_id:15,cantidad:1).
                           select('nombre as dd').first.dd
-      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @vaf2=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+      @vaf=current_admin_user.periodo
+     @vaf2=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
 
 
 
@@ -220,7 +220,7 @@ end
       #@nconta numero de actividades
 
     #comienza case
-    case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+    case   @vaf
        when 1
          @vinicio = Date.parse('2015/01/01')
          @dfin=365

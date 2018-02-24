@@ -21,7 +21,7 @@ ActiveAdmin.register_page "grafico1" do
     end
      #datos de grafico var y titulo, vaf de año fiscal
 
-      @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      @vaf=current_admin_user.periodo
 
 
 

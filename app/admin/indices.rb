@@ -9,7 +9,7 @@ ActiveAdmin.register_page "Indices" do
                               select('orden as dd').first.dd
          @titulo=Formula.where(product_id:15,cantidad:1).
                               select('nombre as dd').first.dd
-          @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+          @vaf=current_admin_user.periodo
 
           @vitem=Item.where(ejecucion:4).where("modalidad<3")
           .where(exped2:@vaf).order('periodo,exped,obac')
@@ -623,7 +623,7 @@ ActiveAdmin.register_page "Indices" do
                #        @vplaz1= @adem.reduce :+
 
                     ul do
-                      @vaf2=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+                      @vaf2=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
                       panel  "Indicadores"+@vaf2 do
 
                        aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4,mes_ter5,mes_deb5]

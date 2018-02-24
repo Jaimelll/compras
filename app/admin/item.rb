@@ -53,7 +53,7 @@ action_item :view, only: :show do
 
 
     scope :ACFFAA, :default => true do |items|
-         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      @vaf=current_admin_user.periodo
          items.where(ejecucion:4,exped2:@vaf).order('pac')
    end
 
@@ -62,20 +62,20 @@ action_item :view, only: :show do
            items.order('pac')
       end
      scope :Ejercito, :default => true do |items|
-       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+        @vaf=current_admin_user.periodo
           items.where(obac:1).where(exped2:@vaf).order('pac')
      end
      scope :Marina, :default => true do |items|
-       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      @vaf=current_admin_user.periodo
           items.where(obac:2).where(exped2:@vaf).order('pac')
      end
      scope :FAP, :default => true do |items|
-       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+      @vaf=current_admin_user.periodo
           items.where(obac:3).where(exped2:@vaf).order('pac')
      end
 
      scope :Otros, :default => true do |items|
-       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+    @vaf=current_admin_user.periodo
           items.where("obac > 3").where(exped2:@vaf).order('pac')
      end
      scope :AF_2018, :default => true do |items|
@@ -97,7 +97,7 @@ action_item :view, only: :show do
           items.where(ejecucion:4,exped2:1).order('pac')
      end
      scope :ACFFAA_filtro, :default => true do |items|
- @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+         @vaf=current_admin_user.periodo
           items.where(ejecucion:4,exped2:@vaf).where('modalidad<3').order('pac')
     end
 

@@ -13,6 +13,10 @@ action_item :only=> :index do
     link_to   'Cambiar AF', af_admin_product_formula_path(1, :@num), method: :put
 end
 
+action_item :only=> :index do
+
+    link_to   'Cambiar AF2', af2_admin_admin_user_path(1, :@num), method: :put
+end
 
 
 
@@ -65,7 +69,8 @@ end
     end
 
     #comienza case
-    @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
+    @vaf=current_admin_user.periodo
     @vaf1=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
   case @vaf  #comienza case
 

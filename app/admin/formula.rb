@@ -16,18 +16,18 @@ permit_params  :nombre, :descripcion,  :orden,
         case current_admin_user.categoria # a_variable is the variable we want to compare
         when 2,3 # administrador,roy, dpc, dec
 
-         @vaf=Formula.where(product_id:11,cantidad:1).select('numero as dd').first.dd
+         @vaf=@vaf=current_admin_user.periodo
          @num=Formula.where(product_id: 11, orden:@vaf).
                 select('id as dd').first.dd
         Formula.where( product_id:11 ).update_all( cantidad:0 )
         Formula.where( product_id:11 ,orden:@vaf).update_all( cantidad:1 )
 
-    #cambiar a encargo
-    @num=Formula.where(product_id: 15, orden:1).
-           select('id as dd').first.dd
-    Formula.where( product_id:15 ).update_all( cantidad:0 )
-    Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
-    redirect_to admin_dashboard_path
+         #cambiar a encargo
+        @num=Formula.where(product_id: 15, orden:1).
+               select('id as dd').first.dd
+        Formula.where( product_id:15 ).update_all( cantidad:0 )
+        Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
+        redirect_to admin_dashboard_path
 
 
         end

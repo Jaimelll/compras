@@ -28,7 +28,7 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
 menu priority: 10, label: "Proceso buscar"
 
 scope :ACFFAA, :default => true do |phases|
-  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf=current_admin_user.periodo
      phases.where(periodo:@vaf).where.not(expediente:0)
 end
 

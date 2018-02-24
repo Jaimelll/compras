@@ -32,7 +32,7 @@ menu priority: 12, label: "Contrato buscar"
 
 
 scope :ACFFAA, :default => true do |contracts|
-@vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+@vaf=@vaf=current_admin_user.periodo
       contracts.where(periodo:@vaf)
 end
 

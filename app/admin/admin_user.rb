@@ -1,8 +1,17 @@
 ActiveAdmin.register AdminUser do
-  permit_params :email, :password, :password_confirmation, :categoria
+  permit_params :email, :password, :password_confirmation, :categoria, :periodo
 
 
+  member_action :af2, method: :put do
+     @vaf=current_admin_user.periodo
+     @cid=current_admin_user.id
 
+     @num=Formula.where(product_id: 11, orden:@vaf).
+            select('numero as dd').first.dd
+
+     AdminUser.where(id: @cid).update_all( periodo: @num )
+      redirect_to admin_dashboard_path
+   end
 
 #menu  priority: 17,label: "Usuarios"
 
@@ -19,7 +28,7 @@ menu false
     column :sign_in_count
     column :created_at
     column :categoria
-
+    column :periodo
 
     actions
 
@@ -36,7 +45,7 @@ end
       f.input :password_confirmation
       if current_admin_user.categoria==2 then
          f.input :categoria
-
+         f.input :periodo
       end
        f.actions
   end
@@ -56,7 +65,7 @@ show :title => ' Usuario'  do
       row :password_confirmation
       if current_admin_user.categoria==2 then
       row :categoria
-
+      row :periodo
       end
 
   end #de attributes_table
