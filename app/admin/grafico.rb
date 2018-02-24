@@ -66,6 +66,7 @@ ActiveAdmin.register_page "grafico" do
      @titulo=Formula.where(product_id:15,cantidad:1).
                           select('nombre as dd').first.dd
       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+     @vaf2=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
 
 
 
@@ -750,8 +751,8 @@ end
       #        @vplaz1= @adem.reduce :+
 
            ul do
-             @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-             panel  "Indicadores"+@vaf do
+
+             panel  "Indicadores"+@vaf2 do
               aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4]
               bb=["Terminados en plazo GEX","Debieron terminar GEX",
                 "Terminados plazo DEM","Debieron terminar DEM"]

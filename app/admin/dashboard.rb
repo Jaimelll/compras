@@ -66,7 +66,7 @@ end
 
     #comienza case
     @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-    @vaf1=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+    @vaf1=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
   case @vaf  #comienza case
 
      when 1

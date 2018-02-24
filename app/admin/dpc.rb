@@ -27,7 +27,9 @@ ActiveAdmin.register_page "Dpc" do
       Formula.where(product_id:1,orden:4).update_all( numero:2 )
     end
 
-    case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+       @vaf2=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
+    case   @vaf
        when 1
          @vinicio = Date.parse('2015/01/01')
          @dfin=365

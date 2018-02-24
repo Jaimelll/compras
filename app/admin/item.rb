@@ -53,12 +53,12 @@ action_item :view, only: :show do
 
 
     scope :ACFFAA, :default => true do |items|
-@vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+         @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
          items.where(ejecucion:4,exped2:@vaf).order('pac')
    end
 
      scope :todos, :default => true do |items|
-       @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+
            items.order('pac')
       end
      scope :Ejercito, :default => true do |items|

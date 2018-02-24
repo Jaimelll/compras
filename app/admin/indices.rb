@@ -101,7 +101,7 @@ ActiveAdmin.register_page "Indices" do
                #@nconta numero de actividades
 
              #comienza case
-             case   @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+             case   @vaf
                 when 1
                   @vinicio = Date.parse('2015/01/01')
                   @dfin=365
@@ -623,8 +623,8 @@ ActiveAdmin.register_page "Indices" do
                #        @vplaz1= @adem.reduce :+
 
                     ul do
-                      @vaf=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
-                      panel  "Indicadores"+@vaf do
+                      @vaf2=Formula.where(product_id:11,cantidad:1).select('descripcion as dd').first.dd
+                      panel  "Indicadores"+@vaf2 do
 
                        aa=[mes_ter2,mes_deb2,mes_ter4,mes_deb4,mes_ter5,mes_deb5]
                        bb=["Terminados en plazo GEX","Debieron terminar GEX",
