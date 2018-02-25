@@ -10,12 +10,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 
 action_item :only=> :index do
 
-    link_to   'Cambiar AF', af_admin_product_formula_path(1, :@num), method: :put
-end
-
-action_item :only=> :index do
-
-    link_to   'Cambiar AF2', af2_admin_admin_user_path(1, :@num), method: :put
+    link_to   'Cambiar AF', af_admin_admin_user_path(1, :@num), method: :put
 end
 
 
@@ -261,29 +256,54 @@ unless current_admin_user.categoria==24
                          table_for Formula.where(product_id:3).order('orden')  do
 
                         #     @vult=Formula.where(product_id:3).maximum('orden')
+                        @let=Item.where(ejecucion:4)
+                               .where(exped2:@vaf).where(obac: @vuobac)
                               column("Listas ") do |formula|
-                                 formula.nombre
+                                  if formula.cantidad==1 then
+                                    formula.nombre
+                                  else
+                                    div :class =>"grueso" do
+                                    link_to formula.descripcion, reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac)
+                                  end
+                                  end
                               end
 
 
                               column("Por Encargo ", :class => 'text-right') do |formula|
-                                @auto=  formula.orden
-                                @tita1="-"
-                                @vopc1=1
+                                if formula.cantidad==1 then
+                                  @auto=  formula.orden
+                                  @tita1="-"
+                                  @vopc1=1
 
-                              @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
-                                   .where(exped2:@vaf).where(obac: @vuobac)
+                                @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
+                                     .where(exped2:@vaf).where(obac: @vuobac)
 
-                              @le= @le1.count.to_s+ "/("+
-                                     number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+                                @le= @le1.count.to_s+ "/("+
+                                       number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
-                              link_to "#{@le} ", reports_comment_path(format: :pdf,
-                              :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+                                link_to "#{@le} ", reports_comment_path(format: :pdf,
+                                :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+                                else
+
+                                  @tita1="-"
+                                  @vopc1=13
+                                  vnometi="#{@let.where(modalidad:2).count.to_s+"/("+
+                                           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i,
+                                            delimiter: ",").to_s+ ")"} "
+                                    div :class =>"grueso" do
+
+                                  link_to vnometi,
+                                              reports_comment_path(format: :pdf, :param3=>   @tita1,
+                                             :param4=>   @vopc1 )
+                                    end
+                                end
+
 
 
 
                               end
                               column("Corporativos", :class => 'text-right') do |formula|
+                                  if formula.cantidad==1 then
                                 @auto=  formula.orden
                                 @tita1="-"
                                 @vopc1=2
@@ -296,12 +316,26 @@ unless current_admin_user.categoria==24
 
                               link_to "#{@le} ", reports_comment_path(format: :pdf,
                               :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+                            else
 
+                              @tita1="-"
+                              @vopc1=14
+
+
+                              vnometi="#{@let.where(modalidad:1).count.to_s+"/("+
+                                       number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i,
+                                        delimiter: ",").to_s+ ")"} "
+                                div :class =>"grueso" do
+                              link_to vnometi,
+                                          reports_comment_path(format: :pdf, :param3=>   @tita1,
+                                         :param4=>   @vopc1 )
+                                end
+                            end
 
                               end
 
                               column("TOTAL", :class => 'text-right') do |formula|
-
+                                    if formula.cantidad==1 then
                                 @auto=  formula.orden
                                 @tita1="-"
                                 @vopc1=3
@@ -313,64 +347,31 @@ unless current_admin_user.categoria==24
 
                                      link_to "#{@ls} ", reports_comment_path(format: :pdf,
                                      :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+                                   else
 
+                                     @tita1="-"
+                                     @vopc1=15
+
+
+                                     vnometi="#{@let.where('modalidad<=2').count.to_s+"/("+
+                                              number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i,
+                                               delimiter: ",").to_s+ ")"} "
+                                  div :class =>"grueso" do
+                                    link_to vnometi,
+                                               reports_comment_path(format: :pdf, :param3=>   @tita1,
+                                                :param4=>   @vopc1 )
+                                  end
 
 
                               end
 
-
+                            end
 
 
 
 
 
                           end # de table for listas
-
-        @let=Item.where(ejecucion:4)
-               .where(exped2:@vaf).where(obac: @vuobac)
-
-
-table_for "A"  do
-
-  column(link_to "Totales", reports_vhoja7_path(format:  "xlsx", :param1=> @vuobac))
-
-  @tita1="-"
-  @vopc1=13
-  vnometi="#{@let.where(modalidad:2).count.to_s+"/("+
-           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i,
-            delimiter: ",").to_s+ ")"} "
-
-  column(link_to vnometi,
-              reports_comment_path(format: :pdf, :param3=>   @tita1,
-             :param4=>   @vopc1 ))
-
-
-   @tita1="-"
-   @vopc1=14
-
-
-   vnometi="#{@let.where(modalidad:1).count.to_s+"/("+
-            number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i,
-             delimiter: ",").to_s+ ")"} "
-
-   column(link_to vnometi,
-               reports_comment_path(format: :pdf, :param3=>   @tita1,
-              :param4=>   @vopc1 ))
-
-              @tita1="-"
-              @vopc1=15
-
-
-              vnometi="#{@let.where('modalidad<=2').count.to_s+"/("+
-                       number_with_delimiter(@let.where('modalidad<=2').sum(:certificado).to_i,
-                        delimiter: ",").to_s+ ")"} "
-              column(link_to vnometi,
-                        reports_comment_path(format: :pdf, :param3=>   @tita1,
-                         :param4=>   @vopc1 ))
-
-
-      #      :class => 'text-right')
-end#table
 
 
 

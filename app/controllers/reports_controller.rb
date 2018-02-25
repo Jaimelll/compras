@@ -18,7 +18,7 @@ def comment
 
 
 
-  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf=current_admin_user.periodo
   @tit1=params[:param3].to_s
 
 

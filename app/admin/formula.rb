@@ -12,26 +12,7 @@ permit_params  :nombre, :descripcion,  :orden,
         link_to 'Ir a Productos', admin_products_path()
       end
 
-      member_action :af, method: :put do
-        case current_admin_user.categoria # a_variable is the variable we want to compare
-        when 2,3 # administrador,roy, dpc, dec
 
-         @vaf=@vaf=current_admin_user.periodo
-         @num=Formula.where(product_id: 11, orden:@vaf).
-                select('id as dd').first.dd
-        Formula.where( product_id:11 ).update_all( cantidad:0 )
-        Formula.where( product_id:11 ,orden:@vaf).update_all( cantidad:1 )
-
-         #cambiar a encargo
-        @num=Formula.where(product_id: 15, orden:1).
-               select('id as dd').first.dd
-        Formula.where( product_id:15 ).update_all( cantidad:0 )
-        Formula.where( product_id:15 ,orden:1).update_all( cantidad:1 )
-        redirect_to admin_dashboard_path
-
-
-        end
-      end
 
 
 

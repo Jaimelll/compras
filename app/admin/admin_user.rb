@@ -2,7 +2,7 @@ ActiveAdmin.register AdminUser do
   permit_params :email, :password, :password_confirmation, :categoria, :periodo
 
 
-  member_action :af2, method: :put do
+  member_action :af, method: :put do
      @vaf=current_admin_user.periodo
      @cid=current_admin_user.id
 

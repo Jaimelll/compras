@@ -44,8 +44,8 @@ wb.add_worksheet(name: "PAC's") do |sheet|
 
 
     @conta3=0
-    @vaf1=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
-     @item1=Item.where('modalidad<3').where(exped2:@vaf1,ejecucion:4,obac:@vuobac).order('obac,pac')
+    @vaf=current_admin_user.periodo
+     @item1=Item.where('modalidad<3').where(exped2:@vaf,ejecucion:4,obac:@vuobac).order('obac,pac')
 
 
      @item1.each do |ite|
