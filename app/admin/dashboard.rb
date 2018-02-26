@@ -174,7 +174,7 @@ end
 
 
                                 case   formula.orden
-                            when 3,4
+                            when 4
 
 
 
@@ -190,9 +190,9 @@ end
 
 
 
+                           when 3
 
-
-
+                                 c3="2,119/(870,358,390)"
 
                             when 2
 
@@ -210,6 +210,8 @@ end
                                 a2=1277507620
                                 b1=3566
                                 b2=1295058915
+                                c1=2119
+                                c2=870358390
                                 @vtproc=Item.where(exped2:formula.orden).where.not(modalidad:4)
 
                              case   formula.orden
@@ -221,7 +223,12 @@ end
                                number_with_delimiter((@vtproc.where(ejecucion:4).count+a1).to_i, delimiter: ",").to_s+ "/("+
 
                                     number_with_delimiter((@vtproc.where(ejecucion:4).sum(:certificado)+a2).to_i, delimiter: ",").to_s+ ")"
-                               when 3,4
+                              when 3
+                                    number_with_delimiter((@vtproc.where("modalidad<3").where(ejecucion:4).count+c1).to_i, delimiter: ",").to_s+ "/("+
+
+                                   number_with_delimiter((@vtproc.where("modalidad<3").where(ejecucion:4).sum(:certificado)+c2).to_i, delimiter: ",").to_s+ ")"
+
+                               when 4
                                   number_with_delimiter((@vtproc.count).to_i, delimiter: ",").to_s+ "/("+
 
                                    number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
