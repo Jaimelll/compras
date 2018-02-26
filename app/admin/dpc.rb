@@ -167,12 +167,12 @@ def execute2(var)
 
              "PAC-AF"+formula.nombre
      end
-     column("Des./nulo", :class => 'text-right') do |formula|
+     column("Nulo/D/C", :class => 'text-right') do |formula|
         execute2(formula.orden)
        @dpc=  formula.orden
        @vpaso=0
        @vpas=1
-       @titproc1="PROCESOS EN OBAC"
+       @titproc1="PROCESOS EN ESTADO NULO, DESIERTO O CANCELADO"
        @le= @vxper2[1]
        link_to "#{@le}",
        reports_comment5_path(format: :pdf,
@@ -308,7 +308,7 @@ end
 
 ###### leyenda
 panel  "Leyenda" do
-li "DES/NULO:Viene de Desierto o Nulo"
+li "NULO/D/C: En estado Nulo,Desierto o Cancelado"
   li "GEX: Proceso en Gestion de Expediente ACFFAA"
     li "DC: Dirección de Catalogación ACFFAA"
       li "DEM: Dirección de Estudio de Mercado ACFFAA"
