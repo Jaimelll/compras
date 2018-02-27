@@ -186,7 +186,8 @@ end
    column("descripcion") do |item|
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
-   loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
+   #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
+  loca1='W:\SG ACFFAA\Oenlace\Proyectos\ '
 
    vlink='PACFAP038COLCHONES'
    localiz=loca1+vlink+'.mpp'

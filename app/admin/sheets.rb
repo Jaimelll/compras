@@ -22,17 +22,15 @@ menu  priority: 24, label: "Fichas"
 permit_params :codigo_ficha, :codigo_revision, :creada,
      :revisada, :descripcion_original, :descripcion,
      :grupo, :clase, :cna, :na, :soc, :caracteristica,
-     :vigencia, :unidad_medida, :categoria
+     :vigencia, :unidad_medida, :categoria, :numero,
      :admin_user_id
 
      index :title => 'Lista de Fichas' do
 
-       column("id") do |ficha|
-        link_to "#{ficha.id} ", admin_sheet_movements_path(ficha.id)
 
-     end
-
-       column("codigo_ficha")
+       column("codigo_ficha") do |ficha|
+         link_to "#{ficha.codigo_ficha} ", admin_sheet_movements_path(ficha.id)
+       end
        column("codigo_revision")
        column("Creada", :sortable => :creada) do |ficha|
          if ficha.creada then
@@ -108,6 +106,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                       Formula.where(product_id:36).order('nombre').map{|u| [u.nombre, u.orden]}
              f.input :categoria,:label => 'Categoria', :as => :select, :collection =>
                       Formula.where(product_id:37).order('nombre').map{|u| [u.descripcion, u.orden]}
+              f.input :numero, :input_html => { :style =>  'width:30%'}
 
               f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
@@ -147,7 +146,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                 row :na
                 row :soc
                 row :caracteristica
-
+                row :numero
                 row :vigencia  do |ficha|
                       if ficha.vigencia then
                            Formula.where(product_id:36, orden:ficha.vigencia).
