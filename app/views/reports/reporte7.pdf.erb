@@ -87,11 +87,12 @@
         <td  ><%= Formula.where(product_id:1,orden:variable.obac).select('nombre as dd').first.dd %></td>
 
 
-
-        <td  ><%= Formula.where(product_id:8,orden:variable.fuente).select('nombre as dd').first.dd %></td>
-
-
-
+        <% vfue=Formula.where(product_id:8,orden:variable.fuente)%>
+          <% if vfue.count>0 then%>
+        <td  ><%= vfue.select('nombre as dd').first.dd %></td>
+           <% else%>
+        <td  >s/d</td>
+            <% end%>
 
         <td colspan="5" ><%= variable.descripcion.upcase %>  </td>
 
