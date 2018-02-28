@@ -181,6 +181,12 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
     @epom3=""
  end
 
+if Formula.where(product_id:8,orden:ite.fuente).count>0 then
+  vffuente= Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd
+ else
+   vffuente="s/d"
+ end
+
 loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
 #loca1='//acffaa-archivo/usuarios(10gb)$/jaime.duran/Desktop/'
 #loca1='/home/desarrollo/'
@@ -199,7 +205,7 @@ localiz=loca1+vlink+'.mpp'
    Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
 
-   Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+   vffuente,
     ite.solicita,
     @fecing,
   ite.certificado.to_i, @vobsr],
@@ -214,7 +220,7 @@ sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
     ite.descripcion.upcase,
      Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
      Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
-     Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd,
+     vffuente,
       ite.solicita,
       @fecing, @epom1,  @epom2, @epom3,
     ite.certificado.to_i, @vobsr],
