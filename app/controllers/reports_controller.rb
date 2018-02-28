@@ -111,8 +111,9 @@ end
 
 
 def comment2
-  @vaf2=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
-  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf=current_admin_user.periodo
+  @vaf2=Formula.where(product_id:11,orden:  @vaf).select('nombre as dd').first.dd
+
   @tit1=params[:param3].to_s
 
 
@@ -151,7 +152,7 @@ end
 
 def comment3
   #autorizados con rj
-  @vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+  @vaf=current_admin_user.periodo
   @tita=params[:param3]
   @piea=params[:param4]
   @vopc=params[:param5].to_i

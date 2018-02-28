@@ -11,6 +11,7 @@
   <% if @items.count>0 then %>
 <% Formula.where(product_id:1,numero:1).order('orden').each do |formula| %>
 
+  <% if @items.where(obac:formula.orden).count>0 then %>
 
 
 <table>
@@ -81,10 +82,12 @@
 
 </table>
 <% end %>
+  <% end %>
 <h3>PACs = <%=   @items.count %></h3>
 <h3>Total(Soles) = <%=   number_with_delimiter(@items.sum(:certificado).to_i, delimiter: ",") %></h3>
 
 <br>
+
 <% else %>
 <br>
 <br>
