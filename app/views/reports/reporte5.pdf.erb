@@ -22,8 +22,11 @@
        <th  colspan="2">Proceso</th>
        <th  >PAC-FUENTE</th>
        <th  colspan="3">Descripcion</th>
+
        <th   >Presupuestado</th>
-<% if  @vactcanti==6.to_s then %>
+       <% @vactcanti=@vactcanti.to_i %>
+       <% aarr=[5,6,7] %>
+<% if  aarr.include?  @vactcanti then %>
        <th   >Adjudicado</th>
 <%  else %>
        <th   >Referencial</th>
@@ -86,7 +89,7 @@
         <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
                 <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
-        <% if  @vactcanti==6.to_s then %>
+        <% if  aarr.include?  @vactcanti then %>
         <% @vbpro=Piece.where(phase_id:variable.id.to_s).sum(:"adjudicado*(SELECT  cantidad FROM formulas
         WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")%>
 
