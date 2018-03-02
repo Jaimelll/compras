@@ -70,7 +70,7 @@ ActiveAdmin.register_page "Dpc" do
 
 
 
-       @vaf2=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+       @vaf2=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
 
 
 #################
@@ -644,13 +644,15 @@ column do
 
 
        @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]+@contavus[5]
+       if @vxper3[0]>0 then
          link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
           reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
            :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
            :param5=> @vconv3,:param6=> @vconvt, :param7=> @vuobac,
            :param8=> @vconv4,   :param9=> @vconv5)
-
-
+       else
+         "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")"
+       end
 
       end
 

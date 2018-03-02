@@ -501,7 +501,7 @@ unless current_admin_user.categoria==24
                  li "RO,RDR/RP: Recursos ordinarios,
                    R. direct. recaudados/R. propios"
                    li "D y T: Donaciones y transferencias"
-                    li "ROOC: Recursos por operacion oficiales de credito"
+                    li "ROOC: Recursos por operaciones oficiales de credito"
                      li "RDR y RP/RP: Recursos directamente recaudados"
 
 
@@ -613,7 +613,7 @@ unless current_admin_user.categoria==24 #personal
 
                  end
 
-                    
+
 
 
 
