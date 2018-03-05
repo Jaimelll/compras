@@ -9,13 +9,12 @@ ActiveAdmin.register Movement do
 
 
        action_item :actualiza,only: :show do
-             link_to 'Actualiza Ficha'
-             #, ficha_admin_sheet_movement(params[:sheet_id]), method: :put
+             link_to 'Actualiza Ficha', ficha_admin_sheet_movement_path(params[:sheet_id],params[:id]), method: :put
        end
 
        member_action :ficha, method: :put do
               Formula.where( product_id:22 ,orden:1).update_all( cantidad:1 )
-              redirect_to admin_sheet_movements_path(params[:sheet_id])
+              redirect_to admin_sheet_movement_path(params[:sheet_id],params[:id])
        end
 
 
@@ -117,21 +116,25 @@ ActiveAdmin.register Movement do
 
            sidebar "Datos de la Ficha" do
              if params[:sheet_id] then
-                n1=Sheet.where(id:  params[:sheet_id]).
-                         select('creada as dd').first.dd.to_s
-                n2=Sheet.where(id:  params[:sheet_id]).
-                         select('revisada as dd').first.dd.to_s
-                n3=Sheet.where(id:  params[:sheet_id]).
-                         select('codigo_revision as dd').first.dd
-                n4= Sheet.where(id:  params[:sheet_id]).
-                         select('descripcion as dd').first.dd
+               Sheet.where(id:params[:sheet_id]).each do |ficc|
 
-             ul do
-               li "Creacion:         "+n1
-               li "Revisada:         "+n2
-               li "Codigo revision:  "+n3
-               li "Descripcion:      "+n4
-             end
+                 ul do
+                    li "Creacion:         "+ficc.creada.to_s
+                    li "Revisada:         "+ficc.revisada.to_s
+                    li "Codigo revision:  "+ficc.codigo_revision
+                    li "Descripcion:      "+ficc.descripcion
+                 end
+               end
+
+             if Formula.where( product_id:22 ,orden:1).select("cantidad as dd").first.dd==1 then
+               Movement.where(id:params[:id]).each do |activ|
+                Sheet.where(id:params[:sheet_id]).update_all( revisada:activ.fechap,
+                    codigo_revision:activ.codigo,
+                    descripcion:activ.descripcion)
+                    #actualiza activo en estado
+                    Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
+                end
+              end
 
 
            end# de if
