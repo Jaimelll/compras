@@ -136,7 +136,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                       Formula.where(product_id:36).order('nombre').map{|u| [u.nombre, u.orden]}
              f.input :categoria,:label => 'Categoria', :as => :select, :collection =>
                       Formula.where(product_id:37).order('nombre').map{|u| [u.descripcion, u.orden]}
-              f.input :numero, :input_html => { :style =>  'width:30%'}
+              f.input :numero,:label => 'Resolucion', :input_html => { :style =>  'width:30%'}
               f.input :grupo,:label => 'Periodo', :as => :select, :collection =>
                        Formula.where(product_id:11).order('nombre').map{|u| [u.nombre, u.orden]}
 
@@ -178,7 +178,9 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                 row :na
                 row :soc
                 row :caracteristica
-                row :numero
+                row  "Resolucion"  do |ficha|
+                   ficha.numero
+                 end
                 row :vigencia  do |ficha|
                       if ficha.vigencia then
                            Formula.where(product_id:36, orden:ficha.vigencia).

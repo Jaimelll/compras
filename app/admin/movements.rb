@@ -57,7 +57,9 @@ ActiveAdmin.register Movement do
          column("observ")
          column("descripcion")
          column("codigo")
-
+         column("Resolucion") do |deta|
+           deta.sele1
+         end
 
 
            actions
@@ -77,6 +79,7 @@ ActiveAdmin.register Movement do
                  f.input :observ
                  f.input :codigo
                  f.input :descripcion
+                   f.input :sele1, :label => 'Resolucion', :input_html => { :style =>  'width:30%'}
                  f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
                         f.actions
@@ -111,8 +114,9 @@ ActiveAdmin.register Movement do
                row :observ
                row :codigo
                row :descripcion
-
-
+               row "Resolucion" do |deta|
+                 deta.sele1
+               end
 
 
              end
@@ -142,6 +146,7 @@ ActiveAdmin.register Movement do
                     li "Revisada:         "+ficc.revisada.to_s
                     li "Codigo revision:  "+ficc.codigo_revision
                     li "Descripcion:      "+ficc.descripcion
+                    li "Resolucion:      "+ficc.numero
                  end
                end
 
@@ -149,13 +154,14 @@ ActiveAdmin.register Movement do
                Movement.where(id:params[:id]).each do |activ|
                 Sheet.where(id:params[:sheet_id]).update_all( revisada:activ.fechap,
                     codigo_revision:activ.codigo,
-                    descripcion:activ.descripcion)
+                    descripcion:activ.descripcion,
+                    numero:activ.sele1)
                     #actualiza activo en estado
                      vc1=Movement.where(estado:1,id:params[:id]).count
                      if vc1>0 then
                        Sheet.where(id:params[:sheet_id]).update_all( creada:activ.fechap,
                           codigo_ficha:activ.codigo,
-                           descripcion_original:activ.descripcion)
+                          descripcion_original:activ.descripcion)
                      end
                     Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
                 end
