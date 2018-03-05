@@ -39,7 +39,7 @@ class Ability
 #   when 5 # ballesteros
 #    can :read, ActiveAdmin::Page, :name =>"Dashboard"
 #    can [:read], [Item, Detail]
-       when 11,12,28 #DEM y DC
+       when 12,28 # DC verioska
             can [:read,:update],  [AdminUser]
            can :read, ActiveAdmin::Page, :name =>"Dashboard"
            can :read, ActiveAdmin::Page, :name =>"Dpc"
@@ -49,6 +49,16 @@ class Ability
            can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:read], [Item,Phase,Piece]
            can [:create,:read,:update,:destroy],  [Detail,Activity]
+       when 11 #DEM
+             can [:read,:update],  [AdminUser]
+             can :read, ActiveAdmin::Page, :name =>"Dashboard"
+             can :read, ActiveAdmin::Page, :name =>"Dpc"
+             can [:read,:update],  [AdminUser]
+        #  can :read, ActiveAdmin::Page, :name =>"grafico"
+        #  can :read, ActiveAdmin::Page, :name =>"grafico0"
+             can :read, ActiveAdmin::Page, :name =>"Indices"
+             can [:read], [Item]
+             can [:create,:read,:update,:destroy],  [Detail,Activity,Phase,Piece]     
        when 13 #DPC
            can [:read,:update],  [AdminUser]
            can :read, ActiveAdmin::Page, :name =>"Dashboard"

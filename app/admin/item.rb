@@ -187,10 +187,10 @@ end
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
-  loca1='W:\SG ACFFAA\Oenlace\Proyectos\ '
+  localiz='W:\SG ACFFAA\Oenlace\Proyectos\PACFAP038COLCHONES.mpp'
 
-   vlink='PACFAP038COLCHONES'
-   localiz=loca1+vlink+'.mpp'
+  # vlink='PACFAP038COLCHONES'
+  # localiz=loca1+vlink+'.mpp'
    link_to item.descripcion,localiz, :target=>"_blank"
 #  item.descripcion
   end
