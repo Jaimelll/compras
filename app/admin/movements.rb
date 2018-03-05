@@ -126,8 +126,13 @@ ActiveAdmin.register Movement do
                 @vaf=current_admin_user.periodo
                 per1=Formula.where(product_id:11, orden:@vaf).
                  select('nombre as dd').first.dd
+                per=Sheet.where(grupo:@vaf,id:params[:sheet_id]).count
+                if per>0 then
                 per2=Formula.where(product_id:11, orden:ficc.grupo).
                   select('nombre as dd').first.dd
+                else
+                per2="s/d"
+                end
 
 
                  ul do
@@ -151,7 +156,7 @@ ActiveAdmin.register Movement do
                        Sheet.where(id:params[:sheet_id]).update_all( creada:activ.fechap,
                           codigo_ficha:activ.codigo,
                            descripcion_original:activ.descripcion)
-                     end   
+                     end
                     Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
                 end
               end
