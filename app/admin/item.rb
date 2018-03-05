@@ -402,7 +402,7 @@ form :title => 'Edicion PACs' do |f|
 
            link_to_if vsec==1, "#{item.pac} ", admin_item_details_path(item)
       end
-      row "Expediente" do
+      row "Expediente" do |item|
          item.exped
          if item.exped and item.exped>0 then
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227195103) do
+ActiveRecord::Schema.define(version: 20180304232907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -277,6 +277,10 @@ ActiveRecord::Schema.define(version: 20180227195103) do
     t.string  "observ"
     t.integer "sheet_id"
     t.integer "admin_user_id"
+    t.string  "codigo"
+    t.string  "descripcion"
+    t.string  "sele1"
+    t.integer "sele2"
     t.index ["admin_user_id"], name: "index_movements_on_admin_user_id", using: :btree
     t.index ["sheet_id"], name: "index_movements_on_sheet_id", using: :btree
   end

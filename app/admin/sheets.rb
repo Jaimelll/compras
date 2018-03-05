@@ -25,8 +25,48 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      :vigencia, :unidad_medida, :categoria, :numero,
      :admin_user_id
 
-     index :title => 'Lista de Fichas' do
 
+
+
+
+
+
+
+     scope :Activos, :default => true do |ficha|
+          ficha.where(vigencia:2)
+     end
+
+     scope :Homogenizados, :default => true do |ficha|
+          ficha.where("right(codigo_ficha,2)='HR'")
+     end
+     scope :Estandarizados, :default => true do |ficha|
+          ficha.where("right(codigo_ficha,1)='A'
+          or right(codigo_ficha,2)='ER'")
+     end
+
+     scope :Todos, :default => true do |ficha|
+          ficha.all
+     end
+     scope :Programados, :default => true do |ficha|
+         @vaf=current_admin_user.periodo
+          ficha.where(grupo:@vaf)
+     end
+
+     filter :codigo_ficha
+     filter :codigo_revision
+     filter :descripcion_original
+     filter :descripcion
+     filter :grupo, label:'periodo', :as => :select, :collection =>
+           Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+
+
+
+
+
+
+
+
+     index :title => 'Lista de Fichas' do
 
        column("codigo_ficha") do |ficha|
          link_to "#{ficha.codigo_ficha} ", admin_sheet_movements_path(ficha.id)
@@ -46,36 +86,26 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
 
       column("descripcion")
 
-      column("clase") do |ficha|
-        cfic=List.where(id:ficha.clase).count
-          if cfic>0 then
-            List.where(id:ficha.clase).select('clase as dd').first.dd
-          else
-            "s/d"
-         end
-      end
-      column("cna")
-      column("na")
-      column("soc")
-    column("vigencia")  do |ficha|
-            if ficha.vigencia then
-                 Formula.where(product_id:36, orden:ficha.vigencia).
-                  select('nombre as dd').first.dd
-            end
-          end
 
-      column("unidad_medida") do |ficha|
-            if ficha.unidad_medida then
-                 Formula.where(product_id:35, orden:ficha.unidad_medida).
-                  select('nombre as dd').first.dd
-            end
-      end
       column("Categoria") do |ficha|
             if ficha.categoria then
                  Formula.where(product_id:37, orden:ficha.categoria).
                   select('descripcion as dd').first.dd
             end
       end
+
+      column("Periodo") do |ficha|
+            if ficha.grupo and ficha.grupo>0 then
+                 Formula.where(product_id:11, orden:ficha.grupo).
+                  select('nombre as dd').first.dd
+            end
+      end
+
+
+
+
+
+
            actions
 
        end
@@ -107,6 +137,8 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
              f.input :categoria,:label => 'Categoria', :as => :select, :collection =>
                       Formula.where(product_id:37).order('nombre').map{|u| [u.descripcion, u.orden]}
               f.input :numero, :input_html => { :style =>  'width:30%'}
+              f.input :grupo,:label => 'Periodo', :as => :select, :collection =>
+                       Formula.where(product_id:11).order('nombre').map{|u| [u.nombre, u.orden]}
 
               f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
@@ -165,10 +197,12 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                             select('descripcion as dd').first.dd
                       end
                     end
-
-
-
-
+                    row "Periodo"  do |ficha|
+                          if ficha.grupo and ficha.grupo>0 then
+                               Formula.where(product_id:11, orden:ficha.grupo).
+                                select('nombre as dd').first.dd
+                          end
+                        end
 
 
 
