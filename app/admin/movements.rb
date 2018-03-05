@@ -13,8 +13,14 @@ ActiveAdmin.register Movement do
        end
 
        member_action :ficha, method: :put do
+         @vaf=current_admin_user.periodo
+         per=Sheet.where(grupo:@vaf,id:params[:sheet_id]).count
+         vc1=Movement.where(estado:1,id:params[:id]).count
+         vc2=Movement.where(estado:2,id:params[:id]).count
+           if vc1+vc2>0 and per>0 then
               Formula.where( product_id:22 ,orden:1).update_all( cantidad:1 )
               redirect_to admin_sheet_movement_path(params[:sheet_id],params[:id])
+          end
        end
 
 
@@ -117,8 +123,16 @@ ActiveAdmin.register Movement do
            sidebar "Datos de la Ficha" do
              if params[:sheet_id] then
                Sheet.where(id:params[:sheet_id]).each do |ficc|
+                @vaf=current_admin_user.periodo
+                per1=Formula.where(product_id:11, orden:@vaf).
+                 select('nombre as dd').first.dd
+                per2=Formula.where(product_id:11, orden:ficc.grupo).
+                  select('nombre as dd').first.dd
+
 
                  ul do
+                    li "Periodo activo:   "+per1
+                    li "Periodo       :   "+per2
                     li "Creacion:         "+ficc.creada.to_s
                     li "Revisada:         "+ficc.revisada.to_s
                     li "Codigo revision:  "+ficc.codigo_revision
@@ -132,6 +146,12 @@ ActiveAdmin.register Movement do
                     codigo_revision:activ.codigo,
                     descripcion:activ.descripcion)
                     #actualiza activo en estado
+                     vc1=Movement.where(estado:1,id:params[:id]).count
+                     if vc1>0 then
+                       Sheet.where(id:params[:sheet_id]).update_all( creada:activ.fechap,
+                          codigo_ficha:activ.codigo,
+                           descripcion_original:activ.descripcion)
+                     end   
                     Formula.where( product_id:22 ,orden:1).update_all( cantidad:0 )
                 end
               end
