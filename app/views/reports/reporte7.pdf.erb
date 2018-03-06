@@ -34,6 +34,20 @@
     <th colspan="5" >Descripcion</th>
 
     <th>Estimado</th>
+    <% if @vactcanti.include?("0") then%>
+
+    <th>Publicacion</th>
+    <th>Programa</th>
+
+    <% end %>
+
+    <% if @vactcanti.include?("2") then%>
+
+    <th>Programa</th>
+    <th>Recepcion</th>
+
+    <% end %>
+
 
 
 
@@ -98,6 +112,23 @@
 
 
        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+
+         <% if @vactcanti.include?("0") then%>
+       <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+
+       <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+
+          <% end %>
+
+          <% if @vactcanti.include?("2") then%>
+        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+
+        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+
+           <% end %>
+
+
+
         </tr>
 
 
@@ -159,7 +190,7 @@
 
             <th colspan="3">Actividad</th>
 
-            <th colspan="4">Observacion</th>
+            <th colspan="5">Observacion</th>
 
             <th colspan="1">Documento</th>
             <th colspan="1">Numero</th>
@@ -186,7 +217,7 @@
                    <%  if deta.obs then %>
 
 
-               <td colspan="4"><%= deta.obs.capitalize %></td>
+               <td colspan="5"><%= deta.obs.capitalize %></td>
                  <%  else %>
                  <td > </td>
                    <%  end %>
