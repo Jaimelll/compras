@@ -88,13 +88,13 @@
 
             <% if variable.exped>0 then %>
 
-         <td ><%= Formula.where(product_id:16,orden:variable.exped).select('nombre as dd').first.dd %></td>
+         <td ><%= Formula.where(product_id:16,orden:variable.exped).select('nombre as dd').first.dd %> </td>
              <% else %>
-        <td ><%= " s/d"   %></td>
+        <td ><%= "s/d"   %></td>
              <% end %>
 
 
-        <td  ><%= variable.pac %></td>
+        <td  > <%= variable.pac %></td>
 
 
 
@@ -114,16 +114,45 @@
        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
 
          <% if @vactcanti.include?("0") then%>
-       <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
 
-       <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+             <%deta= Detail.where(item_id:variable.id,actividad:36).order('pfecha') %>
+             <% if deta.count >0 then %>
+               <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+             <% else %>
+              <td >s/d </td>
+             <% end %>
 
-          <% end %>
+             <%deta= Detail.where(item_id:variable.id,actividad:58).order('pfecha') %>
+             <% if deta.count >0 then %>
+               <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+             <% else %>
+              <td >s/d </td>
+             <% end %>
+
+
+
+
+
+      <% end %>
+
+
+
 
           <% if @vactcanti.include?("2") then%>
-        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
 
-        <td ><%= number_with_delimiter(variable.certificado.to_i, delimiter: ",") %></td>
+          <%deta= Detail.where(item_id:variable.id,actividad:58).order('pfecha') %>
+          <% if deta.count >0 then %>
+            <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+          <% else %>
+           <td >s/d </td>
+          <% end %>
+
+          <%deta= Detail.where(item_id:variable.id,actividad:13).order('pfecha') %>
+          <% if deta.count >0 then %>
+            <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+          <% else %>
+           <td >s/d </td>
+          <% end %>
 
            <% end %>
 
@@ -194,7 +223,7 @@
 
             <th colspan="1">Documento</th>
             <th colspan="1">Numero</th>
-              <th > </th>
+
          </tr>
 
 
@@ -223,7 +252,7 @@
                    <%  end %>
                    <td ><%= deta.tipo %></td>
                     <td ><%= deta.numero %></td>
-                <td > </td>
+
        </tr>
         <% end %>
 <% end %>

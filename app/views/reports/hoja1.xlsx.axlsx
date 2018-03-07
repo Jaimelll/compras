@@ -243,7 +243,7 @@ end
 
 
 
-
+################
 wb.add_worksheet(name: "OBACs") do |sheet|
 
   sheet.add_row []
@@ -286,6 +286,64 @@ wb.add_worksheet(name: "OBACs") do |sheet|
 end
 ####################ep
 
+################%ACFFAA
+wb.add_worksheet(name: "%ACFFAA") do |sheet|
+
+  sheet.add_row []
+
+  sheet.add_row %w(ENTIDAD OBAC(S/.) ACFFAA(S/.) %ACFFAA ),
+  style: [titu, titu, titu, titu]
+
+@vaf=current_admin_user.periodo
+
+Formula.where(product_id:1,numero:1).order('orden').each do |enti|
+
+    venti=enti.nombre
+    vnobac=Item.where(exped2:@vaf).where(obac:enti.orden).
+             where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)").sum(:certificado)
+
+    vacffaa=Item.where(exped2:@vaf).where(ejecucion:4).where(obac:enti.orden).where(ejecucion:4).
+             where('modalidad=1 or modalidad=2 ').sum(:certificado)
+
+      if vnobac>0 then
+          vpor=   vacffaa/vnobac*100
+      else
+         vpor=0
+      end
+
+
+
+     sheet.add_row [ venti,vnobac ,vacffaa,vpor],
+             style: [izq,soles,soles,soles]
+
+
+end
+
+
+ventit='TOTAL'
+vnobact=Item.where(exped2:@vaf).
+         where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)").sum(:certificado)
+
+vacffaat=Item.where(exped2:@vaf).where(ejecucion:4).where(ejecucion:4).
+         where('modalidad=1 or modalidad=2 ').sum(:certificado)
+
+  if vnobact>0 then
+      vport=   vacffaat/vnobact*100
+  else
+     vport=0
+  end
+
+
+
+ sheet.add_row [ ventit,vnobact ,vacffaat,vport],
+         style: [izq,soles,soles,soles]
+
+
+
+
+
+end
+####################
 
 
 Formula.where(product_id:1,numero:1).order('orden').each do |proce|
