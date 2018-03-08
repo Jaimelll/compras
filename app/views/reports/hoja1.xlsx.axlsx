@@ -305,8 +305,8 @@ Formula.where(product_id:1,numero:1).order('orden').each do |enti|
     vacffaa=Item.where(exped2:@vaf).where(ejecucion:4).where(obac:enti.orden).where(ejecucion:4).
              where('modalidad=1 or modalidad=2 ').sum(:certificado)
 
-      if vnobac>0 then
-          vpor=   vacffaa/vnobac*100
+      if vnobac+vacffaa>0 then
+          vpor=   vacffaa/(vnobac+vacffaa)*100
       else
          vpor=0
       end
@@ -327,8 +327,8 @@ vnobact=Item.where(exped2:@vaf).
 vacffaat=Item.where(exped2:@vaf).where(ejecucion:4).where(ejecucion:4).
          where('modalidad=1 or modalidad=2 ').sum(:certificado)
 
-  if vnobact>0 then
-      vport=   vacffaat/vnobact*100
+  if vnobact+vacffaat>0 then
+      vport= vacffaat/(vnobact+vacffaat)*100
   else
      vport=0
   end

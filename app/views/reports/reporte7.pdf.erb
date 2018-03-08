@@ -37,13 +37,14 @@
     <% if @vactcanti.include?("0") then%>
 
     <th>Publicacion</th>
-    <th>Programa</th>
+    <th>Programacion </th>
 
     <% end %>
 
     <% if @vactcanti.include?("2") then%>
 
-    <th>Programa</th>
+    <th>Publicacion</th>
+    <th>Programacion </th>
     <th>Recepcion</th>
 
     <% end %>
@@ -115,6 +116,7 @@
 
          <% if @vactcanti.include?("0") then%>
 
+
              <%deta= Detail.where(item_id:variable.id,actividad:36).order('pfecha') %>
              <% if deta.count >0 then %>
                <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
@@ -139,6 +141,14 @@
 
 
           <% if @vactcanti.include?("2") then%>
+
+           <%deta= Detail.where(item_id:variable.id,actividad:36).order('pfecha') %>
+           <% if deta.count >0 then %>
+           <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+           <% else %>
+          <td >s/d </td>
+         <% end %>
+
 
           <%deta= Detail.where(item_id:variable.id,actividad:58).order('pfecha') %>
           <% if deta.count >0 then %>
