@@ -47,9 +47,22 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      scope :Todos, :default => true do |ficha|
           ficha.all
      end
-     scope :Programados, :default => true do |ficha|
+     scope :Programadas, :default => true do |ficha|
          @vaf=current_admin_user.periodo
           ficha.where(grupo:@vaf)
+     end
+
+     scope :xElaborar, :default => true do |ficha|
+         @vaf=current_admin_user.periodo
+         pie=Movement.where(estado:3).select(' distinct sheet_id') #estado 3 programadas
+         ficha.where(grupo:@vaf,id:pie,vigencia:1)  #vigencia 1 en proceso 2 activo
+
+     end
+     scope :xRevisar, :default => true do |ficha|
+       @vaf=current_admin_user.periodo
+       pie=Movement.where(estado:3).select(' distinct sheet_id') #estado 3 programadas
+       ficha.where(grupo:@vaf,id:pie,vigencia:2)  #vigencia 1 en proceso 2 activo
+
      end
 
      filter :codigo_ficha
@@ -100,7 +113,12 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                   select('nombre as dd').first.dd
             end
       end
-
+      column("estado")  do |ficha|
+            if ficha.vigencia then
+                 Formula.where(product_id:36, orden:ficha.vigencia).
+                  select('nombre as dd').first.dd
+            end
+          end
 
 
 
@@ -181,7 +199,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
                 row  "Resolucion"  do |ficha|
                    ficha.numero
                  end
-                row :vigencia  do |ficha|
+                row "estado"  do |ficha|
                       if ficha.vigencia then
                            Formula.where(product_id:36, orden:ficha.vigencia).
                             select('nombre as dd').first.dd

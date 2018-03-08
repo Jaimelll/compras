@@ -96,6 +96,71 @@ sheet.add_row [ procc.nomenclatura, procc.descripcion,vnommod,presu1, ref2, proc
 end
 
 
+when 3
+
+sheet.add_row %w( FECHA CODIGO FICHA ),   style: [titu, titu, titu]
+
+aiitem=@iitem.flatten.compact
+
+Sheet.where(id:aiitem).each do |procc|
+
+
+vfecha=Movement.where(sheet_id:procc.id,estado:3).
+       select('fechap as dd').first.dd
+vcodigo=procc.codigo_revision
+vficha=procc.descripcion
+
+
+sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
+
+end
+
+
+when 4
+
+sheet.add_row %w( FECHA CODIGO FICHA ),   style: [titu, titu, titu]
+
+aiitem=@iitem.flatten.compact
+
+Sheet.where(id:aiitem).each do |procc|
+
+
+vfecha=Movement.where(sheet_id:procc.id,estado:1).
+       select('fechap as dd').first.dd
+vcodigo=procc.codigo_revision
+vficha=procc.descripcion
+
+
+sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
+
+end
+
+
+when 5
+
+sheet.add_row %w( FECHA CODIGO FICHA ),   style: [titu, titu, titu]
+
+aiitem=@iitem.flatten.compact
+
+Sheet.where(id:aiitem).each do |procc|
+
+
+vfecha=Movement.where(sheet_id:procc.id,estado:1).
+       select('fechap as dd').first.dd
+vcodigo=procc.codigo_revision
+vficha=procc.descripcion
+
+
+sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
+
+end
+
+
+
+
+
+
+
 
 
 
