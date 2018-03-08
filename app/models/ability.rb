@@ -19,6 +19,7 @@ class Ability
           #  can :read, ActiveAdmin::Page, :name =>"grafico0"
           #  can :read, ActiveAdmin::Page, :name =>"grafico1"
           #  can :read, ActiveAdmin::Page, :name =>"Indices"
+            can :read, ActiveAdmin::Page, :name =>"Catalogacion"
             can [:read], [Item, Detail]
             can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
@@ -58,7 +59,7 @@ class Ability
         #  can :read, ActiveAdmin::Page, :name =>"grafico0"
              can :read, ActiveAdmin::Page, :name =>"Indices"
              can [:read], [Item]
-             can [:create,:read,:update,:destroy],  [Detail,Activity,Phase,Piece]     
+             can [:create,:read,:update,:destroy],  [Detail,Activity,Phase,Piece]
        when 13 #DPC
            can [:read,:update],  [AdminUser]
            can :read, ActiveAdmin::Page, :name =>"Dashboard"
