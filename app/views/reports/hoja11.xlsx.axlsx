@@ -107,8 +107,8 @@ aiitem=@iitem.flatten.compact
 Sheet.where(id:aiitem).each do |procc|
 
 
-vfecha=Movement.where(sheet_id:procc.id,estado:@esta.to_i).
-       select('fechap as dd').first.dd
+vfecha=Movement.where(sheet_id:procc.id,estado:@esta.to_i).where('extract(month from fechap) = ?',@lmes)
+       .select('fechap as dd').first.dd
 vcodigo=procc.codigo_revision
 vficha=procc.descripcion
 
