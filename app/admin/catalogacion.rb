@@ -25,6 +25,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                vpac3=vpac1.select('id')
 
                                bb=["Programadas","Ejecutadas","Hechas en Plazo"]
+                               cc=["Fichas Elaboradas Programadas","Fichas Elaboradas Ejecutadas","Fichas Elaboradas Hechas en Plazo"]
 
 
                            if vpac2>0 then
@@ -55,36 +56,40 @@ ActiveAdmin.register_page "Catalogacion" do
                                         case bb.index(aho)
                                           when 0
                                               proce.count
-
-                                              tit=  bb[bb.index(aho)]
+                                              esta=3
+                                              tit=  cc[bb.index(aho)]
                                               le= proce1.length
                                               if le>0 then
                                                   link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                 :param1=> proce1, :param2=> lmes, :param3=> tit.upcase, :param4=> 3)
+                                                 :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                 :param4=> 3,:param5=> esta)
                                               else
                                                 le
                                               end
                                           when 1
                                                 ejec.count
-
-                                                tit=  bb[bb.index(aho)]
+                                                esta=1
+                                                tit=  cc[bb.index(aho)]
                                                 le= ejec1.length
                                                 if le>0 then
                                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                   :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase, :param4=> 4)
+                                                   :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
+                                                   :param4=> 3,:param5=> esta)
                                                 else
                                                   le
                                                 end
 
                                           when 2
                                                 ejec.count
+                                                esta=1
                                                 plazot=plazot+plazo
-                                                tit=  bb[bb.index(aho)]
+                                                tit=  cc[bb.index(aho)]
                                                 le=plazo.length
 
                                                 if le>0 then
                                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                   :param1=> plazo, :param2=> lmes, :param3=> tit.upcase, :param4=> 5)
+                                                   :param1=> plazo, :param2=> lmes, :param3=> tit.upcase,
+                                                   :param4=> 3,:param5=> esta)
                                                 else
                                                   le
                                                 end
@@ -143,6 +148,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                           vpac3=vpac1.select('id')
 
                                           bb=["Programadas","Ejecutadas","Hechas en Plazo"]
+                                          cc=["Fichas Revisadas Programadas","Fichas Revisadas Ejecutadas","Fichas Revisadas Hechas en Plazo"]
 
 
                                       if vpac2>0 then
@@ -169,49 +175,53 @@ ActiveAdmin.register_page "Catalogacion" do
                                               plazo=proce1 &  ejec1.to_a
 
 
-                                               column ("#{lmes}") do |aho|
-                                                   case bb.index(aho)
-                                                     when 0
-                                                         proce.count
+                                              column ("#{lmes}") do |aho|
+                                                  case bb.index(aho)
+                                                    when 0
+                                                        proce.count
+                                                        esta=3
+                                                        tit=  cc[bb.index(aho)]
+                                                        le= proce1.length
+                                                        if le>0 then
+                                                            link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                           :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                           :param4=> 3,:param5=> esta)
+                                                        else
+                                                          le
+                                                        end
+                                                    when 1
+                                                          ejec.count
+                                                          esta=2
+                                                          tit=  cc[bb.index(aho)]
+                                                          le= ejec1.length
+                                                          if le>0 then
+                                                              link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                             :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
+                                                             :param4=> 3,:param5=> esta)
+                                                          else
+                                                            le
+                                                          end
 
-                                                         tit=  bb[bb.index(aho)]
-                                                         le= proce1.length
-                                                         if le>0 then
-                                                             link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                            :param1=> proce1, :param2=> lmes, :param3=> tit.upcase, :param4=> 3)
-                                                         else
-                                                           le
-                                                         end
-                                                     when 1
-                                                           ejec.count
+                                                    when 2
+                                                          ejec.count
+                                                          esta=2
+                                                          plazot=plazot+plazo
+                                                          tit=  cc[bb.index(aho)]
+                                                          le=plazo.length
 
-                                                           tit=  bb[bb.index(aho)]
-                                                           le= ejec1.length
-                                                           if le>0 then
-                                                               link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                              :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase, :param4=> 4)
-                                                           else
-                                                             le
-                                                           end
-
-                                                     when 2
-                                                           ejec.count
-                                                           plazot=plazot+plazo
-                                                           tit=  bb[bb.index(aho)]
-                                                           le=plazo.length
-
-                                                           if le>0 then
-                                                               link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                              :param1=> plazo, :param2=> lmes, :param3=> tit.upcase, :param4=> 5)
-                                                           else
-                                                             le
-                                                           end
+                                                          if le>0 then
+                                                              link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                             :param1=> plazo, :param2=> lmes, :param3=> tit.upcase,
+                                                             :param4=> 3,:param5=> esta)
+                                                          else
+                                                            le
+                                                          end
 
 
 
 
-                                                    end
-                                                end
+                                                   end
+                                               end
                                            lmes=lmes+1
                                            end
 

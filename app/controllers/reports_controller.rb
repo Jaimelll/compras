@@ -421,6 +421,7 @@ def vhoja11
     @lmes=params[:param2].to_i
     @tit=params[:param3]
     @tip=params[:param4]
+    @esta=params[:param5].to_i
   respond_to do |format|
     format.html
 
