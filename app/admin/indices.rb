@@ -691,7 +691,7 @@ ActiveAdmin.register_page "Indices" do
 
 
 
-                               vaf=Formula.where(product_id:11,cantidad:1).select('orden as dd').first.dd
+                               vaf=current_admin_user.periodo
 
                                pie=Piece.where("adjudicado IS NOT NULL").select(' distinct phase_id')
 
