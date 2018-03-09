@@ -55,7 +55,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                     column ("#{lmes}") do |aho|
                                         case bb.index(aho)
                                           when 0
-                                              proce.count
+
                                               esta=3
                                               tit=  cc[bb.index(aho)]
                                               le= proce1.length
@@ -67,7 +67,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                                 le
                                               end
                                           when 1
-                                                ejec.count
+
                                                 esta=1
                                                 tit=  cc[bb.index(aho)]
                                                 le= ejec1.length
@@ -80,7 +80,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                                 end
 
                                           when 2
-                                                ejec.count
+
                                                 esta=1
                                                 plazot=plazot+plazo
                                                 tit=  cc[bb.index(aho)]
@@ -177,7 +177,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                      column ("#{lmes}") do |aho|
                                          case bb.index(aho)
                                            when 0
-                                               proce.count
+
                                                esta=3
                                                tit=  cc[bb.index(aho)]
                                                le= proce1.length
@@ -189,7 +189,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                                  le
                                                end
                                            when 1
-                                                 ejec.count
+
                                                  esta=2
                                                  tit=  cc[bb.index(aho)]
                                                  le= ejec1.length
@@ -202,7 +202,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                                  end
 
                                            when 2
-                                                 ejec.count
+
                                                  esta=2
                                                  plazot=plazot+plazo
                                                  tit=  cc[bb.index(aho)]
@@ -326,36 +326,51 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                               column ("#{lmes}") do |aho|
                                                   case bb.index(aho)
                                                     when 0
-                                                        proce.count
-                                                        esta=3
+
+                                                        esta=4
                                                         tit=  cc[bb.index(aho)]
                                                         le= proce1.length
-
+                                                        if le>0 then
+                                                            link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                           :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                           :param4=> 3,:param5=> esta)
+                                                        else
+                                                          le
+                                                        end
 
 
                                                     when 1
-                                                          ejec.count
-                                                          esta=2
+
+                                                          esta=5
                                                           tit=  cc[bb.index(aho)]
                                                           le= ejec1.length
+                                                          if le>0 then
+                                                              link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                             :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                             :param4=> 3,:param5=> esta)
+                                                          else
+                                                            le
+                                                          end
 
 
                                                     when 2
-                                                         ejes.count
-                                                         esta=2
+
+                                                         esta=6
                                                          tit=  cc[bb.index(aho)]
                                                          le= ejes1.length
+                                                         if le>0 then
+                                                             link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                            :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                            :param4=> 3,:param5=> esta)
+                                                         else
+                                                           le
+                                                         end
 
 
 
                                                     when 3
-                                                              ejec.count
-                                                              esta=2
-                                                              plazot=plazot+plazo
-                                                              tit=  cc[bb.index(aho)]
-                                                              le=plazo.length
 
-
+                                                     ejec1.length-ejes1.length
 
                                                    end
 
