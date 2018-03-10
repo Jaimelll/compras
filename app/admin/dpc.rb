@@ -27,7 +27,7 @@ ActiveAdmin.register_page "Dpc" do
       Formula.where(product_id:1,orden:4).update_all( numero:2 )
     end
 
-       @vaf=@vaf=current_admin_user.periodo
+       @vaf=current_admin_user.periodo
        @vaf2=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
     case   @vaf
        when 1
@@ -427,7 +427,7 @@ column do
 
                      if proceso.moneda and proceso.valor then
 
-                          @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                          @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:@vaf)
                                 .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
 
@@ -448,7 +448,7 @@ column do
                       @vxper3[2]=@vxper3[2]+1
                       if proceso.valor then
 
-                         @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                         @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:@vaf)
                                .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
                          @contavus[2]=  @contavus[2]+@vpv
@@ -468,7 +468,8 @@ column do
                              where("adjudicado IS NOT NULL and moneda IS NOT NULL and (estado=2 or estado=11)").count>0  then
                              Piece.where(phase_id:proceso.id).
                              where("adjudicado IS NOT NULL  and moneda IS NOT NULL and (estado=2 or estado=11)").each do |adju|
-                             @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+                             @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda,numero:@vaf)
+                             .select('cantidad as dd').first.dd.to_i/100
                        end
                        end
 
@@ -484,7 +485,8 @@ column do
                                 @vpv=0
                               if  Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
                                   Piece.where(phase_id:proceso.id).where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
-                                  @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+                                  @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda,numero:@vaf)
+                                  .select('cantidad as dd').first.dd.to_i/100
                                  end
                               end
 
@@ -498,7 +500,7 @@ column do
 
                        if proceso.moneda and proceso.valor then
 
-                           @vpv=Formula.where(product_id:7,orden:proceso.moneda)
+                           @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:@vaf)
                                 .select('cantidad as dd').first.dd.to_i*proceso.valor/100
 
 
@@ -524,7 +526,8 @@ column do
                              where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").count>0  then
                                  Piece.where(phase_id:proceso.id).
                                  where("adjudicado IS NOT NULL and moneda IS NOT NULL  and (estado=4 or estado=9)").each do |adju|
-                              @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda).select('cantidad as dd').first.dd.to_i/100
+                              @vpv=@vpv+adju.adjudicado*Formula.where(product_id:7,orden:adju.moneda,numero:@vaf)
+                              .select('cantidad as dd').first.dd.to_i/100
                           end
                           end
 

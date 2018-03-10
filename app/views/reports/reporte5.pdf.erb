@@ -91,13 +91,17 @@
 
         <% if  aarr.include?  @vactcanti then %>
         <% @vbpro=Piece.where(phase_id:variable.id.to_s).sum(:"adjudicado*(SELECT  cantidad FROM formulas
-        WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")%>
+           WHERE formulas.product_id = 7 AND
+           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id) AND
+           formulas.orden =pieces.moneda)/100 ")%>
 
                   <td ><h5  ALIGN=center><%= number_with_delimiter(@vbpro.to_i, delimiter: ",") %></h5></td>
         <%  else %>
 
         <% @reff=Piece.where(phase_id:variable.id.to_s).sum(:"referencial*(SELECT  cantidad FROM formulas
-        WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")%>
+           WHERE formulas.product_id = 7 AND
+           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id) AND
+           formulas.orden =pieces.moneda)/100 ")%>
 
 
 

@@ -143,7 +143,7 @@
       <%   if @vopc==2 or  @vopc==3 then %>
 
              <% @vbpro=Piece.where(phase_id:activity.id.to_s).sum(:adjudicado)*
-               Formula.where(product_id:7,orden:activity.moneda)
+               Formula.where(product_id:7,orden:activity.moneda,numero:activity.periodo)
                     .select('cantidad as dd').first.dd/100%>
 
          <% if @vbpro >0 then %>
@@ -158,7 +158,7 @@
             <% else %>
 
             <% @reff=Piece.where(phase_id:activity.id.to_s).sum(:referencial)*
-              Formula.where(product_id:7,orden:activity.moneda)
+              Formula.where(product_id:7,orden:activity.moneda,numero:activity.periodo)
                    .select('cantidad as dd').first.dd/100%>
 
 
@@ -273,7 +273,7 @@
     <% if  pite.adjudicado and pite.presupuestado then %>
 
     <td ><%= number_with_delimiter((pite.adjudicado*
-    Formula.where(product_id:7,orden:pite.moneda)
+    Formula.where(product_id:7,orden:pite.moneda,numero:activity.periodo)
           .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
           <td ><%= number_with_delimiter((pite.presupuestado-pite.adjudicado*
           Formula.where(product_id:7,orden:pite.moneda)
@@ -284,7 +284,7 @@
      <% else %>
      <% if  pite.referencial then %>
    <td ><%= number_with_delimiter((pite.referencial*
-   Formula.where(product_id:7,orden:pite.moneda)
+   Formula.where(product_id:7,orden:pite.moneda,numero:activity.periodo)
      .select('cantidad as dd').first.dd/100).to_i, delimiter: ",") %></td>
    <% else %>
    <td  colspan="2"  ></td>
@@ -346,7 +346,7 @@
 
     <%@srefs= @srefs+ Piece.where(phase:activity2.id).where(estado:vesta)
     .sum(:referencial)*
-    Formula.where(product_id:7,orden:activity2.moneda)
+    Formula.where(product_id:7,orden:activity2.moneda,numero:activity2.periodo)
           .select('cantidad as dd').first.dd/100.to_i %>
 
     <%@sadjs=@sadjs+Phase.where(id:activity2.id).sum(:sele2).to_i %>
