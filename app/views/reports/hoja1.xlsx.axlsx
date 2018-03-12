@@ -428,7 +428,8 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
 
 
   vsadj=vvtcc-Piece.where(phase_id:nphas).sum(:"#{venti}*(SELECT  cantidad FROM formulas
-   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+   WHERE formulas.product_id = 7 AND
+   formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ")
 
 
 
@@ -438,9 +439,11 @@ if vnproc>0 then
 
          @nomproc[vcont]=nphase.proceso
          @montadj[vcont]=Piece.where(phase_id:nphase.id).sum(:"#{venti}*(SELECT  cantidad FROM formulas
-          WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+          WHERE formulas.product_id = 7 AND
+          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ")
           @montref[vcont]=Piece.where(phase_id:nphase.id).sum(:"#{venti2}*(SELECT  cantidad FROM formulas
-           WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ")
+           WHERE formulas.product_id = 7 AND
+           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ")
        vcont= vcont+1
    end
 end

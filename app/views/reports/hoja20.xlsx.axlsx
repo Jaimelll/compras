@@ -115,7 +115,8 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
         when 3
            @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
            @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
-           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
+           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND
+           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ").to_i
 
            viadj= activ.sele2
 
@@ -127,10 +128,14 @@ wb.add_worksheet(name: proce.nombre) do |sheet|
         when 5
           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
           @refe=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
-          sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+          sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
+          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND
+          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" ).to_i
 
            viadj=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
-          sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+          sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
+          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND
+          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" ).to_i
 
 
           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').count
@@ -540,7 +545,8 @@ Formula.where(product_id:6).each do |proce|
 
            @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
            @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
-           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 ").to_i
+           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND
+           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ").to_i
 
            viadj= activ.sele2
 

@@ -48,7 +48,16 @@
     <th>Recepcion</th>
 
     <% end %>
+    <% if @vactcanti.include?("3") then%>
 
+    <th>Idoneidad/FT</th>
+
+    <% end %>
+    <% if @vactcanti.include?("4") then%>
+
+    <th>Fec_EPOM</th>
+
+    <% end %>
 
 
 
@@ -135,7 +144,7 @@
 
 
 
-      <% end %>
+         <% end %>
 
 
 
@@ -165,6 +174,48 @@
           <% end %>
 
            <% end %>
+
+
+
+           <% if @vactcanti.include?("3") then%>
+
+            <%deta= Detail.where(item_id:variable.id,actividad:101).order('pfecha') %>
+            <% if deta.count >0 then %>
+            <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+            <% else %>
+           <td >s/d </td>
+          <% end %>
+
+
+
+            <% end %>
+
+
+            <% if @vactcanti.include?("4") then%>
+
+               <%deta= Detail.where(item_id:variable.id,actividad:102).order('pfecha') %>
+               <%deta2= Phase.where.not(expediente:0).find_by(expediente:variable.exped).activities
+                         .where(actividad: 102)
+                         .order('activities.pfecha ')%>
+                <% vop=0 %>
+               <% if deta2.count >0 then %>
+                  <td ><%= deta2.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+                  <% vop=1 %>
+              <% end %>
+
+              <% if deta.count >0 and vop==0 then %>
+                  <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+                  <% vop=1 %>
+              <% end %>
+
+
+              <% if vop==0 then %>
+                 <td >s/d </td>
+               <% end %>
+
+              <% end %>
+
+
 
 
 

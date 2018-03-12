@@ -513,16 +513,19 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
         when 3
               @vajud2.push(Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
             sum(:"#{venti}*(SELECT  cantidad FROM formulas
-            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
+            WHERE formulas.product_id = 7 AND
+            formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 "))
         when 5
             @vajud2.push(Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
             sum(:"#{venti}*(SELECT  cantidad FROM formulas
-            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
+            WHERE formulas.product_id = 7 AND
+            formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 "))
 
         else
             @vajud2.push(Piece.where(phase_id:activ.id.to_s).
             sum(:"#{venti2}*(SELECT  cantidad FROM formulas
-            WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100 "))
+            WHERE formulas.product_id = 7 AND
+            formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 "))
      end
 
    vpadj=nobac.obac
@@ -559,12 +562,14 @@ case proce.orden
    when 5
     @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
     viadj=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
-   sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+   sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
+   formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" ).to_i
 
    else
      @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
      viadj=Piece.where(phase_id:activ.id.to_s).
-    sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND formulas.orden =pieces.moneda)/100" ).to_i
+    sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
+    formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" ).to_i
 
 end
 
