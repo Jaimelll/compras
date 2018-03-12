@@ -317,8 +317,8 @@ end
 
 
 
-
-
+####################grafico
+if  @activities.where(id:@vpac2).count >0 then
 
  @vinicio = Date.parse('2017/01/01')
  @dhoy=(Time.now-@vinicio.to_time).to_i/86400+2
@@ -452,7 +452,7 @@ sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q#{vnum+1}", :
 end
 
 
-
+end
 
 #########resumen
 

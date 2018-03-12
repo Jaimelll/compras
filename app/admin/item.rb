@@ -187,7 +187,8 @@ end
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
-  localiz='W:\SG ACFFAA\Oenlace\Proyectos\PACFAP038COLCHONES.mpp'
+#  localiz='W:\SG ACFFAA\Oenlace\Proyectos\PACFAP038COLCHONES.mpp'
+  localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/PACFAP038COLCHONES.mpp'
 
   # vlink='PACFAP038COLCHONES'
   # localiz=loca1+vlink+'.mpp'
