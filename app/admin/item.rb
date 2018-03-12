@@ -192,14 +192,14 @@ end
 # localiz=loca1+vlink+'.mpp'
 #link_to item.descripcion,localiz, :target=>"_blank"
 #  item.descripcion
-
+#link_to item.descripcion, root_path << localiz, :target=>"_blank"
 
 
   localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 
 
-link_to item.descripcion, root_path << localiz
 
+link_to item.descripcion, localiz, { target: '_blank' }
   end
 
   column("periodo")do |item|
