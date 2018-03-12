@@ -44,16 +44,16 @@ end
     #     panel "Recent Posts" do
     Formula.where(product_id:1).update_all( numero:2 )
     case current_admin_user.categoria # a_variable is the variable we want to compare
-    when 21
+    when 21 #ejercito
       @vuobac=[1]
       Formula.where(product_id:1,orden:1).update_all( numero:1 )
-    when 22
+    when 22 # marina
       @vuobac=[2]
         Formula.where(product_id:1,orden:2).update_all( numero:1 )
-    when 23
+    when 23 # FAP
       @vuobac=[3]
       Formula.where(product_id:1,orden:3).update_all( numero:1 )
-    when 29
+    when 29 #cccffaa
       @vuobac=[1,2,3,6]
       Formula.where(product_id:1).where('orden=1 or orden=2 or orden=3 or orden=6').update_all( numero:1 )
     else
