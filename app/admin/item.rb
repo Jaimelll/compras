@@ -199,7 +199,7 @@ end
 #localiz='W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 
-link_to item.descripcion, localiz, download: ''
+link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos'
 
   end
 
