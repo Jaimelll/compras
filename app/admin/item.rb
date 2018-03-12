@@ -195,8 +195,8 @@ end
 #link_to item.descripcion, root_path << localiz, :target=>"_blank"
 
 
-  localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
-
+#  localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
+localiz='W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 
 
 link_to item.descripcion, localiz, { target: '_blank' }
