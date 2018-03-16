@@ -7,10 +7,51 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
                    @vaf=current_admin_user.periodo
-
                    @vaf1=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd.to_i
+                   @vaf2=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
 
-                      @vaf2=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
+                      #comienza case
+                      case   @vaf
+                         when 1
+                           @vinicio = Date.parse('2015/01/01')
+                           @dfin=365
+                           @vfin=Date.parse('2015/12/31')
+                           @vrang=30
+                           @vtitun=" AF-2015"
+
+
+                          when 2
+                            @vinicio = Date.parse('2016/01/01')
+                            @dfin=368
+                            @vfin=Date.parse('2016/12/31')
+                             @vrang=30
+                             @vtitun="AF-2016"
+
+
+
+                           when 3
+                             @vinicio = Date.parse('2017/01/01')
+                             @dfin=(Time.now-@vinicio.to_time).to_i/86400
+                             @vfin=Time.now
+                              @vrang=15
+                              @vtitun=" AF-2017"
+
+                            when 4
+                              @vinicio = Date.parse('2018/01/01')
+                              @dfin=(Time.now-@vinicio.to_time).to_i/86400
+                              @vfin=Time.now
+                               @vrang=15
+                               @vtitun=" AF-2018"
+
+                        end #termina case
+
+
+
+                              
+
+
+
+
                       panel  "Fichas Elaboradas -"+@vaf2 do
 
 
@@ -19,8 +60,9 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
 
-                               pie=Movement.where(estado:3).select(' distinct sheet_id')
-                               vpac1=Sheet.where(grupo:@vaf,id:pie,vigencia:1)  #vigencia 1 en proceso 2 activo
+                               pie=Movement.where(estado:3).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                               select(' distinct sheet_id')
+                               vpac1=Sheet.where(id:pie,vigencia:1)  #vigencia 1 en proceso 2 activo
                                vpac2=vpac1.count
                                vpac3=vpac1.select('id')
 
@@ -46,7 +88,8 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
                                    proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
-                                   ejec=Movement.where(sheet_id:vpac3,estado:1).where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
+                                   ejec=Movement.where(estado:1).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                        where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
                                    proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                    ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
                                    plazo=proce1 &  ejec1.to_a
@@ -110,7 +153,8 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                 column ("TOTAL") do |aho|
                                   procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1)
-                                  eject=Movement.where(sheet_id:vpac3,estado:1).where('extract(year from fechap) = ?',@vaf1) # estado 2 revision
+                                  eject=Movement.where(estado:1).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                       where('extract(month from fechap) = ?',lmes) # estado 2 revision
 
 
                                    case bb.index(aho)
@@ -260,10 +304,11 @@ panel  "Fichas Revisadas -"+@vaf2 do
 ###########
 
          panel  "Fichas Certificadas enviadas a Perú Compras -"+@vaf2 do
-                        pies=Movement.where(estado:5).select(' distinct sheet_id')#programa de envio 4
+                        pies=Movement.where(estado:4).select(' distinct sheet_id')#programa de envio 4
                         vpac1s=Sheet.where(id:pies).where('grupo<?',@vaf)  #vigencia 1 en proceso 2 activo
                         vpac2s=vpac1s.count
                         vpac3s=vpac1s.select('id')
+                        vsiadm=Movement.where(sheet_id:vpac3s,estado:5).where('extract(year from fechap) < ?',@vaf1).count
                         vnoadm=Movement.where(sheet_id:vpac3s,estado:6).where('extract(year from fechap) < ?',@vaf1).count
 
 
@@ -272,8 +317,8 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                           vpac2=vpac1.count
                                           vpac3=vpac1.select('id')
 
-                                          bb=["Programadas","Enviadas","No Admitidas", "Pendientes"]
-                                          cc=["Fichas Programadas","Fichas Enviadas","Fichas No admitidas","Fichas Pendientes"]
+                                          bb=["Programadas/enviadas","Aprobadas","No Admitidas", "Pendientes"]
+                                          cc=["Fichas Programadas/Enviadas","Fichas Aprobadas","Fichas No admitidas","Fichas Pendientes"]
 
 
                                       if vpac2>0 then
@@ -289,16 +334,16 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                             case bb.index(aho)
                                               when 0
 
-                                                   "-"
-
-                                              when 1
                                                     vpac2s
 
+                                              when 1
+                                                    vsiadm
+
                                               when 2
-                                                 vnoadm
+                                                   vnoadm
 
                                               when 3
-                                              vpac2s-vnoadm
+                                                 vpac2s-vsiadm-vnoadm
 
                                              end
                                             end
@@ -370,7 +415,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
                                                     when 3
 
-                                                     ejec1.length-ejes1.length
+                                                    proce1.length- ejec1.length-ejes1.length
 
                                                    end
 
@@ -389,16 +434,14 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                                  when 0
                                                    procet.count
                                                  when 1
-                                                   eject.count+vpac2s
+                                                   eject.count
                                                  when 2
-                                                   ejest.count+vnoadm
+                                                   ejest.count
                                                  when 3
-                                                  eject.count+vpac2s-(ejest.count+vnoadm)
+                                                  procet.count-eject.count-ejest.count+vpac2s-vsiadm-vnoadm
 
                                                end
                                             end
-
-
 
 
 
