@@ -198,7 +198,7 @@ f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html
 f.input :convo,:label => 'Año de Convocatoria' , :as => :select, :collection =>
    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :sele5,:label => 'Proceso de origen', :as => :select, :collection =>
-   Phase.order('proceso').map{|u| [u.proceso, u.id]}
+   Phase.where(periodo:@vaf).order('proceso').map{|u| [u.proceso, u.id]}
 
   f.actions
 
