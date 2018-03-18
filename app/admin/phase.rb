@@ -173,12 +173,13 @@ end
 form :title => 'Edicion Procesos' do |f|
 
     f.inputs  do
+        @vaf=current_admin_user.periodo
  f.input :nomenclatura , :input_html => { :style =>  'width:30%'}
  f.input :proceso , :input_html => { :style =>  'width:30%'}
  f.input :convocatoria , :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del bien o servicio'
  f.input :moneda, :as => :select, :collection =>
-          Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
+          Formula.where(product_id:7,numero:@vaf).map{|u| [u.nombre.capitalize, u.orden]}
 
  f.input :valor,:label => 'Valor Referencial', :as => :string, :input_html => { :style =>  'width:30%'}
  f.input :expediente, :input_html => { :style =>  'width:60%'}, :as => :select, :collection =>

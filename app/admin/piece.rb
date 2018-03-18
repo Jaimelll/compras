@@ -85,13 +85,13 @@ form :title => 'Edicion Item'  do |f|
 
 
       f.inputs  do
-
+              @vaf=current_admin_user.periodo
 
 
              f.input :codigo, :input_html => { :style =>  'width:30%'}
              f.input :descripcion, :input_html => { :style =>  'width:30%'}
              f.input :moneda, :as => :select, :collection =>
-                      Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
+                      Formula.where(product_id:7,numero:@vaf).map{|u| [u.nombre.capitalize, u.orden]}
 
              f.input :presupuestado,:as =>:string, :input_html => { :style =>  'width:30%'}
              f.input :referencial,:as =>:string, :input_html => { :style =>  'width:30%'}

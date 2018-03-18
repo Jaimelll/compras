@@ -32,14 +32,14 @@ ActiveAdmin.register_page "Catalogacion" do
                            when 3
                              @vinicio = Date.parse('2017/01/01')
                              @dfin=(Time.now-@vinicio.to_time).to_i/86400
-                             @vfin=Time.now
+                             @vfin=Date.parse('2017/12/31')
                               @vrang=15
                               @vtitun=" AF-2017"
 
                             when 4
                               @vinicio = Date.parse('2018/01/01')
                               @dfin=(Time.now-@vinicio.to_time).to_i/86400
-                              @vfin=Time.now
+                              @vfin=Date.parse('2018/12/31')
                                @vrang=15
                                @vtitun=" AF-2018"
 
@@ -47,7 +47,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
 
-                              
+
 
 
 
@@ -66,8 +66,9 @@ ActiveAdmin.register_page "Catalogacion" do
                                vpac2=vpac1.count
                                vpac3=vpac1.select('id')
 
-                               bb=["Programadas","Ejecutadas","Hechas en Plazo"]
-                               cc=["Fichas Elaboradas Programadas","Fichas Elaboradas Ejecutadas","Fichas Elaboradas Hechas en Plazo"]
+                               bb=["Programadas","Ejecutadas","Hechas en Plazo","Acumuladas"]
+                               cc=["Fichas Elaboradas Programadas","Fichas Elaboradas Ejecutadas",
+                                 "Fichas Elaboradas Hechas en Plazo","Fichas Acumuladas Elaboradas Hechas en Plazo"]
 
 
                            if vpac2>0 then
@@ -82,8 +83,10 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
 
-                                 lmes=1
+                                    lmes=1
                                     plazot=[]
+                                    aplazo=[]
+                                    aejec=[]
                                 while lmes<13
 
 
@@ -94,6 +97,8 @@ ActiveAdmin.register_page "Catalogacion" do
                                    ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
                                    plazo=proce1 &  ejec1.to_a
 
+                                   aejec=aejec+ejec1
+                                   aplazo=aplazo+ proce1 &  aejec.to_a
 
                                     column ("#{lmes}") do |aho|
                                         case bb.index(aho)
@@ -125,7 +130,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                           when 2
 
                                                 esta=1
-                                                plazot=plazot+plazo
+
                                                 tit=  cc[bb.index(aho)]
                                                 le=plazo.length
 
@@ -136,6 +141,21 @@ ActiveAdmin.register_page "Catalogacion" do
                                                 else
                                                   le
                                                 end
+                                          when 3
+
+                                                    esta=1
+
+                                                    tit=  cc[bb.index(aho)]
+                                                    le=aplazo.length
+
+                                                    if le>0 then
+                                                        link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                       :param1=> aplazo, :param2=> lmes, :param3=> tit.upcase,
+                                                       :param4=> 3,:param5=> esta)
+                                                    else
+                                                      le
+                                                    end
+
 
 
 
@@ -153,17 +173,16 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                 column ("TOTAL") do |aho|
                                   procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1)
-                                  eject=Movement.where(estado:1).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
-                                       where('extract(month from fechap) = ?',lmes) # estado 2 revision
-
 
                                    case bb.index(aho)
                                       when 0
                                         procet.count
                                       when 1
-                                        eject.count
+                                        aejec.count
                                       when 2
-                                        plazot.length
+                                          "-"
+                                      when 3
+                                        aplazo.length
 
                                     end
                                  end
@@ -183,15 +202,15 @@ ActiveAdmin.register_page "Catalogacion" do
 panel  "Fichas Revisadas -"+@vaf2 do
 
 
-
-
-                                 pie=Movement.where(estado:3).select(' distinct sheet_id')
-                                 vpac1=Sheet.where(grupo:@vaf,id:pie,vigencia:2)  #vigencia 1 en proceso 2 activo
+                                  pie=Movement.where(estado:3).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                      select(' distinct sheet_id')
+                                 vpac1=Sheet.where(id:pie,vigencia:2)  #vigencia 1 en proceso 2 activo
                                  vpac2=vpac1.count
                                  vpac3=vpac1.select('id')
 
-                                 bb=["Programadas","Ejecutadas","Hechas en Plazo"]
-                                 cc=["Fichas Revisadas Programadas","Fichas Revisadas Ejecutadas","Fichas Revisadas Hechas en Plazo"]
+                                 bb=["Programadas","Ejecutadas","Hechas en Plazo","Acumuladas"]
+                                 cc=["Fichas Revisadas Programadas","Fichas Revisadas Ejecutadas",
+                                   "Fichas Revisadas Hechas en Plazo","Fichas Acumuladas Revisadas Hechas en Plazo"]
 
 
                              if vpac2>0 then
@@ -207,16 +226,22 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
 
                                    lmes=1
-                                      plazot=[]
+                                   plazot=[]
+                                   aplazo=[]
+                                   aejec=[]
                                   while lmes<13
 
 
+
                                      proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
-                                     ejec=Movement.where(sheet_id:vpac3,estado:2).where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
+                                     ejec=Movement.where(estado:2).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                          where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
                                      proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                      ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
                                      plazo=proce1 &  ejec1.to_a
 
+                                     aejec=aejec+ejec1
+                                     aplazo=aplazo+ proce1 &  aejec.to_a
 
                                      column ("#{lmes}") do |aho|
                                          case bb.index(aho)
@@ -261,6 +286,22 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                                  end
 
 
+                                         when 3
+
+                                                   esta=1
+
+                                                   tit=  cc[bb.index(aho)]
+                                                   le=aplazo.length
+
+                                                   if le>0 then
+                                                       link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                      :param1=> aplazo, :param2=> lmes, :param3=> tit.upcase,
+                                                      :param4=> 3,:param5=> esta)
+                                                   else
+                                                     le
+                                                   end
+
+
 
 
                                           end
@@ -275,20 +316,22 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
 
                                   column ("TOTAL") do |aho|
+
                                     procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1)
-                                    eject=Movement.where(sheet_id:vpac3,estado:2).where('extract(year from fechap) = ?',@vaf1) # estado 2 revision
 
+                                       case bb.index(aho)
+                                          when 0
+                                            procet.count
+                                          when 1
+                                            aejec.count
+                                          when 2
+                                              "-"
+                                          when 3
+                                            aplazo.length
 
-                                     case bb.index(aho)
-                                        when 0
-                                          procet.count
-                                        when 1
-                                          eject.count
-                                        when 2
-                                          plazot.length
+                                        end
+                                     end
 
-                                      end
-                                   end
 
 
 
@@ -304,16 +347,18 @@ panel  "Fichas Revisadas -"+@vaf2 do
 ###########
 
          panel  "Fichas Certificadas enviadas a Perú Compras -"+@vaf2 do
-                        pies=Movement.where(estado:4).select(' distinct sheet_id')#programa de envio 4
-                        vpac1s=Sheet.where(id:pies).where('grupo<?',@vaf)  #vigencia 1 en proceso 2 activo
+                        pies=Movement.where(estado:4).where("fechap<? ", @vinicio )
+                                         .select(' distinct sheet_id')#programa de envio 4
+                        vpac1s=Sheet.where(id:pies)  #vigencia 1 en proceso 2 activo
                         vpac2s=vpac1s.count
                         vpac3s=vpac1s.select('id')
-                        vsiadm=Movement.where(sheet_id:vpac3s,estado:5).where('extract(year from fechap) < ?',@vaf1).count
-                        vnoadm=Movement.where(sheet_id:vpac3s,estado:6).where('extract(year from fechap) < ?',@vaf1).count
+                        vsiadm=Movement.where(sheet_id:vpac3s,estado:5).count
+                        vnoadm=Movement.where(sheet_id:vpac3s,estado:6).count
 
 
-                                          pie=Movement.where(estado:4).select(' distinct sheet_id')#programa de envio 4
-                                          vpac1=Sheet.where(grupo:@vaf,id:pie)  #vigencia 1 en proceso 2 activo
+                                          pie=Movement.where(estado:4).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                                       select(' distinct sheet_id')#programa de envio 4
+                                          vpac1=Sheet.where(id:pie)  #vigencia 1 en proceso 2 activo
                                           vpac2=vpac1.count
                                           vpac3=vpac1.select('id')
 

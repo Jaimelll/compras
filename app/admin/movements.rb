@@ -75,11 +75,11 @@ ActiveAdmin.register Movement do
 
 
                  f.input :estado, :label => 'Actividad', :as => :select, :collection =>
-                    Formula.where(product_id:38).map{|u| [u.nombre, u.orden]}
+                    Formula.where(product_id:38).order('orden ASC').map{|u| [u.nombre, u.orden]}
                  f.input :observ
                  f.input :codigo
                  f.input :descripcion
-                   f.input :sele1, :label => 'Resolucion', :input_html => { :style =>  'width:30%'}
+                 f.input :sele1, :label => 'Resolucion', :input_html => { :style =>  'width:30%'}
                  f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
                         f.actions
@@ -127,26 +127,18 @@ ActiveAdmin.register Movement do
            sidebar "Datos de la Ficha" do
              if params[:sheet_id] then
                Sheet.where(id:params[:sheet_id]).each do |ficc|
-                @vaf=current_admin_user.periodo
-                per1=Formula.where(product_id:11, orden:@vaf).
-                 select('nombre as dd').first.dd
-                per=Sheet.where(grupo:@vaf,id:params[:sheet_id]).count
-                if per>0 then
-                per2=Formula.where(product_id:11, orden:ficc.grupo).
-                  select('nombre as dd').first.dd
-                else
-                per2="s/d"
-                end
+            vestado= Formula.where(product_id:36, orden:ficc.vigencia).
+                       select('nombre as dd').first.dd
 
 
                  ul do
-                    li "Periodo activo:   "+per1
-                    li "Periodo       :   "+per2
+
                     li "Creacion:         "+ficc.creada.to_s
                     li "Revisada:         "+ficc.revisada.to_s
                     li "Codigo revision:  "+ficc.codigo_revision
                     li "Descripcion:      "+ficc.descripcion
                     li "Resolucion:      "+ficc.numero
+                    li "Estado:          "+vestado
                  end
                end
 

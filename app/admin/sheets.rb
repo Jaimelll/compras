@@ -54,13 +54,13 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
 
      scope :xElaborar, :default => true do |ficha|
          @vaf=current_admin_user.periodo
-         pie=Movement.where(estado:3).select(' distinct sheet_id') #estado 3 programadas
+         pie=Movement.where(estado:1).select(' distinct sheet_id') #estado 3 programadas
          ficha.where(grupo:@vaf,id:pie,vigencia:1)  #vigencia 1 en proceso 2 activo
 
      end
      scope :xRevisar, :default => true do |ficha|
        @vaf=current_admin_user.periodo
-       pie=Movement.where(estado:3).select(' distinct sheet_id') #estado 3 programadas
+       pie=Movement.where(estado:2).select(' distinct sheet_id') #estado 3 programadas
        ficha.where(grupo:@vaf,id:pie,vigencia:2)  #vigencia 1 en proceso 2 activo
 
      end
@@ -71,6 +71,8 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      filter :descripcion
      filter :grupo, label:'periodo', :as => :select, :collection =>
            Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+     filter :vigencia, label:'estado', :as => :select, :collection =>
+           Formula.where(product_id:36).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 
 
 
@@ -107,12 +109,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
             end
       end
 
-      column("Periodo") do |ficha|
-            if ficha.grupo and ficha.grupo>0 then
-                 Formula.where(product_id:11, orden:ficha.grupo).
-                  select('nombre as dd').first.dd
-            end
-      end
+      
       column("estado")  do |ficha|
             if ficha.vigencia then
                  Formula.where(product_id:36, orden:ficha.vigencia).
