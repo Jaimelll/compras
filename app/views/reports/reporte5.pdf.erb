@@ -31,6 +31,16 @@
 <%  else %>
        <th   >Referencial</th>
 <% end%>
+<% if @vactcanti.include?("4") then%>
+       <th   >EPOM</th>
+
+<% end%>
+<% if @vactcanti.include?("5") then%>
+       <th   >Consentimiento</th>
+
+<% end%>
+
+
 
     </tr>
     <tbody>
@@ -110,6 +120,34 @@
 
                   <td ><h5  ALIGN=center><%= number_with_delimiter(@reff.to_i, delimiter: ",") %></h5></td>
         <% end%>
+        <% if @vactcanti.include?("4") then%>
+
+        <%deta2= Phase.where.not(expediente:0).find_by(expediente:variable.expediente).activities
+                  .where(actividad: 102)
+                  .order('activities.pfecha ')%>
+
+            <% if deta2.count >0 then %>
+                <td ><%= deta2.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+            <% else %>
+                <td >s/d </td>
+            <% end %>
+         <% end %>
+
+         <% if @vactcanti.include?("5") then%>
+
+         <%deta2= Phase.where.not(expediente:0).find_by(expediente:variable.expediente).activities
+                   .where(actividad: 21)
+                   .order('activities.pfecha ')%>
+
+             <% if deta2.count >0 then %>
+                 <td ><%= deta2.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+             <% else %>
+                 <td >s/d </td>
+             <% end %>
+          <% end %>
+
+
+
 
 
         </tr>

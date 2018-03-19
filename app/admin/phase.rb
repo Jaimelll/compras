@@ -22,7 +22,7 @@ ActiveAdmin.register Phase do
 # end
 permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :admin_user_id, :periodo, :convocatoria, :sele3, :proceso,
-              :sele4, :comite, :postores, :obs, :sele5,
+              :sele4, :comite, :postores, :obs,
               :ep, :mgp, :fap, :ccffaa,  :sele5,  :convo
 #se puede usar sele3 era para autidados
 menu priority: 10, label: "Proceso buscar"

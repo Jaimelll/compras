@@ -32,7 +32,7 @@ menu priority: 12, label: "Contrato buscar"
 
 
 scope :ACFFAA, :default => true do |contracts|
-@vaf=@vaf=current_admin_user.periodo
+@vaf=current_admin_user.periodo
       contracts.where(periodo:@vaf)
 end
 
@@ -55,6 +55,16 @@ end
 scope :Todos, :default => true do |contracts|
      contracts
 end
+scope :Nacional, :default => true do |contracts|
+  pack=Item.where(tipo:1).select('DISTINCT exped')
+  proce=Phase.where(expediente:pack).select('DISTINCT id')
+  contracts.where(proceso:proce)
+end
+scope :Internacional, :default => true do |contracts|
+  pack=Item.where(tipo:2).select('DISTINCT exped')
+  proce=Phase.where(expediente:pack).select('DISTINCT id')
+  contracts.where(proceso:proce)
+end
 
 
 
@@ -70,6 +80,7 @@ filter :obac,  :as => :select, :collection =>
         Formula.where(product_id:1,cantidad:1).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :periodo , :as => :select, :collection =>
         Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+
 
 
 index :title => 'Lista de Contratos' do
@@ -120,6 +131,7 @@ end
 form :title => 'Edicion Contrato' do |f|
 
     f.inputs  do
+      @vaf=current_admin_user.periodo
  f.input :numero , :input_html => { :style =>  'width:30%'}
  f.input :fecha, :label => 'fecha ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del contrato'
@@ -136,7 +148,7 @@ form :title => 'Edicion Contrato' do |f|
  f.input :postor , :input_html => { :style =>  'width:30%'}
 
  f.input :moneda, :as => :select, :collection =>
-          Formula.where(product_id:7).map{|u| [u.nombre.capitalize, u.orden]}
+          Formula.where(product_id:7,numero:@vaf).map{|u| [u.nombre.capitalize, u.orden]}
 
  f.input :adjudicado, :as => :string, :input_html => { :style =>  'width:30%'}
  f.input :presupuestado, :as => :string, :input_html => { :style =>  'width:30%'}

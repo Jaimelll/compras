@@ -49,20 +49,28 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      end
      scope :Programadas, :default => true do |ficha|
          @vaf=current_admin_user.periodo
-          ficha.where(grupo:@vaf)
+         vyear=Formula.where(product_id:11,orden:@vaf).
+               select('nombre as dd').first.dd.to_i
+         ejec=Movement.where(estado:3).where('extract(year from fechap) = ?',vyear).
+                select('sheet_id ')
+         ficha.where(id:ejec)
      end
 
-     scope :xElaborar, :default => true do |ficha|
-         @vaf=current_admin_user.periodo
-         pie=Movement.where(estado:1).select(' distinct sheet_id') #estado 3 programadas
-         ficha.where(grupo:@vaf,id:pie,vigencia:1)  #vigencia 1 en proceso 2 activo
-
-     end
-     scope :xRevisar, :default => true do |ficha|
+     scope :Elaboradas, :default => true do |ficha|
        @vaf=current_admin_user.periodo
-       pie=Movement.where(estado:2).select(' distinct sheet_id') #estado 3 programadas
-       ficha.where(grupo:@vaf,id:pie,vigencia:2)  #vigencia 1 en proceso 2 activo
-
+       vyear=Formula.where(product_id:11,orden:@vaf).
+             select('nombre as dd').first.dd.to_i
+       ejec=Movement.where(estado:1).where('extract(year from fechap) = ?',vyear).
+              select('sheet_id ')
+       ficha.where(id:ejec)
+     end
+     scope :Revisadas, :default => true do |ficha|
+       @vaf=current_admin_user.periodo
+       vyear=Formula.where(product_id:11,orden:@vaf).
+             select('nombre as dd').first.dd.to_i
+       ejec=Movement.where(estado:2).where('extract(year from fechap) = ?',vyear).
+              select('sheet_id ')
+       ficha.where(id:ejec)
      end
 
      filter :codigo_ficha
@@ -109,7 +117,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
             end
       end
 
-      
+
       column("estado")  do |ficha|
             if ficha.vigencia then
                  Formula.where(product_id:36, orden:ficha.vigencia).
