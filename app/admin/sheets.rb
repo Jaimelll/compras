@@ -37,11 +37,10 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      end
 
      scope :Homogenizados, :default => true do |ficha|
-          ficha.where("right(codigo_ficha,2)='HR'")
+          ficha.where.not("right(codigo_ficha,2)='ER'")
      end
      scope :Estandarizados, :default => true do |ficha|
-          ficha.where("right(codigo_ficha,1)='A'
-          or right(codigo_ficha,2)='ER'")
+          ficha.where("right(codigo_ficha,2)='ER'")
      end
 
      scope :Todos, :default => true do |ficha|
@@ -70,6 +69,11 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
              select('nombre as dd').first.dd.to_i
        ejec=Movement.where(estado:2).where('extract(year from fechap) = ?',vyear).
               select('sheet_id ')
+       ficha.where(id:ejec)
+     end
+     scope :SIE, :default => true do |ficha|
+
+       ejec=Movement.where(estado:5).select('DISTINCT sheet_id ')
        ficha.where(id:ejec)
      end
 

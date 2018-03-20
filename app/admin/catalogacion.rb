@@ -10,43 +10,7 @@ ActiveAdmin.register_page "Catalogacion" do
                    @vaf1=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd.to_i
                    @vaf2=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
 
-                      #comienza case
-                      case   @vaf
-                         when 1
-                           @vinicio = Date.parse('2015/01/01')
-                           @dfin=365
-                           @vfin=Date.parse('2015/12/31')
-                           @vrang=30
-                           @vtitun=" AF-2015"
-
-
-                          when 2
-                            @vinicio = Date.parse('2016/01/01')
-                            @dfin=368
-                            @vfin=Date.parse('2016/12/31')
-                             @vrang=30
-                             @vtitun="AF-2016"
-
-
-
-                           when 3
-                             @vinicio = Date.parse('2017/01/01')
-                             @dfin=(Time.now-@vinicio.to_time).to_i/86400
-                             @vfin=Date.parse('2017/12/31')
-                              @vrang=15
-                              @vtitun=" AF-2017"
-
-                            when 4
-                              @vinicio = Date.parse('2018/01/01')
-                              @dfin=(Time.now-@vinicio.to_time).to_i/86400
-                              @vfin=Date.parse('2018/12/31')
-                               @vrang=15
-                               @vtitun=" AF-2018"
-
-                        end #termina case
-
-
-
+                      
 
 
 
@@ -60,7 +24,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
 
-                               pie=Movement.where(estado:3).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                               pie=Movement.where(estado:3).where('extract(year from fechap) = ?',@vaf1).
                                select(' distinct sheet_id')
                                vpac1=Sheet.where(id:pie,vigencia:1)  #vigencia 1 en proceso 2 activo
                                vpac2=vpac1.count
@@ -91,7 +55,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
                                    proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
-                                   ejec=Movement.where(estado:1).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                   ejec=Movement.where(estado:1).where('extract(year from fechap) = ?',@vaf1).
                                         where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
                                    proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                    ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
@@ -202,7 +166,7 @@ ActiveAdmin.register_page "Catalogacion" do
 panel  "Fichas Revisadas -"+@vaf2 do
 
 
-                                  pie=Movement.where(estado:3).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                  pie=Movement.where(estado:3).where('extract(year from fechap) = ?',@vaf1).
                                       select(' distinct sheet_id')
                                  vpac1=Sheet.where(id:pie,vigencia:2)  #vigencia 1 en proceso 2 activo
                                  vpac2=vpac1.count
@@ -234,7 +198,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
 
                                      proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
-                                     ejec=Movement.where(estado:2).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                     ejec=Movement.where(estado:2).where('extract(year from fechap) = ?',@vaf1).
                                           where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
                                      proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                      ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
@@ -347,7 +311,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
 ###########
 
          panel  "Fichas Certificadas enviadas a Perú Compras -"+@vaf2 do
-                        pies=Movement.where(estado:4).where("fechap<? ", @vinicio )
+                        pies=Movement.where(estado:4).where('extract(year from fechap) < ?',@vaf1)
                                          .select(' distinct sheet_id')#programa de envio 4
                         vpac1s=Sheet.where(id:pies)  #vigencia 1 en proceso 2 activo
                         vpac2s=vpac1s.count
@@ -356,7 +320,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
                         vnoadm=Movement.where(sheet_id:vpac3s,estado:6).count
 
 
-                                          pie=Movement.where(estado:4).where("fechap>=? and fechap<=? ", @vinicio,@vfin ).
+                                          pie=Movement.where(estado:4).where('extract(year from fechap) = ?',@vaf1).
                                                        select(' distinct sheet_id')#programa de envio 4
                                           vpac1=Sheet.where(id:pie)  #vigencia 1 en proceso 2 activo
                                           vpac2=vpac1.count

@@ -13,8 +13,8 @@ ActiveAdmin.register Movement do
        end
 
        member_action :ficha, method: :put do
-         @vaf=current_admin_user.periodo
-         per=Sheet.where(grupo:@vaf,id:params[:sheet_id]).count
+
+         per=Sheet.where(id:params[:sheet_id]).count
          vc1=Movement.where(estado:1,id:params[:id]).count
          vc2=Movement.where(estado:2,id:params[:id]).count
            if vc1+vc2>0 and per>0 then
