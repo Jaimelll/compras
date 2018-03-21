@@ -28,6 +28,7 @@ class Ability
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
     #      can :read, ActiveAdmin::Page, :name =>"grafico"
     #      can :read, ActiveAdmin::Page, :name =>"grafico0"
+          can :read, ActiveAdmin::Page, :name =>"Catalogacion"
           can :read, ActiveAdmin::Page, :name =>"Indices"
           can :read, ActiveAdmin::Page, :name =>"Dpc"
           can [:read], [Item, Detail]
@@ -47,6 +48,7 @@ class Ability
            can [:read,:update],  [AdminUser]
       #  can :read, ActiveAdmin::Page, :name =>"grafico"
       #  can :read, ActiveAdmin::Page, :name =>"grafico0"
+            can :read, ActiveAdmin::Page, :name =>"Catalogacion"
            can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:read], [Item,Phase,Piece]
            can [:create,:read,:update,:destroy],  [Detail,Activity]
