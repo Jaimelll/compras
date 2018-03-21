@@ -20,7 +20,8 @@ permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
              :resulta, :version,:tipo_postor, :motivo,:proceso,
              :pasan,
              :ep, :mgp, :fap, :ccffaa,
-              :ref_ep, :ref_mgp, :ref_fap, :ref_ccffaa
+              :ref_ep, :ref_mgp, :ref_fap, :ref_ccffaa,
+              :desierto, :articulo, :ficha
 
              action_item :view, only:[:show,:new,:index]do
                if params[:phase_id] then
@@ -127,17 +128,21 @@ form :title => 'Edicion Item'  do |f|
               f.input :resulta,:label => 'Resultado', :as => :select, :collection =>
                        Formula.where(product_id:31).map{|u| [u.nombre.capitalize, u.orden]}
 
-              f.input :version,:label => 'Version de Manual', :as => :select, :collection =>
-                       Formula.where(product_id:32).map{|u| [u.nombre.capitalize, u.orden]}
+          #    f.input :version,:label => 'Version de Manual', :as => :select, :collection =>
+          #             Formula.where(product_id:32).map{|u| [u.nombre.capitalize, u.orden]}
 
-              f.input :tipo_postor,:label => 'Tipo de postor', :as => :select, :collection =>
-                       Formula.where(product_id:33).map{|u| [u.nombre.capitalize, u.orden]}
+          #    f.input :tipo_postor,:label => 'Tipo de postor', :as => :select, :collection =>
+          #             Formula.where(product_id:33).map{|u| [u.nombre.capitalize, u.orden]}
 
-              f.input :motivo, :label => 'Motivo de no admision',:input_html => { :style =>  'width:30%'}
+            #  f.input :motivo, :label => 'Motivo de no admision',:input_html => { :style =>  'width:30%'}
+            f.input :desierto,:label => 'Origen de desierto', :as => :select, :collection =>
+                     Formula.where(product_id:10,acti:1).map{|u| [u.descripcion, u.orden]}
+            f.input :articulo,:label => 'cantidad de articulos', :as => :string, :input_html => { :style =>  'width:30%'}
+            f.input :ficha,:label => 'cantidad de articulos con ficha', :as => :string, :input_html => { :style =>  'width:30%'}
 
 
 
-                   end
+            end
             f.actions
 
 
@@ -262,35 +267,46 @@ form :title => 'Edicion Item'  do |f|
                 end
 
 
-                row 'Manual version' do |detail|
-                if detail.version and detail.version>0 then
+            #    row 'Manual version' do |detail|
+            #    if detail.version and detail.version>0 then
 
-                   Formula.where(product_id:32, orden:detail.version).
-                    select('nombre as dd').first.dd
+            #       Formula.where(product_id:32, orden:detail.version).
+            #        select('nombre as dd').first.dd
 
-                  else
-                      "s/d"
-                  end
-              end
+            #      else
+            #          "s/d"
+            #      end
+            #  end
 
-              row 'Tipo de postor' do |detail|
-              if detail.tipo_postor and detail.tipo_postor>0 then
+          #    row 'Tipo de postor' do |detail|
+          #    if detail.tipo_postor and detail.tipo_postor>0 then
 
-                 Formula.where(product_id:33, orden:detail.tipo_postor).
-                  select('nombre as dd').first.dd
+          #       Formula.where(product_id:33, orden:detail.tipo_postor).
+          #        select('nombre as dd').first.dd
 
-                else
-                    "s/d"
-                end
+          #      else
+          #          "s/d"
+          #      end
+          #  end
+          row 'Origen de desierto' do |detail|
+          if detail.desierto and detail.desierto>0 then
+
+             Formula.where(product_id:10, orden:detail.desierto).
+              select('descripcion as dd').first.dd
+
+            else
+                "s/d"
             end
+        end
+
+        
+          row :articulo
+          row :ficha
 
 
 
 
-
-
-
-                  row :motivo
+        #          row :motivo
 
                   row :admin_user_id
 
