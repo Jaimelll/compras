@@ -91,7 +91,7 @@ vnommod=Formula.where(product_id:4,orden:vmmod).select('nombre as dd').first.dd
   ref2=ref1*Formula.where(product_id:7,orden:procc.moneda).select('cantidad as dd').first.dd/100.to_i
   presu1=Piece.where(phase_id:procc.id.to_s).where('adjudicado>0').sum(:presupuestado).to_i
   aho2=presu1-procc.sele2
-sheet.add_row [ procc.nomenclatura, procc.descripcion,vnommod,presu1, ref2, procc.sele2,aho2],  style: [izq, izq, izq,soles,soles,soles,soles]
+sheet.add_row [ procc.proceso, procc.descripcion,vnommod,presu1, ref2, procc.sele2,aho2],  style: [izq, izq, izq,soles,soles,soles,soles]
 
 end
 
@@ -135,6 +135,29 @@ vficha=procc.descripcion
 
 
 sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
+
+end
+
+
+when 5
+
+
+
+sheet.add_row %w( PROCESO DESCRIPCION ESTADO ),   style: [ titu, titu, titu]
+
+aiitem=@iitem.flatten.compact
+
+Piece.where(id:aiitem).order('phase_id,codigo').each do |procc|
+
+
+
+vproce=Phase.where(id:procc.phase_id).select('proceso as dd').first.dd
+viten=procc.codigo+'-'+procc.descripcion
+ves=Formula.where(product_id:17, orden:procc.estado).
+       select('nombre as dd').first.dd
+
+
+sheet.add_row [ vproce, viten,ves],  style: [fechad, izq, izq]
 
 end
 

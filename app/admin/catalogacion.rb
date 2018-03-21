@@ -618,6 +618,200 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                     end #panel
 
 #################
+   panel  "Item Desiertos -"+@vaf2 do
+     @vaf=current_admin_user.periodo
+                                vdesier=[3]
+                                vadj=[2,4,9]
+                                vestado=[2,3,4,5,9]
+                               pie=Piece.where("adjudicado IS NOT NULL").where(estado:vestado).select(' distinct phase_id')
+                               vpac3=Phase.where(periodo:@vaf,id:pie).select('id')
+
+                               bb=["Procesos","Items",
+                                 "Items Desiertos","Items desiertos por DC","Articulos adjudicados","Articulos adj. con ficha"]
+
+
+
+                               table_for bb  do
+
+                                 column("Mes")do |aho|
+                                    bb[bb.index(aho)]
+                                 end
+
+
+                                 lmes=1
+                                while lmes<13
+
+                                   proce=Phase.where(id:vpac3).where('extract(month from pp) = ?',lmes).
+                                   select(:id).map {|e| e.attributes.values}.flatten.compact
+
+                                   itev=Piece.where(phase_id:proce).select(:id).
+                                               map {|e| e.attributes.values}.flatten.compact
+
+                                    column ("#{lmes}") do |aho|
+                                        case bb.index(aho)
+                                          when 0
+
+
+                                              tit=  bb[bb.index(aho)]
+                                              le= proce.length
+
+                                              if le>0 then
+                                              link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                              :param1=> proce, :param2=> lmes, :param3=> tit.upcase, :param4=> 2)
+                                              else
+                                              le
+                                              end #de if
+
+                                            when 1
+
+
+                                                tit=  bb[bb.index(aho)]
+                                                le= itev.length
+
+                                                if le>0 then
+                                                link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                :param1=> itev, :param2=> lmes, :param3=> tit.upcase, :param4=> 5)
+                                                else
+                                                le
+                                                end #de if
+                                              when 2
+
+
+                                                  tit=  bb[bb.index(aho)]
+                                                  mdes=Piece.where(id:itev,estado:vdesier).select(:id).
+                                                              map {|e| e.attributes.values}.flatten.compact
+                                                    le=mdes.length
+                                                  if le>0 then
+                                                  link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                  :param1=> mdes, :param2=> lmes, :param3=> tit.upcase, :param4=> 5)
+                                                  else
+                                                  le
+                                                  end #de if
+
+
+                                              when 3
+
+
+                                                  tit=  bb[bb.index(aho)]
+                                                  mdes=Piece.where(id:itev,estado:vdesier,desierto:3).select(:id).
+                                                              map {|e| e.attributes.values}.flatten.compact
+                                                    le=mdes.length
+                                                  if le>0 then
+                                                  link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                  :param1=> mdes, :param2=> lmes, :param3=> tit.upcase, :param4=> 5)
+                                                  else
+                                                  le
+                                                  end #de if
+
+                                                when 4
+
+
+                                                    mdes=Piece.where(id:itev,estado:vadj).sum(:articulo)
+
+                                                when 5
+
+
+                                                      mdes=Piece.where(id:itev,estado:vadj).sum(:ficha)
+
+
+
+
+
+                                         end
+                                     end
+                                lmes=lmes+1
+                                end
+
+
+                                procet=Phase.where(id:vpac3).
+                                select(:id).map {|e| e.attributes.values}.flatten.compact
+
+                                itevt=Piece.where(phase_id:procet).select(:id).
+                                            map {|e| e.attributes.values}.flatten.compact
+
+                                mdest1=Piece.where(id:itevt,estado:vdesier).select(:id).
+                                                        map {|e| e.attributes.values}.flatten.compact
+
+                                mdest=Piece.where(id:itevt,estado:vdesier,desierto:3).select(:id).
+                                                  map {|e| e.attributes.values}.flatten.compact
+
+
+                                column ("TOTAL") do |aho|
+
+                                   case bb.index(aho)
+                                      when 0
+                                         procet.length
+                                      when 1
+                                         itevt.length
+
+                                      when 2
+                                          mdest1.length
+                                      when 3
+                                           mdest.length
+                                     when 4
+                                             mdes1=Piece.where(id:itevt,estado:vadj).
+                                             sum(:articulo)
+
+                                     when 5
+
+
+                                               mdes2=Piece.where(id:itevt,estado:vadj).
+                                               sum(:ficha)
+
+                                    end
+                                end
+                                    column ("%") do |aho|
+
+                                       case bb.index(aho)
+                                          when 0
+                                            "-"
+                                          when 1
+                                              "-"
+
+                                          when 2
+                                                "-"
+                                          when 3
+                                            if  mdest1.length>0 then
+                                               mdest.length*100/mdest1.length
+                                            else
+                                                0
+                                            end
+                                         when 4
+                                                "-"
+
+                                         when 5
+                                           mdes1=Piece.where(id:itevt,estado:vadj).
+                                                   sum(:articulo)
+                                           mdes2=Piece.where(id:itevt,estado:vadj).
+                                                  sum(:ficha)
+
+                                           if  mdes1>0 then
+                                              mdes2*100/mdes1
+                                           else
+                                               0
+                                           end
+
+                                        end
+
+
+
+
+                                 end
+
+
+
+
+
+
+
+                           end#table
+
+
+
+         end #panel
+################
+
+#
 
       end
 
