@@ -344,11 +344,13 @@ panel  "Fichas Actualizadas -"+@vaf2 do
          panel  "Fichas Certificadas enviadas a Perú Compras -"+@vaf2 do
                         pies=Movement.where(estado:4).where('extract(year from fechap) < ?',@vaf1)
                                          .select(' distinct sheet_id')#programa de envio 4
-                        vpac1s=Sheet.where(id:pies)  #vigencia 1 en proceso 2 activo
-                        vpac2s=vpac1s.count
-                        vpac3s=vpac1s.select('id')
-                        vsiadm=Movement.where(sheet_id:vpac3s,estado:5).count
-                        vnoadm=Movement.where(sheet_id:vpac3s,estado:6).count
+                                         .select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
+
+
+                        vsiadm=Movement.where(sheet_id:pies,estado:5)
+                             .select(:sheet_id).map {|e| e.attributes.values}.flatten.compact   #aprob
+                        vnoadm=Movement.where(sheet_id:pies,estado:6)
+                             .select(:sheet_id).map {|e| e.attributes.values}.flatten.compact   #no adm
 
 
                                           pie=Movement.where(estado:4).where('extract(year from fechap) = ?',@vaf1).
@@ -374,16 +376,70 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                             case bb.index(aho)
                                               when 0
 
-                                                    vpac2s
+
+
+                                                    esta=4
+                                                    tit=  "TOTAL DE FICHAS CERTIFICADAS ANTERIORMENTE ENVIADAS "
+                                                    le= pies.length
+                                                    if le>0 then
+                                                        link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                       :param1=> pies, :param2=> 12, :param3=>  tit.upcase,
+                                                       :param4=> 4,:param5=> esta)
+                                                    else
+                                                      le
+                                                    end
+
+
+
 
                                               when 1
-                                                    vsiadm
+
+
+                                                    esta=5
+                                                    tit=  "TOTAL DE FICHAS CERTIFICADAS ANTERIORMENTE APROBADAS "
+                                                    le= vsiadm.length
+                                                    if le>0 then
+                                                        link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                       :param1=> vsiadm, :param2=> 12, :param3=> tit.upcase,
+                                                       :param4=> 4,:param5=> esta)
+                                                    else
+                                                      le
+                                                    end
+
 
                                               when 2
-                                                   vnoadm
+
+
+                                                   esta=6
+                                                   tit= "TOTAL DE FICHAS CERTIFICADAS ANTERIORMENTE NO ADMITIDAS "
+                                                   le= vnoadm.length
+                                                   if le>0 then
+                                                       link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                      :param1=> vnoadm, :param2=> 12, :param3=> tit.upcase,
+                                                      :param4=> 4,:param5=> esta)
+                                                   else
+                                                     le
+                                                   end
+
 
                                               when 3
-                                                 vpac2s-vsiadm-vnoadm
+                                                 pend =pies-vsiadm-vnoadm
+
+                                                 esta=4
+                                                 tit= "FICHAS PENDIENTES DE AÑO ANTERIOR "
+                                                 le= pend.length
+                                                 if le>0 then
+                                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                    :param1=> pend, :param2=> 12, :param3=> tit.upcase,
+                                                    :param4=> 4,:param5=> esta)
+                                                 else
+                                                   le
+                                                 end
+
+
+
+
+
 
                                              end
                                             end
@@ -431,7 +487,7 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                                           le= ejec1.length
                                                           if le>0 then
                                                               link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                             :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                             :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
                                                              :param4=> 3,:param5=> esta)
                                                           else
                                                             le
@@ -445,7 +501,7 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                                          le= ejes1.length
                                                          if le>0 then
                                                              link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                            :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                            :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
                                                             :param4=> 3,:param5=> esta)
                                                          else
                                                            le
@@ -465,20 +521,83 @@ panel  "Fichas Actualizadas -"+@vaf2 do
 
 
                                            column ("TOTAL") do |aho|
-                                             procet=Movement.where(sheet_id:vpac3,estado:4).where('extract(year from fechap) = ?',@vaf1)
-                                             eject=Movement.where(sheet_id:vpac3,estado:5).where('extract(year from fechap) = ?',@vaf1)
-                                             ejest=Movement.where(sheet_id:vpac3,estado:6).where('extract(year from fechap) = ?',@vaf1)
+                                             procet=Movement.where(sheet_id:vpac3,estado:4).where('extract(year from fechap) = ?',@vaf1).
+                                                       select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
+                                             eject=Movement.where(sheet_id:vpac3,estado:5).where('extract(year from fechap) = ?',@vaf1).
+                                                       select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
+                                             ejest=Movement.where(sheet_id:vpac3,estado:6).where('extract(year from fechap) = ?',@vaf1).
+                                                       select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
 
 
                                               case bb.index(aho)
                                                  when 0
-                                                   procet.count
+
+
+
+                                                   esta=4
+                                                   tit=  "TOTAL DE FICHAS CERTIFICADAS PROGRAMADAS "
+                                                   le= procet.length
+                                                   if le>0 then
+                                                       link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                      :param1=> procet, :param2=> 12, :param3=> tit.upcase,
+                                                      :param4=> 4,:param5=> esta)
+                                                   else
+                                                     le
+                                                   end
+
+
                                                  when 1
-                                                   eject.count
+
+
+                                                   esta=5
+                                                   tit=  "TOTAL DE FICHAS CERTIFICADAS APROBADAS "
+                                                   le= eject.length
+                                                   if le>0 then
+                                                       link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                      :param1=> eject, :param2=> 12, :param3=> tit.upcase,
+                                                      :param4=> 4,:param5=> esta)
+                                                   else
+                                                     le
+                                                   end
+
                                                  when 2
-                                                   ejest.count
+
+
+                                                   esta=6
+                                                   tit= "TOTAL DE FICHAS CERTIFICADAS NO ADMITIDAS "
+                                                   le= ejest.length
+                                                   if le>0 then
+                                                       link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                      :param1=> ejest, :param2=> 12, :param3=> tit.upcase,
+                                                      :param4=> 4,:param5=> esta)
+                                                   else
+                                                     le
+                                                   end
+
+
+
+
+
+
+
                                                  when 3
-                                                  procet.count-eject.count-ejest.count+vpac2s-vsiadm-vnoadm
+                                                  pend10= (procet-eject-ejest)+(pies-vsiadm-vnoadm)
+
+                                                  esta=6
+                                                  tit= "TOTAL DE FICHAS CERTIFICADAS PENDIENTES "
+                                                  le= pend10.length
+                                                  if le>0 then
+                                                      link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                     :param1=> pend10, :param2=> 12, :param3=> tit.upcase,
+                                                     :param4=> 4,:param5=> esta)
+                                                  else
+                                                    le
+                                                  end
+
+
+
+
+
 
                                                end
                                             end
@@ -494,7 +613,7 @@ panel  "Fichas Actualizadas -"+@vaf2 do
 
 
                                       end#table
-                              
+
 
                     end #panel
 
