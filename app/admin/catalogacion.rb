@@ -10,13 +10,13 @@ ActiveAdmin.register_page "Catalogacion" do
                    @vaf1=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd.to_i
                    @vaf2=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
 
-                      
 
 
 
 
 
-                      panel  "Fichas Elaboradas -"+@vaf2 do
+
+                      panel  "Fichas Aprobadas -"+@vaf2 do
 
 
 
@@ -30,9 +30,9 @@ ActiveAdmin.register_page "Catalogacion" do
                                vpac2=vpac1.count
                                vpac3=vpac1.select('id')
 
-                               bb=["Programadas","Ejecutadas","Hechas en Plazo","Acumuladas"]
-                               cc=["Fichas Elaboradas Programadas","Fichas Elaboradas Ejecutadas",
-                                 "Fichas Elaboradas Hechas en Plazo","Fichas Acumuladas Elaboradas Hechas en Plazo"]
+                               bb=["Programadas","Ejecutadas","Hechas en Plazo","Acumuladas %"]
+                               cc=["Fichas Aprobadas Programadas","Fichas Aprobadas Ejecutadas",
+                                 "Fichas Aprobadas Hechas en Plazo","Fichas Acumuladas Aprobadas Hechas en Plazo"]
 
 
                            if vpac2>0 then
@@ -48,9 +48,13 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
                                     lmes=1
+                                    plazo=[]
                                     plazot=[]
                                     aplazo=[]
                                     aejec=[]
+                                    aproce1=[]
+                                    apru=[]
+
                                 while lmes<13
 
 
@@ -59,10 +63,14 @@ ActiveAdmin.register_page "Catalogacion" do
                                         where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
                                    proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                    ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
-                                   plazo=proce1 &  ejec1.to_a
 
-                                   aejec=aejec+ejec1
-                                   aplazo=aplazo+ proce1 &  aejec.to_a
+
+                                     aproce1=aproce1+proce1         #programa acumulado
+                                     aejec=aejec+ejec1              #ejecutados acumulados
+                                     apru=proce1+plazo
+                                     plazo=apru &  aejec.to_a & proce1.to_a
+                                     aplazo=aplazo+ plazo            # acum   aproce1.length*100/aplazo.length.to_i
+
 
                                     column ("#{lmes}") do |aho|
                                         case bb.index(aho)
@@ -106,23 +114,11 @@ ActiveAdmin.register_page "Catalogacion" do
                                                   le
                                                 end
                                           when 3
-
-                                                    esta=1
-
-                                                    tit=  cc[bb.index(aho)]
-                                                    le=aplazo.length
-
-                                                    if le>0 then
-                                                        link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                       :param1=> aplazo, :param2=> lmes, :param3=> tit.upcase,
-                                                       :param4=> 3,:param5=> esta)
-                                                    else
-                                                      le
-                                                    end
-
-
-
-
+                                             if aproce1.length>0 then
+                                                le=aplazo.length*100/aproce1.length.to_i
+                                             else
+                                                le=100
+                                             end
 
                                          end
                                      end
@@ -136,17 +132,35 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
                                 column ("TOTAL") do |aho|
-                                  procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1)
+                                  procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1).
+                                           select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
 
                                    case bb.index(aho)
                                       when 0
-                                        procet.count
+
+                                        esta=3
+                                        tit=  "TOTAL DE FICHAS APROBADAS"
+                                        le=   procet.length
+
+                                            link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                           :param1=> procet, :param2=> 12, :param3=> tit,
+                                           :param4=> 4,:param5=> esta)
+
                                       when 1
-                                        aejec.count
+                                        esta=1
+                                        tit=  "TOTAL DE FICHAS APROBADAS EJECUTADAS"
+                                        le=   aejec.length
+
+                                            link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                           :param1=> aejec, :param2=> 12, :param3=> tit,
+                                           :param4=> 4,:param5=> esta)
+
+
+
                                       when 2
                                           "-"
                                       when 3
-                                        aplazo.length
+                                          "-"
 
                                     end
                                  end
@@ -163,7 +177,7 @@ ActiveAdmin.register_page "Catalogacion" do
          end #panel
 
 ##############
-panel  "Fichas Revisadas -"+@vaf2 do
+panel  "Fichas Actualizadas -"+@vaf2 do
 
 
                                   pie=Movement.where(estado:3).where('extract(year from fechap) = ?',@vaf1).
@@ -172,9 +186,9 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                  vpac2=vpac1.count
                                  vpac3=vpac1.select('id')
 
-                                 bb=["Programadas","Ejecutadas","Hechas en Plazo","Acumuladas"]
-                                 cc=["Fichas Revisadas Programadas","Fichas Revisadas Ejecutadas",
-                                   "Fichas Revisadas Hechas en Plazo","Fichas Acumuladas Revisadas Hechas en Plazo"]
+                                 bb=["Programadas","Ejecutadas","Hechas en Plazo","Acumuladas %"]
+                                 cc=["Fichas Actualizadas Programadas","Fichas Actualizadas Ejecutadas",
+                                   "Fichas Actualizadas Hechas en Plazo","Fichas Acumuladas Actualizadas Hechas en Plazo"]
 
 
                              if vpac2>0 then
@@ -189,10 +203,14 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
 
 
-                                   lmes=1
-                                   plazot=[]
-                                   aplazo=[]
-                                   aejec=[]
+
+                             lmes=1
+                             plazo=[]
+                             plazot=[]
+                             aplazo=[]
+                             aejec=[]
+                             aproce1=[]
+                             apru=[]
                                   while lmes<13
 
 
@@ -202,10 +220,15 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                           where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
                                      proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                      ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
-                                     plazo=proce1 &  ejec1.to_a
 
-                                     aejec=aejec+ejec1
-                                     aplazo=aplazo+ proce1 &  aejec.to_a
+                                    aproce1=aproce1+proce1         #programa acumulado
+                                    aejec=aejec+ejec1              #ejecutados acumulados
+                                    apru=proce1+plazo
+                                    plazo=apru &  aejec.to_a & proce1.to_a
+                                    aplazo=aplazo+ plazo            # acum   aproce1.length*100/aplazo.length.to_i
+
+
+
 
                                      column ("#{lmes}") do |aho|
                                          case bb.index(aho)
@@ -251,23 +274,11 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
 
                                          when 3
-
-                                                   esta=1
-
-                                                   tit=  cc[bb.index(aho)]
-                                                   le=aplazo.length
-
-                                                   if le>0 then
-                                                       link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                      :param1=> aplazo, :param2=> lmes, :param3=> tit.upcase,
-                                                      :param4=> 3,:param5=> esta)
-                                                   else
-                                                     le
-                                                   end
-
-
-
-
+                                              if aproce1.length>0 then
+                                                le=aplazo.length*100/aproce1.length.to_i
+                                              else
+                                                le=100
+                                              end
                                           end
                                       end
                                   lmes=lmes+1
@@ -281,20 +292,40 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
                                   column ("TOTAL") do |aho|
 
-                                    procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1)
+                                    procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1).
+                                    select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
 
-                                       case bb.index(aho)
-                                          when 0
-                                            procet.count
-                                          when 1
-                                            aejec.count
-                                          when 2
-                                              "-"
-                                          when 3
-                                            aplazo.length
+                            case bb.index(aho)
+                               when 0
 
-                                        end
-                                     end
+                                 esta=3
+                                 tit=  "TOTAL DE FICHAS ACTUALIZADAS"
+                                 le=   procet.length
+
+                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                    :param1=> procet, :param2=> 12, :param3=> tit,
+                                    :param4=> 4,:param5=> esta)
+
+                               when 1
+                                 esta=1
+                                 tit=  "TOTAL DE FICHAS ACTUALIZADAS EJECUTADAS"
+                                 le=   aejec.length
+
+                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                    :param1=> aejec, :param2=> 12, :param3=> tit,
+                                    :param4=> 4,:param5=> esta)
+
+
+
+                               when 2
+                                   "-"
+                               when 3
+                                   "-"
+
+                             end
+                           end
+
+
 
 
 
@@ -330,7 +361,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
                                           cc=["Fichas Programadas/Enviadas","Fichas Aprobadas","Fichas No admitidas","Fichas Pendientes"]
 
 
-                                      if vpac2>0 then
+
                                           table_for bb  do
 
 
@@ -463,8 +494,7 @@ panel  "Fichas Revisadas -"+@vaf2 do
 
 
                                       end#table
-                                 end #if
-
+                              
 
                     end #panel
 

@@ -25,7 +25,7 @@ fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BO
 wb.add_worksheet(name: "indicador") do |sheet|
 
 sheet.add_row []
-sheet.add_row ["", @tit," ","MES=",@lmes],   style: [titu, titu, titu ,titu, titu]
+sheet.add_row ["","", @tit," ","MES=",@lmes],   style: [titu,titu, titu, titu ,titu, titu]
 sheet.add_row []
 
 
@@ -108,6 +108,27 @@ Sheet.where(id:aiitem).each do |procc|
 
 
 vfecha=Movement.where(sheet_id:procc.id,estado:@esta.to_i).where('extract(month from fechap) = ?',@lmes)
+       .select('fechap as dd').first.dd
+vcodigo=procc.codigo_revision
+vficha=procc.descripcion
+
+
+sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
+
+end
+
+when 4
+
+
+
+sheet.add_row %w( FECHA CODIGO FICHA ),   style: [titu, titu, titu]
+
+aiitem=@iitem.flatten.compact
+
+Sheet.where(id:aiitem).each do |procc|
+
+
+vfecha=Movement.where(sheet_id:procc.id,estado:@esta.to_i)
        .select('fechap as dd').first.dd
 vcodigo=procc.codigo_revision
 vficha=procc.descripcion
