@@ -84,7 +84,7 @@
         </tr>
 
 
-          <% if @vdetalle.where(contract_id:variable.id).count>0  then %>
+
 
             <% @vdetact= @vdetalle.where(contract_id:variable.id)%>
 
@@ -99,7 +99,7 @@
                 <th colspan="3">Observacion</th>
                 <th ></th>
              </tr>
-
+  <% if @vdetalle.where(contract_id:variable.id).count>0  then %>
             <tbody>
 
 
@@ -131,7 +131,37 @@
             <tbody>
 
 
+   <%  else %>
+   <tbody>
 
+
+
+
+
+  <tr style="font-size:70%;"  class="last">
+
+
+
+           <td ></td>
+           <%vnn= Activity.where(actividad:67,phase_id:variable.proceso ).count %>
+            <%  if vnn>0 then %>
+            <td><%= Activity.where(actividad:67,phase_id:variable.proceso ).
+                       select('pfecha as dd').first.dd.strftime("%d-%m") %></td>
+
+            <%  else %>
+               <td><%= "sin fecha" %></td>
+            <% end %>
+
+          <td colspan="3"><%= "Remision de contrato a OBAC"  %></td>
+
+         <td ></td>
+
+          <td ></td>
+  </tr>
+
+
+
+   <tbody>
   <% end %>
 
 
