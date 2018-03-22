@@ -61,8 +61,8 @@ ActiveAdmin.register_page "Catalogacion" do
                                    proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
                                    ejec=Movement.where(estado:1).where('extract(year from fechap) = ?',@vaf1).
                                         where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
-                                   proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
-                                   ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
+                                   proce1=proce.select(:id).map {|e| e.attributes.values}
+                                   ejec1=ejec.select(:id).map {|e| e.attributes.values}
 
 
                                      aproce1=aproce1+proce1         #programa acumulado
@@ -133,7 +133,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                 column ("TOTAL") do |aho|
                                   procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1).
-                                           select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
+                                           select(:id).map {|e| e.attributes.values}.flatten.compact
 
                                    case bb.index(aho)
                                       when 0
@@ -144,7 +144,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                             link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
                                            :param1=> procet, :param2=> 12, :param3=> tit,
-                                           :param4=> 4,:param5=> esta)
+                                           :param4=> 3,:param5=> esta)
 
                                       when 1
                                         esta=1
@@ -153,7 +153,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                             link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
                                            :param1=> aejec, :param2=> 12, :param3=> tit,
-                                           :param4=> 4,:param5=> esta)
+                                           :param4=> 3,:param5=> esta)
 
 
 
@@ -218,8 +218,8 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                      proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
                                      ejec=Movement.where(estado:2).where('extract(year from fechap) = ?',@vaf1).
                                           where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
-                                     proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
-                                     ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
+                                     proce1=proce.select(:id).map {|e| e.attributes.values}
+                                     ejec1=ejec.select(:id).map {|e| e.attributes.values}
 
                                     aproce1=aproce1+proce1         #programa acumulado
                                     aejec=aejec+ejec1              #ejecutados acumulados
@@ -293,7 +293,7 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                   column ("TOTAL") do |aho|
 
                                     procet=Movement.where(sheet_id:vpac3,estado:3).where('extract(year from fechap) = ?',@vaf1).
-                                    select(:sheet_id).map {|e| e.attributes.values}.flatten.compact
+                                    select(:id).map {|e| e.attributes.values}
 
                             case bb.index(aho)
                                when 0
@@ -304,16 +304,16 @@ panel  "Fichas Actualizadas -"+@vaf2 do
 
                                      link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
                                     :param1=> procet, :param2=> 12, :param3=> tit,
-                                    :param4=> 4,:param5=> esta)
+                                    :param4=> 3,:param5=> esta)
 
                                when 1
-                                 esta=1
+                                 esta=2
                                  tit=  "TOTAL DE FICHAS ACTUALIZADAS EJECUTADAS"
                                  le=   aejec.length
 
                                      link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
                                     :param1=> aejec, :param2=> 12, :param3=> tit,
-                                    :param4=> 4,:param5=> esta)
+                                    :param4=> 3,:param5=> esta)
 
 
 

@@ -100,43 +100,25 @@ when 3
 
 
 
-sheet.add_row %w( FECHA CODIGO FICHA ),   style: [titu, titu, titu]
+sheet.add_row %w( FECHA CODIGO FICHA RESOLUCION),   style: [titu, titu, titu, titu]
 
 aiitem=@iitem.flatten.compact
 
-Sheet.where(id:aiitem).each do |procc|
+Movement.where(id:aiitem,estado:@esta.to_i).each do |procc|
 
 
-vfecha=Movement.where(sheet_id:procc.id,estado:@esta.to_i).where('extract(month from fechap) = ?',@lmes)
-       .select('fechap as dd').first.dd
-vcodigo=procc.codigo_revision
-vficha=procc.descripcion
+vfecha=procc.fechap
+vcodigo=procc.codigo
+vdesc=procc.descripcion
+vresol=procc.sele1
 
 
-sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
-
-end
-
-when 4
-
-
-
-sheet.add_row %w( FECHA CODIGO FICHA ),   style: [titu, titu, titu]
-
-aiitem=@iitem.flatten.compact
-
-Sheet.where(id:aiitem).each do |procc|
-
-
-vfecha=Movement.where(sheet_id:procc.id)
-       .select('fechap as dd').first.dd
-vcodigo=procc.codigo_revision
-vficha=procc.descripcion
-
-
-sheet.add_row [ vfecha, vcodigo,vficha],  style: [fechad, izq, izq]
+sheet.add_row [ vfecha, vcodigo,vdesc,vresol],  style: [fechad, izq, izq ,izq]
 
 end
+
+
+
 
 
 when 5
