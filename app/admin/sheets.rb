@@ -79,13 +79,13 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
 
      filter :codigo_ficha
      filter :codigo_revision
-     filter :descripcion_original
      filter :descripcion
      filter :grupo, label:'periodo', :as => :select, :collection =>
            Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
      filter :vigencia, label:'estado', :as => :select, :collection =>
            Formula.where(product_id:36).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
-
+     filter :categoria, :as => :select, :collection =>
+                 Formula.where(product_id:37).order('orden ASC').map{|u| ["#{u.descripcion}", u.orden]}
 
 
 
@@ -99,17 +99,13 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
          link_to "#{ficha.codigo_ficha} ", admin_sheet_movements_path(ficha.id)
        end
        column("codigo_revision")
-       column("Creada", :sortable => :creada) do |ficha|
-         if ficha.creada then
-             ficha.creada.strftime("%d-%m-%Y")
-         end
-       end
-       column("Revisada", :sortable => :revisada) do |ficha|
+
+       column("Fecha", :sortable => :revisada) do |ficha|
          if ficha.revisada then
              ficha.revisada.strftime("%d-%m-%Y")
          end
        end
-       column("descripcion_original")
+
 
       column("descripcion")
 
