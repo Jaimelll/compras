@@ -52,7 +52,7 @@ class Ability
             can :read, ActiveAdmin::Page, :name =>"Catalogacion"
            can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:read], [Item,Phase,Piece]
-           can [:create,:read,:update,:destroy],  [Detail,Activity]
+           can [:create,:read,:update,:destroy],  [Sheet,Movement,Detail,Activity]
        when 11 #DEM
              can [:read,:update],  [AdminUser]
              can :read, ActiveAdmin::Page, :name =>"Dashboard"
