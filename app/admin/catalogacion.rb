@@ -618,7 +618,7 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                     end #panel
 
 #################
-   panel  "Item Desiertos -"+@vaf2 do
+   panel  "Indicadores de Item Desiertos y Articulos con ficha -"+@vaf2 do
      @vaf=current_admin_user.periodo
                                 vdesier=[3]
                                 vadj=[2,4,9]
