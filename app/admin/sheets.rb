@@ -46,6 +46,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      scope :Todos, :default => true do |ficha|
           ficha.all
      end
+
      scope :Programadas, :default => true do |ficha|
          @vaf=current_admin_user.periodo
          vyear=Formula.where(product_id:11,orden:@vaf).
@@ -80,8 +81,7 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      filter :codigo_ficha
      filter :codigo_revision
      filter :descripcion
-     filter :grupo, label:'periodo', :as => :select, :collection =>
-           Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+
      filter :vigencia, label:'estado', :as => :select, :collection =>
            Formula.where(product_id:36).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
      filter :categoria, :as => :select, :collection =>

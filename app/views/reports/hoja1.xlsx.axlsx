@@ -102,41 +102,41 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
 
   case proce.orden
      when 1
-       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
-       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
      when 2
-         sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
-         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+         sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
      when 3
-       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING ESTIMADO(Soles) SITUACION),
-      style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING ESTIMADO(Soles) SITUACION),
+      style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
      when 4
-       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+       sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu, titu]
 
 
 
        when 5
-         sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+         sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
+         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
 
 
          when 6
-           sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-           style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+           sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
+           style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
 
 
            when 7
-             sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE SOLICITADA FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-             style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+             sheet.add_row %w(N PAC FECHA_PAC OBAC EXPED DESCRIPCION MERCADO MODALIDAD FUENTE FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
+             style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
 
 
 
@@ -206,7 +206,7 @@ localiz=loca1+vlink+'.mpp'
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
 
    vffuente,
-    ite.solicita,
+
     @fecing,
   ite.certificado.to_i, @vobsr],
   style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, soles, izq]
@@ -221,7 +221,7 @@ sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
      Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
      Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
      vffuente,
-      ite.solicita,
+
       @fecing, @epom1,  @epom2, @epom3,
     ite.certificado.to_i, @vobsr],
     style: [centra, centra, fechas, centra, izq, izq, centra, centra,centra, fechad, centra, centra, centra, centra, soles, izq]

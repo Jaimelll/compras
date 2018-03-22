@@ -25,7 +25,7 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
               :sele4, :comite, :postores, :obs,
               :ep, :mgp, :fap, :ccffaa,  :sele5,  :convo
 #se puede usar sele3 era para autidados
-menu priority: 10, label: "Proceso buscar"
+menu priority: 10, label: "Buscador Procesos"
 
 scope :ACFFAA, :default => true do |phases|
   @vaf=current_admin_user.periodo

@@ -30,8 +30,9 @@ index :title => "Lista de Items"  do
 
 column("item") do |contra|
      if contra.item and contra.item>0 then
-             Piece.where(id:contra.item).
-         select('descripcion as dd').first.dd
+        Piece.where(id:contra.item).
+         select('codigo as dd').first.dd+"-"+
+         Piece.where(id:contra.item).select('descripcion as dd').first.dd
 
        else
            "s/d"
@@ -98,7 +99,8 @@ form :title => 'Edicion Item'  do |f|
            row :item  do |contra|
                 if contra.item and contra.item>0 then
                   pp= Piece.where(id:contra.item).
-                    select('descripcion as dd').first.dd
+                    select('codigo as dd').first.dd+"-"+
+                    Piece.where(id:contra.item).select('descripcion as dd').first.dd
 
    link_to "#{pp}", admin_contract_packages_path(contra.contract_id)
                   else
@@ -107,9 +109,6 @@ form :title => 'Edicion Item'  do |f|
               end
 
 
-                  row :item do |activity|
-
-                  end
                    row :moneda do |detail|
                        if detail.moneda and detail.moneda>0 then
 
