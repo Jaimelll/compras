@@ -25,7 +25,7 @@ fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BO
 wb.add_worksheet(name: "indicador") do |sheet|
 
 sheet.add_row []
-sheet.add_row ["","", @tit," ","MES=",@lmes],   style: [titu,titu, titu, titu ,titu, titu]
+sheet.add_row ["","","", @tit,"MES=",@lmes],   style: [titu,titu, titu, titu ,titu, titu]
 sheet.add_row []
 
 
@@ -100,10 +100,10 @@ when 3
 
 
 
-sheet.add_row %w( FECHA CODIGO FICHA RESOLUCION),   style: [titu, titu, titu, titu]
+sheet.add_row %w(N FECHA CODIGO FICHA RESOLUCION),   style: [titu,titu, titu, titu, titu]
 
 aiitem=@iitem.flatten.compact
-
+nncc=0
 Movement.where(id:aiitem,estado:@esta.to_i).each do |procc|
 
 
@@ -112,8 +112,8 @@ vcodigo=procc.codigo
 vdesc=procc.descripcion
 vresol=procc.sele1
 
-
-sheet.add_row [ vfecha, vcodigo,vdesc,vresol],  style: [fechad, izq, izq ,izq]
+nncc=nncc+1
+sheet.add_row [nncc, vfecha, vcodigo,vdesc,vresol],  style: [centra,fechad, izq, izq ,izq]
 
 end
 
@@ -125,10 +125,10 @@ when 5
 
 
 
-sheet.add_row %w( PROCESO DESCRIPCION ESTADO ),   style: [ titu, titu, titu]
+sheet.add_row %w(N PROCESO DESCRIPCION ESTADO ),   style: [titu, titu, titu, titu]
 
 aiitem=@iitem.flatten.compact
-
+nncc=0
 Piece.where(id:aiitem).order('phase_id,codigo').each do |procc|
 
 
@@ -138,8 +138,8 @@ viten=procc.codigo+'-'+procc.descripcion
 ves=Formula.where(product_id:17, orden:procc.estado).
        select('nombre as dd').first.dd
 
-
-sheet.add_row [ vproce, viten,ves],  style: [fechad, izq, izq]
+nncc=nncc+1
+sheet.add_row [nncc, vproce, viten,ves],  style: [centra,fechad, izq, izq]
 
 end
 
