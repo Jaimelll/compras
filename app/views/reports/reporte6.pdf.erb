@@ -146,7 +146,7 @@
            <%vnn= Activity.where(actividad:67,phase_id:variable.proceso ).count %>
             <%  if vnn>0 then %>
             <td><%= Activity.where(actividad:67,phase_id:variable.proceso ).
-                       select('pfecha as dd').first.dd.strftime("%d-%m") %></td>
+                       select('pfecha as dd').first.dd.strftime("%d-%m-%y") %></td>
 
             <%  else %>
                <td><%= "sin fecha" %></td>
