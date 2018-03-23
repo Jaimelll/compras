@@ -111,16 +111,17 @@ ActiveAdmin.register_page "Dec" do
                                    Contract.where(id:proceso.id).update_all(sele:7  )
                               end #case
 
-                            case @vdir
-                            when 1,2,3,4,5,6,7
-                                @vprot.push(proceso.id)
-                            end
+                              @vprot.push(proceso.id)
 
                           else
                               @vxper2[0]=@vxper2[0]+ 1
                             @vpro0.push(proceso.id)
                             Contract.where(id:proceso.id).update_all( sele:0 )
+                              @vprot.push(proceso.id)
                           end# de if 1
+
+
+
                         end# de if 2
 
                      end
@@ -129,12 +130,12 @@ ActiveAdmin.register_page "Dec" do
                 column("Periodo") do |formula|
                         formula.nombre
                 end
-                column("Remitido a OABC", :class => 'text-right') do |formula|
+                column("ENVIO a OABC ", :class => 'text-right') do |formula|
                     calcu1(formula.orden)
                   @dpc=  formula.orden
 
                   @vpas=0
-                  @titproc1="FASE REMISION DE CONTRATO"
+                  @titproc1="REMISION DE CONTRATO A OBAC"
                   @le= @vxper2[0]
                   link_to "#{@le}",
                   reports_comment6_path(format: :pdf,
@@ -142,12 +143,12 @@ ActiveAdmin.register_page "Dec" do
                   :param4=> @titproc1,:param5=> @vpro0)
 
                  end
-                column("RECEPCION Contrato", :class => 'text-right') do |formula|
+                column("RECEP.Contrato", :class => 'text-right') do |formula|
                     calcu1(formula.orden)
                   @dpc=  formula.orden
 
                   @vpas=1
-                  @titproc1="FASE RECEPCION DE CONTRATO"
+                  @titproc1="RECEPCION DE CONTRATO"
                   @le= @vxper2[1]
                   link_to "#{@le}",
                   reports_comment6_path(format: :pdf,
@@ -157,7 +158,7 @@ ActiveAdmin.register_page "Dec" do
                  end
 
 
-                column("RECEPCION Bien", :class => 'text-right') do |formula|
+                column("RECEP. BIEN", :class => 'text-right') do |formula|
                     calcu1(formula.orden)
                   @dpc=  formula.orden
 
@@ -171,7 +172,7 @@ ActiveAdmin.register_page "Dec" do
 
                  end
 
-                 column("RECEPCION Guia", :class => 'text-right') do |formula|
+                 column("RECEP. Guia", :class => 'text-right') do |formula|
                      calcu1(formula.orden)
                      @dpc=  formula.orden
 
@@ -186,7 +187,7 @@ ActiveAdmin.register_page "Dec" do
                   end
 
 
-                 column("RECEPCION Pago", :class => 'text-right') do |formula|
+                 column("RECEP. PAGO", :class => 'text-right') do |formula|
                      calcu1(formula.orden)
                    @dpc=  formula.orden
 
@@ -199,13 +200,13 @@ ActiveAdmin.register_page "Dec" do
                    :param4=> @titproc1,:param5=> @vpro4)
 
                   end
-                  column("TOTAL CONTRATOS", :class => 'text-right') do |formula|
+                  column("TOTAL ", :class => 'text-right') do |formula|
                       calcu1(formula.orden)
                     @dpc=  formula.orden
 
-                    @vpas=[1,2,3,4]
+                    @vpas=[0,1,2,3,4]
                     @titproc1="Relacion de Procesos"
-                    @le=@vxper2[1]+@vxper2[2]+@vxper2[3]+@vxper2[4]+ @vxper2[5]+  @vxper2[6]+  @vxper2[7]
+                    @le=@vxper2[0]+@vxper2[1]+@vxper2[2]+@vxper2[3]+@vxper2[4]+ @vxper2[5]+  @vxper2[6]+  @vxper2[7]
                     link_to "#{@le}",
                     reports_comment6_path(format: :pdf,
                     :param3=> @vpas,

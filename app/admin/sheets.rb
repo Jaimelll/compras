@@ -37,23 +37,30 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
      end
 
      scope :Homogenizados, :default => true do |ficha|
-          ficha.where.not("right(codigo_ficha,2)='ER'")
+          ficha.where(vigencia:2).where.not("right(codigo_ficha,2)='ER'")
      end
      scope :Estandarizados, :default => true do |ficha|
-          ficha.where("right(codigo_ficha,2)='ER'")
+          ficha.where(vigencia:2).where("right(codigo_ficha,2)='ER'")
      end
 
-     scope :Todos, :default => true do |ficha|
-          ficha.all
-     end
 
-     scope :Programadas, :default => true do |ficha|
+
+     scope :Progra_homogenizados, :default => true do |ficha|
          @vaf=current_admin_user.periodo
          vyear=Formula.where(product_id:11,orden:@vaf).
                select('nombre as dd').first.dd.to_i
          ejec=Movement.where(estado:3).where('extract(year from fechap) = ?',vyear).
                 select('sheet_id ')
-         ficha.where(id:ejec)
+         ficha.where.not("right(codigo_ficha,2)='ER'").where(id:ejec)
+     end
+
+     scope :Progra_estandarizados, :default => true do |ficha|
+         @vaf=current_admin_user.periodo
+         vyear=Formula.where(product_id:11,orden:@vaf).
+               select('nombre as dd').first.dd.to_i
+         ejec=Movement.where(estado:3).where('extract(year from fechap) = ?',vyear).
+                select('sheet_id ')
+         ficha.where("right(codigo_ficha,2)='ER'").where(id:ejec)
      end
 
      scope :Elaboradas, :default => true do |ficha|
@@ -77,6 +84,12 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
        ejec=Movement.where(estado:5).select('DISTINCT sheet_id ')
        ficha.where(id:ejec)
      end
+     scope :Todos, :default => true do |ficha|
+          ficha.all
+     end
+
+
+
 
      filter :codigo_ficha
      filter :codigo_revision

@@ -16,7 +16,7 @@ ActiveAdmin.register_page "Catalogacion" do
 
 
 
-                      panel  "Fichas Aprobadas -"+@vaf2 do
+                      panel  "Cronograma de Fichas Aprobadas -"+@vaf2 do
 
 
 
@@ -61,8 +61,11 @@ ActiveAdmin.register_page "Catalogacion" do
                                    proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
                                    ejec=Movement.where(estado:1).where('extract(year from fechap) = ?',@vaf1).
                                         where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
-                                   proce1=proce.select(:id).map {|e| e.attributes.values}
-                                   ejec1=ejec.select(:id).map {|e| e.attributes.values}
+                                   proce2=proce.select(:id).map {|e| e.attributes.values}
+                                   ejec2=ejec.select(:id).map {|e| e.attributes.values}
+
+                                   proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
+                                   ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
 
 
                                      aproce1=aproce1+proce1         #programa acumulado
@@ -78,10 +81,10 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                               esta=3
                                               tit=  cc[bb.index(aho)]
-                                              le= proce1.length
+                                              le= proce2.length
                                               if le>0 then
                                                   link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                 :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                 :param1=> proce2, :param2=> lmes, :param3=> tit.upcase,
                                                  :param4=> 3,:param5=> esta)
                                               else
                                                 le
@@ -90,10 +93,10 @@ ActiveAdmin.register_page "Catalogacion" do
 
                                                 esta=1
                                                 tit=  cc[bb.index(aho)]
-                                                le= ejec1.length
+                                                le= ejec2.length
                                                 if le>0 then
                                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                   :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
+                                                   :param1=> ejec2, :param2=> lmes, :param3=> tit.upcase,
                                                    :param4=> 3,:param5=> esta)
                                                 else
                                                   le
@@ -109,7 +112,7 @@ ActiveAdmin.register_page "Catalogacion" do
                                                 if le>0 then
                                                     link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
                                                    :param1=> plazo, :param2=> lmes, :param3=> tit.upcase,
-                                                   :param4=> 3,:param5=> esta)
+                                                   :param4=> 4,:param5=> esta)
                                                 else
                                                   le
                                                 end
@@ -177,7 +180,7 @@ ActiveAdmin.register_page "Catalogacion" do
          end #panel
 
 ##############
-panel  "Fichas Actualizadas -"+@vaf2 do
+panel  "Cronograma de Fichas Actualizadas -"+@vaf2 do
 
 
                                   pie=Movement.where(estado:3).where('extract(year from fechap) = ?',@vaf1).
@@ -218,8 +221,17 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                      proce=Movement.where(sheet_id:vpac3,estado:3).where('extract(month from fechap) = ?',lmes)
                                      ejec=Movement.where(estado:2).where('extract(year from fechap) = ?',@vaf1).
                                           where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision
-                                     proce1=proce.select(:id).map {|e| e.attributes.values}
-                                     ejec1=ejec.select(:id).map {|e| e.attributes.values}
+                                     proce2=proce.select(:id).map {|e| e.attributes.values}
+                                     ejec2=ejec.select(:id).map {|e| e.attributes.values}
+
+                                     proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
+                                     ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
+
+
+
+
+
+
 
                                     aproce1=aproce1+proce1         #programa acumulado
                                     aejec=aejec+ejec1              #ejecutados acumulados
@@ -236,10 +248,10 @@ panel  "Fichas Actualizadas -"+@vaf2 do
 
                                                esta=3
                                                tit=  cc[bb.index(aho)]
-                                               le= proce1.length
+                                               le= proce2.length
                                                if le>0 then
                                                    link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                  :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                  :param1=> proce2, :param2=> lmes, :param3=> tit.upcase,
                                                   :param4=> 3,:param5=> esta)
                                                else
                                                  le
@@ -248,10 +260,10 @@ panel  "Fichas Actualizadas -"+@vaf2 do
 
                                                  esta=2
                                                  tit=  cc[bb.index(aho)]
-                                                 le= ejec1.length
+                                                 le= ejec2.length
                                                  if le>0 then
                                                      link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                    :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
+                                                    :param1=> ejec2, :param2=> lmes, :param3=> tit.upcase,
                                                     :param4=> 3,:param5=> esta)
                                                  else
                                                    le
@@ -260,14 +272,14 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                            when 2
 
                                                  esta=2
-                                                 plazot=plazot+plazo
+
                                                  tit=  cc[bb.index(aho)]
                                                  le=plazo.length
 
                                                  if le>0 then
                                                      link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
                                                     :param1=> plazo, :param2=> lmes, :param3=> tit.upcase,
-                                                    :param4=> 3,:param5=> esta)
+                                                    :param4=> 4,:param5=> esta)
                                                  else
                                                    le
                                                  end
@@ -626,7 +638,7 @@ panel  "Fichas Actualizadas -"+@vaf2 do
                                pie=Piece.where("adjudicado IS NOT NULL").where(estado:vestado).select(' distinct phase_id')
                                vpac3=Phase.where(periodo:@vaf,id:pie).select('id')
 
-                               bb=["Procesos","Items",
+                               bb=["Procesos culminados","Items culminados",
                                  "Items Desiertos","Items desiertos por DC","Articulos adjudicados","Articulos adj. con ficha"]
 
 

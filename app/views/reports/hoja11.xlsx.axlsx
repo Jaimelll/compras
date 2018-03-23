@@ -117,6 +117,27 @@ sheet.add_row [nncc, vfecha, vcodigo,vdesc,vresol],  style: [centra,fechad, izq,
 
 end
 
+when 4
+
+
+
+sheet.add_row %w(N CODIGO FICHA ),   style: [titu,titu, titu]
+
+aiitem=@iitem.flatten.compact
+nncc=0
+Sheet.where(id:aiitem).each do |procc|
+
+
+
+vcodigo=procc.codigo_revision
+vdesc=procc.descripcion
+
+
+nncc=nncc+1
+sheet.add_row [nncc, vcodigo,vdesc],  style: [centra, izq, izq ]
+
+end
+
 
 
 
