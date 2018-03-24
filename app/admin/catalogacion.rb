@@ -469,11 +469,17 @@ panel  "Cronograma de Fichas Actualizadas -"+@vaf2 do
                                                   where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision 5 envio 6 no admitidas
                                               ejes=Movement.where(sheet_id:vpac3,estado:6).
                                                     where('extract(month from fechap) = ?',lmes) # estado 1 creada 2 revision 5 envio 6 no admitidas
+                                              proce2=proce.select(:id).map {|e| e.attributes.values}
+                                              ejec2=ejec.select(:id).map {|e| e.attributes.values}
+                                              ejes2=ejes.select(:id).map {|e| e.attributes.values}
+
+
+
                                               proce1=proce.select(:sheet_id).map {|e| e.attributes.values}
                                               ejec1=ejec.select(:sheet_id).map {|e| e.attributes.values}
                                               ejes1=ejes.select(:sheet_id).map {|e| e.attributes.values}
 
-                                              plazo=proce1 &  ejec1.to_a
+                                              plazo=(proce1-ejec1-ejes1).to_a
 
 
                                               column ("#{lmes}") do |aho|
@@ -482,10 +488,10 @@ panel  "Cronograma de Fichas Actualizadas -"+@vaf2 do
 
                                                         esta=4
                                                         tit=  cc[bb.index(aho)]
-                                                        le= proce1.length
+                                                        le= proce2.length
                                                         if le>0 then
                                                             link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                           :param1=> proce1, :param2=> lmes, :param3=> tit.upcase,
+                                                           :param1=> proce2, :param2=> lmes, :param3=> tit.upcase,
                                                            :param4=> 3,:param5=> esta)
                                                         else
                                                           le
@@ -496,10 +502,10 @@ panel  "Cronograma de Fichas Actualizadas -"+@vaf2 do
 
                                                           esta=5
                                                           tit=  cc[bb.index(aho)]
-                                                          le= ejec1.length
+                                                          le= ejec2.length
                                                           if le>0 then
                                                               link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                             :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
+                                                             :param1=> ejec2, :param2=> lmes, :param3=> tit.upcase,
                                                              :param4=> 3,:param5=> esta)
                                                           else
                                                             le
@@ -510,10 +516,10 @@ panel  "Cronograma de Fichas Actualizadas -"+@vaf2 do
 
                                                          esta=6
                                                          tit=  cc[bb.index(aho)]
-                                                         le= ejes1.length
+                                                         le= ejes2.length
                                                          if le>0 then
                                                              link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
-                                                            :param1=> ejec1, :param2=> lmes, :param3=> tit.upcase,
+                                                            :param1=> ejes2, :param2=> lmes, :param3=> tit.upcase,
                                                             :param4=> 3,:param5=> esta)
                                                          else
                                                            le
@@ -523,7 +529,18 @@ panel  "Cronograma de Fichas Actualizadas -"+@vaf2 do
 
                                                     when 3
 
-                                                    proce1.length- ejec1.length-ejes1.length
+
+
+                                                    esta=4
+                                                    tit=  cc[bb.index(aho)]
+                                                    le= plazo.length
+                                                    if le>0 then
+                                                        link_to "#{le}", reports_vhoja11_path(format:  "xlsx",
+                                                       :param1=> plazo, :param2=> 12, :param3=> tit.upcase,
+                                                       :param4=> 4,:param5=> esta)
+                                                    end
+
+
 
                                                    end
 
