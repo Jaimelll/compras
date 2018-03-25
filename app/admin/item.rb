@@ -350,8 +350,8 @@ form :title => 'Edicion PACs' do |f|
          f.input :cantidad, :input_html => { :style =>  'width:30%'}
          f.input :cuadrante, :as => :select, :collection =>
             Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
-         f.input :mesconvoca, :label => 'Fecha de Convocatoria SEACE' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-          f.input :solicita, :label => 'Fecha solicitada OBAC' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+         f.input :mesconvoca, :label => 'Fecha de Convocatoria SEACE' , as: :datepicker, :input_html => { :style =>  'width:30%'}
+          f.input :solicita, :label => 'Fecha solicitada OBAC' , as: :datepicker, :input_html => { :style =>  'width:30%'}
          f.input :seleccion,:label => 'Tipo de seleccion', :as => :select, :collection =>
              Formula.where(product_id:14).map{|u| [u.nombre, u.orden]}
          f.input :certificado,:label => 'Valor estimado PAC', :as => :string, :input_html => { :style =>  'width:30%'}

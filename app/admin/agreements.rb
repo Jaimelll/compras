@@ -45,9 +45,8 @@ ActiveAdmin.register Agreement do
 
              f.input :contra, :input_html => { :style =>  'width:30%'}
 
-             f.input :fec_inicon,:label => 'Inicio de contrato',:as =>:string, :input_html => { :style =>  'width:30%'}
-             f.input :fec_tercon,:label => 'Término de contrato',:as =>:string, :input_html => { :style =>  'width:30%'}
-
+             f.input :fec_inicon,:label => 'Inicio de contrato', as: :datepicker, :input_html => { :style =>  'width:30%'}
+             f.input :fec_tercon,:label => 'Término de contrato', as: :datepicker, :input_html => { :style =>  'width:30%'}
              f.input :puesto, :input_html => { :style =>  'width:30%'}
              f.input :cod_hor,:label => 'Horario', :input_html => { :style =>  'width:30%'}
             f.input :remuneracion,:as =>:string, :input_html => { :style =>  'width:30%'}

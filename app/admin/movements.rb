@@ -71,7 +71,7 @@ ActiveAdmin.register Movement do
                f.inputs  do
 
 
-                f.input :fechap, :label => 'fecha' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+                f.input :fechap, :label => 'fecha' , as: :datepicker, :input_html => { :style =>  'width:30%'}
 
 
                  f.input :estado, :label => 'Actividad', :as => :select, :collection =>

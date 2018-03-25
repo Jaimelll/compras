@@ -154,8 +154,8 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
 
               f.input :codigo_ficha, :input_html => { :style =>  'width:30%'}
               f.input :codigo_revision, :input_html => { :style =>  'width:30%'}
-              f.input :creada,:label => 'fecha creacion' ,:as =>:string, :input_html => { :style =>  'width:30%'}
-              f.input :revisada,:label => 'fecha revision' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+              f.input :creada,:label => 'fecha creacion' , as: :datepicker, :input_html => { :style =>  'width:30%'}
+              f.input :revisada,:label => 'fecha revision', as: :datepicker, :input_html => { :style =>  'width:30%'}
               f.input :descripcion_original, :input_html => { :style =>  'width:30%'}
               f.input :descripcion, :input_html => { :style =>  'width:30%'}
               f.input :clase, :as => :select, :collection =>

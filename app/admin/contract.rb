@@ -130,15 +130,14 @@ end
 
 form :title => 'Edicion Contrato' do |f|
 
-    f.inputs  do
+    f.inputs do
       @vaf=current_admin_user.periodo
  f.input :numero , :input_html => { :style =>  'width:30%'}
- f.input :fecha, :label => 'fecha ' ,:as =>:string, :input_html => { :style =>  'width:30%'}
+ f.input :fecha, :label => 'fecha ' , as: :datepicker, :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del contrato'
 
   f.input :proceso, :as => :select, :collection =>
     Phase.order('nomenclatura').map{|u| [u.nomenclatura, u.id]}
-
 
 
 
@@ -159,6 +158,9 @@ form :title => 'Edicion Contrato' do |f|
 
  f.input :plazo,:label => 'Plazo de entrega(dias)', :input_html => { :style =>  'width:30%'}
 f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+
+
+
   f.actions
 
 
