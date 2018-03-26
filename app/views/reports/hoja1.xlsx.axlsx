@@ -115,30 +115,30 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
 
 
    when 3
-   sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PROGRAMACION IDONEIDAD ESTIMADO(Soles) SITUACION),
-   style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+    sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PROGRAMACION IDONEIDAD ESTIMADO(Soles) SITUACION),
+    style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
      when 4
-       sheet.add_row %w(N PAC IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE RECEPCION PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-       style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu,titu, titu, titu, titu]
+       sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
-       when 5
-         sheet.add_row %w(N PAC IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE RECEPCION PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-         style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+     when 5
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+     style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
-         when 6
-           sheet.add_row %w(N PAC IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE RECEPCION PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-           style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+     when 6
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+     style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
-           when 7
-             sheet.add_row %w(N PAC IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE RECEPCION PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
-             style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu,titu, titu, titu]
+     when 7
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+     style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -192,14 +192,12 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
  end
 
 
- if Detail.where(actividad:33,item_id:ite.id).count>0 then
+ if Detail.where(actividad:102,item_id:ite.id).count>0 then
    @epom1=Detail.where(actividad:33,item_id:ite.id).select('plan as dd').first.dd.strftime("%d/%m/%y")
-   @epom2=Detail.where(actividad:33,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-    @epom3=Detail.where(actividad:33,item_id:ite.id).select('pfecha+21 as dd').first.dd.strftime("%d/%m/%y")
+
  else
    @epom1=""
-   @epom2=""
-    @epom3=""
+
  end
 
 if Formula.where(product_id:8,orden:ite.fuente).count>0 then
@@ -243,7 +241,7 @@ end
     @prg,
 
   ite.certificado.to_i, @vobsr],
-  style: [centra, centra, fechad,  centra, izq, desc, centra, centra, centra, centra, fechad, soles, desc]
+  style: [centra, centra, fechad,  centra, desc, desc, centra, centra, centra, centra, fechad, soles, desc]
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
   sheet.column_widths *[5, 5, 12, 8, 8, 50, 10, 10,15, 14, 14, 15, 30]
 
@@ -265,7 +263,7 @@ ite.descripcion.upcase,
   @prg,
   @fecing,
 ite.certificado.to_i, @vobsr],
-style: [centra, centra, fechad,  centra, izq, desc, centra, centra, centra, centra, soles, fechad, fechad, soles, desc]
+style: [centra, centra, fechad,  centra, desc, desc, centra, centra, centra, centra, soles, fechad, fechad, soles, desc]
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
 sheet.column_widths *[5, 5, 12, 8, 8, 50, 10, 10,15,14, 14, 14, 12, 15, 30]
 
@@ -288,23 +286,27 @@ ppresu,
 @prg,
 @ido,
 ite.certificado.to_i, @vobsr],
-style: [centra, centra, fechad,  centra, izq, desc, centra, centra, centra, centra,soles, fechad, fechad, soles, desc]
+style: [centra, centra, fechad,  centra, desc, desc, centra, centra, centra, centra,soles, fechad, fechad, soles, desc]
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
 sheet.column_widths *[5, 5,12, 8, 8, 50, 10, 10,15, 14, 14, 14, 12, 15, 30]
+
     when 4,5,6,7
 
-    sheet.add_row [ @conta,ite.pac, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+    sheet.add_row [ @conta,ite.pac,
+      @public,
+     Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
     Formula.where(product_id:16, orden:ite.exped).
      select('nombre as dd').first.dd,
     ite.descripcion.upcase,
      Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
      Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
      vffuente,
-
-      @fecing, @epom1,  @epom2, @epom3,
+     ssele,
+     ppresu,
+     @epom1,
     ite.certificado.to_i, @vobsr],
-    style: [centra, centra,  centra, izq, izq, centra, centra,centra, fechad, centra, centra, centra, centra, soles, izq]
-
+    style: [centra, centra, fechad,  centra, desc, desc, centra, centra,centra, centra,soles, fechad, soles, desc]
+    sheet.column_widths *[5, 5,12, 8, 8, 50, 10, 10,15, 14, 14, 12, 15, 30]
     end
 
 
