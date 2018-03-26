@@ -105,19 +105,18 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
 
   case proce.orden
      when 1
-       sheet.add_row %w(N PAC  IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE PUBLICACION RECEPCION ESTIMADO(Soles) SITUACION),
-       style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
+       sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PROGRAMACION ESTIMADO(Soles) SITUACION),
+       style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu]
 
 
      when 2
-         sheet.add_row %w(N PAC  IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE PUBLICACION RECEPCION ESTIMADO(Soles) SITUACION),
-         style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PROGRAMACION RECEPCION ESTIMADO(Soles) SITUACION),
+     style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
-     when 3
-       sheet.add_row %w(N PAC IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE RECEPCION ESTIMADO(Soles) SITUACION),
-      style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu]
-
+   when 3
+   sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PROGRAMACION IDONEIDAD ESTIMADO(Soles) SITUACION),
+   style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
      when 4
        sheet.add_row %w(N PAC IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE RECEPCION PLAN_EPOM FEC_EPOM FEC_CONV_PLAN ESTIMADO(Soles) SITUACION),
@@ -180,8 +179,17 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
    @public=""
  end
 
+ if Detail.where(actividad:13,item_id:ite.id).count>0 then
+   @prg=Detail.where(actividad:13,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ else
+   @prg=""
+ end
 
-
+ if Detail.where(actividad:101,item_id:ite.id).count>0 then
+   @ido=Detail.where(actividad:101,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ else
+   @ido=""
+ end
 
 
  if Detail.where(actividad:33,item_id:ite.id).count>0 then
@@ -200,28 +208,89 @@ if Formula.where(product_id:8,orden:ite.fuente).count>0 then
    vffuente="s/d"
  end
 
+ if Formula.where(product_id:14,orden:ite.seleccion).count>0 then
+   ssele= Formula.where(product_id:14,orden:ite.seleccion).select('descripcion as dd').first.dd
+  else
+    ssele="s/d"
+  end
+
+if ite.ccp then
+ppresu=ite.ccp
+else
+ppresu=0
+end
+
+
 #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
 #vlink='Plantilla-Proceso Avionica PAC 006'
 #localiz=loca1+vlink+'.mpp'
 
  case proce.orden
-    when 1,2,3
+    when 1
 
-  sheet.add_row [ @conta,ite.pac, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
-  Formula.where(product_id:16, orden:ite.exped).
+  sheet.add_row [ @conta,ite.pac,
+  @public,
+   Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+    Formula.where(product_id:16, orden:ite.exped).
    select('nombre as dd').first.dd,
   ite.descripcion.upcase,
    Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
    Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
 
    vffuente,
-   @public,
-    @fecing,
-  ite.certificado.to_i, @vobsr],
-  style: [centra, centra,  centra, izq, desc, centra, centra, centra, fechad, fechad, soles, desc]
-# sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
-  sheet.column_widths *[5, 5, 8, 8, 50, 10, 10,15, 12, 12, 15, 30]
+    ssele,
 
+    @prg,
+
+  ite.certificado.to_i, @vobsr],
+  style: [centra, centra, fechad,  centra, izq, desc, centra, centra, centra, centra, fechad, soles, desc]
+# sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
+  sheet.column_widths *[5, 5, 12, 8, 8, 50, 10, 10,15, 14, 14, 15, 30]
+
+  when 2
+
+sheet.add_row [ @conta,ite.pac,
+  @public,
+ Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+
+Formula.where(product_id:16, orden:ite.exped).
+ select('nombre as dd').first.dd,
+ite.descripcion.upcase,
+ Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
+ Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
+
+ vffuente,
+  ssele,
+  ppresu,
+  @prg,
+  @fecing,
+ite.certificado.to_i, @vobsr],
+style: [centra, centra, fechad,  centra, izq, desc, centra, centra, centra, centra, soles, fechad, fechad, soles, desc]
+# sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
+sheet.column_widths *[5, 5, 12, 8, 8, 50, 10, 10,15,14, 14, 14, 12, 15, 30]
+
+when 3
+
+sheet.add_row [ @conta,ite.pac,
+@public,
+ Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+
+Formula.where(product_id:16, orden:ite.exped).
+select('nombre as dd').first.dd,
+ite.descripcion.upcase,
+Formula.where(product_id:6,orden:ite.tipo).select('nombre as dd').first.dd,
+Formula.where(product_id:4,orden:ite.modalidad).select('nombre as dd').first.dd,
+
+vffuente,
+ssele,
+ppresu,
+
+@prg,
+@ido,
+ite.certificado.to_i, @vobsr],
+style: [centra, centra, fechad,  centra, izq, desc, centra, centra, centra, centra,soles, fechad, fechad, soles, desc]
+# sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
+sheet.column_widths *[5, 5,12, 8, 8, 50, 10, 10,15, 14, 14, 14, 12, 15, 30]
     when 4,5,6,7
 
     sheet.add_row [ @conta,ite.pac, Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
