@@ -81,7 +81,6 @@ ActiveAdmin.register_page "Dpc" do
      table_for aa do
 
 
-    # ###############   empieza seguimiento
 def execute2(var)
 
     @vpro1=[]
@@ -337,8 +336,128 @@ column do
       table_for aa do
 
 
+        def execute3(var)
+            # ###############   empieza seguimiento
+            @vxper=[0,0,0,0,0,0,0,0]
+            @vpresu=[0,0,0,0,0,0,0,0]
+            @vpac1=[]
+            @vpac2=[]
+            @vpac3=[]
+            @vpac4=[]
+            @vpac5=[]
+            @vpac6=[]
+            @vpac7=[]
+            @itep=Item.where(ejecucion:4,exped2:var).where("modalidad<3").where(obac: @vuobac)
+            @itep.each do |ite|
+
+            @deta3=Detail.where(item_id:ite.id).
+              where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+              order('details.pfecha DESC,details.id DESC')
 
 
+
+
+
+
+
+
+
+                      if @deta3.count>0 then
+                        @vactiv= @deta3.
+                           select('actividad as dd').first.dd
+                           @vactivfec= @deta3.
+                              select('pfecha as dd').first.dd
+                            else
+                              @vactiv=78
+                              @vactivfec=@vinicio
+
+                        end
+
+                        ################phase
+
+
+                        if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 then
+                        if    Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
+                          activities.where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
+
+
+                           @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
+                               .order('activities.pfecha DESC,activities.id DESC')
+
+
+
+
+                         @vactiv2=@phase3.select('activities.actividad as dd').first.dd
+                          @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
+
+
+
+                              if    @vactiv2fec>  @vactivfec then
+                                 @vactiv=@vactiv2
+                              end
+                        else
+                          vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                          if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
+                            activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
+
+
+
+                            @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
+                                 .where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
+                                .order('activities.pfecha DESC,activities.id DESC')
+
+
+
+
+                          @vactiv2=@phase3.select('activities.actividad as dd').first.dd
+                           @vactiv2fec=@phase3.select('activities.pfecha as dd').first.dd
+
+
+
+                               if    @vactiv2fec>  @vactivfec then
+                                  @vactiv=@vactiv2
+                               end
+
+                          end
+
+
+                      end
+
+                  end
+
+
+
+
+
+
+        ################phase end
+
+                              #linea 209
+                      @vdir=Formula.where(product_id:12,orden:@vactiv).
+                            select('cantidad as dd').first.dd
+        #                @vdir=2
+                        @vxper[@vdir]=@vxper[@vdir]+ 1
+                        @vpresu[@vdir]=@vpresu[@vdir]+ ite.certificado.to_i
+                         case @vdir
+                         when 1
+                             @vpac1.push(ite.id)
+                           when 2
+                             @vpac2.push(ite.id)
+                           when 3
+                             @vpac3.push(ite.id)
+                           when 4
+                             @vpac4.push(ite.id)
+                           when 5
+                             @vpac5.push(ite.id)
+                           when 6
+                             @vpac6.push(ite.id)
+                           when 7
+                             @vpac7.push(ite.id)
+
+                        end #case
+                    end# funcion excute3
+         end
 
           def execute(var)
 
@@ -565,18 +684,20 @@ column do
 
 
   column("Convocatoria") do |formula|
-
-
+if formula.orden==@vaf then
+  execute3(formula.orden)
+end
   execute(formula.orden)
 
        link_to "PAC-AF"+"#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
-       :param1=> @vxper3,
+         :param1=> @vxper3,
          :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
          :param5=> @vconv3,:param6=> @vconvt,:param8=>@vconv2,
-          :param11=> @vxper0,
-           :param12=> @vpresu0, :param13=> @vpac10, :param14=> @vpac20,
-           :param15=> @vpac30,:param16=> @vpac40,
-           :param17=> @vconv5,:param18=> @vpac50,:param7=> @vuobac)
+         :param17=> @vconv5,
+         :param11=> @vxper,
+         :param12=> @vpresu, :param13=> @vpac1, :param14=> @vpac2,
+         :param15=> @vpac3,:param16=> @vpac4,
+         :param18=> @vpac5,:param7=> @vuobac)
 
 
   end

@@ -47,13 +47,13 @@ end
     when 21 #ejercito
       @vuobac=[1]
       Formula.where(product_id:1,orden:1).update_all( numero:1 )
-    when 22 # marina
+    when 22
       @vuobac=[2]
         Formula.where(product_id:1,orden:2).update_all( numero:1 )
-    when 23 # FAP
+    when 23
       @vuobac=[3]
       Formula.where(product_id:1,orden:3).update_all( numero:1 )
-    when 29 #cccffaa
+    when 29
       @vuobac=[1,2,3,6]
       Formula.where(product_id:1).where('orden=1 or orden=2 or orden=3 or orden=6').update_all( numero:1 )
     else
