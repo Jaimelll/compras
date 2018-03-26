@@ -119,25 +119,24 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
     style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
      when 4
-       sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+       sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION),
        style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
      when 5
-     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION),
      style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
-
      when 6
-     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION),
      style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
      when 7
-     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD TIPO_PROC PRESUPUESTO FUENTE PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+     sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION MERCADO MODALIDAD FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION),
      style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 

@@ -45,22 +45,22 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
 
 
 
-     scope :Progra_homogenizados, :default => true do |ficha|
+     scope :Progra_Revisados, :default => true do |ficha|
          @vaf=current_admin_user.periodo
          vyear=Formula.where(product_id:11,orden:@vaf).
                select('nombre as dd').first.dd.to_i
          ejec=Movement.where(estado:3).where('extract(year from fechap) = ?',vyear).
                 select('sheet_id ')
-         ficha.where.not("right(codigo_ficha,2)='ER'").where(id:ejec)
+         ficha.where(id:ejec,vigencia:2)
      end
 
-     scope :Progra_estandarizados, :default => true do |ficha|
-         @vaf=current_admin_user.periodo
-         vyear=Formula.where(product_id:11,orden:@vaf).
-               select('nombre as dd').first.dd.to_i
-         ejec=Movement.where(estado:3).where('extract(year from fechap) = ?',vyear).
-                select('sheet_id ')
-         ficha.where("right(codigo_ficha,2)='ER'").where(id:ejec)
+     scope :Progra_Elaborar, :default => true do |ficha|
+       @vaf=current_admin_user.periodo
+       vyear=Formula.where(product_id:11,orden:@vaf).
+             select('nombre as dd').first.dd.to_i
+       ejec=Movement.where(estado:3).where('extract(year from fechap) = ?',vyear).
+              select('sheet_id ')
+       ficha.where(id:ejec,vigencia:1)
      end
 
      scope :Elaboradas, :default => true do |ficha|
