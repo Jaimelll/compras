@@ -99,7 +99,7 @@ class Ability
     #  when 24  #neil
       #       can :read, ActiveAdmin::Page, :name =>"Dashboard"
         #     can [:create,:read,:update, :destroy], [Agreement, Employee, Experience, Family, Student]
-     when 10,25  #dpc y salinas
+     when 10,25,21,22,23 #dpc y salinas
           can [:read,:update],  [AdminUser]
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"Dpc"
