@@ -126,7 +126,7 @@ end
 
 #########################
 
-Formula.where(product_id:10).order('orden').where('orden<4').each do |proce|
+Formula.where(product_id:10).order('orden').where('orden<5').each do |proce|
 case proce.orden
    when 1
           @vpacn=@vpac10
@@ -197,10 +197,9 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-     when 4
-         sheet.add_row %w(N OBAC PAC  EXPED DESCRIPCION  FUENTE FEC_ING PLAN_EPOM FEC_EPOM FEC_CONV_PLAN VALOR_SEGUN_PAC_(Soles) SITUACION),
-         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-         sheet.column_widths 5, 10,10,10,40, nil,10,10,10,10,10, 30
+              when 4
+                sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION),
+                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -404,12 +403,22 @@ style: [centra, centra, fechad,  centra, desc, desc, centra, centra,soles, fecha
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
 sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 14, 12, 15, 30]
 
+when 4
+sheet.add_row [ vconta2,ite.pac,
+  @public,
+ Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+Formula.where(product_id:16, orden:ite.exped).
+ select('nombre as dd').first.dd,
+ite.descripcion.upcase,
 
-
-
-
-    end
-
+ vffuente,
+ ssele,
+ ppresu,
+ @epom1,
+ite.certificado.to_i, @vobsr],
+style: [centra, centra, fechad,  centra, desc, desc,centra, centra,soles, fechad, soles, desc]
+sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 12, 15, 30]
+end
 
 
 
@@ -432,13 +441,18 @@ Formula.where(product_id:20).order('cantidad').each do |proce|
 
 case proce.orden
     when 1
-          @vpacn=@vpac1
+          if @vpac4 then
+          @vpacn=@vpac1+@vpac4
+          @vpacn=Phase.where(id:@vpacn).where('sele=5 or convocatoria>1').select('id').map {|e| e.attributes.values}
+         else
+         @vpacn=@vpac1
+         end
     when 2
           @vpacn=@vpac2
     when 3
           @vpacn=@vpac3
     when 4
-          @vpacn=@vpac4
+          @vpacn=[]
     when 5
           @vpacn=@vpac5
  end
@@ -447,6 +461,10 @@ case proce.orden
 
    nuitem1="_("+@items.where(exped:vexp).count.to_s+")"
 
+
+
+
+if @items.where(exped:vexp).count>0 then ###wb
 wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   sheet.add_row []
@@ -744,7 +762,7 @@ end
 end
 end
 
-
+end #  wbb
 ####################
 
 ####ITEM ADJUDICADOS
