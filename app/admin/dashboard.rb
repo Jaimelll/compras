@@ -582,7 +582,7 @@ unless current_admin_user.categoria==24 #personal
                else
                 div :class =>"grueso" do
                   vnometi="#{@let.where(modalidad:1).count.to_s+"/("+
-                           number_with_delimiter(@let.where(modalidad:2).sum(:certificado).to_i,
+                           number_with_delimiter(@let.where(modalidad:1).sum(:certificado).to_i,
                             delimiter: ",").to_s+ ")"} "
                end
                 end
