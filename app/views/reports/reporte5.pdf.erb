@@ -49,6 +49,9 @@
 
     <% @items.each do |variable| %>
 
+      <%@vcanc=Activity.where(phase_id:variable.id).where('actividad=93 or actividad=99').count%>
+      <%@vnulo=Activity.where(phase_id:variable.id).where('actividad=84').count%>
+      <%@vdesi=Activity.where(phase_id:variable.id).where('actividad=49').count%>
 
 
         <tr style="font-size:80%;"  class="detl">
@@ -149,7 +152,6 @@
 
 
 
-
         </tr>
 
 
@@ -188,7 +190,37 @@
                 <th >Fecha  </th>
 
                 <th colspan="3">Actividad</th>
-                <th colspan="3">Observacion</th>
+
+
+
+
+
+
+
+              <% if @vactcanti=="1" then%>
+
+
+
+
+                  <% if @vcanc>0 then%>
+                        <th colspan="3">Observacion PROCESO CANCELADO</th>
+                    <% else%>
+                    <% if @vnulo>0 then%>
+                          <th colspan="3">Observacion VIENE DE PROCESO NULO</th>
+                          <% else %>
+                          <% if @vdesi>0 then%>
+                                <th colspan="3">Observacion VIENE DE PROCESO DESIERTO</th>
+                          <% end%>
+                    <% end%>
+
+                  <% end%>
+
+
+
+              <%else%>
+                    <th colspan="3">Observacion</th>
+              <%end%>
+
                 <th ></th>
              </tr>
 
