@@ -52,7 +52,14 @@
       <%@vcanc=Activity.where(phase_id:variable.id).where('actividad=93 or actividad=99').count%>
       <%@vnulo=Activity.where(phase_id:variable.id).where('actividad=84').count%>
       <%@vdesi=Activity.where(phase_id:variable.id).where('actividad=49').count%>
-
+      <%@vorigen=Phase.where(sele5:variable.sele5).select('id').map {|e| e.
+        attributes.values}.flatten.compact.sort.
+        delete_if {|score| score <= variable.id }%>
+             <% if @vorigen.length>0 then %>
+                <%@vpha="SIGUE CON "+Phase.where(id:@vorigen.first).select('proceso as dd').first.dd    %>
+             <% else %>
+                  <%@vpha=" "    %>
+             <% end %>
 
         <tr style="font-size:80%;"  class="detl">
 
@@ -194,7 +201,7 @@
 
 
 
-
+               <th colspan="3">Observacion</th>
 
 
               <% if @vactcanti=="1" then%>
@@ -203,22 +210,18 @@
 
 
                   <% if @vcanc>0 then%>
-                        <th colspan="3">Observacion PROCESO CANCELADO</th>
+                        <th colspan="3" class="azul"> PROCESO CANCELADO </th>
                     <% else%>
                     <% if @vnulo>0 then%>
-                          <th colspan="3">Observacion VIENE DE PROCESO NULO</th>
+                          <th colspan="3" class="azul">PROCESO NULO <%= @vpha%></th>
                           <% else %>
                           <% if @vdesi>0 then%>
-                                <th colspan="3">Observacion VIENE DE PROCESO DESIERTO</th>
+                                <th colspan="3" class="azul">PROCESO DESIERTO <%= @vpha%></th>
                           <% end%>
                     <% end%>
 
                   <% end%>
 
-
-
-              <%else%>
-                    <th colspan="3">Observacion</th>
               <%end%>
 
                 <th ></th>
