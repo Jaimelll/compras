@@ -4,7 +4,7 @@ wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                  alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
-                                b: true, sz: 9, bg_color: "C1C1C1")
+                                b: true, sz: 8, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
                            alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
@@ -198,25 +198,25 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-          sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION FUENTE TIPO_PROC PROGRAMACION ESTIMADO(Soles) SITUACION),
-          style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu]
+          sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PROGRA_RECEPC ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
+          style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
              when 2
-               sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PROGRAMACION RECEPCION ESTIMADO(Soles) SITUACION),
-               style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+               sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PROGRA_RECEPC RECEPCION ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
+               style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
              when 3
-              sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PROGRAMACION IDONEIDAD ESTIMADO(Soles) SITUACION),
-              style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+              sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PROGRA_RECEPC IDONEIDAD ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
+              style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
               when 4
-                sheet.add_row %w(N PAC PUBLICACION IIAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION),
-                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu]
+                sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
+                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -236,16 +236,19 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
         vdesc=ite.descripcion.upcase
 
-        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+        @vpact3=Formula.where(product_id:12,acti:1).select('orden')
+
+
+
        @vdetalle= Detail.where(actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
        @vdetalle= @vdetalle.where(actividad:@vpact3,item_id:ite.id)
 
        @vobsr=" "
        if @vdetalle.count>0
-      @vdetalle.each do |deta|
+         @vdetalle.each do |deta|
 
       if deta.obs then
-      @vobsr=deta.obs.capitalize
+         @vobsr=deta.obs.capitalize
        end
      end
     end
@@ -329,12 +332,25 @@ end
 
 
 if Detail.where(actividad:102,item_id:ite.id).count>0 then
-  @epom1=Detail.where(actividad:33,item_id:ite.id).select('plan as dd').first.dd.strftime("%d/%m/%y")
+  @epom1=Detail.where(actividad:33,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
 else
   @epom1=""
 
 end
+
+if Detail.where(actividad:104,item_id:ite.id).count>0 then
+  @consen=Detail.where(actividad:104,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+else
+  @consen=""
+
+end
+
+
+
+
+
 
 if Formula.where(product_id:8,orden:ite.fuente).count>0 then
  vffuente= Formula.where(product_id:8,orden:ite.fuente).select('nombre as dd').first.dd
@@ -376,10 +392,10 @@ vffuente,
 
  @prg,
 
-ite.certificado.to_i, @vobsr],
-style: [centra, centra, fechad,  centra, desc, desc, centra, centra, fechad, soles, desc]
+ite.certificado.to_i, @vobsr,@consen],
+style: [centra, centra, fechad,  centra, desc, desc, centra, centra, fechad, soles, desc, fechad]
 
-sheet.column_widths *[5, 5, 12, 8, 8, 50,15, 14, 14, 15, 30]
+sheet.column_widths *[5, 5, 12, 8, 8, 50,15, 14, 14, 15, 30, 14]
 
 when 2
 
@@ -395,10 +411,10 @@ ssele,
 ppresu,
 @prg,
 @fecing,
-ite.certificado.to_i, @vobsr],
-style: [centra, centra, fechad,  centra, desc, desc, centra, centra, soles, fechad, fechad, soles, desc]
+ite.certificado.to_i, @vobsr,@consen],
+style: [centra, centra, fechad,  centra, desc, desc, centra, centra, soles, fechad, fechad, soles, desc, fechad]
 
-sheet.column_widths *[5, 5, 12, 8, 8, 50,15,14, 14, 14, 12, 15, 30]
+sheet.column_widths *[5, 5, 12, 8, 8, 50,15,14, 14, 14, 12, 15, 30, 14]
 
 when 3
 
@@ -415,10 +431,10 @@ ppresu,
 
 @prg,
 @ido,
-ite.certificado.to_i, @vobsr],
-style: [centra, centra, fechad,  centra, desc, desc, centra, centra,soles, fechad, fechad, soles, desc]
+ite.certificado.to_i, @vobsr,@consen],
+style: [centra, centra, fechad,  centra, desc, desc, centra, centra,soles, fechad, fechad, soles, desc, fechad]
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
-sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 14, 12, 15, 30]
+sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 14, 12, 15, 30, 14]
 
 when 4
 sheet.add_row [ vconta2,ite.pac,
@@ -432,9 +448,9 @@ ite.descripcion.upcase,
  ssele,
  ppresu,
  @epom1,
-ite.certificado.to_i, @vobsr],
-style: [centra, centra, fechad,  centra, desc, desc,centra, centra,soles, fechad, soles, desc]
-sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 12, 15, 30]
+ite.certificado.to_i, @vobsr,@consen],
+style: [centra, centra, fechad,  centra, desc, desc,centra, centra,soles, fechad, soles, desc, fechad]
+sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 12, 15, 30, 14]
 end
 
 
