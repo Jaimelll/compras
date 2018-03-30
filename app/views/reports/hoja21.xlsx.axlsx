@@ -538,19 +538,19 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   case proce.orden
      when 1,4
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu,  titu, titu, titu], height: 40
-        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION CONSENTIMIENTO_PROG),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu,  titu, titu, titu, titu], height: 40
+
 
      when 2
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu, titu, titu], height: 40
-        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION CONSENTIMIENTO_PROG),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu, titu, titu, titu], height: 40
+
 
      when 3,5
-        sheet.add_row %w(N OBAC PAC FEC_ING PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION),
-        style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu], height: 40
-        sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION CONSENTIMIENTO_PROG),
+        style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu, titu], height: 40
+
 
       end
 
@@ -562,7 +562,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
   @activities.where(id:@vpacn,expediente:vmoda2).each do |activ|
 
 
-        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
+        @vpact3=Formula.where(product_id:12,acti:1).select('orden')
        @vdetalle= Activity.order('pfecha')
        @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
 
@@ -586,6 +586,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
          @afecing=[]
          @acerti=[]
           @vajud2=[]
+          @aconsen=[]
      if activ.expediente>0 then
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
 
@@ -612,11 +613,21 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
 
 
-     if Detail.where(actividad:13,item_id:nobac.id).count>0 then
-      @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
+     if Detail.where(actividad:36,item_id:nobac.id).count>0 then
+      @afecing.push(Detail.where(actividad:36,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
      else
         @afecing.push("")
      end
+
+     if Detail.where(actividad:104,item_id:nobac.id).count>0 then
+      @aconsen.push(Detail.where(actividad:104,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
+
+     else
+       @aconsen.push("")
+
+     end
+
+
 
 
      ##adjudicado por obac
@@ -694,20 +705,6 @@ end
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @conta=@conta+1
 
 
@@ -759,15 +756,16 @@ case proce.orden
 
 
 
-  sheet.add_row [ @conta,@aobac[0],@apac[0],@afecing[0], activ.proceso, activ.descripcion.upcase,
-    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ],
-   style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles, soles, soles,centra,centra, izq]
-
+  sheet.add_row  [@conta,@apac[0],@afecing[0],@aobac[0], activ.proceso, activ.descripcion.upcase,
+    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ,@aconsen[0]],
+   style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad]
+     sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30,14
     nn=1
          while @aobac.length>nn
-         sheet.add_row [ @conta,@aobac[nn] ,@apac[nn],@afecing[nn],activ.proceso,nil,@afuente[nn],@acerti[nn], @vajud2[nn],
-         nil ,nil,nil,nil,nil,nil ],
-          style: [centra, centra, centra, centra,  centra, izq,centra, soles, soles, soles, soles,centra,centra, izq]
+         sheet.add_row [ @conta ,@apac[nn],@afecing[nn],@aobac[nn],activ.proceso,nil,@afuente[nn],@acerti[nn], @vajud2[nn],
+         nil ,nil,nil,nil,nil,@aconsen[nn]],
+          style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad]
+
          nn=nn+1
          end
          if @aobac.length>1 then
