@@ -178,8 +178,8 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
    @public=""
  end
 
- if Detail.where(actividad:13,item_id:ite.id).count>0 then
-   @prg=Detail.where(actividad:13,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+ if Detail.where(actividad:58,item_id:ite.id).count>0 then
+   @prg=Detail.where(actividad:58,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
  else
    @prg=""
  end
