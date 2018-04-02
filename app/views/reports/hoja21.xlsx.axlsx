@@ -318,7 +318,7 @@ else
   @public=""
 end
 
-if Detail.where(actividad:13,item_id:ite.id).count>0 then
+if Detail.where(actividad:58,item_id:ite.id).count>0 then
   @prg=Detail.where(actividad:13,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 else
   @prg=""
