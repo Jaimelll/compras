@@ -270,7 +270,7 @@ def comment4
     .order('pfecha')
 
 
-      @items=Contract.where(id:@vpacv).order('numero')
+      @items=Contract.where(id:@vpacv).order('obac,numero')
 
     respond_to do |format|
 
