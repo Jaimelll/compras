@@ -21,9 +21,9 @@
      <th  >Numero</th>
        <th >Proceso</th>
        <th  >OBAC</th>
-       <th  colspan="3">Descripcion</th>
+       <th  colspan="4">Descripcion</th>
 
-       <th   >Presupuestado</th>
+      
       <th   >Adjudicado</th>
 
 
@@ -74,12 +74,12 @@
 
 
 
-        <td colspan="3"><%= variable.descripcion.capitalize %>  </td>
+        <td colspan="4"><%= variable.descripcion.capitalize %>  </td>
 
 
 
 
-        <td ><%= number_with_delimiter( variable.presupuestado.to_i, delimiter: ",") %></td>
+
       <%  @vadj=variable.adjudicado* Formula.where(product_id:7,orden:variable.moneda).select('cantidad as dd').first.dd/100 %>
           <td ><%= number_with_delimiter(  @vadj.to_i, delimiter: ",") %></td>
 
