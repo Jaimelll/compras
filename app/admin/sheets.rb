@@ -111,7 +111,12 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
        column("codigo_ficha") do |ficha|
          link_to "#{ficha.codigo_ficha} ", admin_sheet_movements_path(ficha.id)
        end
-       column("codigo_revision")
+       column("codigo_revision") do |ficha|
+         localiz='http://www.acffaa.gob.pe/documents/32651/443704/'+ficha.codigo_revision+'.pdf'
+         link_to ficha.codigo_revision, localiz
+       end
+
+
 
        column("Fecha", :sortable => :revisada) do |ficha|
          if ficha.revisada then

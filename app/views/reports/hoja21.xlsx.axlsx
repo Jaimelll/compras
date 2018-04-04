@@ -241,8 +241,8 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-       @vdetalle= Detail.where(actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
-       @vdetalle= @vdetalle.where(actividad:@vpact3,item_id:ite.id)
+       @vdetalle= Detail.where(item_id:ite.id,actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
+    # @vdetalle= @vdetalle.where(actividad:@vpact3,item_id:ite.id)
 
        @vobsr=" "
        if @vdetalle.count>0
