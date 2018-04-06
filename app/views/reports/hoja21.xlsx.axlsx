@@ -88,13 +88,18 @@ Formula.where(product_id:20).order('cantidad').each do |proce|
 
 case proce.orden
    when 1
-     if @vpac4 then
-       @vpacn=@vpac1+@vpac4
-       @vpacn=Phase.where(id:@vpacn).where('sele=5 or convocatoria>1').
-                select('id').map {|e| e.attributes.values}.flatten
-    else
-        @vpacn=@vpac1
-     end
+      if @vpac1 then
+           @vpac1=Phase.where(id:@vpac1,sele:5).
+               select('id').map {|e| e.attributes.values}.flatten
+      else
+            @vpac1=[]   
+      end
+
+       if @vpac4 then
+            @vpacn=@vpac1+@vpac4
+       else
+             @vpacn=@vpac1
+       end
     when 2
           @vpacn=@vpac2
     when 3
@@ -474,13 +479,17 @@ end
 Formula.where(product_id:20).order('cantidad').each do |proce|
 
 case proce.orden
-    when 1
-          if @vpac4 then
-          @vpacn=@vpac1+@vpac4
-          @vpacn=Phase.where(id:@vpacn).where('sele=5 or convocatoria>1').select('id').map {|e| e.attributes.values}.flatten
-         else
-         @vpacn=@vpac1
-         end
+  when 1
+      if @vpac1 then
+        @vpac1=Phase.where(id:@vpac1,sele:5).
+            select('id').map {|e| e.attributes.values}.flatten
+      end
+
+       if @vpac4 then
+         @vpacn=@vpac1+@vpac4
+       else
+          @vpacn=@vpac1
+       end
     when 2
           @vpacn=@vpac2
     when 3
