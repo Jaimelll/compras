@@ -99,17 +99,24 @@ class Ability
     #  when 24  #neil
       #       can :read, ActiveAdmin::Page, :name =>"Dashboard"
         #     can [:create,:read,:update, :destroy], [Agreement, Employee, Experience, Family, Student]
-     when 10,25,21,22,23 #dpc y salinas
+     when 10,25 #dpc ver y salinas
           can [:read,:update],  [AdminUser]
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"Dpc"
         #  can [:read,:update],  [AdminUser]
           can [:read], [Phase,Item,Detail, Activity,Piece]
+     when 21,22,23 #enlaces ep, mgp, fap
+             can [:read,:update],  [AdminUser]
+             can :read, ActiveAdmin::Page, :name =>"Dashboard"
+             can :read, ActiveAdmin::Page, :name =>"Dpc"
+             can [:create,:read,:update],  [Detail,Activity]
+             can [:read], [Phase,Item, Piece]
      else
           can [:read,:update],  [AdminUser]
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
           can :read, ActiveAdmin::Page, :name =>"Dpc"
           can [:read,:update],  [AdminUser]
+
 
     #  can :read, ActiveAdmin::Page, :name =>"grafico"
   end

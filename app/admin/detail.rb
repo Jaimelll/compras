@@ -138,6 +138,12 @@ index :title => "Lista de Actividades"  do
                      else
                        n3=2
                      end
+        when 21,22,23 #enlaces
+                    if n2==20  then
+                      n3=1
+                    else
+                      n3=2
+                    end
 
         else
              n3=2
@@ -213,6 +219,11 @@ end
                              .order("numero,descripcion").
                                 map{|u| [u.descripcion.capitalize,
                                        u.orden]}
+                 when 21,22,23    #enlaces
+                          Formula.where(product_id:12).where("cantidad=20")
+                               .order("numero,descripcion").
+                                    map{|u| [u.descripcion.capitalize,
+                                         u.orden]}
                   end
 
 

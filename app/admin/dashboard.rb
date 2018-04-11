@@ -644,8 +644,8 @@ unless current_admin_user.categoria==24 #personal
                                               @vpac7=[]
                                               @itep=Item.where(ejecucion:4,exped2:@vaf).where("modalidad<3").where(obac: @vuobac)
                                               @itep.each do |ite|
-
-                                              @deta3=Detail.where(item_id:ite.id).
+                                              @proj=Formula.where(product_id:12,cantidad:20).select('orden')
+                                              @deta3=Detail.where(item_id:ite.id).where.not(actividad:@proj).
                                                 where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
                                                 order('details.pfecha DESC,details.id DESC')
 
@@ -673,11 +673,11 @@ unless current_admin_user.categoria==24 #personal
 
                                                           if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 then
                                                           if    Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
-                                                            activities.where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
+                                                            activities.where.not(actividad:@proj).where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
 
 
                                                              @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                  .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
+                                                                .where.not(actividad:@proj).where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
                                                                  .order('activities.pfecha DESC,activities.id DESC')
 
 
@@ -692,14 +692,14 @@ unless current_admin_user.categoria==24 #personal
                                                                    @vactiv=@vactiv2
                                                                 end
                                                           else
-                                                            vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                                                            vanno=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
                                                             if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
                                                               activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
 
 
 
                                                               @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                                                   .where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
+                                                                 .where.not(actividad:@proj).where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
                                                                   .order('activities.pfecha DESC,activities.id DESC')
 
 

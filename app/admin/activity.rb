@@ -70,11 +70,11 @@ column("Actividad", :sortable => :phase_id) do |activity|
                                  n7=0
                                end
                      #para dpc
-                                         if n4==35 or n4==76 or n4==38 or n4==83 or 90 or 91 or 99 then
-                                           n8=1
-                                         else
-                                           n8=0
-                                         end
+                             if n4==35 or n4==76 or n4==38 or n4==83 or 90 or 91 or 99 then
+                                 n8=1
+                             else
+                                 n8=0
+                             end
 
 
                    # link_to "#{n1} ",  admin_item_detail_path(item,detail) }
@@ -111,6 +111,12 @@ column("Actividad", :sortable => :phase_id) do |activity|
                                     else
                                       n3=2
                                     end
+                          when 21,22,23 #enlaces
+                                               if n2==20  then
+                                                 n3=1
+                                               else
+                                                 n3=2
+                                               end
 
                        else
                             n3=2
@@ -183,7 +189,15 @@ form :title => 'Edicion Actividad'  do |f|
                        Formula.where(product_id:12).where("cantidad=5 or cantidad=6 or cantidad=7")
                          .order("numero,descripcion").
                             map{|u| [u.descripcion.capitalize,
-                                   u.orden]}
+                               u.orden]}
+              when 21,22,23    #enlaces
+                       Formula.where(product_id:12).where("cantidad=20")
+                          .order("numero,descripcion").
+                           map{|u| [u.descripcion.capitalize,
+                          u.orden]}
+
+
+
               end
 
 
