@@ -8,9 +8,9 @@ ActiveAdmin.register_page "Dpc" do
     ##################
     Formula.where(product_id:1).update_all( numero:2 )
     case current_admin_user.categoria # a_variable is the variable we want to compare
-    when 21
-      @vuobac=[1]
-      Formula.where(product_id:1,orden:1).update_all( numero:1 )
+  #  when 21
+  #    @vuobac=[1]
+  #    Formula.where(product_id:1,orden:1).update_all( numero:1 )
     when 22
       @vuobac=[2]
         Formula.where(product_id:1,orden:2).update_all( numero:1 )
@@ -347,11 +347,12 @@ column do
             @vpac5=[]
             @vpac6=[]
             @vpac7=[]
+            @proj=Formula.where(product_id:12,cantidad:20).select('orden')
             @itep=Item.where(ejecucion:4,exped2:var).where("modalidad<3").where(obac: @vuobac)
             @itep.each do |ite|
 
             @deta3=Detail.where(item_id:ite.id).
-              where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).
+              where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where.not(actividad:@proj).
               order('details.pfecha DESC,details.id DESC')
 
 
@@ -378,11 +379,11 @@ column do
 
                         if  Phase.where.not(expediente:0).where(expediente:ite.exped,convocatoria:1).count>0 then
                         if    Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
-                          activities.where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
+                          activities.where.not(actividad:@proj).where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).count>0 then
 
 
                            @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                .where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
+                                .where.not(actividad:@proj).where("pfecha>=? and pfecha<=? ", @vinicio,@vfin ).where("actividad<>83")
                                .order('activities.pfecha DESC,activities.id DESC')
 
 
@@ -397,14 +398,14 @@ column do
                                  @vactiv=@vactiv2
                               end
                         else
-                          vanno=Formula.where(product_id:11,cantidad:1).select('nombre as dd').first.dd
+                          vanno=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
                           if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
-                            activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
+                            activities.where.not(actividad:@proj).where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
 
 
 
                             @phase3=Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).activities
-                                 .where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
+                                 .where.not(actividad:@proj).where("pfecha>=? and extract(year  from pfecha) = ?", @vinicio,vanno  ).where("actividad<>83")
                                 .order('activities.pfecha DESC,activities.id DESC')
 
 
@@ -481,7 +482,7 @@ column do
         @procp=Phase.where(convo:var,periodo:@vaf,expediente:@vexped).order('id')
         @procp .each do |proceso|  #each hata el final
 
-            @deta4=Activity.where(phase_id:proceso.id).
+            @deta4=Activity.where(phase_id:proceso.id).where.not(actividad:@proj).
                    where("pfecha>=?  ", @vinicio ).
                    order('pfecha DESC,id DESC')
 

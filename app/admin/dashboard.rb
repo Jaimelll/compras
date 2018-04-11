@@ -44,9 +44,9 @@ end
     #     panel "Recent Posts" do
     Formula.where(product_id:1).update_all( numero:2 )
     case current_admin_user.categoria # a_variable is the variable we want to compare
-    when 21 #ejercito
-      @vuobac=[1]
-      Formula.where(product_id:1,orden:1).update_all( numero:1 )
+  #  when 21 #ejercito
+  #    @vuobac=[1]
+  #    Formula.where(product_id:1,orden:1).update_all( numero:1 )
     when 22
       @vuobac=[2]
         Formula.where(product_id:1,orden:2).update_all( numero:1 )

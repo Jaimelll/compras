@@ -92,7 +92,7 @@ case proce.orden
            @vpac1=Phase.where(id:@vpac1,sele:5).
                select('id').map {|e| e.attributes.values}.flatten
       else
-            @vpac1=[]   
+            @vpac1=[]
       end
 
        if @vpac4 then
@@ -246,7 +246,7 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-       @vdetalle= Detail.where(item_id:ite.id,actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
+       @vdetalle= Detail.where.not(actividad:@proj).where(item_id:ite.id,actividad: Formula .where(product_id:12,cantidad:proce.orden).select('orden')).order('pfecha')
     # @vdetalle= @vdetalle.where(actividad:@vpact3,item_id:ite.id)
 
        @vobsr=" "
@@ -573,7 +573,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
 
         @vpact3=Formula.where(product_id:12,acti:1).select('orden')
-       @vdetalle= Activity.order('pfecha')
+       @vdetalle= Activity.where.not(actividad:@proj).order('pfecha')
        @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
 
        @vobsr=" "
