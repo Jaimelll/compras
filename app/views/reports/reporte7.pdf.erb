@@ -194,14 +194,19 @@
             <% if @vactcanti.include?("4") then%>
 
                <%deta= Detail.where(item_id:variable.id,actividad:102).order('pfecha') %>
-               <%deta2= Phase.where.not(expediente:0).find_by(expediente:variable.exped).activities
-                         .where(actividad: 102)
-                         .order('activities.pfecha ')%>
-                <% vop=0 %>
-               <% if deta2.count >0 then %>
-                  <td ><%= deta2.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+
+               <% vop=0 %>
+               <% if Phase.where(expediente:variable.exped).count>0 %>
+               <%   pro1=Phase.where(expediente:variable.exped).select('id') %>
+              <%   if Activity.where(phase_id:pro1,actividad: 102).count>0  %>
+                <%    deta2=Activity.where(phase_id:pro1,actividad: 102) .order('activities.pfecha ')%>
+                  <td ><%= deta2.select('pfecha as dd').last.dd.strftime("%d/%m") %></td>
                   <% vop=1 %>
-              <% end %>
+               <% end %>
+                <% end %>
+
+
+
 
               <% if deta.count >0 and vop==0 then %>
                   <td ><%= deta.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
