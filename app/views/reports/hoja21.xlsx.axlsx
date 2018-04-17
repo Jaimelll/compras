@@ -338,12 +338,28 @@ end
 
 
 if Detail.where(actividad:102,item_id:ite.id).count>0 then
-  @epom1=Detail.where(actividad:33,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+  @epom1=Detail.where(actividad:102,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
 else
   @epom1=""
 
 end
+
+
+if Phase.where(expediente:ite.exped).count>0 then
+idpha=Phase.where(expediente:ite.exped).select('id as dd').last.dd
+if Activity.where(actividad:102,phase_id:idpha).count>0 then
+  @epom1=Activity.where(actividad:102,phase_id:idpha).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+else
+  @epom1=@epom1
+
+end
+
+end
+
+
+
 
 if Detail.where(actividad:104,item_id:ite.id).count>0 then
   @consen=Detail.where(actividad:104,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
