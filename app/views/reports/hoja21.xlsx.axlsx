@@ -204,25 +204,25 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-          sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PROGRA_RECEPC ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
+          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
           style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
              when 2
-               sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PROGRA_RECEPC RECEPCION ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
+               sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC RECEPCION ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
                style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
              when 3
-              sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PROGRA_RECEPC IDONEIDAD ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
-              style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+              sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC RECEPCION INGRESO PLAN_IDONEIDAD ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
+              style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
               when 4
-                sheet.add_row %w(N PAC PUBLICACION IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PLAN_EPOM  ESTIMADO(Soles) SITUACION CONSENTIMIENTO_PROG),
-                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
+                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION PLAN_EPOM  ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
+                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -371,6 +371,16 @@ end
 
 
 
+if Detail.where(actividad:25,item_id:ite.id).count>0 then
+  cat=Detail.where(actividad:25,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+else
+  cat=""
+
+end
+
+
+
 
 
 
@@ -403,26 +413,27 @@ end
  when 1
 
 sheet.add_row [ vconta2,ite.pac,
-@public,
+
 Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 vexp,
 ite.descripcion.upcase,
 
 
 vffuente,
- ssele,
 
+ ssele,
+@public,
  @prg,
 
 ite.certificado.to_i, @vobsr,@consen],
-style: [centra, centra, fechad,  centra, desc, desc, centra, centra, fechad, soles, desc, fechad]
+style: [centra, centra,  centra, desc, desc, centra, centra, fechad, fechad, soles, desc, fechad]
 
-sheet.column_widths *[5, 5, 12, 8, 8, 50,15, 14, 14, 15, 30, 14]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 12, 14, 15, 30, 14]
 
 when 2
 
 sheet.add_row [ vconta2,ite.pac,
-@public,
+
 Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 vexp,
 ite.descripcion.upcase,
@@ -431,17 +442,18 @@ ite.descripcion.upcase,
 vffuente,
 ssele,
 ppresu,
+@public,
 @prg,
 @fecing,
 ite.certificado.to_i, @vobsr,@consen],
-style: [centra, centra, fechad,  centra, desc, desc, centra, centra, soles, fechad, fechad, soles, desc, fechad]
+style: [centra, centra,  centra, desc, desc, centra, centra, soles, fechad, fechad, fechad, soles, desc, fechad]
 
-sheet.column_widths *[5, 5, 12, 8, 8, 50,15,14, 14, 14, 12, 15, 30, 14]
+sheet.column_widths *[5, 5, 8, 8, 50,15,14, 14, 12, 14, 12, 15, 30, 14]
 
 when 3
 
 sheet.add_row [ vconta2,ite.pac,
-@public,
+
 Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 vexp,
 ite.descripcion.upcase,
@@ -450,17 +462,19 @@ ite.descripcion.upcase,
 vffuente,
 ssele,
 ppresu,
-
+@public,
 @prg,
+@fecing,
+cat,
 @ido,
 ite.certificado.to_i, @vobsr,@consen],
-style: [centra, centra, fechad,  centra, desc, desc, centra, centra,soles, fechad, fechad, soles, desc, fechad]
+style: [centra, centra,  centra, desc, desc, centra, centra,soles, fechad, fechad, fechad, fechad, fechad, soles, desc, fechad]
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
-sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 14, 12, 15, 30, 14]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12, 14, 12, 12, 12, 15, 30, 14]
 
 when 4
 sheet.add_row [ vconta2,ite.pac,
-  @public,
+
  Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 Formula.where(product_id:16, orden:ite.exped).
  select('nombre as dd').first.dd,
@@ -469,10 +483,13 @@ ite.descripcion.upcase,
  vffuente,
  ssele,
  ppresu,
+ @public,
+ @fecing,
+
  @epom1,
 ite.certificado.to_i, @vobsr,@consen],
-style: [centra, centra, fechad,  centra, desc, desc,centra, centra,soles, fechad, soles, desc, fechad]
-sheet.column_widths *[5, 5,12, 8, 8, 50,15, 14, 14, 12, 15, 30, 14]
+style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, soles, desc, fechad]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12, 12, 12, 15, 30, 14]
 end
 
 
