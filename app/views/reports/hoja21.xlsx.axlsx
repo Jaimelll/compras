@@ -551,17 +551,21 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
 
 
+
+
+       Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
+     vmoda2=Item.where(modalidad:modal.orden).where('exped>0').select('distinct exped as dd')
+
+     if @activities.where(id:@vpacn,expediente:vmoda2).count>0 then
+
+
+
    Formula.where(product_id:6).order('orden').each do  |merca|
 
-  vtipo2=Item.where(tipo: merca.orden).where('exped>0').select('distinct exped as dd')
+  vtipo2=Item.where(tipo: merca.orden,modalidad:modal.orden).where('exped>0').select('distinct exped as dd')
 
   if @activities.where(id:@vpacn,expediente:vtipo2).count>0 then
 
-
-    Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
-  vmoda2=Item.where(tipo:merca.orden,modalidad:modal.orden).where('exped>0').select('distinct exped as dd')
-
-  if @activities.where(id:@vpacn,expediente:vmoda2).count>0 then
 
   mercmod="MERCADO_"+Formula.where(product_id:6,orden:merca.orden).
           select('nombre as dd').first.dd+"_"+Formula.where(product_id:4,orden:modal.orden).
@@ -581,17 +585,17 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   case proce.orden
      when 1,4
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC ESTIM_CONV SITUACION CONSENTIMIENTO_PROG),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC PLAN_CONVOC SITUACION PLAN_CONSENTIMIENTO),
         style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu,  titu, titu, titu, titu], height: 40
 
 
      when 2
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION CONSENTIMIENTO_PROG),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION PLAN_CONSENTIMIENTO),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu, titu, titu, titu], height: 40
 
 
      when 3,5
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION CONSENTIMIENTO_PROG),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION PLAN_CONSENTIMIENTO),
         style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu, titu], height: 40
 
 
