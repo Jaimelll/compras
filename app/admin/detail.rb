@@ -165,7 +165,14 @@ column("Documento de recepcion") do |detail|
 end
 
 column("Numero de documento") do |detail|
-  detail.numero
+  if detail.numero then
+  #  localiz='file:///W:/OPP%20ACFFAA/Publico/Directivas%20ACFFAA/Directivas_DC/DIR-DC-002.pdf'
+  # localiz='W:/OPP%20ACFFAA/Publico/Directivas%20ACFFAA/Directivas_DC/DIR-DC-002.pdf'
+     localiz='W:\OPP%20ACFFAA\Publico\Directivas%20ACFFAA\Directivas_DC\DIR-DC-002.pdf'
+    link_to detail.numero, localiz
+  else
+     detail.numero
+  end
 end
 
 column("obs")
@@ -280,7 +287,10 @@ end
                          detail.tipo
                       end
                       row "Numero de documento" do |detail|
-                         detail.numero
+
+                           detail.numero
+
+
                       end
 
                       row "Fecha  " do |detail|
