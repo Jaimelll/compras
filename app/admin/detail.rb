@@ -170,6 +170,7 @@ column("Numero de documento") do |detail|
   # localiz='W:/OPP%20ACFFAA/Publico/Directivas%20ACFFAA/Directivas_DC/DIR-DC-002.pdf'
   #   localiz='W:\OPP%20ACFFAA\Publico\Directivas%20ACFFAA\Directivas_DC\DIR-DC-002.pdf'
      localiz='file:///W:/OPP%20ACFFAA/Publico/Directivas%20ACFFAA/Directivas_DC/DIR-DC-002.pdf'
+        
     link_to detail.numero, localiz
   else
      detail.numero
