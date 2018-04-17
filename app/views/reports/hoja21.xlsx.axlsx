@@ -174,15 +174,15 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
+   Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
+     if @items.where(id:@vpacn,modalidad:modal.orden).count>0 then
+
+
    Formula.where(product_id:6).order('orden').each do  |merca|
-   if @items.where(id:@vpacn,tipo:merca.orden).count>0 then
+   if @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).count>0 then
 
 
 
-  Formula.where(product_id:4).where('orden<3').order('orden').each do  |modal|
-
-
-  if @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).count>0 then
 
 
 
