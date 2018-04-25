@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
 
 
+  resources :purchases
   resources :movements
   resources :suppliers
   resources :lists

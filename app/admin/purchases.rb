@@ -1,0 +1,67 @@
+ActiveAdmin.register Purchase do
+    menu  priority: 16, label: "Costos"
+
+
+    scope :Todos, :default => true do |adjudi|
+        adjudi.all
+    end
+
+    scope :veinte_mil, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles<20000')
+    end
+    scope :cuarenta_mil, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles>20000 and montoadjudicadosoles<40000')
+    end
+
+    scope :sesenta_mil, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles>40000 and montoadjudicadosoles<60000')
+    end
+    scope :cien_mil, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles>60000 and montoadjudicadosoles<100000')
+    end
+    scope :mayor_a_cien_mil, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles>100000')
+    end
+
+    filter :proceso
+    filter :fechaconsentimientobp, label:'Consentimiento'
+    filter :proveedor
+    filter :entidad
+    filter :modalidad
+    filter :itemconvoca_descripcion, label:'Item'
+
+
+    #filter :montoadjudicadosoles
+
+index :title => "Lista de procesos"  do
+column("proceso")
+column("Consentimiento") do |adjudi|
+    adjudi.fechaconsentimientobp
+end
+column("proveedor")
+column("entidad")
+column("modalidad")
+column("Item") do |adjudi|
+    adjudi.itemconvoca_descripcion
+end
+column("Adjudicado Soles", :class => 'text-right') do |adjudi|
+    number_with_delimiter(adjudi.montoadjudicadosoles, delimiter: ",")
+end
+
+
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+end

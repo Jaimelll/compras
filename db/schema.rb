@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321165437) do
+ActiveRecord::Schema.define(version: 20180425173348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -380,6 +380,59 @@ ActiveRecord::Schema.define(version: 20180321165437) do
     t.index ["admin_user_id"], name: "index_products_on_admin_user_id", using: :btree
   end
 
+  create_table "purchases", force: :cascade do |t|
+    t.integer  "num_documento_pais"
+    t.integer  "idaplicacionfuente"
+    t.integer  "codigoconvocatoria"
+    t.integer  "itemconvocatoria"
+    t.integer  "itemconvoca_secuencia"
+    t.string   "proceso"
+    t.date     "fechaconvocatoria"
+    t.date     "fechabuenapro"
+    t.date     "fechaconsentimientobp"
+    t.string   "proveedor"
+    t.string   "rucproveedor"
+    t.string   "tipoproveedor"
+    t.string   "departamento_proveedor"
+    t.string   "provincia_proveedor"
+    t.string   "distrito_proveedor"
+    t.string   "codigoentidad"
+    t.string   "entidad"
+    t.string   "objetocontractual"
+    t.string   "ruc_entidad"
+    t.string   "tipoentidad"
+    t.string   "tipoentidadoee"
+    t.string   "entidad_departamento"
+    t.string   "entidad_provincia"
+    t.string   "entidad_distrito"
+    t.string   "modalidad"
+    t.string   "modalidadoee"
+    t.string   "procesoseleccion"
+    t.string   "siglatipoproceso"
+    t.string   "regimen"
+    t.string   "itemconvoca_descripcion"
+    t.string   "itemconvoca_unidadmedida"
+    t.string   "item_departamento"
+    t.string   "item_provincia"
+    t.string   "item_distrito"
+    t.string   "grupo"
+    t.string   "familia"
+    t.string   "clase"
+    t.string   "commodity"
+    t.string   "itemcubso"
+    t.string   "estadoitemconvoca"
+    t.string   "moneda"
+    t.integer  "cantidadadjudicado"
+    t.integer  "montoadjudicado"
+    t.integer  "montoadjudicadosoles"
+    t.string   "montoreferencial"
+    t.string   "montoreferencialsoles"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.index ["admin_user_id"], name: "index_purchases_on_admin_user_id", using: :btree
+  end
+
   create_table "sheets", force: :cascade do |t|
     t.string   "codigo_ficha"
     t.string   "codigo_revision"
@@ -469,6 +522,7 @@ ActiveRecord::Schema.define(version: 20180321165437) do
   add_foreign_key "pieces", "admin_users"
   add_foreign_key "pieces", "phases"
   add_foreign_key "products", "admin_users"
+  add_foreign_key "purchases", "admin_users"
   add_foreign_key "sheets", "admin_users"
   add_foreign_key "students", "admin_users"
   add_foreign_key "students", "employees"

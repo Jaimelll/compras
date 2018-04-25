@@ -10,7 +10,7 @@ class Ability
      when 1,2
           can :manage, :all
 
-      when 3,26#Roy,amador
+      when 3 #Roy
             can [:read,:update],  [AdminUser]
             can :read, ActiveAdmin::Page, :name =>"Dashboard"
             can :read, ActiveAdmin::Page, :name =>"Dpc"
@@ -20,8 +20,21 @@ class Ability
           #  can :read, ActiveAdmin::Page, :name =>"grafico1"
           #  can :read, ActiveAdmin::Page, :name =>"Indices"
             can :read, ActiveAdmin::Page, :name =>"Catalogacion"
-            can [:read], [Item, Detail]
+            can [:read], [Item, Detail, Purchase]
             can [:read], [Phase,Activity,Piece,Contract,Element,Package]
+
+      when 26 #secretario
+                can [:read,:update],  [AdminUser]
+                can :read, ActiveAdmin::Page, :name =>"Dashboard"
+                can :read, ActiveAdmin::Page, :name =>"Dpc"
+                can :read, ActiveAdmin::Page, :name =>"Dec"
+              #  can :read, ActiveAdmin::Page, :name =>"grafico"
+              #  can :read, ActiveAdmin::Page, :name =>"grafico0"
+              #  can :read, ActiveAdmin::Page, :name =>"grafico1"
+              #  can :read, ActiveAdmin::Page, :name =>"Indices"
+                can :read, ActiveAdmin::Page, :name =>"Catalogacion"
+                can [:read], [Item, Detail]
+                can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
       when 7,15,16,17,18,19 #asesor,ballesteros
           can [:read,:update],  [AdminUser]
