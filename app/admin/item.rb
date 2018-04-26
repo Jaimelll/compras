@@ -270,7 +270,7 @@ link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos\H5 '
     #        end
     #    end
 
-    column("estimado", :class => 'text-right') do |item|
+   column("estimado", :class => 'text-right', sortable: :certificado) do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 

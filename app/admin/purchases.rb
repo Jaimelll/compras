@@ -41,10 +41,11 @@ end
 column("proveedor")
 column("entidad")
 column("modalidad")
-column("Item") do |adjudi|
+column("Item", sortable: :itemconvoca_descripcion) do |adjudi|
     adjudi.itemconvoca_descripcion
 end
-column("Adjudicado Soles", :class => 'text-right') do |adjudi|
+
+column("Adjudicado Soles", :class => 'text-right', sortable: :montoadjudicadosoles ) do |adjudi|
     number_with_delimiter(adjudi.montoadjudicadosoles, delimiter: ",")
 end
 
