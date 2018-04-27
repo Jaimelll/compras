@@ -49,7 +49,7 @@ column("Adjudicado Soles", :class => 'text-right', sortable: :montoadjudicadosol
     number_with_delimiter(adjudi.montoadjudicadosoles, delimiter: ",")
 end
 
-
+ actions
 
 end
 
