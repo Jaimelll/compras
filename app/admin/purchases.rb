@@ -14,13 +14,13 @@ ActiveAdmin.register Purchase do
     end
 
     scope :sesenta_mil, :default => true do |adjudi|
-        adjudi.where('montoadjudicadosoles>40000 and montoadjudicadosoles<60000')
+        adjudi.where('montoadjudicadosoles>40000 and montoadjudicadosoles<100000')
     end
-    scope :cien_mil, :default => true do |adjudi|
-        adjudi.where('montoadjudicadosoles>60000 and montoadjudicadosoles<100000')
+    scope :un_millon, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles>100000 and montoadjudicadosoles<1000000')
     end
-    scope :mayor_a_cien_mil, :default => true do |adjudi|
-        adjudi.where('montoadjudicadosoles>100000')
+    scope :mayor_a_un_millon, :default => true do |adjudi|
+        adjudi.where('montoadjudicadosoles>1000000')
     end
 
     filter :proceso
