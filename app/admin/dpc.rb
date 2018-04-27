@@ -91,7 +91,7 @@ def execute2(var)
     @vpro6=[]
     @vpro7=[]
     @vprot=[]
-    @vxper2=[0,0,0,0,0,0,0,0]
+    @vxper2=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
 
     @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
