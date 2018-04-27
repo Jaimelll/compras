@@ -90,7 +90,7 @@ ActiveAdmin.register_page "Indices" do
 
              @vfec1=Time.now
 
-             @vproceso=[0,0,0,0,0,0,0,0,0]
+             @vproceso=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
              @uproc=8
              @corta=0
