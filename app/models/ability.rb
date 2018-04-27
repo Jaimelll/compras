@@ -124,6 +124,13 @@ class Ability
              can :read, ActiveAdmin::Page, :name =>"Dpc"
              can [:create,:read,:update],  [Detail,Activity]
              can [:read], [Phase,Item, Piece]
+     when 27 #oci
+       can [:read,:update],  [AdminUser]
+       can :read, ActiveAdmin::Page, :name =>"Dashboard"
+    #   can :read, ActiveAdmin::Page, :name =>"Dpc"
+       can [:read,:update],  [AdminUser]
+
+
      else
           can [:read,:update],  [AdminUser]
           can :read, ActiveAdmin::Page, :name =>"Dashboard"
