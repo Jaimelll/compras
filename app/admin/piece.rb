@@ -135,8 +135,9 @@ form :title => 'Edicion Item'  do |f|
           #             Formula.where(product_id:33).map{|u| [u.nombre.capitalize, u.orden]}
 
             #  f.input :motivo, :label => 'Motivo de no admision',:input_html => { :style =>  'width:30%'}
+            ode=[2,3,4,5]
             f.input :desierto,:label => 'Origen de desierto', :as => :select, :collection =>
-                     Formula.where(product_id:10,acti:1).map{|u| [u.descripcion, u.orden]}
+                     Formula.where(product_id:10,orden:ode).map{|u| [u.descripcion, u.orden]}
             f.input :articulo,:label => 'cantidad de articulos', :as => :string, :input_html => { :style =>  'width:30%'}
             f.input :ficha,:label => 'cantidad de articulos con ficha', :as => :string, :input_html => { :style =>  'width:30%'}
 
@@ -299,7 +300,7 @@ form :title => 'Edicion Item'  do |f|
             end
         end
 
-        
+
           row :articulo
           row :ficha
 
