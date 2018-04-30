@@ -91,15 +91,15 @@ def execute2(var)
     @vpro6=[]
     @vpro7=[]
     @vprot=[]
-    @vxper2=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
+    @vxper2=[0,0,0,0,0,0,0,0]
+      @proj=Formula.where(product_id:12,cantidad:20).select('orden')
 
     @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
     @procp=Phase.where(convo:var,periodo:@vaf,expediente:@vexped).order('id')
     @procp .each do |proceso|  #each hasta el final
 
         @deta4=Activity.where(phase_id:proceso.id).
-               where("pfecha>=?  ", @vinicio ).
+               where("pfecha>=?  ", @vinicio ).where.not(actividad:@proj).
                order('pfecha DESC,id DESC')
 
 
