@@ -20,7 +20,8 @@ menu false
 #actions :all
 
   index  do
-    if current_admin_user.categoria==2 then
+    cat=1
+    if current_admin_user.categoria==cat then
     selectable_column
     id_column
     column :email
@@ -43,7 +44,8 @@ end
       f.input :email
       f.input :password
       f.input :password_confirmation
-      if current_admin_user.categoria==2 then
+        cat=1
+      if current_admin_user.categoria==cat then
          f.input :categoria
          f.input :periodo
       end
@@ -63,7 +65,8 @@ show :title => ' Usuario'  do
       row :email
       row :password
       row :password_confirmation
-      if current_admin_user.categoria==2 then
+      cat=1
+      if current_admin_user.categoria==cat then
       row :categoria
       row :periodo
       end

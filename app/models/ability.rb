@@ -16,7 +16,7 @@ class Ability
         can :read, ActiveAdmin::Page, :name =>"Dec"
         can :read, ActiveAdmin::Page, :name =>"Indices"
         can :read, ActiveAdmin::Page, :name =>"Catalogacion"
-        can [:create,:read,:update,:destroy], [Item, Detail]
+        can [:create,:read,:update,:destroy], [Item, Detail,Product,Formula,Sheet,Movement,List]
         can [:create,:read,:update,:destroy], [Phase,Activity,Piece,Contract,Element,Package]
 
       when 3 #Roy
