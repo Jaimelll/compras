@@ -146,7 +146,7 @@ end
 #  column("expediente")
 
 
-column("exped")do |item|
+column("Exped", sortable: :exped)do |item|
     if item.exped and item.exped>0 then
 
       exp =Formula.where(product_id:16, orden:item.exped).
@@ -176,7 +176,7 @@ end
   end
 
     @vaf3=Formula.where(product_id:11,orden:$vaf).select('descripcion as dd').first.dd
-   column("descripción  "+  @vaf3) do |item|
+   column("Descripción  "+  @vaf3, sortable: :descripcion) do |item|
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
@@ -197,7 +197,7 @@ end
 
   end
 
-  column("modalidad")do |item|
+  column("Modalidad", sortable: :modalidad)do |item|
       if item.modalidad and item.modalidad>0 then
 
          Formula.where(product_id:4, orden:item.modalidad).
@@ -209,7 +209,7 @@ end
     end
 
 
-  column("obac") do |item|
+  column("OBAC", sortable: :obac) do |item|
           if item.obac and item.obac>0 then
          Formula.where(product_id:1, orden:item.obac).
           select('nombre as dd').first.dd
@@ -227,7 +227,7 @@ end
 #  end
 
 
-  column("Fuente de Finan") do |item|
+  column("Fuente de Finan", sortable: :fuente) do |item|
       if item.fuente and item.fuente>0 then
 
          Formula.where(product_id:8, orden:item.fuente).
@@ -255,7 +255,7 @@ end
     #        end
     #    end
 
-   column("estimado", :class => 'text-right', sortable: :certificado) do |item|
+   column("Estimado", :class => 'text-right', sortable: :certificado) do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 
