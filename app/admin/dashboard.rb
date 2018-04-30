@@ -9,7 +9,7 @@ menu  priority: 1,label: proc{ I18n.t("active_admin.dashboard") }
 #end
 
 action_item :only=> :index do
-
+  $vaf=current_admin_user.periodo
     link_to   'Cambiar AF', af_admin_admin_user_path(1, :@num), method: :put
 end
 
@@ -125,7 +125,7 @@ end
 
 
           case current_admin_user.categoria
-          when 2,3,26,4,6,8,9 #adm roy amador italo sectoristas
+          when 1,2,3,26,4,6,8,9 #adm roy amador italo sectoristas
                        panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
                          table_for Formula.where(product_id:11).order('orden')  do
 
@@ -241,7 +241,7 @@ end
                         end   #de table for
     #########personal
                          case current_admin_user.categoria
-                             when 2,3
+                         when 1,2,3
                            #  li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
                            #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
                               li    link_to "Personal", "http://172.25.10.6:3001/admin/login"

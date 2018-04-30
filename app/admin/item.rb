@@ -53,53 +53,41 @@ action_item :view, only: :show do
 
 
     scope :ACFFAA, :default => true do |items|
-      @vaf=current_admin_user.periodo
-         items.where(ejecucion:4,exped2:@vaf).order('pac')
+
+    #  $vaf=current_admin_user.periodo
+         items.where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
    end
 
-     scope :todos, :default => true do |items|
 
-           items.order('pac')
-      end
      scope :Ejercito, :default => true do |items|
-        @vaf=current_admin_user.periodo
-          items.where(obac:1).where(exped2:@vaf).order('pac')
+
+          items.where(obac:1).where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
      end
      scope :Marina, :default => true do |items|
-      @vaf=current_admin_user.periodo
-          items.where(obac:2).where(exped2:@vaf).order('pac')
+
+          items.where(obac:2).where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
      end
      scope :FAP, :default => true do |items|
-      @vaf=current_admin_user.periodo
-          items.where(obac:3).where(exped2:@vaf).order('pac')
+
+          items.where(obac:3).where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
      end
 
      scope :Otros, :default => true do |items|
-    @vaf=current_admin_user.periodo
-          items.where("obac > 3").where(exped2:@vaf).order('pac')
-     end
-     scope :AF_2018, :default => true do |items|
 
-          items.where(ejecucion:4,exped2:4).order('pac')
-     end
-     scope :AF_2017, :default => true do |items|
-
-          items.where(ejecucion:4,exped2:3).order('pac')
+          items.where("obac > 3").where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
      end
 
-     scope :AF_2016, :default => true do |items|
+     scope :Autorizados, :default => true do |items|
 
-          items.where(ejecucion:4,exped2:2).order('pac')
-     end
-
-     scope :AF_2015, :default => true do |items|
-
-          items.where(ejecucion:4,exped2:1).order('pac')
-     end
-     scope :ACFFAA_filtro, :default => true do |items|
-         @vaf=current_admin_user.periodo
-          items.where(ejecucion:4,exped2:@vaf).where('modalidad<3').order('pac')
+          items.where(ejecucion:4,exped2:$vaf).where('modalidad=3').order('pac')
     end
+
+
+     scope :todos, :default => true do |items|
+
+           items.where(exped2:$vaf).order('pac')
+      end
+
 
 
 
@@ -116,8 +104,8 @@ filter :certificado
 
 filter :exped, label:'Expediente', :as => :select, :collection =>
      Formula.where(product_id:16).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
-filter :periodo , :as => :select, :collection =>
-     Formula.where(product_id:11).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
+filter :ejecucion , :as => :select, :collection =>
+     Formula.where(product_id:1).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :modalidad , :as => :select, :collection =>
     Formula.where(product_id:4).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
 filter :tipo, label:'Mercado', :as => :select, :collection =>
@@ -130,7 +118,10 @@ filter :fuente,  :as => :select, :collection =>
       Formula.where(product_id:8).order('orden ASC').map{|u| ["#{u.descripcion}", u.orden]}
 
 
-index :title => 'Lista de PACs' do
+
+
+index :title => 'Lista de PACs ' do
+
 
 
   column("NoPac", :sortable => :pac) {|item|
@@ -183,7 +174,9 @@ vsec=1
 end
  link_to_if vsec==1, "#{exp } ", admin_item_path(item)
   end
-   column("descripcion") do |item|
+
+    @vaf3=Formula.where(product_id:11,orden:$vaf).select('descripcion as dd').first.dd
+   column("descripción  "+  @vaf3) do |item|
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
@@ -197,16 +190,17 @@ end
 
 #  localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 #localiz='W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
-localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
+#localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 
-link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos\H5 '
+#link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos\H5 '
+  item.descripcion.upcase
 
   end
 
-  column("periodo")do |item|
-      if item.periodo and item.periodo>0 then
+  column("modalidad")do |item|
+      if item.modalidad and item.modalidad>0 then
 
-         Formula.where(product_id:11, orden:item.periodo).
+         Formula.where(product_id:4, orden:item.modalidad).
           select('nombre as dd').first.dd
 
         else
@@ -233,23 +227,14 @@ link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos\H5 '
 #  end
 
 
-  column("lista") do |item|
-      if item.lista and item.lista>0 then
+  column("Fuente de Finan") do |item|
+      if item.fuente and item.fuente>0 then
 
-         Formula.where(product_id:3, orden:item.lista).
+         Formula.where(product_id:8, orden:item.fuente).
           select('nombre as dd').first.dd
 
         else
             "s/d"
-        end
-    end
-
-  column("ejecucion") do |item|
-      if item.ejecucion and item.ejecucion>0 then
-         Formula.where(product_id:1, orden:item.ejecucion).
-          select('nombre as dd').first.dd
-        else
-              "s/d"
         end
     end
 
