@@ -120,7 +120,7 @@ filter :fuente,  :as => :select, :collection =>
 
 
 
-index :title => 'Lista de PACs ' do
+index :title => proc {"BUSCADOR PAC "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd }   do
 
 
 
@@ -175,8 +175,8 @@ end
  link_to_if vsec==1, "#{exp } ", admin_item_path(item)
   end
 
-    @vaf3=Formula.where(product_id:11,orden:$vaf).select('descripcion as dd').first.dd
-   column("Descripción  "+  @vaf3, sortable: :descripcion) do |item|
+  
+   column("Descripción  ") do |item|
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '

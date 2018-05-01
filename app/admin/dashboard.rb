@@ -15,7 +15,7 @@ end
 
 
 
-  content title: proc{ I18n.t("active_admin.dashboard") } do
+  content title:proc {"PAC "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd } do
 
 
 
@@ -65,9 +65,9 @@ end
 
     #comienza case
 
-    @vaf=current_admin_user.periodo
-    @vaf1=Formula.where(product_id:11,orden:@vaf).select('descripcion as dd').first.dd
-  case @vaf  #comienza case
+    $vaf=current_admin_user.periodo
+    @vaf1=Formula.where(product_id:11,orden:$vaf).select('descripcion as dd').first.dd
+  case $vaf  #comienza case
 
      when 1
        @vinicio = Date.parse('2015/01/01')
@@ -264,7 +264,7 @@ unless current_admin_user.categoria==24
 
                         #     @vult=Formula.where(product_id:3).maximum('orden')
                         @let=Item.where(ejecucion:4)
-                               .where(exped2:@vaf).where(obac: @vuobac)
+                               .where(exped2:$vaf).where(obac: @vuobac)
                               column("Listas ") do |formula|
                                   if formula.cantidad==1 then
                                     formula.nombre
@@ -283,7 +283,7 @@ unless current_admin_user.categoria==24
                                   @vopc1=1
 
                                 @le1=Item.where(ejecucion:4,modalidad:2,lista:formula.orden)
-                                     .where(exped2:@vaf).where(obac: @vuobac)
+                                     .where(exped2:$vaf).where(obac: @vuobac)
 
                                 @le= @le1.count.to_s+ "/("+
                                        number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -316,7 +316,7 @@ unless current_admin_user.categoria==24
                                 @vopc1=2
 
                               @le1=Item.where(ejecucion:4,modalidad:1,lista:formula.orden)
-                                    .where(exped2:@vaf).where(obac: @vuobac)
+                                    .where(exped2:$vaf).where(obac: @vuobac)
 
                               @le= @le1.count.to_s+ "/("+
                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -348,7 +348,7 @@ unless current_admin_user.categoria==24
                                 @vopc1=3
 
                                 @ls1=   Item.where(ejecucion:4,lista:formula.orden).where("modalidad<3")
-                                        .where(exped2:@vaf).where(obac: @vuobac)
+                                        .where(exped2:$vaf).where(obac: @vuobac)
                                 @ls=   @ls1.count.to_s+ "/("+
                                      number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -388,7 +388,7 @@ unless current_admin_user.categoria==24
 
                           panel  "II.- PAC-EXPEDIENTES POR FUENTE DE FINANCIAMIENTO  ACFFAA "+@vaf1+ " - 'PAC/(SOLES)'" do
                             @let=Item.where(ejecucion:4)
-                                   .where(exped2:@vaf).where(obac: @vuobac)
+                                   .where(exped2:$vaf).where(obac: @vuobac)
 
                                     table_for Formula.where(product_id:8)  do
 
@@ -409,7 +409,7 @@ unless current_admin_user.categoria==24
                                                 @vopc1=9
 
                                                @le1=Item.where(ejecucion:4,modalidad:2,fuente:formula.orden)
-                                                   .where(exped2:@vaf).where(obac: @vuobac)
+                                                   .where(exped2:$vaf).where(obac: @vuobac)
 
                                                 @le= @le1.count.to_s+ "/("+
                                                      number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -432,7 +432,7 @@ unless current_admin_user.categoria==24
                                              @vopc1=10
 
                                              @le1=Item.where(ejecucion:4,modalidad:1,fuente:formula.orden)
-                                                  .where(exped2:@vaf).where(obac: @vuobac)
+                                                  .where(exped2:$vaf).where(obac: @vuobac)
 
                                              @le= @le1.count.to_s+ "/("+
                                                    number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -456,7 +456,7 @@ unless current_admin_user.categoria==24
                                                 @vopc1=11
 
                                                 @ls1=   Item.where(ejecucion:4,fuente:formula.orden).where("modalidad<3")
-                                                       .where(exped2:@vaf).where(obac: @vuobac)
+                                                       .where(exped2:$vaf).where(obac: @vuobac)
                                                 @ls=   @ls1.count.to_s+ "/("+
                                                    number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -530,7 +530,7 @@ unless current_admin_user.categoria==24 #personal
 
             table_for Formula.where(product_id:6)  do
               @let=Item.where(ejecucion:4)
-                     .where(exped2:@vaf).where(obac: @vuobac)
+                     .where(exped2:$vaf).where(obac: @vuobac)
 
                  column("Mercado ") do |formula|
                      if formula.cantidad==1 then
@@ -549,7 +549,7 @@ unless current_admin_user.categoria==24 #personal
                    @vopc1=6
 
                  @le1=Item.where(ejecucion:4,modalidad:2,tipo:formula.orden)
-                      .where(exped2:@vaf).where(obac: @vuobac)
+                      .where(exped2:$vaf).where(obac: @vuobac)
 
                  @le= @le1.count.to_s+ "/("+
                         number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -572,7 +572,7 @@ unless current_admin_user.categoria==24 #personal
                    @vopc1=7
 
                  @le1=Item.where(ejecucion:4,modalidad:1,tipo:formula.orden)
-                       .where(exped2:@vaf).where(obac: @vuobac)
+                       .where(exped2:$vaf).where(obac: @vuobac)
 
                  @le= @le1.count.to_s+ "/("+
                         number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
@@ -596,7 +596,7 @@ unless current_admin_user.categoria==24 #personal
                    @vopc1=8
 
                    @ls1=   Item.where(ejecucion:4,tipo:formula.orden).where("modalidad<3")
-                           .where(exped2:@vaf).where(obac: @vuobac)
+                           .where(exped2:$vaf).where(obac: @vuobac)
                    @ls=   @ls1.count.to_s+ "/("+
                         number_with_delimiter(@ls1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
 
@@ -642,7 +642,7 @@ unless current_admin_user.categoria==24 #personal
                                               @vpac5=[]
                                               @vpac6=[]
                                               @vpac7=[]
-                                              @itep=Item.where(ejecucion:4,exped2:@vaf).where("modalidad<3").where(obac: @vuobac)
+                                              @itep=Item.where(ejecucion:4,exped2:$vaf).where("modalidad<3").where(obac: @vuobac)
                                               @itep.each do |ite|
                                               @proj=Formula.where(product_id:12,cantidad:20).select('orden')
                                               @deta3=Detail.where(item_id:ite.id).where.not(actividad:@proj).
@@ -692,7 +692,7 @@ unless current_admin_user.categoria==24 #personal
                                                                    @vactiv=@vactiv2
                                                                 end
                                                           else
-                                                            vanno=Formula.where(product_id:11,orden:@vaf).select('nombre as dd').first.dd
+                                                            vanno=Formula.where(product_id:11,orden:$vaf).select('nombre as dd').first.dd
                                                             if Phase.where.not(expediente:0).where(convocatoria:1).find_by(expediente:ite.exped).
                                                               activities.where("pfecha>=? and extract(year from pfecha) = ?", @vinicio,vanno ).count>0  then
 
@@ -866,7 +866,7 @@ unless current_admin_user.categoria==24 #personal
                                         column("TOTAL ", :class => 'text-right') do |formula|
                                           if formula.orden==1 then
 
-                                          @auto=  @vaf
+                                          @auto=  $vaf
                                           @tita1="Total Procesos en Curso ACFFAA - PERIODO"
                                           @vopc1=4
                                           @vxper0=@vxper
@@ -881,7 +881,7 @@ unless current_admin_user.categoria==24 #personal
                                                 "#{@le} "
                                          else
 
-                                        vautoro=  Item.where(ejecucion:4,modalidad:3,exped2:@vaf,obac: @vuobac)
+                                        vautoro=  Item.where(ejecucion:4,modalidad:3,exped2:$vaf,obac: @vuobac)
                                         vautors=  vautoro.sum(:certificado)
                                         vautorc=  vautoro.count.to_s
                                         vautor1=  number_with_delimiter(vautors.to_i, delimiter: ",").to_s

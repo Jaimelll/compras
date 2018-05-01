@@ -9,7 +9,7 @@ development:
 
   adapter: postgresql
   encoding: unicode
-  username: postgres
+  username: rails
   password: password
   host: 127.0.0.1
   port: 5432
