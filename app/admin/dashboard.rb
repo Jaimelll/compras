@@ -737,18 +737,25 @@ unless current_admin_user.categoria==24 #personal
                                                            case @vdir
                                                            when 1
                                                                @vpac1.push(ite.id)
+                                                                 Item.where(id:ite.id).update_all( cuadrante:1 )
                                                              when 2
                                                                @vpac2.push(ite.id)
+                                                                  Item.where(id:ite.id).update_all( cuadrante:2 )
                                                              when 3
                                                                @vpac3.push(ite.id)
+                                                                  Item.where(id:ite.id).update_all( cuadrante:3 )
                                                              when 4
                                                                @vpac4.push(ite.id)
+                                                                  Item.where(id:ite.id).update_all( cuadrante:4 )
                                                              when 5
                                                                @vpac5.push(ite.id)
+                                                                  Item.where(id:ite.id).update_all( cuadrante:5 )
                                                              when 6
                                                                @vpac6.push(ite.id)
+                                                                  Item.where(id:ite.id).update_all( cuadrante:6 )
                                                              when 7
                                                                @vpac7.push(ite.id)
+                                                                  Item.where(id:ite.id).update_all( cuadrante:7 )
 
                                                           end #case
 

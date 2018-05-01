@@ -28,8 +28,8 @@ permit_params :nomenclatura, :descripcion,:moneda, :valor,:expediente,
 menu priority: 10, label: "Buscador Procesos"
 
 scope :ACFFAA, :default => true do |phases|
-  @vaf=current_admin_user.periodo
-     phases.where(periodo:@vaf).where.not(expediente:0)
+
+     phases.where(periodo:$vaf).where.not(expediente:0)
 end
 
 scope :AF_2018, :default => true do |phases|
@@ -173,13 +173,13 @@ end
 form :title => 'Edicion Procesos' do |f|
 
     f.inputs  do
-        @vaf=current_admin_user.periodo
+
  f.input :nomenclatura , :input_html => { :style =>  'width:30%'}
  f.input :proceso , :input_html => { :style =>  'width:30%'}
  f.input :convocatoria , :input_html => { :style =>  'width:30%'}
  f.input :descripcion ,:label => 'Descripcion del bien o servicio'
  f.input :moneda, :as => :select, :collection =>
-          Formula.where(product_id:7,numero:@vaf).map{|u| [u.nombre.capitalize, u.orden]}
+          Formula.where(product_id:7,numero:$vaf).map{|u| [u.nombre.capitalize, u.orden]}
 
  f.input :valor,:label => 'Valor Referencial', :as => :string, :input_html => { :style =>  'width:30%'}
  f.input :expediente, :input_html => { :style =>  'width:60%'}, :as => :select, :collection =>
@@ -198,7 +198,7 @@ f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html
 f.input :convo,:label => 'Año de Convocatoria' , :as => :select, :collection =>
    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :sele5,:label => 'Proceso de origen', :as => :select, :collection =>
-   Phase.where(periodo:@vaf).order('proceso').map{|u| [u.proceso, u.id]}
+   Phase.where(periodo:$vaf).order('proceso').map{|u| [u.proceso, u.id]}
 
   f.actions
 

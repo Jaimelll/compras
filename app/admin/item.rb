@@ -58,35 +58,37 @@ action_item :view, only: :show do
          items.where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
    end
 
+   scope :S_EXP, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:1).where('modalidad<3').order('pac')
+   end
 
-     scope :Ejercito, :default => true do |items|
-
-          items.where(obac:1).where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
-     end
-     scope :Marina, :default => true do |items|
-
-          items.where(obac:2).where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
-     end
-     scope :FAP, :default => true do |items|
-
-          items.where(obac:3).where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
-     end
-
-     scope :Otros, :default => true do |items|
-
-          items.where("obac > 3").where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
-     end
-
-     scope :Autorizados, :default => true do |items|
-
-          items.where(ejecucion:4,exped2:$vaf).where('modalidad=3').order('pac')
-    end
-
+   scope :C_EXP, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:2).where('modalidad<3').order('pac')
+   end
+   scope :DC, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:3).where('modalidad<3').order('pac')
+   end
+   scope :DEM, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:4).where('modalidad<3').order('pac')
+   end
+   scope :DPC, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:5).where('modalidad<3').order('pac')
+   end
+   scope :FC, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:6).where('modalidad<3').order('pac')
+   end
+   scope :EC, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,cuadrante:7).where('modalidad<3').order('pac')
+   end
+   scope :Autorizados, :default => true do |items|
+      items.where(ejecucion:4,exped2:$vaf,modalidad:3).order('pac')
+   end
 
      scope :todos, :default => true do |items|
 
            items.where(exped2:$vaf).order('pac')
       end
+
 
 
 
@@ -175,8 +177,8 @@ end
  link_to_if vsec==1, "#{exp } ", admin_item_path(item)
   end
 
-  
-   column("Descripción  ") do |item|
+
+   column("Descripción", sortable: :descripcion) do |item|
 
    #loca1='//W:/SG ACFFAA/Oenlace/Proyectos/'
    #loca1='\\acffaa-archivo\acffaa$\SG ACFFAA\Oenlace\Proyectos\ '
@@ -237,25 +239,19 @@ end
             "s/d"
         end
     end
+    column("Mercado", sortable: :tipo) do |item|
+        if item.tipo and item.tipo>0 then
 
-  #  column("cuadrante") do |item|
-  #      if item.cuadrante and item.cuadrante>0 then
-  #         Formula.where(product_id:13, orden:item.cuadrante).
-  #          select('nombre as dd').first.dd
-  #        else
-  #            "s/d"
-  #        end
-  #    end
-    #  column("fuente") do |item|
-    #      if item.fuente and item.fuente>0 then
-    #         Formula.where(product_id:8, orden:item.fuente).
-    #          select('nombre as dd').first.dd
-    #        else
-    #            "s/d"
-    #        end
-    #    end
+           Formula.where(product_id:6, orden:item.tipo).
+            select('nombre as dd').first.dd
 
-   column("Estimado", :class => 'text-right', sortable: :certificado) do |item|
+          else
+              "s/d"
+          end
+      end
+
+
+   column("Estimado(soles)", :class => 'text-right', sortable: :certificado) do |item|
      number_with_delimiter(item.certificado, delimiter: ",")
    end
 

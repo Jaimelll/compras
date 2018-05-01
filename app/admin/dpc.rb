@@ -3,7 +3,8 @@ ActiveAdmin.register_page "Dpc" do
   menu  priority: 2,label: "Procesos"
 
 
-  content title: "Procesos" do
+  content title: proc {"Procesos "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd } do
+
 
     ##################
     Formula.where(product_id:1).update_all( numero:2 )
