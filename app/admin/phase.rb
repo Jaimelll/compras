@@ -144,9 +144,18 @@ column("expediente") do |phase|
       end
       link_to vexp, admin_phase_activities_path(phase)
   end
+column("Convoca", :sortable => :convo) do |phase|
+   if phase.convo and phase.convo>0 then
+       vcon=Formula.where(product_id:11, orden:phase.convo).
+       select('nombre as dd').first.dd
+    else
+       vcon=  "s/d"
+    end
+
+  end
 
  column("descripcion") do |phase|
-  phase.descripcion.capitalize
+  phase.descripcion.upcase
 
  end
  column("moneda") do |phase|
@@ -154,13 +163,18 @@ column("expediente") do |phase|
         Formula.where(product_id:7,orden:phase.moneda).select('nombre as dd').first.dd.to_s
       end
   end
-column("Referencial", :class => 'text-right', sortable: :valor)  do |phase|
-   if phase.valor then
-#  vval= phase.valor*Formula.where(product_id:7,orden:phase.moneda,numero:phase.periodo).select('cantidad as dd').first.dd/100
 
-   number_with_delimiter(phase.valor.to_int, delimiter: ",")
-   end
- end
+
+ column("Ref/Adju(soles)", :class => 'text-right', sortable: :sele2)  do |phase|
+    if phase.sele2 then
+ #  vval= phase.valor*Formula.where(product_id:7,orden:phase.moneda,numero:phase.periodo).select('cantidad as dd').first.dd/100
+
+    number_with_delimiter(phase.sele2.to_int, delimiter: ",")
+    else
+      "s/d"
+    end
+  end
+
 
   # column("auditado") do |phase|
 #      if  phase.sele3 and  phase.sele3>0 then
