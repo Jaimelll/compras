@@ -32,30 +32,34 @@ scope :ACFFAA, :default => true do |phases|
      phases.where(periodo:$vaf).where.not(expediente:0)
 end
 
-scope :AF_2018, :default => true do |phases|
-     phases.where(periodo:4).where.not(expediente:0)
+scope :"Nulo/D/C", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:1).where.not(expediente:0)
 end
 
-scope :AF_2017, :default => true do |phases|
-     phases.where(periodo:3).where.not(expediente:0)
+scope :"GEX", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:2).where.not(expediente:0)
+end
+scope :"DC", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:3).where.not(expediente:0)
+end
+scope :"DEM", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:4).where.not(expediente:0)
+end
+scope :"DPC", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:5).where.not(expediente:0)
+end
+scope :"FC", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:6).where.not(expediente:0)
+end
+scope :"EC", :default => true do |phases|
+     phases.where(periodo:$vaf,sele:7).where.not(expediente:0)
 end
 
-scope :AF_2016, :default => true do |phases|
-phases.where(periodo:2).where.not(expediente:0)
-end
 
-scope :AF_2015, :default => true do |phases|
-phases.where(periodo:1).where.not(expediente:0)
-end
+
 
 scope :Todos, :default => true do |phases|
-     phases
-end
-
-
-scope :Otros, :default => true do |phases|
-
-     phases.where(expediente:0).order('id')
+    phases.where(periodo:$vaf)
 end
 #scope :Auditados, :default => true do |phases|
 #     phases.where(sele3:2)
@@ -122,16 +126,25 @@ filter :expediente, :as => :select, :collection =>
 
 
 
-index :title => 'Lista de Procesos' do
+index :title => proc {"BUSCADOR PROCESOS  "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd }   do
 
-column("proceso") do |phase|
+
+column("proceso", :sortable => :proceso) do |phase|
    link_to "#{phase.proceso} ", admin_phase_pieces_path(phase)
 end
-column("nomenclatura") do |phase|
 
-   link_to "#{phase.nomenclatura} ", admin_phase_activities_path(phase)
-end
- column("convocatoria")
+column("expediente") do |phase|
+    if phase.expediente and phase.expediente>0 then
+
+      vexp=Formula.where(product_id:16, orden:phase.expediente).
+        select('nombre as dd').first.dd
+
+      else
+        vexp=  "s/d"
+      end
+      link_to vexp, admin_phase_activities_path(phase)
+  end
+
  column("descripcion") do |phase|
   phase.descripcion.capitalize
 
@@ -143,19 +156,12 @@ end
   end
 column("Referencial", :class => 'text-right', sortable: :valor)  do |phase|
    if phase.valor then
+#  vval= phase.valor*Formula.where(product_id:7,orden:phase.moneda,numero:phase.periodo).select('cantidad as dd').first.dd/100
+
    number_with_delimiter(phase.valor.to_int, delimiter: ",")
    end
  end
- column("expediente")do |phase|
-     if phase.expediente and phase.expediente>0 then
 
-        Formula.where(product_id:16, orden:phase.expediente).
-         select('nombre as dd').first.dd
-
-       else
-           "s/d"
-       end
-   end
   # column("auditado") do |phase|
 #      if  phase.sele3 and  phase.sele3>0 then
 

@@ -58,11 +58,11 @@ action_item :view, only: :show do
          items.where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
    end
 
-   scope :S_EXP, :default => true do |items|
+   scope :"S/EXP", :default => true do |items|
       items.where(ejecucion:4,exped2:$vaf,cuadrante:1).where('modalidad<3').order('pac')
    end
 
-   scope :C_EXP, :default => true do |items|
+   scope :"C/EXP", :default => true do |items|
       items.where(ejecucion:4,exped2:$vaf,cuadrante:2).where('modalidad<3').order('pac')
    end
    scope :DC, :default => true do |items|
