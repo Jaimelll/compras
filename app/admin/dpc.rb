@@ -662,7 +662,15 @@ column do
                               .select('pfecha as dd').first.dd
                               Phase.where(id:proceso.id).update_all( pp:@vpp )
 
+                   else
+                     if proceso.moneda and proceso.valor then
 
+                          @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:$vaf)
+                                .select('cantidad as dd').first.dd.to_i*proceso.valor/100
+
+
+                            Phase.where(id:proceso.id).update_all( sele2:@vpv )
+                     end
 
                    end #case
 
