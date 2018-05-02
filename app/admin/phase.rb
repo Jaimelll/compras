@@ -68,14 +68,16 @@ end
 
 
 filter :proceso
-filter :convocatoria
+filter :convo, label:'Año Convocatoria', :as => :select, :collection =>
+     Formula.where(product_id:11).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
+
 filter :descripcion
 filter :expediente, :as => :select, :collection =>
      Formula.where(product_id:16).order('nombre ASC').map{|u| ["#{u.nombre}", u.orden]}
 
- filter :sele, label:'Direccion', :as => :select, :collection =>
+ filter :sele, label:'Etapa', :as => :select, :collection =>
           Formula.where(product_id:10).order('orden ASC').map{|u| ["#{u.nombre}", u.orden]}
-
+filter :convocatoria, label:'Numero Convocatoria'
 
 
 
@@ -162,7 +164,7 @@ column("Convoca", :sortable => :convo) do |phase|
      if phase.sele3 then
         Formula.where(product_id:20,orden:phase.sele3).select('nombre as dd').first.dd.to_s
      else
-        "Nulo/D/C"   
+        "Nulo/D/C"
      end
   end
 
