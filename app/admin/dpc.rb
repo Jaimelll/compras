@@ -3,8 +3,7 @@ ActiveAdmin.register_page "Dpc" do
   menu  priority: 2,label: "Procesos"
 
 
-  content title: proc {"Procesos "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd } do
-
+  content title: "Procesos" do
 
     ##################
     Formula.where(product_id:1).update_all( numero:2 )
@@ -28,9 +27,9 @@ ActiveAdmin.register_page "Dpc" do
       Formula.where(product_id:1,orden:4).update_all( numero:2 )
     end
 
-
+      $vaf=current_admin_user.periodo
        @vaf2=Formula.where(product_id:11,orden:$vaf).select('nombre as dd').first.dd
-    case $vaf
+    case   $vaf
        when 1
          @vinicio = Date.parse('2015/01/01')
          @dfin=365
@@ -538,20 +537,14 @@ column do
                        @vconv=3
                     end
 
-                  if proceso.valor==0
-                    vvall=Piece.where(phase_id:proceso.id).
-                   sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
-                   formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" )
 
-                  #  Piece.where(phase_id:proceso.id).sum(:referencial)
-                    Phase.where(id:proceso.id).update_all( valor:vvall )
-                  end
+
 
                 case @vconv
-                when 1 #previo 1
+                when 1 #previos
                     @vconv1.push(proceso.id)
                     @vxper3[1]=@vxper3[1]+1
-
+                    Phase.where(id:proceso.id).update_all( sele3:1 )
                      if proceso.moneda and proceso.valor then
 
                           @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:$vaf)
@@ -573,6 +566,7 @@ column do
                  when 2 #convocados
                       @vconv2.push(proceso.id)
                       @vxper3[2]=@vxper3[2]+1
+                        Phase.where(id:proceso.id).update_all( sele3:2 )
                       if proceso.valor then
 
                          @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:$vaf)
@@ -587,9 +581,10 @@ column do
 
 
 
-                  when 3 #consencentidos
+                  when 3 #consentidos
                       @vconv3.push(proceso.id)
                       @vxper3[3]=@vxper3[3]+1
+                        Phase.where(id:proceso.id).update_all( sele3:3 )
                       @vpv=0
                        if  Piece.where(phase_id:proceso.id).
                              where("adjudicado IS NOT NULL and moneda IS NOT NULL and (estado=2 or estado=11)").count>0  then
@@ -621,9 +616,10 @@ column do
 
 
                           end
-                    when 4 #previos
+                    when 4 #de desiertos
                         @vconv4.push(proceso.id)
                         @vxper3[4]=@vxper3[4]+1
+                          Phase.where(id:proceso.id).update_all( sele3:1)
 
                        if proceso.moneda and proceso.valor then
 
@@ -647,6 +643,7 @@ column do
                     when 5 #adjudicados
 
                             @vxper3[5]=@vxper3[5]+1
+                              Phase.where(id:proceso.id).update_all( sele3:5 )
                             @vconv5.push(proceso.id)
                             @vpv=0
                            if  Piece.where(phase_id:proceso.id).
@@ -664,14 +661,6 @@ column do
                               @vpp=Activity.where(phase_id:proceso.id,actividad:20)
                               .select('pfecha as dd').first.dd
                               Phase.where(id:proceso.id).update_all( pp:@vpp )
-                  else #nulos,cancelados o desiertos
-
-                       @vpv=Formula.where(product_id:7,orden:proceso.moneda,numero:$vaf)
-                              .select('cantidad as dd').first.dd.to_i*proceso.valor/100
-
-
-
-                       Phase.where(id:proceso.id).update_all( sele2:@vpv )
 
 
 

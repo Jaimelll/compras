@@ -158,10 +158,12 @@ column("Convoca", :sortable => :convo) do |phase|
   phase.descripcion.upcase
 
  end
- column("moneda") do |phase|
-     if phase.moneda then
-        Formula.where(product_id:7,orden:phase.moneda).select('nombre as dd').first.dd.to_s
-      end
+ column("estado") do |phase|
+     if phase.sele3 then
+        Formula.where(product_id:20,orden:phase.sele3).select('nombre as dd').first.dd.to_s
+     else
+        "Nulo/D/C"   
+     end
   end
 
 
