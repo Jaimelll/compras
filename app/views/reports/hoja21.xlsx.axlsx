@@ -255,9 +255,23 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
       if deta.obs then
          @vobsr=deta.obs.capitalize
+
        end
+
+
      end
     end
+
+
+
+    #########obs de phase
+
+   ppphase= Phase.where(expediente:ite.exped).where.not(expediente:0)
+   if ppphase.count>0 and proce.orden==4 then
+     idppphase=ppphase.select("id as dd").first.dd
+     @vobsr=Activity.where(phase_id:ppphase,actividad: Formula .where(product_id:12,cantidad:4).
+     select('orden')).order('pfecha').select('obs as dd').last.dd
+   end
 
 
 ############ empieza merge
@@ -288,6 +302,13 @@ else
      vcorpo=vcorpo+1
      vconta2=nil
   #   vexp=nil
+  #para dem
+    if proce.orden==4 then
+    @vobsr=nil
+    end
+
+
+
      vlineaf = sheet.rows.last.index+2
 
 
@@ -299,6 +320,11 @@ else
                  sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
                  sheet.merge_cells "D#{vlineai}:D#{vlineaf}"
                  sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
+
+          #para dem
+            if proce.orden==4 then
+           sheet.merge_cells "M#{vlineai}:M#{vlineaf}"
+            end
 
       end
 

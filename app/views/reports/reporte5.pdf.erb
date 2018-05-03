@@ -83,8 +83,9 @@
 
         <td colspan="2"><%= variable.proceso %></td>
         <% @vobac=" " %>
-
+        <%   @presu1=0 %>
         <% if variable.expediente>0 then %>
+          <%   @presu1=Item.where(exped:variable.expediente).sum(:certificado).to_i %>
         <% Item.where(exped:variable.expediente).each do |nobac| %>
         <% @spac=nobac.pac%>
         <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
@@ -107,7 +108,10 @@
         <td colspan="3"><%= variable.descripcion.upcase %>  </td>
 
         <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
-      
+          <% if  @presu==0 then %>
+          <%   @presu=@presu1  %>
+         <% end %>
+
                 <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
         <% if  aarr.include?  @vactcanti then %>
