@@ -204,24 +204,24 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC ESTIMADO(Soles) SITUACION ),
-          style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu ]
+          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC PLAN_REM_OBAC REPROG_REM_OBAC REPROG_REM_OBAC ESTIMADO(Soles) SITUACION ),
+          style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu ]
 
 
 
              when 2
-               sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC RECEPCION ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
-               style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+               sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC PLAN_REM_OBAC REPROG_REM_OBAC REPROG_REM_OBAC RECEPCION ESTIMADO(Soles) SITUACION ),
+               style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
              when 3
-              sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC RECEPCION INGRESO PLAN_IDONEIDAD ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
+              sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC RECEPCION INGRESO PLAN_IDONEIDAD ESTIMADO(Soles) SITUACION PLAN_BPRO),
               style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
               when 4
-                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION PLAN_EPOM  ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
+                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION PLAN_EPOM  ESTIMADO(Soles) SITUACION PLAN_BPRO),
                 style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
@@ -331,6 +331,26 @@ else
   @prg=""
 end
 
+if Detail.where(actividad:106,item_id:ite.id).count>0 then
+  @rprg=Detail.where(actividad:106,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+else
+  @rprg=""
+end
+
+if Detail.where(actividad:107,item_id:ite.id).count>0 then
+  @rconsen=Detail.where(actividad:107,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+else
+  @rconsen=""
+end
+
+if Detail.where(actividad:108,item_id:ite.id).count>0 then
+  @pbpro=Detail.where(actividad:108,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+else
+  @pbpro=""
+end
+
+
+
 if Detail.where(actividad:101,item_id:ite.id).count>0 then
   @ido=Detail.where(actividad:101,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 else
@@ -425,11 +445,14 @@ vffuente,
  ssele,
 @public,
  @prg,
+@consen,
+@rprg,
+@rconsen,
 
 ite.certificado.to_i, @vobsr],
-style: [centra, centra,  centra, desc, desc, centra, centra, fechad, fechad, soles, desc]
+style: [centra, centra,  centra, desc, desc, centra, centra, fechad, fechad, fechad, fechad, fechad, soles, desc]
 
-sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 12, 14, 15, 30]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 12, 14, 14, 15, 15, 15, 30]
 
 when 2
 
@@ -445,11 +468,14 @@ ssele,
 ppresu,
 @public,
 @prg,
+@consen,
+@rprg,
+@rconsen,
 @fecing,
-ite.certificado.to_i, @vobsr,@consen],
-style: [centra, centra,  centra, desc, desc, centra, centra, soles, fechad, fechad, fechad, soles, desc, fechad]
+ite.certificado.to_i, @vobsr],
+style: [centra, centra,  centra, desc, desc, centra, centra, soles, fechad, fechad, fechad, fechad, fechad, fechad, soles, desc]
 
-sheet.column_widths *[5, 5, 8, 8, 50,15,14, 14, 12, 14, 12, 15, 30, 14]
+sheet.column_widths *[5, 5, 8, 8, 50,15,14, 14, 12, 14, 15, 15, 15, 12, 15, 30]
 
 when 3
 
@@ -468,7 +494,7 @@ ppresu,
 @fecing,
 cat,
 @ido,
-ite.certificado.to_i, @vobsr,@consen],
+ite.certificado.to_i, @vobsr,@pbpro],
 style: [centra, centra,  centra, desc, desc, centra, centra,soles, fechad, fechad, fechad, fechad, fechad, soles, desc, fechad]
 # sheet.add_hyperlink :location => localiz , :ref => sheet.rows.last.cells.first
 sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12, 14, 12, 12, 12, 15, 30, 14]
@@ -488,7 +514,7 @@ ite.descripcion.upcase,
  @fecing,
 
  @epom1,
-ite.certificado.to_i, @vobsr,@consen],
+ite.certificado.to_i, @vobsr,@pbpro],
 style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, soles, desc, fechad]
 sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12, 12, 12, 15, 30, 14]
 end
@@ -586,17 +612,17 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   case proce.orden
      when 1,4
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC PLAN_CONVOC SITUACION PLAN_CONSENTIMIENTO),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC PLAN_CONVOC SITUACION PLAN_REM_OBAC),
         style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu,  titu, titu, titu, titu], height: 40
 
 
      when 2
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION PLAN_CONSENTIMIENTO),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION PLAN_REM_OBAC),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu, titu, titu, titu], height: 40
 
 
      when 3,5
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION PLAN_CONSENTIMIENTO),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION PLAN_REM_OBAC),
         style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu, titu], height: 40
 
 
