@@ -204,8 +204,8 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC ESTIMADO(Soles) SITUACION PLAN_CONSENTIMIENTO),
-          style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu]
+          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC ESTIMADO(Soles) SITUACION ),
+          style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu ]
 
 
 
@@ -297,6 +297,7 @@ else
 
 
                  sheet.merge_cells "A#{vlineai}:A#{vlineaf}"
+                 sheet.merge_cells "D#{vlineai}:D#{vlineaf}"
                  sheet.merge_cells "E#{vlineai}:E#{vlineaf}"
 
       end
@@ -425,10 +426,10 @@ vffuente,
 @public,
  @prg,
 
-ite.certificado.to_i, @vobsr,@consen],
-style: [centra, centra,  centra, desc, desc, centra, centra, fechad, fechad, soles, desc, fechad]
+ite.certificado.to_i, @vobsr],
+style: [centra, centra,  centra, desc, desc, centra, centra, fechad, fechad, soles, desc]
 
-sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 12, 14, 15, 30, 14]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 12, 14, 15, 30]
 
 when 2
 
