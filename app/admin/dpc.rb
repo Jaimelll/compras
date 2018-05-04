@@ -83,15 +83,7 @@ ActiveAdmin.register_page "Dpc" do
 
 def execute2(var)
 
-    @vpro1=[]
-    @vpro2=[]
-    @vpro3=[]
-    @vpro4=[]
-    @vpro5=[]
-    @vpro6=[]
-    @vpro7=[]
-    @vprot=[]
-    @vxper2=[0,0,0,0,0,0,0,0]
+
       @proj=Formula.where(product_id:12,cantidad:20).select('orden')
 
     @vexped=Item.where(obac: @vuobac).where.not(exped:0).select('DISTINCT exped')
@@ -109,10 +101,10 @@ def execute2(var)
                   @vactiv3= @deta4.where("pfecha<=?  ", @vfin ).select('actividad as dd').first.dd
                   @vdir=Formula.where(product_id:12,orden:@vactiv3).
                        select('cantidad as dd').first.dd
-                  @vxper2[@vdir]=@vxper2[@vdir]+ 1
+
                else
                   @vdir=5
-                  @vxper2[@vdir]=@vxper2[@vdir]+ 1
+
                end
 
 
@@ -121,32 +113,28 @@ def execute2(var)
 
                  case @vdir
                  when 1
-                   @vpro1.push(proceso.id)
+
                    Phase.where(id:proceso.id).update_all( sele:1 )
                  when 2
-                   @vpro2.push(proceso.id)
+
                    Phase.where(id:proceso.id).update_all( sele:2 )
                  when 3
-                   @vpro3.push(proceso.id)
+
                    Phase.where(id:proceso.id).update_all( sele:3 )
                  when 4
-                   @vpro4.push(proceso.id)
+
                    Phase.where(id:proceso.id).update_all( sele:4 )
                    when 5
-                     @vpro5.push(proceso.id)
+
                      Phase.where(id:proceso.id).update_all( sele:5 )
                    when 6
-                     @vpro6.push(proceso.id)
+
                       Phase.where(id:proceso.id).update_all(sele:6  )
                     when 7
-                      @vpro7.push(proceso.id)
+
                        Phase.where(id:proceso.id).update_all(sele:7  )
                   end #case
 
-                case @vdir
-                     when 1,2,3,4,5,6,7
-                        @vprot.push(proceso.id)
-                end
     end
 
 
@@ -163,123 +151,139 @@ def execute2(var)
 
 
      column("Procesos") do |formula|
-
+              execute2(formula.orden)
              "PAC-AF"+formula.nombre
      end
      column("Nulo/D/C", :class => 'text-right') do |formula|
-        execute2(formula.orden)
+
        @dpc=  formula.orden
        @vpaso=0
        @vpas=1
        @titproc1="PROCESOS EN ESTADO NULO, DESIERTO O CANCELADO"
-       @le= @vxper2[1]
+       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).count
+       @vpro11=Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).
+                   select('id').map {|e| e.attributes.values}.flatten
        link_to "#{@le}",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
-       :param4=> @titproc1,:param5=> @vpro1,:param2=> @vpaso)
+       :param4=> @titproc1,:param5=> @vpro11,:param2=> @vpaso)
 
       end
 
 
      column("GEX", :class => 'text-right') do |formula|
-       execute2(formula.orden)
+
        @dpc=  formula.orden
        @vpaso=0
        @vpas=2
        @titproc1="PROCESOS EN GEX"
-       @le= @vxper2[2]
+       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).count
+       @vpro12=Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).
+                   select('id').map {|e| e.attributes.values}.flatten
        link_to "#{@le}",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
-       :param4=> @titproc1,:param5=> @vpro2,:param2=> @vpaso)
+       :param4=> @titproc1,:param5=> @vpro12,:param2=> @vpaso)
 
       end
 
 
      column("DC", :class => 'text-right') do |formula|
-       execute2(formula.orden)
+
        @dpc=  formula.orden
        @vpaso=0
        @vpas=3
        @titproc1="PROCESOS EN DC"
-       @le= @vxper2[3]
+       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).count
+       @vpro13=Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).
+                   select('id').map {|e| e.attributes.values}.flatten
        link_to "#{@le}",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
-       :param4=> @titproc1,:param5=> @vpro3,:param2=> @vpaso)
+       :param4=> @titproc1,:param5=> @vpro13,:param2=> @vpaso)
 
       end
 
 
      column("DEM", :class => 'text-right') do |formula|
-       execute2(formula.orden)
+
        @dpc=  formula.orden
        @vpaso=0
        @vpas=4
        @titproc1="PROCESOS EN DEM"
-       @le= @vxper2[4]
+       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).count
+       @vpro14=Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).
+                   select('id').map {|e| e.attributes.values}.flatten
        link_to "#{@le}",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
-       :param4=> @titproc1,:param5=> @vpro4,:param2=> @vpaso)
+       :param4=> @titproc1,:param5=> @vpro14,:param2=> @vpaso)
 
       end
 
 
 
      column("DPC", :class => 'text-right') do |formula|
-       execute2(formula.orden)
+
        @dpc=  formula.orden
        @vpaso=0
        @vpas=5
        @titproc1="PROCESOS EN DPC"
-       @le= @vxper2[5]
+       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).count
+       @vpro15=Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).
+                   select('id').map {|e| e.attributes.values}.flatten
        link_to "#{@le}",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
-       :param4=> @titproc1,:param5=> @vpro5,:param2=> @vpaso)
+       :param4=> @titproc1,:param5=> @vpro15,:param2=> @vpaso)
 
       end
 
       column("FC", :class => 'text-right') do |formula|
-        execute2(formula.orden)
+
         @dpc=  formula.orden
           @vpaso=0
         @vpas=6
         @titproc1="PROCESOS PREVIOS A FIRMA DE CONTRATO"
-        @le= @vxper2[6]
+        @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).count
+        @vpro16=Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).
+                    select('id').map {|e| e.attributes.values}.flatten
         link_to "#{@le}",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
-        :param4=> @titproc1,:param5=> @vpro6,:param2=> @vpaso)
+        :param4=> @titproc1,:param5=> @vpro16,:param2=> @vpaso)
       end
 
         column("EC", :class => 'text-right') do |formula|
-          execute2(formula.orden)
+
           @dpc=  formula.orden
             @vpaso=0
           @vpas=7
           @titproc1="PROCESOS EN EJECUCION CONTRACTUAL"
-          @le= @vxper2[7]
+          @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).count
+          @vpro17=Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).
+                      select('id').map {|e| e.attributes.values}.flatten
           link_to "#{@le}",
           reports_comment5_path(format: :pdf,
           :param3=> @vpas,
-          :param4=> @titproc1,:param5=> @vpro7,:param2=> @vpaso)
+          :param4=> @titproc1,:param5=> @vpro17,:param2=> @vpaso)
 
 
 
       end
       column("TOTAL", :class => 'text-right') do |formula|
-        execute2(formula.orden)
+
         @dpc=  formula.orden
           @vpaso=1
         @vpas=[1,2,3,4,5,6,7]
         @titproc1="RELACION DE PROCESOS"
-        @le=@vxper2[1]+@vxper2[2]+@vxper2[3]+@vxper2[4]+ @vxper2[5]+  @vxper2[6]+  @vxper2[7]
+        @le= Phase.where(convo:formula.orden ,periodo:$vaf).count
+        @vpro1t=Phase.where(convo:formula.orden ,periodo:$vaf).
+                    select('id').map {|e| e.attributes.values}.flatten
         link_to "#{@le}",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
-        :param4=> @titproc1,:param5=> @vprot,:param2=> @vpaso)
+        :param4=> @titproc1,:param5=> @vpro1t,:param2=> @vpaso)
 
 
 
@@ -697,32 +701,58 @@ column do
 
 
   column("Convocatoria") do |formula|
-if formula.orden==$vaf then
-  execute3(formula.orden)
-end
-  execute(formula.orden)
+
+    conv1=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:1).where('sele>4').
+               select('id').map {|e| e.attributes.values}.flatten
+    conv2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).
+                select('id').map {|e| e.attributes.values}.flatten
+    conv3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).
+                select('id').map {|e| e.attributes.values}.flatten
+    conv4=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:4).where('sele>4').
+                select('id').map {|e| e.attributes.values}.flatten
+    conv5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).
+                select('id').map {|e| e.attributes.values}.flatten
+    convt=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:1).
+                select('id').map {|e| e.attributes.values}.flatten
+     pac1=Item.where(ejecucion:4,exped2:formula.orden,cuadrante:1).where("modalidad<3").
+                 select('id').map {|e| e.attributes.values}.flatten
+     pac2=Item.where(ejecucion:4,exped2:formula.orden,cuadrante:2).where("modalidad<3").
+                 select('id').map {|e| e.attributes.values}.flatten
+     pac3=Item.where(ejecucion:4,exped2:formula.orden,cuadrante:3).where("modalidad<3").
+                select('id').map {|e| e.attributes.values}.flatten
+     pac4=Item.where(ejecucion:4,exped2:formula.orden,cuadrante:4).where("modalidad<3").
+                 select('id').map {|e| e.attributes.values}.flatten
+     pac5=Item.where(ejecucion:4,exped2:formula.orden,cuadrante:5).where("modalidad<3").
+                 select('id').map {|e| e.attributes.values}.flatten
+
 
        link_to "PAC-AF"+"#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
-         :param1=> @vxper3,
-         :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv4,
-         :param5=> @vconv3,:param6=> @vconvt,:param8=>@vconv2,
-         :param17=> @vconv5,
-         :param11=> @vxper,
-         :param12=> @vpresu, :param13=> @vpac1, :param14=> @vpac2,
-         :param15=> @vpac3,:param16=> @vpac4,
-         :param18=> @vpac5,:param7=> @vuobac)
+         :param3=> conv1, :param4=>conv4,
+         :param5=> conv3,:param6=> convt,:param8=>conv2,
+         :param17=> conv5,:param13=> pac1, :param14=> pac2,
+         :param15=> pac3,:param16=> pac4,
+         :param18=> pac5,:param7=> @vuobac)
 
 
   end
+
+
+
   column("PREVIOS", :class => 'text-right') do |formula|
-  execute(formula.orden)
+
     @dpc=  formula.orden
     @titproc1="En Proceso"
     @vopc=4
-  @vconv14=@vconv1+@vconv4
+    conv14=Phase.where(convo:formula.orden ,periodo:$vaf).
+               where('sele3=1 or sele3=4').where.not(sele:1).select('id').
+               map {|e| e.attributes.values}.flatten
+    expr314=Phase.where(convo:formula.orden ,periodo:$vaf).
+             where('sele3=1 or sele3=4').where.not(sele:1).count
+    cotavus14=Phase.where(convo:formula.orden ,periodo:$vaf).
+             where('sele3=1 or sele3=4').where.not(sele:1).sum(:sele2)
 
-   link_to "#{@vxper3[1]+@vxper3[4]}"+"/("+"#{number_with_delimiter((@contavus[1]+@contavus[4]).to_i, delimiter: ",")}"+")",
-    reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  @vconv14,
+   link_to   "#{expr314}"+"/("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+    reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
      :param4=>  @titproc1)
 
    end
@@ -738,34 +768,52 @@ end
      @dpc=  formula.orden
      @titproc1="Procesos Convocados"
      @vopc=1
+     conv2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).
+                select('id').map {|e| e.attributes.values}.flatten
+     expr2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).count
+
+     cotavus2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).sum(:sele2)
 
 
-  link_to "#{@vxper3[2]}"+"/("+"#{number_with_delimiter(@contavus[2].to_i, delimiter: ",")}"+")",
-  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv2,
+  link_to "#{expr2}"+"/("+"#{number_with_delimiter(cotavus2.to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
   :param4=>  @titproc1)
 
     end
+
+
+
     column("Adjudicados", :class => 'text-right') do |formula|
-  execute(formula.orden)
+
         @dpc=  formula.orden
         @titproc1="Procesos No Consentidos"
         @vopc=3
+        conv5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).
+                   select('id').map {|e| e.attributes.values}.flatten
+        expr5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).count
 
+        cotavus5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).sum(:sele2)
 
-      link_to "#{@vxper3[5]}"+"/("+"#{number_with_delimiter(@contavus[5].to_i, delimiter: ",")}"+")",
-      reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv5,
+      link_to "#{expr5}"+"/("+"#{number_with_delimiter(cotavus5.to_i, delimiter: ",")}"+")",
+      reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv5,
       :param4=>  @titproc1)
 
     end
+
+
     column("Consentidos", :class => 'text-right') do |formula|
-  execute(formula.orden)
+
       @dpc=  formula.orden
       @titproc1="Procesos Adjudicados"
       @vopc=2
+      conv3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).
+                 select('id').map {|e| e.attributes.values}.flatten
+      expr3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).count
 
+      cotavus3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).sum(:sele2)
 
-    link_to "#{@vxper3[3]}"+"/("+"#{number_with_delimiter(@contavus[3].to_i, delimiter: ",")}"+")",
-    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  @vconv3,
+    link_to "#{expr3}"+"/("+"#{number_with_delimiter(cotavus3.to_i, delimiter: ",")}"+")",
+    reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv3,
     :param4=>  @titproc1)
 
   end
@@ -775,20 +823,37 @@ end
 
 
    column("Total", :class => 'text-right') do |formula|
+     conv1=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:1).
+              where.not(sele:1).select('id').map {|e| e.attributes.values}.flatten
+     conv4=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:4).
+                       where.not(sele:1).select('id').map {|e| e.attributes.values}.flatten
+     conv2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).
+                select('id').map {|e| e.attributes.values}.flatten
+     conv5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).
+                select('id').map {|e| e.attributes.values}.flatten
 
-  execute(formula.orden)
+     conv3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).
+                select('id').map {|e| e.attributes.values}.flatten
+
+  conv0=Phase.where(convo:formula.orden ,periodo:$vaf).
+            select('id').map {|e| e.attributes.values}.flatten
+  expr0=Phase.where(convo:formula.orden ,periodo:$vaf).
+            where.not(sele:1).count
+  cotavus0=Phase.where(convo:formula.orden ,periodo:$vaf).
+            where.not(sele:1).sum(:sele2)
 
 
 
-       @contavus[0]=  @contavus[1]+@contavus[2]+@contavus[3]+@contavus[4]+@contavus[5]
-       if @vxper3[0]>0 then
-         link_to "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")",
-          reports_vhoja20_path(format:  "xlsx", :param1=> @vxper3,
-           :param2=> @contavus, :param3=> @vconv1, :param4=>@vconv2,
-           :param5=> @vconv3,:param6=> @vconvt, :param7=> @vuobac,
-           :param8=> @vconv4,   :param9=> @vconv5)
+
+
+       if expr0>0 then
+         link_to "#{expr0}"+"/("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")",
+          reports_vhoja20_path(format:  "xlsx",
+           :param3=> conv1, :param4=>conv2,
+           :param5=> conv3,:param6=> conv0, :param7=> @vuobac,
+           :param8=> conv4,   :param9=> conv5)
        else
-         "#{@vxper3[0]}"+"/("+"#{number_with_delimiter(@contavus[0].to_i, delimiter: ",")}"+")"
+         "#{expr0}"+"/("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")"
        end
 
       end

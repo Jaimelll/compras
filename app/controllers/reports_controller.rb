@@ -450,8 +450,8 @@ def vhoja20
 end
 
 def vhoja21
-  @vnpac=params[:param1]
-  @vmpac=params[:param2]
+#  @vnpac=params[:param1]
+#  @vmpac=params[:param2]
   @vpac1=params[:param3]
   @vpac2=params[:param8]
   @vpac3=params[:param5]
@@ -467,8 +467,8 @@ def vhoja21
 
 
 
-  @vnpac0=params[:param11]
-  @vmpac0=params[:param12]
+#  @vnpac0=params[:param11]
+#  @vmpac0=params[:param12]
   @vpac10=params[:param13]
   @vpac20=params[:param14]
   @vpac30=params[:param15]
