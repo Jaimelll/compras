@@ -14,7 +14,7 @@ development:
   host: 127.0.0.1
   port: 5432
   database: comprasd
-  pool: 40
+  pool: 20
   timeout: 5000
 
 
