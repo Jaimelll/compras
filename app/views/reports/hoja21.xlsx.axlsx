@@ -204,13 +204,13 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
 
-          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC PLAN_REM_OBAC REPROG_REM_OBAC REPROG_REM_OBAC ESTIMADO(Soles) SITUACION ),
+          sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PUBLICACION PLAN_RECEPC PLAN_REM_OBAC REPROG_RECEP REPROG_REM_OBAC ESTIMADO(Soles) SITUACION ),
           style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu ]
 
 
 
              when 2
-               sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC PLAN_REM_OBAC REPROG_REM_OBAC REPROG_REM_OBAC RECEPCION ESTIMADO(Soles) SITUACION ),
+               sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION PLAN_RECEPC PLAN_REM_OBAC REPROG_RECEP REPROG_REM_OBAC RECEPCION ESTIMADO(Soles) SITUACION ),
                style: [titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
