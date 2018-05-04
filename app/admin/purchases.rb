@@ -1,5 +1,5 @@
 ActiveAdmin.register Purchase do
-    menu  priority: 16, label: "Data Warehouse"
+    menu  priority: 21, label: "Data Warehouse"
 
 
     scope :Todos, :default => true do |adjudi|
