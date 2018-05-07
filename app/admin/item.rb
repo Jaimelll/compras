@@ -329,8 +329,8 @@ form :title => 'Edicion PACs' do |f|
            Formula.where(product_id:6).map{|u| [u.nombre, u.orden]}
          f.input :descripcion ,:label => 'Descripcion del bien o servicio'
          f.input :cantidad, :input_html => { :style =>  'width:30%'}
-         f.input :cuadrante, :as => :select, :collection =>
-            Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
+      #   f.input :cuadrante, :as => :select, :collection =>
+      #      Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
          f.input :mesconvoca, :label => 'Fecha de Convocatoria SEACE' , as: :datepicker, :input_html => { :style =>  'width:30%'}
           f.input :solicita, :label => 'Fecha solicitada OBAC' , as: :datepicker, :input_html => { :style =>  'width:30%'}
          f.input :seleccion,:label => 'Tipo de seleccion', :as => :select, :collection =>
@@ -482,17 +482,7 @@ form :title => 'Edicion PACs' do |f|
         row "Cantidad de items" do |item|
            item.cantidad
          end
-         row :cuadrante do |item|
-             if item.cuadrante and item.cuadrante>0 then
-
-                Formula.where(product_id:13, orden:item.cuadrante).
-                 select('nombre as dd').first.dd
-
-               else
-                   "s/d"
-               end
-           end
-
+      
            row "Fecha de convocatoria SEACE" do |item|
               item.mesconvoca
             end

@@ -192,7 +192,7 @@ wb.add_worksheet(name: proce.nombre+nuitem1) do |sheet|
 
 
  if Detail.where(actividad:102,item_id:ite.id).count>0 then
-   @epom1=Detail.where(actividad:102,item_id:ite.id).select('plan as dd').first.dd.strftime("%d/%m/%y")
+   @epom1=Detail.where(actividad:102,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
  else
    @epom1=""
