@@ -80,7 +80,7 @@ ActiveAdmin.register_page "Indices" do
 
 
              @vferi=Formula.where(product_id:27,cantidad:1).select('nombre')
-
+             @proj=Formula.where(product_id:12,cantidad:20).select('orden')
              #*******************************************************************
 
              @vitem.each do |item|
@@ -122,7 +122,7 @@ ActiveAdmin.register_page "Indices" do
                   when 3
                     @vinicio = Date.parse('2017/01/01')
                     @dfin=(Time.now-@vinicio.to_time).to_i/86400
-                    @vfin=Time.now
+                    @vfin=Date.parse('2017/12/31')
                      @vrang=15
                      @vtitun=" AF-2017"
 
@@ -138,7 +138,7 @@ ActiveAdmin.register_page "Indices" do
 
                @nconta=Detail.where(item_id:item.id).
                   where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).count
-                @deta2=Detail.where(item_id:item.id).
+                @deta2=Detail.where(item_id:item.id).where.not(actividad:@proj).
                        where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).
                       order('details.pfecha DESC,details.id DESC')
 
@@ -179,7 +179,7 @@ ActiveAdmin.register_page "Indices" do
              #inicio de phase if 280 al 392*************************************************************
              if Phase.where(expediente:item.exped,convocatoria:1).count>0 and item.exped>0 then
                @phase1=Phase.where(convocatoria:1).find_by(expediente:item.exped).activities
-               .where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
+               .where.not(actividad:@proj).where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
                 .order('activities.pfecha DESC,activities.id DESC')
 
 
