@@ -375,6 +375,20 @@ else
   @pbpro=""
 end
 
+if Phase.where(expediente:ite.exped).count>0 then
+idpha=Phase.where(expediente:ite.exped).select('id as dd').last.dd
+if Activity.where(actividad:108,phase_id:idpha).count>0 then
+  @pbpro=Activity.where(actividad:108,phase_id:idpha).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+else
+  @epom1=@epom1
+
+end
+end
+
+
+
+
 
 
 if Detail.where(actividad:101,item_id:ite.id).count>0 then
