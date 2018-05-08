@@ -55,38 +55,38 @@ action_item :view, only: :show do
     scope :ACFFAA, :default => true do |items|
 
     #  $vaf=current_admin_user.periodo
-         items.where(ejecucion:4,exped2:$vaf).where('modalidad<3').order('pac')
+         items.where(ejecucion:4,exped2:current_admin_user.periodo).where('modalidad<3').order('pac')
    end
 
    scope :"S/EXP", :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:1).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:1).where('modalidad<3').order('pac')
    end
 
    scope :"C/EXP", :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:2).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:2).where('modalidad<3').order('pac')
    end
    scope :DC, :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:3).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:3).where('modalidad<3').order('pac')
    end
    scope :DEM, :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:4).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:4).where('modalidad<3').order('pac')
    end
    scope :DPC, :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:5).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:5).where('modalidad<3').order('pac')
    end
    scope :FC, :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:6).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:6).where('modalidad<3').order('pac')
    end
    scope :EC, :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,cuadrante:7).where('modalidad<3').order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,cuadrante:7).where('modalidad<3').order('pac')
    end
    scope :Autorizados, :default => true do |items|
-      items.where(ejecucion:4,exped2:$vaf,modalidad:3).order('pac')
+      items.where(ejecucion:4,exped2:current_admin_user.periodo,modalidad:3).order('pac')
    end
 
      scope :todos, :default => true do |items|
 
-           items.where(exped2:$vaf).order('pac')
+           items.where(exped2:current_admin_user.periodo).order('pac')
       end
 
 
@@ -123,7 +123,7 @@ filter :fuente,  :as => :select, :collection =>
 
 
 index :title => proc {"BUSCADOR PAC "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd }   do
-
+$vaf=current_admin_user.periodo
 
 
   column("NoPac", :sortable => :pac) {|item|
@@ -332,7 +332,7 @@ form :title => 'Edicion PACs' do |f|
       #   f.input :cuadrante, :as => :select, :collection =>
       #      Formula.where(product_id:13).map{|u| [u.nombre, u.orden]}
          f.input :mesconvoca, :label => 'Fecha de Convocatoria SEACE' , as: :datepicker, :input_html => { :style =>  'width:30%'}
-      
+
          f.input :seleccion,:label => 'Tipo de seleccion', :as => :select, :collection =>
              Formula.where(product_id:14).map{|u| [u.nombre, u.orden]}
          f.input :certificado,:label => 'Valor estimado PAC', :as => :string, :input_html => { :style =>  'width:30%'}

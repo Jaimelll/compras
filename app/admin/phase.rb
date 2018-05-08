@@ -29,37 +29,37 @@ menu priority: 10, label: "Buscador Procesos"
 
 scope :ACFFAA, :default => true do |phases|
 
-     phases.where(periodo:$vaf).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo).where.not(expediente:0)
 end
 
 scope :"Nulo/D/C", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:1).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:1).where.not(expediente:0)
 end
 
 scope :"GEX", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:2).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:2).where.not(expediente:0)
 end
 scope :"DC", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:3).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:3).where.not(expediente:0)
 end
 scope :"DEM", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:4).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:4).where.not(expediente:0)
 end
 scope :"DPC", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:5).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:5).where.not(expediente:0)
 end
 scope :"FC", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:6).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:6).where.not(expediente:0)
 end
 scope :"EC", :default => true do |phases|
-     phases.where(periodo:$vaf,sele:7).where.not(expediente:0)
+     phases.where(periodo:current_admin_user.periodo,sele:7).where.not(expediente:0)
 end
 
 
 
 
 scope :Todos, :default => true do |phases|
-    phases.where(periodo:$vaf)
+    phases.where(periodo:current_admin_user.periodo)
 end
 #scope :Auditados, :default => true do |phases|
 #     phases.where(sele3:2)
@@ -129,7 +129,7 @@ filter :convocatoria, label:'Numero Convocatoria'
 
 
 index :title => proc {"BUSCADOR PROCESOS  "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd }   do
-
+$vaf=current_admin_user.periodo
 
 column("proceso", :sortable => :proceso) do |phase|
    link_to "#{phase.proceso} ", admin_phase_pieces_path(phase)
