@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180425173348) do
+ActiveRecord::Schema.define(version: 20180509155624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,29 @@ ActiveRecord::Schema.define(version: 20180425173348) do
     t.integer  "sele"
     t.index ["admin_user_id"], name: "index_agreements_on_admin_user_id", using: :btree
     t.index ["employee_id"], name: "index_agreements_on_employee_id", using: :btree
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.integer  "item_id"
+    t.integer  "ficha"
+    t.string   "descripcion"
+    t.integer  "unidad"
+    t.float    "cantidad"
+    t.string   "precision"
+    t.string   "paquete"
+    t.integer  "piece"
+    t.float    "referencial"
+    t.integer  "estado"
+    t.string   "obs"
+    t.integer  "art1"
+    t.integer  "art2"
+    t.string   "art3"
+    t.float    "art4"
+    t.integer  "admin_user_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["admin_user_id"], name: "index_articles_on_admin_user_id", using: :btree
+    t.index ["item_id"], name: "index_articles_on_item_id", using: :btree
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -500,6 +523,8 @@ ActiveRecord::Schema.define(version: 20180425173348) do
   add_foreign_key "activities", "phases"
   add_foreign_key "agreements", "admin_users"
   add_foreign_key "agreements", "employees"
+  add_foreign_key "articles", "admin_users"
+  add_foreign_key "articles", "items"
   add_foreign_key "contracts", "admin_users"
   add_foreign_key "details", "admin_users"
   add_foreign_key "details", "items"

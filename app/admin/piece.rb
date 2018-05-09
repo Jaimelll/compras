@@ -329,7 +329,7 @@ form :title => 'Edicion Item'  do |f|
             sidebar "Datos del Proceso" do
               if params[:phase_id] then
                  nn=Phase.where(id:  params[:phase_id]).
-                          select('nomenclatura as dd').first.dd.downcase
+                          select('proceso as dd').first.dd
                   n1=Phase.where(id:  params[:phase_id]).
                            select('moneda as dd').first.dd
                  n11=Phase.where(id:  params[:phase_id]).
@@ -359,7 +359,17 @@ form :title => 'Edicion Item'  do |f|
               ul do
                 li "PROCESO :   "+nn
                 li "EXPEDIENTE :  "+n31
-                li "OBAC-PAC :  "+ @vobac
+                if n32>0 then
+                  li "OBAC-PAC Articulos:"
+
+                 Item.where(exped:n32).order('obac').each do |nobac|
+                  @sobac=Formula.where(product_id:1,orden:nobac.obac)
+                  .select('nombre as dd').first.dd
+                  ul link_to @sobac+"-"+"#{nobac.pac} ", admin_item_articles_path(nobac.id)
+
+                   end
+                   end
+
                 li "DESCRIPCION : "+n2
                 li "MONEDA :  "+n3
                 li "VALOR ESTIMADO :"+  number_with_delimiter(n4, delimiter: ",").to_s

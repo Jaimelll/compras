@@ -4,6 +4,10 @@ ActiveAdmin.register Item do
   ActiveAdmin.register Detail do
   belongs_to :item
 end
+
+ActiveAdmin.register Article do
+belongs_to :item
+end
 # See permitted parameters documentation:
 # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
 #
@@ -195,19 +199,21 @@ end
 #localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 
 #link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos\H5 '
-  item.descripcion.upcase
 
-  end
+ item.descripcion.upcase
+end
 
   column("Modalidad", sortable: :modalidad)do |item|
       if item.modalidad and item.modalidad>0 then
 
-         Formula.where(product_id:4, orden:item.modalidad).
+        mmod= Formula.where(product_id:4, orden:item.modalidad).
           select('nombre as dd').first.dd
 
         else
-            "s/d"
+         mmod= "s/d"
         end
+link_to mmod, admin_item_articles_path(item)
+
     end
 
 
