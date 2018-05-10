@@ -69,7 +69,7 @@ end
     number_with_delimiter(articles.art4, delimiter: ",")
   end
 
-  column("Item") do |articles|
+  column("Item paquete") do |articles|
   if articles.piece then
     Piece.where(id:articles.piece).
      select('codigo as dd').first.dd
@@ -130,7 +130,7 @@ actions
 
 
 
-                   f.input :piece, :as => :select, :collection =>
+                   f.input :piece,:label => 'Item paquete', :as => :select, :collection =>
                              Piece.where(phase_id:@vprocs).map{|u| [u.codigo, u.id]}
                 end
                          end
@@ -188,13 +188,13 @@ actions
                        row "presupuesto" do |articles|
                          articles.art4
                        end
-                       
+
 
 
 
                        row :admin_user_id
 
-                       row 'Item' do |articles|
+                       row 'Item paquete' do |articles|
                        if articles.piece then
                          Piece.where(id:articles.piece).
                           select('codigo as dd').first.dd

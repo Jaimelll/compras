@@ -16,7 +16,7 @@ class Ability
         can :read, ActiveAdmin::Page, :name =>"Dec"
         can :read, ActiveAdmin::Page, :name =>"Indices"
         can :read, ActiveAdmin::Page, :name =>"Catalogacion"
-        can [:create,:read,:update,:destroy], [Item, Detail,Product,Formula,Sheet,Movement,List]
+        can [:create,:read,:update,:destroy], [Item, Detail,Product,Formula,Sheet,Movement,List,Article]
         can [:create,:read,:update,:destroy], [Phase,Activity,Piece,Contract,Element,Package]
 
       when 3 #Roy
@@ -29,7 +29,7 @@ class Ability
           #  can :read, ActiveAdmin::Page, :name =>"grafico1"
           #  can :read, ActiveAdmin::Page, :name =>"Indices"
             can :read, ActiveAdmin::Page, :name =>"Catalogacion"
-            can [:read], [Item, Detail, Purchase]
+            can [:read], [Item, Detail, Purchase,Article]
             can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
       when 26 #secretario
@@ -42,7 +42,7 @@ class Ability
               #  can :read, ActiveAdmin::Page, :name =>"grafico1"
               #  can :read, ActiveAdmin::Page, :name =>"Indices"
                 can :read, ActiveAdmin::Page, :name =>"Catalogacion"
-                can [:read], [Item, Detail]
+                can [:read], [Item, Detail,Article]
                 can [:read], [Phase,Activity,Piece,Contract,Element,Package]
 
       when 7,15,16,17,18,19 #asesor,ballesteros
@@ -74,7 +74,7 @@ class Ability
             can :read, ActiveAdmin::Page, :name =>"Catalogacion"
            can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:read], [Item,Phase,Piece]
-           can [:create,:read,:update,:destroy],  [Sheet,Movement,Detail,Activity]
+           can [:create,:read,:update,:destroy],  [Sheet,Movement,Detail,Activity,Article]
        when 11 #DEM
              can [:read,:update],  [AdminUser]
              can :read, ActiveAdmin::Page, :name =>"Dashboard"
@@ -84,7 +84,7 @@ class Ability
         #  can :read, ActiveAdmin::Page, :name =>"grafico0"
              can :read, ActiveAdmin::Page, :name =>"Indices"
              can [:read], [Item]
-             can [:create,:read,:update,:destroy],  [Detail,Activity,Phase,Piece]
+             can [:create,:read,:update,:destroy],  [Detail,Activity,Phase,Piece,Article]
        when 13 #DPC
            can [:read,:update],  [AdminUser]
            can :read, ActiveAdmin::Page, :name =>"Dashboard"
@@ -94,7 +94,7 @@ class Ability
   #        can :read, ActiveAdmin::Page, :name =>"grafico0"
            can :read, ActiveAdmin::Page, :name =>"Indices"
            can [:read], [Item,Detail]
-           can [:create,:read,:update,:destroy],  [Phase,Activity,Piece]
+           can [:create,:read,:update,:destroy],  [Phase,Activity,Piece,Article]
       when 14 # DEC
            can [:read,:update],  [AdminUser]
            can :read, ActiveAdmin::Page, :name =>"Dashboard"
@@ -105,7 +105,7 @@ class Ability
            can :read, ActiveAdmin::Page, :name =>"grafico1"
            can :read, ActiveAdmin::Page, :name =>"Dec"
            can :read, ActiveAdmin::Page, :name =>"Indices"
-           can [:create,:read,:update,:destroy],  [Item,Piece,Phase,Activity,Detail,Contract,Element,Package]
+           can [:create,:read,:update,:destroy],  [Item,Piece,Phase,Activity,Detail,Contract,Element,Package,Article]
 
       when 4,6,8,9 #sectoristas y Bertolotti quite 5 balles
            can [:read,:update],  [AdminUser]
@@ -115,7 +115,7 @@ class Ability
   #          can :read, ActiveAdmin::Page, :name =>"grafico"
   #          can :read, ActiveAdmin::Page, :name =>"grafico0"
            can :read, ActiveAdmin::Page, :name =>"Indices"
-           can [:create,:read,:update, :destroy], [Item, Detail,Activity]
+           can [:create,:read,:update, :destroy], [Item, Detail,Activity,Article]
            can [:read], [Phase,Piece]
 
     #  when 24  #neil
@@ -132,7 +132,7 @@ class Ability
              can :read, ActiveAdmin::Page, :name =>"Dashboard"
              can :read, ActiveAdmin::Page, :name =>"Dpc"
              can [:create,:read,:update],  [Detail,Activity]
-             can [:read], [Phase,Item, Piece]
+             can [:read], [Phase,Item, Piece,Article]
      when 27 #oci
        can [:read,:update],  [AdminUser]
        can :read, ActiveAdmin::Page, :name =>"Dashboard"

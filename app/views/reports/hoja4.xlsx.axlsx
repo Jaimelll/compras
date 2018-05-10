@@ -51,16 +51,16 @@ vproceso=Phase.where(id:vcod).select('proceso as dd').first.dd
 vnproceso=Phase.where(id:vcod).select('descripcion as dd').first.dd
 
 
-  sheet.add_row ["PROCESO:"," ",vproceso], style: [titu,titu, titu]
+  sheet.add_row ["PROCESO:"," ",vproceso], style: [titu,titu, titu], height: 40
                   merge_last_row sheet, columns:["A","B"]
                   merge_last_row sheet, columns:["C","F"]
 
   sheet.add_row ["DESCRIPCION:"," ",vnproceso],
-                    style: [titu,titu, titu]
+                    style: [titu,titu, titu], height: 40
                     merge_last_row sheet, columns:["A","B"]
                     merge_last_row sheet, columns:["C","F"]
   sheet.add_row ["item:"," ",vden],
-                      style: [titu,titu, titu]
+                      style: [titu,titu, titu], height: 40
                       merge_last_row sheet, columns:["A","B"]
                       merge_last_row sheet, columns:["C","F"]
 
