@@ -38,8 +38,15 @@ filter :descripcion
 index :title => "Lista de Items"  do
 
 column("codigo") do |piece|
+  nne=Phase.where(id:params[:phase_id]).
+           select('expediente as dd').first.dd
+  nni=Item.where(exped:nne).select('id').map {|e| e.attributes.values}.flatten
+  if Article.where(item_id:nni,piece:piece.id).count>0 then
 
   link_to piece.codigo, reports_vhoja4_path(format:  "xlsx", :param1=> piece.id)
+   else
+     piece.codigo
+   end
 end
 column("descripcion")
 column('Postores DPC') do |item|

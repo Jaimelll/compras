@@ -51,8 +51,7 @@ vproceso=Phase.where(id:vcod).select('proceso as dd').first.dd
 vnproceso=Phase.where(id:vcod).select('descripcion as dd').first.dd
 
 
-  sheet.add_row ["PROCESO:"," ",vproceso],
-                    style: [titu,titu, titu]
+  sheet.add_row ["PROCESO:"," ",vproceso], style: [titu,titu, titu]
                   merge_last_row sheet, columns:["A","B"]
                   merge_last_row sheet, columns:["C","F"]
 
@@ -76,10 +75,19 @@ Article.where(piece:@vitpiece).order('descripcion').each do |artic|
 vvpac=Item.where(id:artic.item_id).select('pac as dd').first.dd
 vvoobac=Formula.where(product_id:1, orden:Item.where(id:artic.item_id).select('obac as dd').first.dd).
                   select('nombre as dd').first.dd
-sheet.add_row [vvpac,vvoobac,artic.paquete,artic.ficha,artic.descripcion,artic.
+
+if artic.ficha then
+@vrevision=Sheet.where(id:artic.ficha).select('codigo_revision as dd').first.dd
+
+else
+@vrevision='s/d'
+end
+
+
+sheet.add_row [vvpac,vvoobac,artic.paquete,@vrevision,artic.descripcion,artic.
             unidad,artic.cantidad],
                   style: [centra, centra, centra, centra,  izq,centra,centra]
-                 sheet.column_widths  8,8,8,10,30,10,10
+                 sheet.column_widths  8,8,8,15,30,10,10
 
 end# de do
 end# de if

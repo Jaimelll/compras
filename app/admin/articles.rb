@@ -6,7 +6,7 @@ ActiveAdmin.register Article do
 
   permit_params :item_id, :ficha,:descripcion, :unidad,:cantidad,
                 :precision, :paquete, :piece,:referencial,
-                :estado,:obs
+                :estado,:obs,:art4
 
 
     action_item :view, only:[:show,:new,:index]do
@@ -45,8 +45,10 @@ ActiveAdmin.register Article do
 
   column("ficha", :sortable => :pfecha) do |articles|
     if articles.ficha then
-      Sheet.where( id:articles.ficha).
-       select('descripcion as dd').first.dd
+    vrevs=Sheet.where( id:articles.ficha).
+       select('codigo_revision as dd').first.dd
+       localiz='http://www.acffaa.gob.pe/documents/32651/443704/'+vrevs+'.pdf'
+       link_to vrevs, localiz
     else
       "s/d"
     end
@@ -62,10 +64,15 @@ ActiveAdmin.register Article do
   end
 end
   column("cantidad")
+
+  column("Presupuesto", :class => 'text-right', sortable: :art4) do |articles|
+    number_with_delimiter(articles.art4, delimiter: ",")
+  end
+
   column("Item") do |articles|
   if articles.piece then
     Piece.where(id:articles.piece).
-     select('nombre as dd').first.dd
+     select('codigo as dd').first.dd
   else
     "s/d"
   end
@@ -107,10 +114,22 @@ actions
                    f.input :descripcion
                    f.input :unidad, :as => :select, :collection =>
                            Formula.where(product_id:35).map{|u| [u.nombre, u.orden]}
+                   f.input :cantidad, :input_html => { :style =>  'width:30%'}
+                   f.input :art4,:label => 'Presupuesto', :input_html => { :style =>  'width:30%'}
                    f.input :precision, :input_html => { :style =>  'width:30%'}
 
                    f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
+
                if params[:id] then
+            #       Article.where(id:params[:id]).each do |aart|
+            #         if aart.ficha then
+            #           vdesc=Sheet.where(id:aart.ficha).select("descripcion as dd").first.dd
+            #           Article.where(id:aart.id).update_all( descripcion:vdesc )
+            #         end
+            #       end
+
+
+
                    f.input :piece, :as => :select, :collection =>
                              Piece.where(phase_id:@vprocs).map{|u| [u.codigo, u.id]}
                 end
@@ -157,6 +176,7 @@ actions
 
                        row :descripcion
                        row :unidad  do |articles|
+
                          if articles.unidad then
                            Formula.where(product_id:35, orden:articles.unidad).
                             select('nombre as dd').first.dd
@@ -165,8 +185,23 @@ actions
                          end
                        end
                        row :cantidad
+                       row "presupuesto" do |articles|
+                         articles.art4
+                       end
+                       
+
+
+
                        row :admin_user_id
 
+                       row 'Item' do |articles|
+                       if articles.piece then
+                         Piece.where(id:articles.piece).
+                          select('codigo as dd').first.dd
+                       else
+                         "s/d"
+                       end
+                       end
                       end
 
                   end
