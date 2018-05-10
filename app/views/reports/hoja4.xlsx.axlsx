@@ -3,88 +3,88 @@ wb = xlsx_package.workbook
 wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                 alignment: { horizontal: :center })
+                                 alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
+                                b: true, sz: 8, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
-                           alignment: { horizontal: :center },num_fmt: 3)
+                           alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
 
 fechas = style.add_style(format_code: "mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
-                        alignment: { horizontal: :center })
+                        alignment: { horizontal: :center,vertical: :center })
 
 centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                               alignment: { horizontal: :center })
+                               alignment: { horizontal: :center,vertical: :center })
 
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
-                                alignment: { horizontal: :left })
+                                alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
+
+desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},sz: 7)
 
 
+fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+                                alignment: { horizontal: :center,vertical: :center })
+ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
+                            alignment: { horizontal: :center,vertical: :center })
 
 
+normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
-wb.add_worksheet(name: "INSTRUCCIONES") do |sheet|
+
+############################
+
+wb.add_worksheet(name: "Articulos") do |sheet|
+
 
   sheet.add_row []
-  sheet.add_row ["", "Factores a considerar:"]
+
+  sheet.add_row []
+
+if Article.where(piece:@vitpiece.to_i).count>0 then
 
 
-  sheet.add_row %w(ACTITUD APTITUD CONOCIMIENTO),   style: [titu, titu, titu]
-  sheet.add_row ["Asistencia","Preparacion " , "Experiencia " ],   style: [titu, titu, titu]
-  sheet.add_row ["Motivacion","Formacion " , "Desempeño " ],   style: [titu, titu, titu]
-  sheet.add_row ["Puntualidad","Potencial " , "Calidad " ],   style: [titu, titu, titu]
+vcod=Piece.where(id:@vitpiece.to_i).select('phase_id as dd').first.dd
+vden=Piece.where(id:@vitpiece.to_i).select('descripcion as dd').first.dd
+vcoddd=Phase.where(id:vcod).select('proceso as dd').first.dd
 
-    sheet.add_row []
-    sheet.add_row []
-    sheet.add_row ["", "Puntuacion:"]
+vproceso=Phase.where(id:vcod).select('proceso as dd').first.dd
+vnproceso=Phase.where(id:vcod).select('descripcion as dd').first.dd
 
 
-    sheet.add_row %w(PUNTUACION DESCRIPCION),   style: [titu, titu]
-    sheet.add_row ["1","Muy bajo "  ],   style: [titu, titu]
-    sheet.add_row ["2","Bajo "  ],   style: [titu, titu]
-    sheet.add_row ["3","Regular "  ],   style: [titu, titu]
-    sheet.add_row ["4","Bueno "  ],   style: [titu, titu]
-    sheet.add_row ["5","Muy bueno "  ],   style: [titu, titu]
+  sheet.add_row ["PROCESO:"," ",vproceso],
+                    style: [titu,titu, titu]
+                  merge_last_row sheet, columns:["A","B"]
+                  merge_last_row sheet, columns:["C","F"]
 
-      sheet.add_row []
+  sheet.add_row ["DESCRIPCION:"," ",vnproceso],
+                    style: [titu,titu, titu]
+                    merge_last_row sheet, columns:["A","B"]
+                    merge_last_row sheet, columns:["C","F"]
+  sheet.add_row ["item:"," ",vden],
+                      style: [titu,titu, titu]
+                      merge_last_row sheet, columns:["A","B"]
+                      merge_last_row sheet, columns:["C","F"]
 
+  sheet.add_row []
 
-
-end
-
-
-Formula.where(product_id:26).order('orden').each do |proce|
-  wb.add_worksheet(name: proce.nombre) do |sheet|
-
-
-  sheet.add_row ["","", proce.descripcion.upcase]
-
-    sheet.add_row []
-    sheet.add_row [ "","EVALUADOR:", " "], style: [izq, centra, centra]
-    sheet.add_row ["", "DNI:", " "], style: [izq, centra, centra]
-    sheet.add_row []
-
-  sheet.add_row %w(N DNI  NOMBRE  ACTITUD APTITUD CONOCIMIENTO),
-  style: [titu,  titu, titu, titu, titu, titu]
-
-  @conta=0
-Employee.where(area:proce.orden,estado:1).order('ape_nom').each do |emple|
-
-
-@conta=@conta+1
+  sheet.add_row %w(PAC OBAC  PAQUETE FICHA DESCRIPCION UNIDAD CANTIDAD ),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu], height: 40
 
 
 
+Article.where(piece:@vitpiece).order('descripcion').each do |artic|
+vvpac=Item.where(id:artic.item_id).select('pac as dd').first.dd
+vvoobac=Formula.where(product_id:1, orden:Item.where(id:artic.item_id).select('obac as dd').first.dd).
+                  select('nombre as dd').first.dd
+sheet.add_row [vvpac,vvoobac,artic.paquete,artic.ficha,artic.descripcion,artic.
+            unidad,artic.cantidad],
+                  style: [centra, centra, centra, centra,  izq,centra,centra]
+                 sheet.column_widths  8,8,8,10,30,10,10
 
-
-
-  sheet.add_row [@conta," "+ emple.dni, emple.ape_nom," " ," " , " " ],
-   style: [ centra,  izq, izq,  centra, centra,  centra]
-
+end# de do
+end# de if
 
 
 
 end
-end
-end
-
-
 end

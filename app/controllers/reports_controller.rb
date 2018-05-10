@@ -375,6 +375,8 @@ end
 
 
 def vhoja4
+  @vitpiece=params[:param1]
+
 
 
   respond_to do |format|

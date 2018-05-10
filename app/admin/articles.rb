@@ -62,6 +62,14 @@ ActiveAdmin.register Article do
   end
 end
   column("cantidad")
+  column("Item") do |articles|
+  if articles.piece then
+    Piece.where(id:articles.piece).
+     select('nombre as dd').first.dd
+  else
+    "s/d"
+  end
+end
   #column("piece")
 
 actions
@@ -69,6 +77,23 @@ actions
   end
 
       form :title => 'Edicion Articulos'  do |f|
+          if params[:id] then
+            #edit
+            viditem=Article.where(id:params[:id]).
+                        select('item_id').map {|e| e.attributes.values}.flatten
+            if Item.where(id:viditem).where('exped>0').count>0 then
+              vexp=Item.where(id:viditem).
+                  select('exped').map {|e| e.attributes.values}.flatten
+             if  Phase.where(expediente:vexp).count>0  then
+                 @vprocs=Phase.where(expediente:vexp).
+                   select('id').map {|e| e.attributes.values}.flatten
+
+
+
+             end
+             end
+
+          end
 
 
             f.inputs  do
@@ -85,8 +110,10 @@ actions
                    f.input :precision, :input_html => { :style =>  'width:30%'}
 
                    f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
-
-
+               if params[:id] then
+                   f.input :piece, :as => :select, :collection =>
+                             Piece.where(phase_id:@vprocs).map{|u| [u.codigo, u.id]}
+                end
                          end
                   f.actions
 

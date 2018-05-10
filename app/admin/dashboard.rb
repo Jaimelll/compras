@@ -242,7 +242,7 @@ end
     #########personal
                          case current_admin_user.categoria
                          when 1,2,3
-                           #  li link_to "Personal por area evaluacion", reports_vhoja4_path(format: "xlsx")
+
                            #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
                               li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
                              li    link_to "Compras local", "http://172.25.10.6:3000/admin/login"
@@ -510,7 +510,7 @@ unless current_admin_user.categoria==24
 
           end
         else
-        #  li link_to "Personal por area evaluacion",    reports_vhoja4_path(format: "xlsx")
+
           li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
         end
 
@@ -944,7 +944,7 @@ unless current_admin_user.categoria==24
 
   end
 else
-#  li link_to "Personal por area evaluacion",    reports_vhoja4_path(format: "xlsx")
+
   li    link_to "Personal", "http://172.25.10.6:3001/admin/login"
 end
 

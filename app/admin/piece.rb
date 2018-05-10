@@ -37,7 +37,10 @@ permit_params :codigo, :descripcion,:cantidad, :moneda,:presupuestado,
 filter :descripcion
 index :title => "Lista de Items"  do
 
-column("codigo")
+column("codigo") do |piece|
+
+  link_to piece.codigo, reports_vhoja4_path(format:  "xlsx", :param1=> piece.id)
+end
 column("descripcion")
 column('Postores DPC') do |item|
   item.cantidad
@@ -167,6 +170,7 @@ form :title => 'Edicion Item'  do |f|
 
 
                   row :codigo
+
                   row :descripcion
 
 
@@ -346,14 +350,7 @@ form :title => 'Edicion Item'  do |f|
                                 select('valor as dd').first.dd.to_s
                  n32=Formula.where(product:16,orden:n11).
                            select('orden as dd').first.dd
-                   @vobac=" "
-                  if n32>0 then
-                   Item.where(exped:n32).order('obac').each do |nobac|
-                    @sobac=Formula.where(product_id:1,orden:nobac.obac)
-                    .select('nombre as dd').first.dd
-                     @vobac=@vobac+ @sobac+"-"+nobac.pac+","
-                     end
-                     end
+
 
 
               ul do
@@ -365,6 +362,8 @@ form :title => 'Edicion Item'  do |f|
                  Item.where(exped:n32).order('obac').each do |nobac|
                   @sobac=Formula.where(product_id:1,orden:nobac.obac)
                   .select('nombre as dd').first.dd
+
+
                   ul link_to @sobac+"-"+"#{nobac.pac} ", admin_item_articles_path(nobac.id)
 
                    end
