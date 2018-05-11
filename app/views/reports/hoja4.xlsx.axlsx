@@ -30,6 +30,18 @@ ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
 
 normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
+def merge_last_row(sheet,options ={})
+  last_row = sheet.rows.last.index + 1
+  first_col,last_col = options[:columns]
+  if first_col && last_col
+    sheet.merge_cells "#{first_col}#{last_row}:#{last_col}#{last_row}"
+  else
+    sheet.merge_cells sheet.rows.last
+  end
+  sheet.rows.last.style = style if options[:style]
+end
+
+
 
 ############################
 
