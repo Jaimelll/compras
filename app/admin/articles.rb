@@ -6,7 +6,7 @@ ActiveAdmin.register Article do
 
   permit_params :item_id, :ficha,:descripcion, :unidad,:cantidad,
                 :precision, :paquete, :piece,:referencial,
-                :estado,:obs,:art4
+                :estado,:obs,:art3,:art4,:art5,:art6
 
 
     action_item :view, only:[:show,:new,:index]do
@@ -65,7 +65,17 @@ ActiveAdmin.register Article do
 end
   column("cantidad")
 
-  column("Presupuesto", :class => 'text-right', sortable: :art4) do |articles|
+    column("Moneda", :class => 'text-right', sortable: :art1) do |articles|
+
+    if articles.art1 then
+      Formula.where(product_id:7, orden:articles.art1).
+       select('nombre as dd').first.dd
+    else
+      "s/d"
+    end
+  end
+
+  column("Estimado", :class => 'text-right', sortable: :art4) do |articles|
     number_with_delimiter(articles.art4, delimiter: ",")
   end
 
@@ -105,7 +115,7 @@ actions
 
             f.inputs  do
 
-
+                  @vaf=current_admin_user.periodo
 
                    f.input :paquete, :input_html => { :style =>  'width:30%'}
 
@@ -115,8 +125,12 @@ actions
                    f.input :unidad, :as => :select, :collection =>
                            Formula.where(product_id:35).map{|u| [u.nombre, u.orden]}
                    f.input :cantidad, :input_html => { :style =>  'width:30%'}
-                   f.input :art4,:label => 'Presupuesto', :input_html => { :style =>  'width:30%'}
+                   f.input :art1,:label => 'Moneda', :as => :select, :collection =>
+                           Formula.where(product_id:7,numero:@vaf).map{|u| [u.nombre, u.orden]}
+                   f.input :art4,:label => 'Estimado', :input_html => { :style =>  'width:30%'}
                    f.input :precision, :input_html => { :style =>  'width:30%'}
+                   f.input :art5,:label => 'Desierto', :input_html => { :style =>  'width:30%'}
+                   f.input :art6,:label => 'Convocado', :input_html => { :style =>  'width:30%'}
 
                    f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
@@ -165,7 +179,7 @@ actions
                        row :paquete
 
 
-                       row("ficha", :sortable => :ficha) do |articles|
+                       row "ficha" do |articles|
                          if articles.ficha then
                            Sheet.where( id:articles.ficha).
                             select('descripcion as dd').first.dd
@@ -185,11 +199,26 @@ actions
                          end
                        end
                        row :cantidad
-                       row "presupuesto" do |articles|
+                       row "Moneda"  do |articles|
+
+                         if articles.art1 then
+                           Formula.where(product_id:7, orden:articles.art1).
+                            select('nombre as dd').first.dd
+                         else
+                           "s/d"
+                         end
+                       end
+                       row "estimado" do |articles|
                          articles.art4
                        end
+                      row :precision
+                      row "Desierto" do |articles|
+                       articles.art5
+                      end
 
-
+                      row "Convocado" do |articles|
+                        articles.art6
+                      end
 
 
                        row :admin_user_id
