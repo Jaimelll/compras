@@ -78,8 +78,8 @@ vnproceso=Phase.where(id:vcod).select('descripcion as dd').first.dd
 
   sheet.add_row []
 
-  sheet.add_row %w(PAC OBAC  PAQUETE FICHA DESCRIPCION UNIDAD CANTIDAD ),
-        style: [titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+  sheet.add_row %w(PAC OBAC  PAQUETE FICHA DESCRIPCION UNIDAD CANTIDAD PRESUPUESTO ),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
 
 
 
@@ -95,10 +95,16 @@ else
 @vrevision='s/d'
 end
 
+if artic.unidad then
+  vuni=Formula.where(product_id:35, orden:artic.unidad).
+   select('nombre as dd').first.dd
+else
+  vuni="s/d"
+end
 
-sheet.add_row [vvpac,vvoobac,artic.paquete,@vrevision,artic.descripcion,artic.
-            unidad,artic.cantidad],
-                  style: [centra, centra, centra, centra,  izq,centra,centra]
+
+sheet.add_row [vvpac,vvoobac,artic.paquete,@vrevision,artic.descripcion,vuni ,artic.cantidad,artic.art4],
+                  style: [centra, centra, centra, centra,  izq,centra,centra,soles]
                  sheet.column_widths  8,8,8,15,30,10,10
 
 end# de do
