@@ -95,14 +95,14 @@ else
 @vrevision='s/d'
 end
 
-if artic.art1 then
-  vmon=Formula.where(product_id:35, orden:artic.art1).
+if artic.art1 and artic.art1>0 then
+  vmon=Formula.where(product_id:7, orden:artic.art1).
    select('nombre as dd').first.dd
 else
   vmon="s/d"
 end
 
-if artic.unidad then
+if artic.unidad and artic.unidad>0  then
   vuni=Formula.where(product_id:35, orden:artic.unidad).
    select('nombre as dd').first.dd
 else

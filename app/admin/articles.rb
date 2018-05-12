@@ -44,7 +44,7 @@ ActiveAdmin.register Article do
   column("paquete")
 
   column("ficha", :sortable => :pfecha) do |articles|
-    if articles.ficha then
+    if articles.ficha and articles.ficha>0 then
     vrevs=Sheet.where( id:articles.ficha).
        select('codigo_revision as dd').first.dd
        localiz='http://www.acffaa.gob.pe/documents/32651/443704/'+vrevs+'.pdf'
@@ -56,7 +56,7 @@ ActiveAdmin.register Article do
 
   column("descripcion")
   column("unidad") do |articles|
-  if articles.unidad then
+  if articles.unidad and articles.unidad>0 then
     Formula.where(product_id:35, orden:articles.unidad).
      select('nombre as dd').first.dd
   else
@@ -80,7 +80,7 @@ end
   end
 
   column("Item paquete") do |articles|
-  if articles.piece then
+  if articles.piece and articles.piece>0 then
     Piece.where(id:articles.piece).
      select('codigo as dd').first.dd
   else
@@ -180,7 +180,7 @@ actions
 
 
                        row "ficha" do |articles|
-                         if articles.ficha then
+                         if articles.ficha and articles.ficha>0 then
                            Sheet.where( id:articles.ficha).
                             select('descripcion as dd').first.dd
                          else
@@ -191,7 +191,7 @@ actions
                        row :descripcion
                        row :unidad  do |articles|
 
-                         if articles.unidad then
+                         if articles.unidad and articles.unidad>0  then
                            Formula.where(product_id:35, orden:articles.unidad).
                             select('nombre as dd').first.dd
                          else
@@ -201,7 +201,7 @@ actions
                        row :cantidad
                        row "Moneda"  do |articles|
 
-                         if articles.art1 then
+                         if articles.art1 and articles.art1>0  then
                            Formula.where(product_id:7, orden:articles.art1).
                             select('nombre as dd').first.dd
                          else
@@ -224,7 +224,7 @@ actions
                        row :admin_user_id
 
                        row 'Item paquete' do |articles|
-                       if articles.piece then
+                       if articles.piece and articles.piece>0 then
                          Piece.where(id:articles.piece).
                           select('codigo as dd').first.dd
                        else
