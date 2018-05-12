@@ -131,6 +131,7 @@ actions
                    f.input :precision, :input_html => { :style =>  'width:30%'}
                    f.input :art5,:label => 'Desierto', :input_html => { :style =>  'width:30%'}
                    f.input :art6,:label => 'Convocado', :input_html => { :style =>  'width:30%'}
+                   f.input :art3,:label => 'CUBSO'
 
                    f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
 
@@ -220,6 +221,9 @@ actions
                         articles.art6
                       end
 
+                      row "CUBSO" do |articles|
+                        articles.art3
+                      end
 
                        row :admin_user_id
 
