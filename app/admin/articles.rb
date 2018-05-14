@@ -53,7 +53,9 @@ ActiveAdmin.register Article do
       "s/d"
     end
   end
-
+column("CUBSO")  do |articles|
+  articles.art3
+end
   column("descripcion")
   column("unidad") do |articles|
   if articles.unidad and articles.unidad>0 then
