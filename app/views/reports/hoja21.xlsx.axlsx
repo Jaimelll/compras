@@ -240,7 +240,13 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        vncorp=0
       @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
 
-        vdesc=ite.descripcion.upcase
+        if ite.modalidad==1 and ite.exped and ite.exped>0 then
+           @vdesc=Formula.where(product_id:16, orden:ite.exped).select('descripcion as dd').first.dd.upcase
+        else
+
+          @vdesc=ite.descripcion.upcase
+        end
+
 
         @vpact3=Formula.where(product_id:12,acti:1).select('orden')
 
@@ -477,7 +483,7 @@ sheet.add_row [ vconta2,ite.pac,
 
 Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 vexp,
-ite.descripcion.upcase,
+ @vdesc,
 
 
 vffuente,
@@ -500,7 +506,7 @@ sheet.add_row [ vconta2,ite.pac,
 
 Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 vexp,
-ite.descripcion.upcase,
+ @vdesc,
 
 
 vffuente,
@@ -523,7 +529,7 @@ sheet.add_row [ vconta2,ite.pac,
 
 Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 vexp,
-ite.descripcion.upcase,
+ @vdesc,
 
 
 vffuente,
@@ -545,7 +551,7 @@ sheet.add_row [ vconta2,ite.pac,
  Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
 Formula.where(product_id:16, orden:ite.exped).
  select('nombre as dd').first.dd,
-ite.descripcion.upcase,
+ @vdesc,
 
  vffuente,
  ssele,

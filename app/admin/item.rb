@@ -204,7 +204,7 @@ end
 end
 
   column("Modalidad", sortable: :modalidad)do |item|
-      if item.modalidad and item.modalidad>0 then
+        if item.modalidad and item.modalidad>0 then
 
         mmod= Formula.where(product_id:4, orden:item.modalidad).
           select('nombre as dd').first.dd
@@ -212,7 +212,11 @@ end
         else
          mmod= "s/d"
         end
-link_to mmod, admin_item_articles_path(item)
+        if Article.where(item_id:item.id).count>0 then
+           link_to mmod, admin_item_articles_path(item)
+        else
+          mmod
+        end
 
     end
 

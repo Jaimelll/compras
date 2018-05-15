@@ -370,9 +370,11 @@ form :title => 'Edicion Item'  do |f|
                   @sobac=Formula.where(product_id:1,orden:nobac.obac)
                   .select('nombre as dd').first.dd
 
-
-                  ul link_to @sobac+"-"+"#{nobac.pac} ", admin_item_articles_path(nobac.id)
-
+                    if Article.where(item_id:nobac.id).count>0 then
+                    ul link_to @sobac+"-"+"#{nobac.pac} ", admin_item_articles_path(nobac.id)
+                    else
+                      ul  @sobac+"-"+nobac.pac
+                    end
                    end
                    end
 
