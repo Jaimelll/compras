@@ -221,8 +221,8 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
               when 4
-                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION EN_DEM DIAS_DEM PLAN_EPOM  ESTIMADO(Soles) ESTIMADO(Soles) SITUACION PLAN_BPRO),
-                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION EN_DEM DIAS_DEM PLAN_EPOM  ESTIMADO(Soles) ESTIMADO(Soles) SITUACION PLAN_BPRO RE_EPOM RE_BPRO),
+                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -290,37 +290,46 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
     end
 
+    if Detail.where(actividad:108,item_id:ite.id).count>0 then
+      @pbpro=Detail.where(actividad:108,item_id:ite.id).select('pfecha as dd').first.dd
+    else
+      @pbpro=""
+    end
+# reprog epom
+    if Detail.where(actividad:301,item_id:ite.id).count>0 then
+      @epom2=Detail.where(actividad:301,item_id:ite.id).select('pfecha as dd').first.dd
+    else
+      @epom2=""
+    end
+# reprog vpro
+    if Detail.where(actividad:302,item_id:ite.id).count>0 then
+      @rbpro=Detail.where(actividad:302,item_id:ite.id).select('pfecha as dd').first.dd
+    else
+      @rbpro=""
+    end
+
 
     if Phase.where(expediente:ite.exped).count>0 then
     idpha=Phase.where(expediente:ite.exped).select('id as dd').last.dd
-    if Activity.where(actividad:102,phase_id:idpha).count>0 then
-      @epom1=Activity.where(actividad:102,phase_id:idpha).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-
-    else
-      @epom1=@epom1
-
-    end
-
+        if Activity.where(actividad:102,phase_id:idpha).count>0 then
+          @epom1=Activity.where(actividad:102,phase_id:idpha).select('pfecha as dd').first.dd
+        end
+        if Activity.where(actividad:108,phase_id:idpha).count>0 then
+          @pbpro=Activity.where(actividad:108,phase_id:idpha).select('pfecha as dd').first.dd
+        end
+        if Activity.where(actividad:301,phase_id:idpha).count>0 then
+          @epom2=Activity.where(actividad:301,phase_id:idpha).select('pfecha as dd').first.dd
+        end
+        if Activity.where(actividad:302,phase_id:idpha).count>0 then
+          @rbpro=Activity.where(actividad:302,phase_id:idpha).select('pfecha as dd').first.dd
+        end
     end
 
 ####epom , bprp
 
-if Detail.where(actividad:108,item_id:ite.id).count>0 then
-  @pbpro=Detail.where(actividad:108,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-else
-  @pbpro=""
-end
 
-if Phase.where(expediente:ite.exped).count>0 then
-idpha=Phase.where(expediente:ite.exped).select('id as dd').last.dd
-if Activity.where(actividad:108,phase_id:idpha).count>0 then
-  @pbpro=Activity.where(actividad:108,phase_id:idpha).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
 
-else
-  @epom1=@epom1
 
-end
-end
 
 vestim=ite.certificado.to_i
 
@@ -378,12 +387,14 @@ else
 
   #para dem
     if proce.orden==4 then
-    @vobsr=nil
-    vendem=nil
-    @epom1=nil
-    @pbpro=nil
-    vestim=nil
-      @vdian=nil
+       @vobsr=nil
+       vendem=nil
+       @epom1=nil
+       @pbpro=nil
+       vestim=nil
+       @vdian=nil
+       @epom2=nil
+       @rbpro=nil
     end
 
 
@@ -408,6 +419,8 @@ else
                sheet.merge_cells "O#{vlineai}:O#{vlineaf}"
                sheet.merge_cells "P#{vlineai}:P#{vlineaf}"
                sheet.merge_cells "Q#{vlineai}:Q#{vlineaf}"
+               sheet.merge_cells "R#{vlineai}:R#{vlineaf}"
+               sheet.merge_cells "S#{vlineai}:S#{vlineaf}"
             end
 
       end
@@ -611,10 +624,10 @@ vendem,
  @epom1,
 ite.certificado.to_i,
 
-vestim, @vobsr,@pbpro],
+vestim, @vobsr,@pbpro,@epom2,@rbpro],
 
-style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, centra, fechad, soles, soles, desc, fechad]
-sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12,12, 12,8, 12, 15, 15, 30, 14]
+style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, centra, fechad, soles, soles, desc, fechad, fechad, fechad]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12,12, 12,8, 12, 15, 15, 30, 14, 12, 12]
 end
 
 
