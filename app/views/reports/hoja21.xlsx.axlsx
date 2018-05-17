@@ -22,7 +22,7 @@ desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                               alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},sz: 7)
 
 
-fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+fechad = style.add_style(format_code: "dd/mm/yy", border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :center,vertical: :center })
 ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
                             alignment: { horizontal: :center,vertical: :center })
@@ -221,8 +221,8 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
 
               when 4
-                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION EN_DEM PLAN_EPOM  ESTIMADO(Soles) ESTIMADO(Soles) SITUACION PLAN_BPRO),
-                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
+                sheet.add_row %w(N PAC IAA EXPED DESCRIPCION FUENTE TIPO_PROC PRESUPUESTO PUBLICACION RECEPCION EN_DEM DIAS_DEM PLAN_EPOM  ESTIMADO(Soles) ESTIMADO(Soles) SITUACION PLAN_BPRO),
+                style: [titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu]
 
 
 
@@ -237,7 +237,9 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
        vlineai=1
        vlineaf=1
        vexp = "s/d"
-       vendem="s/d"
+       @vfec1=Time.now
+       @vdian=0
+
        vncorp=0
       @items.where(id:@vpacn,tipo:merca.orden,modalidad:modal.orden).each do |ite|
 
@@ -272,7 +274,9 @@ wb.add_worksheet(name: proce.nombre+nuitem) do |sheet|
 
     #fecha de dem
     if Detail.where(actividad:60,item_id:ite.id).count>0 then
-      @endem=Detail.where(actividad:60,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+
+      @endem=Detail.where(actividad:60,item_id:ite.id).select('pfecha as dd').first.dd
+      @vdian=(@vfec1-@endem.to_time).to_i/86400
     else
       @endem="a"
     end
@@ -334,6 +338,7 @@ vestim=ite.certificado.to_i
      if   @endem=="a" then #si no hay actividad en pac jala de de proceso
      @endem=Activity.where(phase_id:ppphase,actividad: Formula .where(product_id:12,cantidad:4).
      select('orden')).order('pfecha').select('pfecha as dd').first.dd
+       @vdian=(@vfec1-@endem.to_time).to_i/86400
     end
    end
 
@@ -355,9 +360,10 @@ if exp =="s/d" or exp!=vexp then
    @conta=@conta+1
    vexp=exp
    vendem=@endem
+
    vconta2=@conta
    vcorpo=0
-   vestim=Item.where(exped:ite.exped).sum(:certificado)
+   vestim=Item.where(exped:ite.exped,cuadrante:4).sum(:certificado)
 
 else
 
@@ -377,6 +383,7 @@ else
     @epom1=nil
     @pbpro=nil
     vestim=nil
+      @vdian=nil
     end
 
 
@@ -395,11 +402,12 @@ else
 
           #para dem
             if proce.orden==4 then
-             sheet.merge_cells "O#{vlineai}:O#{vlineaf}"
-           sheet.merge_cells "N#{vlineai}:N#{vlineaf}"
-           sheet.merge_cells "K#{vlineai}:K#{vlineaf}"
-           sheet.merge_cells "L#{vlineai}:L#{vlineaf}"
-           sheet.merge_cells "P#{vlineai}:P#{vlineaf}"
+               sheet.merge_cells "K#{vlineai}:K#{vlineaf}"
+               sheet.merge_cells "L#{vlineai}:L#{vlineaf}"
+               sheet.merge_cells "M#{vlineai}:M#{vlineaf}"
+               sheet.merge_cells "O#{vlineai}:O#{vlineaf}"
+               sheet.merge_cells "P#{vlineai}:P#{vlineaf}"
+               sheet.merge_cells "Q#{vlineai}:Q#{vlineaf}"
             end
 
       end
@@ -440,7 +448,7 @@ else
 end
 
 if Detail.where(actividad:60,item_id:ite.id).count>0 then
-  @endem=Detail.where(actividad:60,item_id:ite.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+  @endem=Detail.where(actividad:60,item_id:ite.id).select('pfecha as dd').first.dd
 else
   @endem=""
 end
@@ -584,6 +592,8 @@ style: [centra, centra,  centra, desc, desc, centra, centra,soles, fechad, fecha
 sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12, 14, 12, 12, 12, 15, 30, 14]
 
 when 4
+#@vfec1=Time.now
+#vdias=( @vfec1-vendem).to_i/86400
 sheet.add_row [ vconta2,ite.pac,
 
  Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
@@ -597,12 +607,14 @@ Formula.where(product_id:16, orden:ite.exped).
  @public,
  @fecing,
 vendem,
+  @vdian,
  @epom1,
 ite.certificado.to_i,
 
 vestim, @vobsr,@pbpro],
-style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, fechad, soles, soles, desc, fechad]
-sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12,12, 12, 12, 15, 15, 30, 14]
+
+style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, centra, fechad, soles, soles, desc, fechad]
+sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12,12, 12,8, 12, 15, 15, 30, 14]
 end
 
 
