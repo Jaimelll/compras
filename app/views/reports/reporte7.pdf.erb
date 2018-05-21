@@ -287,15 +287,21 @@
 
             <th colspan="5">Observacion</th>
 
+
             <th colspan="1">Documento</th>
             <th colspan="1">Numero</th>
+            <% if @vactcanti.include?("1") and @vdetalle.where(item_id:variable.id).where(actividad:30).count>0 then%>
+                 <% if  @vdetalle.where(item_id:variable.id).order(:pfecha).select('actividad as dd').last.dd=30 then%>
+                   <th colspan="3" class="azul">  DEVOLUCION DE EXPEDIENTE A OBAC </th>
+                   <% end%>
+             <% end%>
 
          </tr>
 
 
   <% if @vdetalle.where(item_id:variable.id).where(actividad: @vpact).count>0  then %>
 
-          <% @vdetact.each do |deta| %>
+          <% @vdetact.order(:pfecha).each do |deta| %>
 
 
        <tr style="font-size:70%;"  class="last" >
@@ -324,7 +330,7 @@
 <% end %>
 
  <% if @vdetact21==1 then %>
-       <% @vdetact2.each do |deta2| %>
+       <% @vdetact2.order(:pfecha).each do |deta2| %>
 
         <%bb= Formula.where(product_id:12,orden:deta2.actividad).select('cantidad as dd').first.dd %>
 
