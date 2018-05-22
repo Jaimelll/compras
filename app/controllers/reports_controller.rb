@@ -793,8 +793,10 @@ def vhoja20
     diasp(@vaf)
 
     @vuobac=params[:param7]
-
-    @items=Item.where(obac:@vuobac,ejecucion:4,exped2:@vaf).order('cuadrante,modalidad,tipo,exped,certificado DESC')
+    @artic=Article.where()
+    @items=Item.where(obac:@vuobac,ejecucion:4,exped2:@vaf)
+    nitem=@items.select('id')
+    @artic=Article.where(item_id:nitem)
     respond_to do |format|
       format.html
 

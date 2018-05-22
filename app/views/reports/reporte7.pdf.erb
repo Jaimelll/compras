@@ -291,7 +291,7 @@
             <th colspan="1">Documento</th>
             <th colspan="1">Numero</th>
             <% if @vactcanti.include?("1") and @vdetalle.where(item_id:variable.id).where(actividad:30).count>0 then%>
-                 <% if  @vdetalle.where(item_id:variable.id).order(:pfecha).select('actividad as dd').last.dd=30 then%>
+                 <% if  @vdetalle.where(item_id:variable.id).order(:pfecha).select('actividad as dd').last.dd==30 then%>
                    <th colspan="3" class="azul">  DEVOLUCION DE EXPEDIENTE A OBAC </th>
                    <% end%>
              <% end%>

@@ -18,9 +18,14 @@ centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
 
+
+
 desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                               alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},sz: 7)
 
+desc1 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},
+                              sz: 7, bg_color: "ffff99")
 
 fechad = style.add_style(format_code: "dd/mm/yy", border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :center,vertical: :center })
@@ -55,14 +60,20 @@ if @items.count>0 then ###wb
 
 wb.add_worksheet(name:"dias") do |sheet|
 sheet.add_row []
-sheet.add_row ["","","","","","","","Dias" ], style:[normal,normal,normal,normal,normal,normal,normal,titu]
-merge_last_row sheet, columns:["H","O"]
-sheet.add_row %w(N PAC IAA MODALIDAD EXPED DESCRIPCION ESTIMADO(SOLES) C/EXP S/EXP DC DEM DPC FC DEC TOTAL),
-style: [titu, titu, titu,  titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu , titu]
+sheet.add_row ["","","","","","","","","Dias" ], style:[normal,normal,normal,normal,normal,normal,normal,normal,titu]
+merge_last_row sheet, columns:["I","P"]
+sheet.add_row %w(N PAC IAA MODALIDAD EXPED DESCRIPCION ESTIMADO(SOLES) ETAPA S/EXP C/EXP DC DEM DPC FC DEC TOTAL),
+style: [titu, titu, titu,  titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu , titu]
+
 vcontt=0
 Formula.where(product_id:10).order('orden').where('orden<10').each do |proce|
 
-  @items.where(cuadrante:proce.orden).each do |ite|
+
+  @items.where(cuadrante:proce.orden).order('cuadrante,modalidad,tipo,exped,certificado DESC').each do |ite|
+
+
+
+
    vcontt=vcontt+1
 
     if ite.exped and ite.exped>0 then
@@ -71,37 +82,68 @@ Formula.where(product_id:10).order('orden').where('orden<10').each do |proce|
        exp ="s/d"
     end
 
-    if ite.modalidad==1 and ite.exped and ite.exped>0 then
-      @vdesc=Formula.where(product_id:16, orden:ite.exped).select('descripcion as dd').first.dd.upcase
-    else
+  #  if ite.modalidad==1 and ite.exped and ite.exped>0 then
+  #      @vdesc=Formula.where(product_id:16, orden:ite.exped).select('descripcion as dd').first.dd.upcase
+  #  else
 
-     @vdesc=ite.descripcion.upcase
-    end
+      @vdesc=ite.descripcion.upcase
+  #  end
 
 
 stot=ite.dsexp+ite.dcexp+ite.ddc+ite.ddem+ ite.ddpc+ ite.dfc++ ite.ddec
 
 
-  sheet.add_row [
- vcontt,
- ite.pac,
- Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
- Formula.where(product_id:4,orden:ite.modalidad). select('nombre as dd').first.dd,
- exp,
- @vdesc,
- ite.certificado,
- ite.dsexp,
- ite.dcexp,
- ite.ddc,
- ite.ddem,
- ite.ddpc,
- ite.dfc,
- ite.ddec,
- stot
-  ],
-  style: [centra, centra,centra,  centra, desc, desc,soles, centra, centra, centra, centra, centra, centra, centra, centra]
+     vetap=Formula.where(product_id:10, orden:ite.cuadrante).select('nombre as dd').first.dd.upcase
 
-  sheet.column_widths *[5, 5, 8, 12, 10,50,15,15,10, 10, 10, 10, 10, 10, 10, 10]
+
+  if ite.cuadrante==1 and Detail.where(item_id:ite.id).where(actividad:30).count>0 then
+      # if  Detail.where(item_id:ite.id).order(:pfecha).select('actividad as dd').last.dd==30 then
+       sheet.add_row [
+                vcontt,
+                ite.pac,
+                Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+                Formula.where(product_id:4,orden:ite.modalidad). select('nombre as dd').first.dd,
+                exp,
+                @vdesc+"   (EN PROCESO DE DEVOLUCION A OBAC)",
+                ite.certificado,
+                 vetap,
+                ite.dsexp,
+                ite.dcexp,
+                ite.ddc,
+                ite.ddem,
+                ite.ddpc,
+                ite.dfc,
+                ite.ddec,
+                stot
+                ],
+                style: [centra, centra,centra,  centra, desc1, desc1,soles, centra, centra, centra, centra, centra, centra, centra, centra, centra]
+    #   end
+       else
+       sheet.add_row [
+                vcontt,
+                ite.pac,
+                Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+                Formula.where(product_id:4,orden:ite.modalidad). select('nombre as dd').first.dd,
+                exp,
+
+              
+                  @vdesc,
+                ite.certificado,
+                vetap,
+                ite.dsexp,
+                ite.dcexp,
+                ite.ddc,
+                ite.ddem,
+                ite.ddpc,
+                ite.dfc,
+                ite.ddec,
+                stot
+                ],
+                style: [centra, centra,centra,  centra, desc, desc,soles, centra, centra, centra, centra, centra, centra, centra, centra, centra]
+
+        end
+
+  sheet.column_widths *[5, 5, 8, 12, 10,50,15,15,10,10, 10, 10, 10, 10, 10, 10, 10]
 
 
 
@@ -117,6 +159,76 @@ end #item
 
 end #formula
 end #if
+
+
+
+
+wb.add_worksheet(name:"articulos") do |sheet|
+sheet.add_row []
+
+
+  sheet.add_row %w(PAC_ID PAQUETE FICHA CUBSO DESCRIPCION UNIDAD CANTIDAD MONEDA ESTIMADO ITEM_PAQ),
+  style: [titu, titu, titu,  titu,  titu, titu, titu, titu, titu]
+
+  @artic.order('item_id,art4').each do |articles|
+
+
+  sheet.add_row [
+           articles.item_id,
+           articles.paquete,
+
+           if articles.ficha and articles.ficha>0 then
+           vrevs=Sheet.where( id:articles.ficha).
+              select('codigo_revision as dd').first.dd
+             localiz='http://www.acffaa.gob.pe/documents/32651/443704/'+vrevs+'.pdf'
+
+
+
+              vrevs
+
+           else
+             "s/d"
+           end,
+
+           articles.art3,
+           articles.descripcion,
+           if articles.unidad and articles.unidad>0 then
+             Formula.where(product_id:35, orden:articles.unidad).
+              select('nombre as dd').first.dd
+           else
+             "s/d"
+           end,
+           articles.cantidad,
+           if articles.art1 then
+             Formula.where(product_id:7, orden:articles.art1).
+              select('nombre as dd').first.dd
+           else
+             "s/d"
+           end,
+           articles.art4,
+           if articles.piece and articles.piece>0 then
+             Piece.where(id:articles.piece).
+              select('codigo as dd').first.dd
+           else
+             "s/d"
+           end
+
+           ],
+           style: [centra,centra, centra,desc,desc,centra,soles,centra,soles,centra  ]
+
+
+  end
+
+  sheet.column_widths *[10,10, 20, 40,40,10,10,12,10,10]
+
+
+end
+
+
+
+
+
+
 
 end ##estilos
 
