@@ -4,7 +4,7 @@ wb.styles do |style|
 
 titu = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                  alignment: { horizontal: :center,vertical: :center, wrap_text: :true },
-                                b: true, sz: 9, bg_color: "C1C1C1")
+                                b: true, sz: 8, bg_color: "C1C1C1")
 
 soles = style.add_style(border: Axlsx::STYLE_THIN_BORDER,
                            alignment: { horizontal: :center ,vertical: :center},num_fmt: 3)
@@ -17,7 +17,12 @@ centra = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
 
 izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :left ,vertical: :center, wrap_text: :true})
-fechad = style.add_style(format_code: "dd-mm-yyyy", border: Axlsx::STYLE_THIN_BORDER,
+
+desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                              alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},sz: 7)
+
+
+fechad = style.add_style(format_code: "dd/mm/yy", border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :center,vertical: :center })
 ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
                             alignment: { horizontal: :center,vertical: :center })
@@ -26,161 +31,18 @@ ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
 normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
 
-
-
-
-
-
-Formula.where(product_id:20).where('cantidad>2').order('cantidad').each do |proce|
-wb.add_worksheet(name: proce.nombre) do |sheet|
-
-  sheet.add_row []
-
-
-
-
-
-
-
-
-  case proce.orden
-
-     when 2
-        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-        @vpacn=@vpac2
-     when 3
-        sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ESTADO ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-        @vpacn=@vpac3
-    when 4
-        sheet.add_row %w(N PROCESO OBAC MERCADO DESCRIPCION ITEMS PRESUPUESTADO(soles) REFERENCIAL(soles) CONVOCATORIA CONSULTAS ABSOLUCION INTEGRACION PRES_PROP BUENA_PRO PRESIDENTE MIEMBROS SITUACION ),
-        style: [titu,  titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-        @vpacn=@vpac4
-     when 5
-          sheet.add_row %w(N PROCE OBAC MERCADO DESCRIPCION ESTADO ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO CONSENTIMIENTO PRESIDENTE MIEMBROS POSTORES EMPRESA_ADJUDICADA SITUACION  ),
-          style: [titu,  titu, titu, titu, titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-          @vpacn=@vpac5
-      end
-
-
-      tahorro=0
-      tpresup=0
-
-       @conta=0
-     @activities.where(id:@vpacn).each do |activ|
-
-
-        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
-       @vdetalle= Activity.order('pfecha')
-       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
-
-       @vobsr=" "
-       if @vdetalle.count>0
-      @vdetalle.each do |deta|
-
-      if deta.obs then
-          @vobsr= deta.obs.capitalize
-       end
-     end
-    end
-
-
-
-     @vobac=" "
-         @esti=0
-         @apac=[]
-         @aobac=[]
-         @afecing=[]
-
-     if activ.expediente>0 then
-      @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
-     Item.where(exped:activ.expediente).each do |nobac|
-
-     @apac.push(nobac.pac)
-     @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
-
-     if Detail.where(actividad:13,item_id:nobac.id).count>0 then
-      @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
-     else
-        @afecing.push("")
-     end
-
-
-     end
-     end
-
-
-     case proce.orden
-        when 3
-           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
-           @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
-           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND
-           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ").to_i
-
-           viadj= activ.sele2
-
-
-           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
-            @nestado=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').select('estado as dd').first.dd
-            @nestado1=Formula.where(product_id:17,orden:@nestado).select('nombre as dd').first.dd
-           tpresup=tpresup+  @presu
-        when 5
-          @presu=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').sum(:presupuestado).to_i
-          @refe=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
-          sum(:"referencial*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
-          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND
-          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" ).to_i
-
-           viadj=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').
-          sum(:"adjudicado*(SELECT  cantidad FROM formulas   WHERE formulas.product_id = 7 AND
-          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND
-          formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100" ).to_i
-
-
-          @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').count
-          @nestado=Piece.where(phase_id:activ.id.to_s).where('estado=4 or estado=9').select('estado as dd').first.dd
-          @nestado1=Formula.where(product_id:17,orden:@nestado).select('nombre as dd').first.dd
-          tpresup=tpresup+  @presu
-        else
-          @presu=Piece.where(phase_id:activ.id.to_s).sum(:presupuestado).to_i
-          @nitems=Piece.where(phase_id:activ.id.to_s).count
-     end
-
-
-
-
-
-
-
-
-      veadj=""
-
-
-        if  Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').count>0 then
-        Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').order('codigo').each do |ganador|
-         veadj=veadj+ganador.codigo+":"+ganador.postor+","
-
-        end
-        end
-
- @vobac=" "
- var=0
-vtipo=0
-vmerc=""
- if activ.expediente>0 then
-    vtipo=Item.where(exped:activ.expediente).select("tipo as dd").first.dd
-    vmerc=Formula.where(product_id:6,orden:vtipo).select('nombre as dd').first.dd
-  Item.where(exped:activ.expediente).order("obac").each do |nobac|
-
-     if nobac.obac!=var then
-     @vobac=@vobac +Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd+"-"
-     var=nobac.obac
-     end
-
+def merge_last_row(sheet,options ={})
+  last_row = sheet.rows.last.index + 1
+  first_col,last_col = options[:columns]
+  if first_col && last_col
+    sheet.merge_cells "#{first_col}#{last_row}:#{last_col}#{last_row}"
+  else
+    sheet.merge_cells sheet.rows.last
   end
+  sheet.rows.last.style = style if options[:style]
 end
 
+############################
 
 
 
@@ -188,532 +50,73 @@ end
 
 
 
-@conta=@conta+1
 
-if Activity.where(actividad:18,phase_id:activ.id).count>0 then
-  @fec20= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-else
-  @fec20=""
-end
+if @items.count>0 then ###wb
 
-   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
-     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-   else
-     @fec21=""
-   end
-   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
-     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-   else
-     @fec22=""
-   end
-
-##para 3 y 5
-   if Activity.where(actividad:21,phase_id:activ.id).count>0 then
-     @fec23= Activity.where(actividad:21,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-   else
-     @fec23=""
-   end
-
-
-
-   ##para 2 y 4
-   ##observaciones
-      if Activity.where(actividad:43,phase_id:activ.id).count>0 then
-        @fec24= Activity.where(actividad:43,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-      else
-        @fec24=""
-      end
-
-  ##absolucion
-     if Activity.where(actividad:44,phase_id:activ.id).count>0 then
-       @fec25= Activity.where(actividad:44,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-     else
-       @fec25=""
-     end
-
-   ##integracion
-    if Activity.where(actividad:45,phase_id:activ.id).count>0 then
-          @fec26= Activity.where(actividad:45,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-    else
-          @fec26=""
-    end
-
-
-
-
-
-
-
-    @espec=" "
-   if  activ.sele4 then
-     @espec= Formula.where(product_id:34,orden:activ.sele4).select('nombre as dd').first.dd
-   end
-
-
-
-
-
-
-   case proce.orden
-
-      when 2,4
-  sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.upcase,@nitems,
-   @presu.to_i, activ.sele2.to_i, @fec20,@fec24,@fec25,@fec26, @fec21,@fec22,@espec,activ.comite,@vobsr ],
-   style: [ centra,  izq, izq,centra, izq,centra, soles, soles,centra,centra,centra,centra,centra,centra, izq, izq, izq], height: 35
-   sheet.column_widths 5, nil,10,12, 40,8, nil, nil, nil, nil, nil, nil, nil, nil, nil, 25,30, 40
-
-   when 3,5
-   vahorr=(@presu- viadj).to_i
-    tahorro= tahorro+vahorr
-sheet.add_row [ @conta, activ.proceso,@vobac,vmerc, activ.descripcion.upcase,@nestado1,@nitems,
- @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22,@fec23,@espec,activ.comite,activ.postores,veadj,@vobsr ],
-style: [ centra,  izq, izq,centra, izq,centra,centra, soles, soles, soles, soles,centra,centra,centra,centra, izq,izq,izq, izq, izq], height: 35
-sheet.column_widths 5, nil, 10,12, 40,nil,5, nil, nil, nil, nil, nil, nil, nil, nil, 25, 30, 25, 40, 70
-
-   end
-
-
-end
-
-case proce.orden
-
-   when 3
-
-
+wb.add_worksheet(name:"dias") do |sheet|
 sheet.add_row []
-sheet.add_row ["","","","","","PRESUPUESTADO","ADJUDICADO","AHORRO","TASA"],
-style: [ normal,  normal, normal,normal, normal, titu, titu, titu, titu], height: 35
-
-
-
-
-tadjd=Phase.where(id:@vpac3).sum("floor(sele2)")
-
-if tpresup>0 then
-aaa=tahorro*100/tpresup
-
-tasa=number_to_percentage(aaa, precision: 0)
-
-else
-tasa="0%"
-end
-
-sheet.add_row ["","","","","",tpresup,tadjd,tahorro,tasa],
-style: [ normal,  normal, normal,normal, normal, soles, soles, soles,centra], height: 35
-
-end
-
-end
-
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-####################grafico
-if  @activities.where(id:@vpac2).count >0 then
-
- @vinicio = Date.parse('2017/01/01')
- @dhoy=(Time.now-@vinicio.to_time).to_i/86400+2
- @fhoy=Time.now.strftime("%d-%m-%Y")
-
-
-Formula.where(product_id:20).where(orden:2).order('orden').each do |proce|
-wb.add_worksheet(name: "Grafico") do |sheet|
-
- sheet.add_row []
-#  sheet.add_row ["","","","","","","","HOY ES EL DIA =",@dhoy,@fhoy],
-#  style: [centra, centra,centra,centra,centra,centra,centra, titu, titu, titu], height: 30
-
-
-
-
-
-
-
-
-        sheet.add_row %w(N PROCESO DESCRIPCION BUENA_PRO Preparación_Propuestas Evaluación_Propuestas Situación),
-        style: [titu,  titu, titu, titu, titu, titu, titu], height: 40
-        @vpacn=@vpac2
-
-
-
-
-       @conta=0
-     @activities.where(id:@vpacn).each do |activ|
-
-
-        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
-       @vdetalle= Activity.order('pfecha')
-       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
-
-
-
-
-
-
-         @vobsr=" "
-         if @vdetalle.count>0
-        @vdetalle.each do |deta|
-
-        if deta.obs then
-            @vobsr= deta.obs.capitalize
-         end
-       end
-      end
-
-
-
-
-
-
-
-
-
-
-
-
-
-@conta=@conta+1
-
-
- @dpp=0
- @dif=0
- @fec21=""
- @fec22=""
-
-
-
-   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
-     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd
-     @dpp=(@fec21.to_time-@vinicio.to_time).to_i/86400+2
-
-
-
-   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
-     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd
-     @dif=(@fec22.to_time-@fec21.to_time).to_i/86400
-   end
-else
-     @dif=0
-end
-
-
-
-
-  sheet.add_row [ @conta, activ.proceso,activ.descripcion.underscore.capitalize, @fec22, @dpp, @dif, @vobsr],
-   style: [ centra,  izq, izq,ddmm,ddmm,centra, izq], height: 35
-   sheet.column_widths 5,10, 50, 10, 10, 10,10
-
-
-
-
-
-end
-
- vn=0
- vcol1=[]
- vcol2=[]
-
- while @conta>vn do
-
-   vcol1.push("58ACFA")
-   vcol2.push("FE642E")
-   vn=vn+1
- end
-
-vnum=@conta+2
-
-
-
-
-
-
-
-sheet.add_chart(Axlsx::Bar3DChart, :start_at => "H2", :end_at => "Q#{vnum+1}", :title => "CALENDARIO") do |chart|
-   chart.grouping = :stacked
-   chart.add_series :data => sheet["E3:E+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["E2"], colors:  vcol1
-    chart.valAxis.scaling.min =@dhoy-20.0
-   chart.add_series :data => sheet["F3:F+{vnum}"], :labels => sheet["B3:B+{vnum}"], :title => sheet["F2"], colors:  vcol2
-
- end
-
-
-
-
-
-end
-
-
-end
-
-#########resumen
-
-
-wb.add_worksheet(name: "Resumen") do |sheet|
-
-  sheet.add_row []
-
-#mercado
-
-Formula.where(product_id:6).each do |proce|
-  sheet.add_row []
-
- sheet.add_row ["","","","",proce.descripcion],
-  style: [centra,centra,centra,centra], height: 30
-
-
-
-
- varrmerc=Item.where(tipo:proce.orden).select('DISTINCT exped' )
-
-
-
-
-
-
-        sheet.add_row %w(N ORIGEN PROCE OBAC DESCRIPCION ITEMS  PRESUPUESTADO(soles) REFERENCIAL(soles) ADJUDICADO(soles) AHORRO(soles) CONVOCATORIA PRES_PROP BUENA_PRO  ),
-        style: [titu,  titu, titu, titu, titu,  titu, titu, titu, titu, titu, titu, titu, titu], height: 40
-        @vpacn=@vpac3
-
-       vahorr=0
-      tahorro=0
-      tpresup=0
-      trefe=0
-
-      @refe
-     vprocesele5=0
-       @conta=0
-      conta2=0
-      conta4=1
-      viadj=0
-
-
-
-    vsele5=Phase.where(id:@vpacn,expediente:varrmerc).pluck(:sele5).uniq
-     Phase.where(id:vsele5).order('proceso').pluck(:sele5).uniq.each do |arr1|
-      Phase.where(id:@vpacn,expediente:varrmerc,sele5:arr1).order('pp').each do |activ|
-
-
-
-
-
-        @vpact3=Formula.where(product_id:12,acti:3).select('orden')
-       @vdetalle= Activity.order('pfecha')
-       @vdetalle= @vdetalle.where(actividad:@vpact3,phase_id:activ.id)
-
-
-
-
-
-     @vobac=" "
-         @esti=0
-         @apac=[]
-         @aobac=[]
-         @afecing=[]
-
-     if activ.expediente>0 then
-      @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
-     Item.where(exped:activ.expediente).each do |nobac|
-
-     @apac.push(nobac.pac)
-     @aobac.push(Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd)
-
-     if Detail.where(actividad:13,item_id:nobac.id).count>0 then
-      @afecing.push(Detail.where(actividad:13,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
-     else
-        @afecing.push("")
-     end
-
-
-     end
-     end
-
-
-
-           @presu=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').sum(:presupuestado).to_i
-           @refe=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').
-           sum(:"referencial*(SELECT cantidad FROM formulas WHERE formulas.product_id = 7 AND
-           formulas.numero=(SELECT periodo FROM phases WHERE id=pieces.phase_id)  AND formulas.orden =pieces.moneda)/100 ").to_i
-
-           viadj= activ.sele2
-
-
-           @nitems=Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=11').count
-
-
-
-
-
-
-
-
-
-      veadj=""
-
-
-        if  Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').count>0 then
-        Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').order('codigo').each do |ganador|
-         veadj=veadj+ganador.codigo+":"+ganador.postor+","
-
-        end
-        end
-
- @vobac=" "
- var=0
-
- if activ.expediente>0 then
-
-
-  Item.where(exped:activ.expediente).order("obac").each do |nobac|
-
-     if nobac.obac!=var then
-     @vobac=@vobac +Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd+"-"
-     var=nobac.obac
-     end
-
-  end
-end
-
-
-
-
-
-
-if vprocesele5!=activ.sele5 then
-
-@conta=@conta+1
-conta2=0
-conta4=1
-else
-
-conta2=1
-conta4=conta4+1
-end
-
-vprocesele5=activ.sele5
-
-
-
-
-
-
-if Activity.where(actividad:18,phase_id:activ.id).count>0 then
-  @fec20= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-else
-  @fec20=""
-end
-
-   if Activity.where(actividad:19,phase_id:activ.id).count>0 then
-     @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-   else
-     @fec21=""
-   end
-   if Activity.where(actividad:20,phase_id:activ.id).count>0 then
-     @fec22= Activity.where(actividad:20,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
-   else
-     @fec22=""
-   end
-
-
-vorige=Phase.where(id:activ.sele5).select('proceso as dd').first.dd
-
-
-
-
-
-    if conta2>0 then
-
-    conta3=nil
-    vorigen3=nil
+sheet.add_row ["","","","","","","","Dias" ], style:[normal,normal,normal,normal,normal,normal,normal,titu]
+merge_last_row sheet, columns:["H","O"]
+sheet.add_row %w(N PAC IAA MODALIDAD EXPED DESCRIPCION ESTIMADO(SOLES) C/EXP S/EXP DC DEM DPC FC DEC TOTAL),
+style: [titu, titu, titu,  titu,  titu, titu, titu, titu, titu, titu, titu, titu, titu, titu , titu]
+vcontt=0
+Formula.where(product_id:10).order('orden').where('orden<10').each do |proce|
+
+  @items.where(cuadrante:proce.orden).each do |ite|
+   vcontt=vcontt+1
+
+    if ite.exped and ite.exped>0 then
+       exp =Formula.where(product_id:16, orden:ite.exped).select('nombre as dd').first.dd
+    else
+       exp ="s/d"
+    end
+
+    if ite.modalidad==1 and ite.exped and ite.exped>0 then
+      @vdesc=Formula.where(product_id:16, orden:ite.exped).select('descripcion as dd').first.dd.upcase
     else
 
-    conta3=@conta
-    vorigen3=vorige
+     @vdesc=ite.descripcion.upcase
     end
 
-vahorr=(@presu- viadj).to_i
+
+stot=ite.dsexp+ite.dcexp+ite.ddc+ite.ddem+ ite.ddpc+ ite.dfc++ ite.ddec
 
 
-sheet.add_row [ conta3, vorigen3, activ.proceso,@vobac, activ.descripcion.underscore.capitalize,@nitems,
- @presu.to_i, @refe,  viadj.to_i,vahorr, @fec20, @fec21,@fec22],
-style: [ centra,  izq,  izq, izq, izq,centra, soles, soles, soles, soles,centra,centra,centra], height: 35
-sheet.column_widths 5, nil, nil, 10, 40,5, nil, nil, nil, nil, nil, nil, nil
+  sheet.add_row [
+ vcontt,
+ ite.pac,
+ Formula.where(product_id:1,orden:ite.obac).select('nombre as dd').first.dd,
+ Formula.where(product_id:4,orden:ite.modalidad). select('nombre as dd').first.dd,
+ exp,
+ @vdesc,
+ ite.certificado,
+ ite.dsexp,
+ ite.dcexp,
+ ite.ddc,
+ ite.ddem,
+ ite.ddpc,
+ ite.dfc,
+ ite.ddec,
+ stot
+  ],
+  style: [centra, centra,centra,  centra, desc, desc,soles, centra, centra, centra, centra, centra, centra, centra, centra]
 
- vancho=Phase.where(sele5:activ.sele5,id:@vpacn,expediente:varrmerc).count
-
-if vancho>1 and vancho==conta4  then
-
-  vlineaf1 = sheet.rows.last.index+1
-  vlineai1 = vlineaf1-vancho+1
-
-  sheet.merge_cells "A#{vlineai1}:A#{vlineaf1}"
-  sheet.merge_cells "B#{vlineai1}:B#{vlineaf1}"
-end
-
-tpresup=tpresup+  @presu
-trefe=trefe+  @refe
-
-
-
- tahorro= tahorro+vahorr
-
-
-end #fin de grupo de proceso sele5
-
-
-
-
-end  # end de each procesos
-
-
-
-
-sheet.add_row []
-sheet.add_row ["","","","","MERCADO","PROCESOS","PRESUPUESTADO","REFERENCIAL","ADJUDICADO","AHORRO","TASA"],
-style: [normal, normal, normal,  normal,titu, titu, titu, titu, titu, titu, titu], height: 35
+  sheet.column_widths *[5, 5, 8, 12, 10,50,15,15,10, 10, 10, 10, 10, 10, 10, 10]
 
 
 
 
 
-
-tadjd=Phase.where(id:@vpacn,expediente:varrmerc).sum("floor(sele2)")
-
-if tpresup>0 then
-   aaa=tahorro*100/tpresup
-
-   tasa=number_to_percentage(aaa, precision: 0)
-
-else
-   tasa="0%"
-end
-
-sheet.add_row ["","","","",proce.nombre,@conta,tpresup, trefe,tadjd,tahorro,tasa],
-style: [ normal,  normal, normal, normal, izq, centra, soles, soles, soles, soles,centra], height: 35
-
-
-
-end
+end #item
 
 
 
 
-end #mercado
+############
 
 
+end #formula
+end #if
 
 end ##estilos
 

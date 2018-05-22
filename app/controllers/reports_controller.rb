@@ -1,5 +1,362 @@
 class ReportsController < ApplicationController
 
+def diasp(var)
+  ######ver funcion
+
+
+
+
+   @vitem=Item.where(ejecucion:4).where("modalidad<3")
+   .where(exped2:var).order('periodo,exped,obac')
+  @iproce=100
+
+
+      @adata=[]
+      @alabels=[]
+      @blabels=[]
+
+
+
+
+      @aversion=[]
+      @aobac=[]
+      @apec=[]
+      @adac=[]
+      @adem=[]
+      @adpc=[]
+      @adec=[]
+      @aeobac=[]
+      @conta=0
+
+               @vferi=Formula.where(product_id:27,cantidad:1).select('nombre')
+               @proj=Formula.where(product_id:12,cantidad:20).select('orden')
+  @vitem=Item.where(ejecucion:4).where("modalidad<3")
+  .where(exped2:var).order('periodo,exped,obac')
+               @vitem.each do |item|
+
+
+                 #empieza el item
+
+               @vfec1=Time.now
+
+               @vproceso=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+               @uproc=8
+               @corta=0
+
+               @nconta1=0
+
+
+                 #@nconta numero de actividades
+
+               #comienza case
+               case var
+                  when 1
+                    @vinicio = Date.parse('2015/01/01')
+                    @dfin=365
+                    @vfin=Date.parse('2015/12/31')
+                    @vrang=30
+                    @vtitun=" AF-2015"
+
+
+                   when 2
+                     @vinicio = Date.parse('2016/01/01')
+                     @dfin=368
+                     @vfin=Date.parse('2016/12/31')
+                      @vrang=30
+                      @vtitun="AF-2016"
+
+
+
+                    when 3
+                      @vinicio = Date.parse('2017/01/01')
+                      @dfin=(Time.now-@vinicio.to_time).to_i/86400
+                      @vfin=Date.parse('2017/12/31')
+                       @vrang=15
+                       @vtitun=" AF-2017"
+
+                     when 4
+                       @vinicio = Date.parse('2018/01/01')
+                       @dfin=(Time.now-@vinicio.to_time).to_i/86400
+                       @vfin=Time.now
+                        @vrang=15
+                        @vtitun=" AF-2018"
+
+                 end #termina case
+
+
+                 @nconta=Detail.where(item_id:item.id).
+                    where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).count
+                  @deta2=Detail.where(item_id:item.id).where.not(actividad:@proj).
+                         where("details.pfecha>=? and details.pfecha<=? ", @vinicio,@vfin ).
+                        order('details.pfecha DESC,details.id DESC')
+
+
+               @deta1=@deta2.where(item_id:item.id)
+
+                 @vlog=false
+
+               if @deta1.count==0 then
+
+                 object = Detail.new(:actividad => 36, :pfecha=> @vinicio+1,
+                  :item_id => item.id,:admin_user_id => 2,:created_at =>@vinicio,
+                  :updated_at => @vinicio,:tipo =>'automatico')
+                 object.save
+
+
+               end
+
+               @deta1.each do |detail|
+
+                 #empieza detail
+               #end
+               #termina cas
+                 @nconta1=@nconta1+1
+
+
+               if detail.pfecha and detail.actividad  then
+               @vproc=Formula.where(product_id:12,orden:detail.actividad).
+                                    select('cantidad as dd').first.dd
+               #proceso
+               @vprord=detail.actividad
+               #actividad
+               @nconta2=0
+               @ulvproc2=0
+
+               @n2fecha=@vinicio
+
+               #inicio de phase if 280 al 392*************************************************************
+               if Phase.where(expediente:item.exped,convocatoria:1).count>0 and item.exped>0 then
+                 @phase1=Phase.where(convocatoria:1).find_by(expediente:item.exped).activities
+                 .where.not(actividad:@proj).where("activities.pfecha>=? and activities.pfecha<=?", @vinicio,@vfin )
+                  .order('activities.pfecha DESC,activities.id DESC')
+
+
+               #inicia cadena
+
+               @phase1.each do |phase|
+                 #cambio
+                 @vproc2=Formula.where(product_id:12,orden:phase.actividad).
+                                      select('cantidad as dd').first.dd
+
+               if phase.pfecha>=detail.pfecha and @vfec1>phase.pfecha then
+
+
+               #proceso
+               @vprord2=phase.actividad
+               #actividad
+
+               @vdetfec2=phase.pfecha
+
+
+                 @nconta2=@nconta2+1
+
+
+
+
+
+
+               if  @nconta2==1 and @nconta1==1  then
+                     @vlog=false
+                     @ulvproc2=1  #guarda el primer proceso
+                     @n2fecha=phase.pfecha #guarda la primera fecha
+           ###################repetir case de iproce
+
+
+                  case   @iproce
+                    when 100
+                        @vlog=true
+                   when 2
+                     if  @vproc2<=2 then
+                         @vlog=true
+
+                     end
+                   when 4
+
+                      if  @vproc2==4 then
+                       @vlog=true
+                      end
+
+                 when 5
+
+                    if  @vproc2==5 then
+                     @vlog=true
+                    end
+
+               when 7
+
+                  if  @vproc2==6 or  @vproc2==7 then
+                   @vlog=true
+                  end
+               end
+
+
+
+           ######################################
+
+               end
+
+
+               if @vlog  then
+               # empieza @vlog
+
+
+                  unless @vprord2==200 or @vprord2==300 or ( @vprord2==8 and item.modalidad==3)
+                    if  @uproc>=@vproc2 then
+
+                           @vproceso[@vproc2]=@vproceso[@vproc2]+
+                           ( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+
+                           @uproc=@vproc2
+                     else
+                           @vproceso[@uproc]=@vproceso[@uproc]+
+                           ( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+                      end
+                   else
+                      @corta=( @vfec1-@vdetfec2.to_time).to_i/86400
+
+
+                   end #de unless
+
+
+
+
+                 @vfec1=@vdetfec2.to_time
+
+               end # termina @vlog
+
+
+               end #de if de phase mayor
+
+               end  #terminar ecah de phase
+
+               end #terminar el if de  la cadena phase
+
+
+
+
+
+               # fin phase del 280 al 392************************************************************
+               if  @nconta1==1 and   @vlog==false then
+
+
+           ###############
+            if  @ulvproc2==0 and detail.pfecha> @n2fecha then
+              case   @iproce
+                when 100
+                    @vlog=true
+               when 2
+                 if  @vproc<=2 then
+                     @vlog=true
+
+                 end
+               when 4
+
+                  if  @vproc==4 then
+                   @vlog=true
+                  end
+
+             when 5
+
+                if  @vproc==5 then
+                 @vlog=true
+                end
+
+           when 7
+
+              if  @vproc==6 or  @vproc==7 then
+               @vlog=true
+              end
+           end
+
+
+           end
+           ###################
+
+
+               end
+
+               if @vlog  then
+               # empieza @vlog
+
+
+                  unless @vprord==200 or @vprord==300 or ( @vprord==8 and item.modalidad==3)
+                    if  @uproc>=@vproc then
+
+                           @vproceso[@vproc]=@vproceso[@vproc]+
+                           ( @vfec1-detail.pfecha.to_time).to_i/86400
+
+                         #  if @nconta1==1 then
+                         #     @vproceso[@vproc]=@vproceso[@vproc]+2
+                         #  end
+                           @uproc=@vproc
+                     else
+                           @vproceso[@uproc]=@vproceso[@uproc]+
+                           ( @vfec1-detail.pfecha.to_time).to_i/86400
+
+
+                      end
+                   else
+                      @corta=( @vfec1-detail.pfecha.to_time).to_i/86400
+
+
+                   end #de unless
+
+
+                   if @nconta1==@nconta then
+                     if @vprord==36 then
+                          @vproceso[0]= ( detail.pfecha.to_time-
+                          @vinicio.to_time).to_i/86400
+                      end
+
+                    @vproceso[@vproc]=@vproceso[@vproc]+
+                    ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]
+
+
+
+                   end  #if  @nconta1
+
+
+                 @vfec1=detail.pfecha.to_time
+
+               end # termina @vlog
+
+
+
+
+
+
+
+
+
+
+
+               end #termina actividad
+
+
+               end #termina detail??
+
+
+
+
+
+
+               # empieza @vlog
+               if @vlog then
+
+   Item.where(id:item.id).update_all( dobac: @vproceso[0], dsexp: @vproceso[1], dcexp: @vproceso[2],
+    ddc: @vproceso[3],ddem: @vproceso[4],ddpc: @vproceso[5],dfc: @vproceso[6],ddec: @vproceso[7])
+
+  ######ver funcion
+  end #de item
+end #de item
+end #de funcion
+
+
 
 
 
@@ -432,24 +789,18 @@ def vhoja11
 end
 
 def vhoja20
-  @vnpac=params[:param1]
-  @vmpac=params[:param2]
-  @vpac1=params[:param3]
-  @vpac2=params[:param4]
-  @vpac3=params[:param5]
-  @vpac4=params[:param8]
-  @vpact=params[:param6]
-  @vuobac=params[:param7]
-  @vpac5=params[:param9]
-  @activities=Phase.order('pp ASC')
+  @vaf=current_admin_user.periodo
+    diasp(@vaf)
 
+    @vuobac=params[:param7]
 
+    @items=Item.where(obac:@vuobac,ejecucion:4,exped2:@vaf).order('cuadrante,modalidad,tipo,exped,certificado DESC')
+    respond_to do |format|
+      format.html
 
-  respond_to do |format|
-    format.html
-    format.xlsx{render template: 'reports/hoja20.xlsx.axlsx', xlsx:'Actos'}
+      format.xlsx{render template: 'reports/hoja20.xlsx.axlsx', xlsx:'DiasPac'}
+    end
   end
-end
 
 def vhoja21
 #  @vnpac=params[:param1]

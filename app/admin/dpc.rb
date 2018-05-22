@@ -823,20 +823,7 @@ column do
 
 
    column("Total", :class => 'text-right') do |formula|
-     conv1=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:1).
-              where.not(sele:1).select('id').map {|e| e.attributes.values}.flatten
-     conv4=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:4).
-                       where.not(sele:1).select('id').map {|e| e.attributes.values}.flatten
-     conv2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).
-                select('id').map {|e| e.attributes.values}.flatten
-     conv5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).
-                select('id').map {|e| e.attributes.values}.flatten
 
-     conv3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).
-                select('id').map {|e| e.attributes.values}.flatten
-
-  conv0=Phase.where(convo:formula.orden ,periodo:$vaf).
-            select('id').map {|e| e.attributes.values}.flatten
   expr0=Phase.where(convo:formula.orden ,periodo:$vaf).
             where.not(sele:1).count
   cotavus0=Phase.where(convo:formula.orden ,periodo:$vaf).
@@ -844,14 +831,11 @@ column do
 
 
 
-
-
        if expr0>0 then
          link_to "#{expr0}"+"/("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")",
           reports_vhoja20_path(format:  "xlsx",
-           :param3=> conv1, :param4=>conv2,
-           :param5=> conv3,:param6=> conv0, :param7=> @vuobac,
-           :param8=> conv4,   :param9=> conv5)
+                 :param7=> @vuobac)
+
        else
          "#{expr0}"+"/("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")"
        end
