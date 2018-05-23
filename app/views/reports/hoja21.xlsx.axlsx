@@ -33,7 +33,7 @@ ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
 
 normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
-blue_cell =  style.add_style  :bg_color => "0000FF", :color => "FF", alignment: { horizontal: :center,vertical: :center }
+blue_cell =  style.add_style  :bg_color => "ffff66", :color => "FF", alignment: { horizontal: :center,vertical: :center }
 
 def merge_last_row(sheet,options ={})
   last_row = sheet.rows.last.index + 1
