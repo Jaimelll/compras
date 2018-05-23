@@ -21,6 +21,9 @@ izq = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
 desc = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
                               alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},sz: 7)
 
+desc1 = style.add_style( border: Axlsx::STYLE_THIN_BORDER,
+                          alignment: { horizontal: :left ,vertical: :center, wrap_text: :true},
+                                  sz: 7, bg_color: "ffff99")
 
 fechad = style.add_style(format_code: "dd/mm/yy", border: Axlsx::STYLE_THIN_BORDER,
                                 alignment: { horizontal: :center,vertical: :center })
@@ -30,6 +33,7 @@ ddmm = style.add_style(format_code: "dd-mm", border: Axlsx::STYLE_THIN_BORDER,
 
 normal = style.add_style( alignment: { horizontal: :center,vertical: :center })
 
+blue_cell =  style.add_style  :bg_color => "0000FF", :color => "FF", alignment: { horizontal: :center,vertical: :center }
 
 def merge_last_row(sheet,options ={})
   last_row = sheet.rows.last.index + 1
@@ -628,6 +632,18 @@ vestim, @vobsr,@pbpro,@epom2,@rbpro],
 
 style: [centra, centra,  centra, desc, desc,centra, centra,soles, fechad,  fechad, fechad, centra, fechad, soles, soles, desc, fechad, fechad, fechad]
 sheet.column_widths *[5, 5, 8, 8, 50,15, 14, 14,12,12, 12,8, 12, 15, 15, 30, 14, 12, 12]
+
+
+
+
+v2lineai = sheet.rows.last.index+1
+
+  if @vdian and @vdian>30 then
+
+      sheet["L#{v2lineai}:L#{v2lineai}"].each { |c| c.style = blue_cell }
+
+   end
+
 end
 
 

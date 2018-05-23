@@ -794,7 +794,7 @@ def vhoja20
 
     @vuobac=params[:param7]
     @artic=Article.where()
-    @items=Item.where(obac:@vuobac,ejecucion:4,exped2:@vaf)
+    @items=Item.where(obac:@vuobac,ejecucion:4,exped2:@vaf).where('modalidad<3')
     nitem=@items.select('id')
     @artic=Article.where(item_id:nitem)
     respond_to do |format|
