@@ -126,7 +126,7 @@ stot=ite.dsexp+ite.dcexp+ite.ddc+ite.ddem+ ite.ddpc+ ite.dfc++ ite.ddec
                 Formula.where(product_id:4,orden:ite.modalidad). select('nombre as dd').first.dd,
                 exp,
 
-              
+
                   @vdesc,
                 ite.certificado,
                 vetap,
@@ -159,70 +159,6 @@ end #item
 
 end #formula
 end #if
-
-
-
-
-wb.add_worksheet(name:"articulos") do |sheet|
-sheet.add_row []
-
-
-  sheet.add_row %w(PAC_ID PAQUETE FICHA CUBSO DESCRIPCION UNIDAD CANTIDAD MONEDA ESTIMADO ITEM_PAQ),
-  style: [titu, titu, titu,  titu,  titu, titu, titu, titu, titu]
-
-  @artic.order('item_id,art4').each do |articles|
-
-
-  sheet.add_row [
-           articles.item_id,
-           articles.paquete,
-
-           if articles.ficha and articles.ficha>0 then
-           vrevs=Sheet.where( id:articles.ficha).
-              select('codigo_revision as dd').first.dd
-             localiz='http://www.acffaa.gob.pe/documents/32651/443704/'+vrevs+'.pdf'
-
-
-
-              vrevs
-
-           else
-             "s/d"
-           end,
-
-           articles.art3,
-           articles.descripcion,
-           if articles.unidad and articles.unidad>0 then
-             Formula.where(product_id:35, orden:articles.unidad).
-              select('nombre as dd').first.dd
-           else
-             "s/d"
-           end,
-           articles.cantidad,
-           if articles.art1 then
-             Formula.where(product_id:7, orden:articles.art1).
-              select('nombre as dd').first.dd
-           else
-             "s/d"
-           end,
-           articles.art4,
-           if articles.piece and articles.piece>0 then
-             Piece.where(id:articles.piece).
-              select('codigo as dd').first.dd
-           else
-             "s/d"
-           end
-
-           ],
-           style: [centra,centra, centra,desc,desc,centra,soles,centra,soles,centra  ]
-
-
-  end
-
-  sheet.column_widths *[10,10, 20, 40,40,10,10,12,10,10]
-
-
-end
 
 
 
