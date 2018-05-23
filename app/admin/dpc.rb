@@ -3,7 +3,7 @@ ActiveAdmin.register_page "Dpc" do
   menu  priority: 2,label: "Procesos"
 
 
-  content title: "Procesos" do
+  content :title => proc {"PROCESOS  "+ Formula.where(product_id:11,orden:current_admin_user.periodo).select('descripcion as dd').first.dd }   do
 
     ##################
     Formula.where(product_id:1).update_all( numero:2 )
@@ -68,13 +68,151 @@ ActiveAdmin.register_page "Dpc" do
  columns do
   #    column do
 
+  case current_admin_user.categoria
+  when 21,22,23,24,29
+
+
+  else
+
+#else de column abierto
+
+
+########################################
+
+
+
+
+
+case current_admin_user.categoria
+when 1,2,3,26,4,6,8,9 #adm roy amador italo sectoristas
+  panel  "HISTORIAL POR PERIODOS  - 'PAC/(SOLES)'" do
+    table_for Formula.where(product_id:11).order('orden')  do
+
+
+         column("Periodos" ) do |formula|
+           formula.descripcion
+         end
+
+         column("EN ACFFAA ", :class => 'text-right') do |formula|
+         @auto=  formula.orden
+         @tita1="PACs en ACFFAA - PERIODO"
+         @vopc1=4
+
+       @le1=  Item.where(ejecucion:4,exped2:formula.orden)
+           .where("modalidad<3")
+
+       @le= @le1.count.to_s+ "/("+
+              number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+      case current_admin_user.categoria
+      when 21,22,23,29
+         @le
+        else
+          #cambiar comment2 por comment para ver modalidalidad y mercado
+          link_to "#{@le} ", reports_comment2_path(format: :pdf,
+          :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+       end
+
+     end
+
+
+
+         column("EN OBAC ", :class => 'text-right' ) do |formula|
+
+
+           @auto=  formula.orden
+           @tita1="PACs en OBAC - PERIODO"
+           @vopc1=5
+
+         @le1=  Item.where("(ejecucion<>4 and modalidad<>4) or (ejecucion=4 and modalidad=3)")
+         .where(exped2:formula.orden)
+
+         @le= number_with_delimiter((@le1.count).to_i, delimiter: ",").to_s+ "/("+
+                number_with_delimiter(@le1.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+
+
+
+           case   formula.orden
+       when 4
+
+
+
+         case current_admin_user.categoria
+         when 21,22,23,29
+            @le
+           else
+             link_to "#{@le} ", reports_comment2_path(format: :pdf,
+             :param2=>   @auto,:param3=>   @tita1,:param4=>   @vopc1)
+
+          end
+
+
+
+
+      when 3
+
+            c3="2,119/(870,358,390)"
+
+       when 2
+
+           a3="1,711/(1,277,507,620)"
+       when 1
+
+           b3="3,566/(1,295,058,915)"
+
+       end
+          end
+
+
+         column("TOTAL  ", :class => 'text-right') do |formula|
+           a1=1711
+           a2=1277507620
+           b1=3566
+           b2=1295058915
+           c1=2119
+           c2=870358390
+           @vtproc=Item.where(exped2:formula.orden).where.not(modalidad:4)
+
+        case   formula.orden
+        when 1
+            number_with_delimiter((@vtproc.where(ejecucion:4).count+b1).to_i, delimiter: ",").to_s+ "/("+
+
+               number_with_delimiter((@vtproc.where(ejecucion:4).sum(:certificado)+b2).to_i, delimiter: ",").to_s+ ")"
+        when 2
+          number_with_delimiter((@vtproc.where(ejecucion:4).count+a1).to_i, delimiter: ",").to_s+ "/("+
+
+               number_with_delimiter((@vtproc.where(ejecucion:4).sum(:certificado)+a2).to_i, delimiter: ",").to_s+ ")"
+         when 3
+               number_with_delimiter((@vtproc.where("modalidad<3").where(ejecucion:4).count+c1).to_i, delimiter: ",").to_s+ "/("+
+
+              number_with_delimiter((@vtproc.where("modalidad<3").where(ejecucion:4).sum(:certificado)+c2).to_i, delimiter: ",").to_s+ ")"
+
+          when 4
+             number_with_delimiter((@vtproc.count).to_i, delimiter: ",").to_s+ "/("+
+
+              number_with_delimiter(@vtproc.sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+         end
+         end
+
+     #     column("Culminados ACFFAA") do |formula|
+     #     Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).count.to_s+ "/("+
+     #          number_with_delimiter(Item.where(ejecucion:4,periodo:formula.orden).where('id IN(?)',Detail.where(actividad:300).select("item_id")).sum(:certificado).to_i, delimiter: ",").to_s+ ")"
+   end   #de table for
+#########personal
+
+ end #de panel historial periodos
+
+###############################
+end
+
+end # de case
 
 
 
 
 
 #################
-panel  "I.- ESTATUS DE PROCESOS-AF"+@vaf2 + " - 'PROCESOS/(SOLES)'" do
+panel  "I.- ESTADO DE PROCESOS" + " - 'PROCESOS/(SOLES)'" do
 @tabconta=0
 aa=Formula.where(product_id:11).where('orden=? or orden=?', $vaf, $vaf-1).order('orden')
     table_for aa do
@@ -440,7 +578,7 @@ end
 
 
 
-column("Convocatoria") do |formula|
+column("Procesos") do |formula|
 
   conv1=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:1).where('sele>4').
              select('id').map {|e| e.attributes.values}.flatten
@@ -466,7 +604,7 @@ column("Convocatoria") do |formula|
                select('id').map {|e| e.attributes.values}.flatten
 
 
-     link_to "PAC-AF"+"#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
+     link_to "DEL-AF"+"#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
        :param3=> conv1, :param4=>conv4,
        :param5=> conv3,:param6=> convt,:param8=>conv2,
        :param17=> conv5,:param13=> pac1, :param14=> pac2,
@@ -477,28 +615,59 @@ column("Convocatoria") do |formula|
 end
 
 
-
-column("PREVIOS", :class => 'text-right') do |formula|
+column("EN GEX O DC", :class => 'text-right') do |formula|
 
   @dpc=  formula.orden
-  @titproc1="En Proceso"
+  @titproc1="EN GEX O DC"
   @vopc=4
-  conv14=Phase.where(convo:formula.orden ,periodo:$vaf).
-             where('sele3=1 or sele3=4').where.not(sele:1).select('id').
+  vphase=Phase.where(convo:formula.orden ,periodo:$vaf).
+             where('sele3=1 or sele3=4').where.not(sele:1).where("sele=2 or sele=3")
+  conv14=vphase.select('id').
              map {|e| e.attributes.values}.flatten
-  expr314=Phase.where(convo:formula.orden ,periodo:$vaf).
-           where('sele3=1 or sele3=4').where.not(sele:1).count
-  cotavus14=Phase.where(convo:formula.orden ,periodo:$vaf).
-           where('sele3=1 or sele3=4').where.not(sele:1).sum(:sele2)
+  expr314=vphase.count
+  cotavus14=vphase.sum(:sele2)
 
- link_to   "#{expr314}"+"/("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+ link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
    :param4=>  @titproc1)
 
  end
 
+column("EN DEM", :class => 'text-right') do |formula|
 
+  @dpc=  formula.orden
+  @titproc1="EN DEM"
+  @vopc=4
+  vphase=Phase.where(convo:formula.orden ,periodo:$vaf).
+             where('sele3=1 or sele3=4').where.not(sele:1).where(sele:4)
+  conv14=vphase.select('id').
+             map {|e| e.attributes.values}.flatten
+  expr314=vphase.count
+  cotavus14=vphase.sum(:sele2)
 
+ link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+  reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
+   :param4=>  @titproc1)
+
+ end
+
+ column("NO CONVOCADOS", :class => 'text-right') do |formula|
+
+   @dpc=  formula.orden
+   @titproc1="NO CONVOCADOS DEC"
+   @vopc=4
+   vphase=Phase.where(convo:formula.orden ,periodo:$vaf).
+              where('sele3=1 or sele3=4').where.not(sele:1).where(sele:5)
+   conv14=vphase.select('id').
+              map {|e| e.attributes.values}.flatten
+   expr314=vphase.count
+   cotavus14=vphase.sum(:sele2)
+
+  link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
+    :param4=>  @titproc1)
+
+  end
 
 
 
@@ -515,7 +684,7 @@ execute(formula.orden)
    cotavus2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).sum(:sele2)
 
 
-link_to "#{expr2}"+"/("+"#{number_with_delimiter(cotavus2.to_i, delimiter: ",")}"+")",
+link_to "#{expr2}"+" / ("+"#{number_with_delimiter(cotavus2.to_i, delimiter: ",")}"+")",
 reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
 :param4=>  @titproc1)
 
@@ -534,7 +703,7 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
 
       cotavus5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).sum(:sele2)
 
-    link_to "#{expr5}"+"/("+"#{number_with_delimiter(cotavus5.to_i, delimiter: ",")}"+")",
+    link_to "#{expr5}"+" / ("+"#{number_with_delimiter(cotavus5.to_i, delimiter: ",")}"+")",
     reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv5,
     :param4=>  @titproc1)
 
@@ -552,7 +721,7 @@ reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
 
     cotavus3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).sum(:sele2)
 
-  link_to "#{expr3}"+"/("+"#{number_with_delimiter(cotavus3.to_i, delimiter: ",")}"+")",
+  link_to "#{expr3}"+" / ("+"#{number_with_delimiter(cotavus3.to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv3,
   :param4=>  @titproc1)
 
@@ -572,12 +741,12 @@ cotavus0=Phase.where(convo:formula.orden ,periodo:$vaf).
 
 
      if expr0>0 then
-       link_to "#{expr0}"+"/("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")",
+       link_to "#{expr0}"+" / ("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")",
         reports_vhoja20_path(format:  "xlsx",
                :param7=> @vuobac)
 
      else
-       "#{expr0}"+"/("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")"
+       "#{expr0}"+" / ("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")"
      end
 
     end
@@ -595,7 +764,7 @@ end##################################estatus
 
 
 #################   ani 1
-   panel  "II.- SEGUIMIENTO DE PROCESOS-AF" +@vaf2  do
+   panel  "II.- SEGUIMIENTO DE PROCESOS"+ " - 'PROCESOS/(SOLES)'"  do
 
  aa=Formula.where(product_id:11).where('orden=? or orden=?', $vaf, $vaf-1).order('orden')
      table_for aa do
@@ -670,20 +839,22 @@ def execute2(var)
 
 
 
+
      column("Procesos") do |formula|
               execute2(formula.orden)
-             "PAC-AF"+formula.nombre
+             "DEL-AF"+formula.nombre
      end
-     column("Nulo/D/C", :class => 'text-right') do |formula|
+     column("N/D/C", :class => 'text-right') do |formula|
 
        @dpc=  formula.orden
        @vpaso=0
        @vpas=1
        @titproc1="PROCESOS EN ESTADO NULO, DESIERTO O CANCELADO"
-       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).count
+       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).count
+       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).sum(:sele2)
        @vpro11=Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).
                    select('id').map {|e| e.attributes.values}.flatten
-       link_to "#{@le}",
+       link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro11,:param2=> @vpaso)
@@ -697,10 +868,11 @@ def execute2(var)
        @vpaso=0
        @vpas=2
        @titproc1="PROCESOS EN GEX"
-       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).count
+       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).count
+       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).sum(:sele2)
        @vpro12=Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).
                    select('id').map {|e| e.attributes.values}.flatten
-       link_to "#{@le}",
+       link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro12,:param2=> @vpaso)
@@ -714,10 +886,11 @@ def execute2(var)
        @vpaso=0
        @vpas=3
        @titproc1="PROCESOS EN DC"
-       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).count
+       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).count
+       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).sum(:sele2)
        @vpro13=Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).
                    select('id').map {|e| e.attributes.values}.flatten
-       link_to "#{@le}",
+       link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro13,:param2=> @vpaso)
@@ -731,10 +904,11 @@ def execute2(var)
        @vpaso=0
        @vpas=4
        @titproc1="PROCESOS EN DEM"
-       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).count
+       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).count
+       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).sum(:sele2)
        @vpro14=Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).
                    select('id').map {|e| e.attributes.values}.flatten
-       link_to "#{@le}",
+        link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro14,:param2=> @vpaso)
@@ -749,10 +923,11 @@ def execute2(var)
        @vpaso=0
        @vpas=5
        @titproc1="PROCESOS EN DPC"
-       @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).count
+       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).count
+       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).sum(:sele2)
        @vpro15=Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).
                    select('id').map {|e| e.attributes.values}.flatten
-       link_to "#{@le}",
+         link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro15,:param2=> @vpaso)
@@ -765,10 +940,11 @@ def execute2(var)
           @vpaso=0
         @vpas=6
         @titproc1="PROCESOS PREVIOS A FIRMA DE CONTRATO"
-        @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).count
+        le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).count
+        sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).sum(:sele2)
         @vpro16=Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).
                     select('id').map {|e| e.attributes.values}.flatten
-        link_to "#{@le}",
+         link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
         :param4=> @titproc1,:param5=> @vpro16,:param2=> @vpaso)
@@ -780,10 +956,11 @@ def execute2(var)
             @vpaso=0
           @vpas=7
           @titproc1="PROCESOS EN EJECUCION CONTRACTUAL"
-          @le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).count
+          le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).count
+          sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).sum(:sele2)
           @vpro17=Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).
                       select('id').map {|e| e.attributes.values}.flatten
-          link_to "#{@le}",
+           link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
           reports_comment5_path(format: :pdf,
           :param3=> @vpas,
           :param4=> @titproc1,:param5=> @vpro17,:param2=> @vpaso)
@@ -797,10 +974,11 @@ def execute2(var)
           @vpaso=1
         @vpas=[1,2,3,4,5,6,7]
         @titproc1="RELACION DE PROCESOS"
-        @le= Phase.where(convo:formula.orden ,periodo:$vaf).count
+        le= Phase.where(convo:formula.orden ,periodo:$vaf).count
+        sle= Phase.where(convo:formula.orden ,periodo:$vaf).sum(:sele2)
         @vpro1t=Phase.where(convo:formula.orden ,periodo:$vaf).
                     select('id').map {|e| e.attributes.values}.flatten
-        link_to "#{@le}",
+       link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
         :param4=> @titproc1,:param5=> @vpro1t,:param2=> @vpaso)
@@ -827,11 +1005,23 @@ end
       end # panel
 #########################seguinmiento end
 #########################################
-
+case current_admin_user.categoria
+when 1,2,3
+    panel  link_to "INGRESO PERSONAL", "http://172.25.10.6:3001/admin/login" do
+  #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
+  #   li    link_to "INGRESO PERSONAL", "http://172.25.10.6:3001/admin/login"
+  #  li    link_to "Compras local", "http://172.25.10.6:3000/admin/login"
+   end
+   panel link_to "IR A ARTICULOS", admin_phases_path do
+ #  li    link_to "Personal", "https://secure-harbor-85875.herokuapp.com"
+ #   li    link_to "INGRESO PERSONAL", "http://172.25.10.6:3001/admin/login"
+ #  li    link_to "Compras local", "http://172.25.10.6:3000/admin/login"
+  end
+end
 
 ###### leyenda
 panel  "Leyenda" do
-li "NULO/D/C: En estado Nulo,Desierto o Cancelado"
+li "N/D/C: En estado Nulo,Desierto o Cancelado"
   li "GEX: Proceso en Gestion de Expediente ACFFAA"
     li "DC: Dirección de Catalogación ACFFAA"
       li "DEM: Dirección de Estudio de Mercado ACFFAA"
@@ -846,7 +1036,6 @@ li "NULO/D/C: En estado Nulo,Desierto o Cancelado"
 end
 ################################ ani1
   #   end #colum
-
 
 
 
