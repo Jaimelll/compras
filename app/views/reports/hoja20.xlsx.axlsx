@@ -58,7 +58,7 @@ end
 
 if @items.count>0 then ###wb
 
-wb.add_worksheet(name:"dias") do |sheet|
+wb.add_worksheet(name:"dias PAC ") do |sheet|
 sheet.add_row []
 sheet.add_row ["","","","","","","","","Dias" ], style:[normal,normal,normal,normal,normal,normal,normal,normal,titu]
 merge_last_row sheet, columns:["I","P"]
@@ -160,15 +160,76 @@ end #item
 end #formula
 end #if
 
+################################################
+
+
+if @items.count>0 then ###wb
+
+wb.add_worksheet(name:"dias Procesos") do |sheet|
+sheet.add_row []
+
+sheet.add_row %w(N PROCESO EXPED DESCRIPCION REF_/_AJD(SOLES) ETAPA),
+style: [titu, titu, titu,  titu,  titu, titu]
+
+vcontt=0
+Formula.where(product_id:10).order('orden').where('orden<10').each do |proce|
+
+
+  @proce.where(sele:proce.orden).order('sele2 DESC').each do |proceso|
+
+
+
+
+   vcontt=vcontt+1
+
+
+
+
+       sheet.add_row [
+                vcontt,
+                proceso.proceso,
+                if proceso.expediente and proceso.expediente>0 then
+
+                  vexp=Formula.where(product_id:16, orden:proceso.expediente).
+                    select('nombre as dd').first.dd
+
+                  else
+                    vexp=  "s/d"
+                  end,
+                proceso.descripcion.upcase,
+                if proceso.sele2 then
+
+                number_with_delimiter(proceso.sele2.to_int, delimiter: ",")
+                else
+                  "s/d"
+                end,
+                vetap=Formula.where(product_id:10, orden:proceso.sele).select('nombre as dd').first.dd.upcase
+                ],
+                style: [centra, izq,izq,   desc1,soles,centra]
+
+
+  sheet.column_widths *[5, 15, 12, 60, 15,10]
 
 
 
 
 
+end #proceso
+
+
+
+
+############
+
+
+end #formula
+end #if
+
+#################################################
 
 end ##estilos
 
-
+end
 
 
 

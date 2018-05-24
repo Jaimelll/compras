@@ -796,6 +796,7 @@ def vhoja20
     @artic=Article.where()
     @items=Item.where(obac:@vuobac,ejecucion:4,exped2:@vaf).where('modalidad<3')
     nitem=@items.select('id')
+    @proce=Phase.where(periodo:  @vaf)
     @artic=Article.where(item_id:nitem)
     respond_to do |format|
       format.html
