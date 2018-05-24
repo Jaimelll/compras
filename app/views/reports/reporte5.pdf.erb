@@ -83,10 +83,28 @@
 
         <td colspan="2"><%= variable.proceso %></td>
         <% @vobac=" " %>
+          <% @vobac2=" " %>
         <%   @presu1=0 %>
+          <%   @vdia1=0 %>
         <% if variable.expediente>0 then %>
-          <%   @presu1=Item.where(exped:variable.expediente).sum(:certificado).to_i %>
-        <% Item.where(exped:variable.expediente).each do |nobac| %>
+
+
+          <%   @presu1=Item.where(exped:variable.expediente).where('modalidad<3').sum(:certificado).to_i %>
+            <%   @pmdo1=Formula.where(product_id:6,orden:Item.where(exped:variable.expediente).where('modalidad<3').
+                      select('tipo as dd').first.dd). select('nombre as dd').first.dd %>
+
+                    <%   case variable.sele %>
+                       <%  when 4  %>
+                              <%   @vdia1=Item.where(exped:variable.expediente).where('modalidad<3').select('ddem as dd').first.dd %>
+                       <%  when 5 %>
+                              <%   @vdia1=Item.where(exped:variable.expediente).where('modalidad<3').select('ddpc as dd').first.dd %>
+                       <%  else %>
+                              <%   @vdia1=0 %>
+                       <% end %>
+
+
+            <%  @presu1=Item.where(exped:variable.expediente).sum(:certificado).to_i %>
+        <% Item.where(exped:variable.expediente).where('modalidad<3').each do |nobac| %>
         <% @spac=nobac.pac%>
         <% @sobac=Formula.where(product_id:1,orden:nobac.obac).select('nombre as dd').first.dd %>
         <% if nobac.fuente then %>
@@ -96,7 +114,7 @@
             <% end %>
         <% @vobac=@vobac+ @spac+"-"+@sobac+"-"+ @sfuente+"//"%>
 
-
+         <% @vobac2=@vobac2+ @spac+" - "+@sobac+" //"%>
         <% end %>
         <% end %>
         <td  >  </td>
@@ -105,7 +123,8 @@
 
 
 
-        <td colspan="3"><%= variable.descripcion.upcase %>  </td>
+        <td colspan="3"><%= variable.descripcion+
+                       "------- ( "+@vobac2+" ) "+" - " +@pmdo1.upcase %>  </td>
 
         <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
           <% if  @presu==0 then %>
@@ -199,7 +218,7 @@
 
 
 
-               <th colspan="3">Observacion</th>
+               <th colspan="3">Observacion <%= if @vdia1>0 then  " ( dias en direccion="+ @vdia1.to_s+" )" end %> </th>
 
 
               <% if @vactcanti=="1" then%>
@@ -256,10 +275,17 @@
 
 
 
-
-
-
     <% end %>
+
+    <tr>
+     <th colspan="3"></th>
+        <th colspan="3"> MONTO TOTAL =</th>
+
+
+
+  <th colspan="3"> <%= number_with_delimiter(@items.sum(:sele2), delimiter: ",")%></th>
+    </tr>
+
     <br>
   </tbody>
   </table>
