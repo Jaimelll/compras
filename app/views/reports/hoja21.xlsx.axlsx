@@ -739,17 +739,17 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
   case proce.orden
      when 1,4
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC PLAN_CONVOC SITUACION PLAN_REM_OBAC),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) ING_DPC PLAN_CONVOC SITUACION PLAN_BPRO),
         style: [titu, titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu,  titu, titu, titu, titu], height: 40
 
 
      when 2
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION PLAN_REM_OBAC),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE DESCRIPCION FUENTE CERTIFICADO  REFERENC PRESUPUESTADO(soles) REFERENCIAL(soles) PRES_PROP BUENA_PRO SITUACION CONVOCATORIA),
         style: [titu, titu, titu, titu, titu, titu, titu, titu, titu,  titu, titu,  titu, titu, titu, titu], height: 40
 
 
      when 3,5
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION PLAN_REM_OBAC),
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION CONSENTIMIENTO),
         style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu, titu], height: 40
 
 
@@ -787,7 +787,7 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
          @afecing=[]
          @acerti=[]
           @vajud2=[]
-          @aconsen=[]
+
      if activ.expediente>0 then
       @esti=Item.where(exped:activ.expediente,obac:@vuobac).sum(:certificado).to_i
 
@@ -820,13 +820,9 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
         @afecing.push("")
      end
 
-     if Detail.where(actividad:104,item_id:nobac.id).count>0 then
-      @aconsen.push(Detail.where(actividad:104,item_id:nobac.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y"))
 
-     else
-       @aconsen.push("")
 
-     end
+
 
 
 
@@ -906,12 +902,20 @@ end
 
 
 
+
+
+
+
+
+
+
+
 @conta=@conta+1
 
 
 case proce.orden
    when 1,4
-
+     vulcol=108
      if Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').count>0 then
        @fec21= Activity.where(phase_id:activ.id).where('actividad=17 or actividad=34').select('pfecha as dd').first.dd.strftime("%d/%m/%y")
      else
@@ -924,7 +928,7 @@ case proce.orden
      end
 
    when 2
-
+      vulcol=18
    if Activity.where(actividad:19,phase_id:activ.id).count>0 then
      @fec21= Activity.where(actividad:19,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
    else
@@ -937,7 +941,7 @@ case proce.orden
    end
 
    when 3,5
-
+      vulcol=21
    if Activity.where(actividad:18,phase_id:activ.id).count>0 then
      @fec21= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
    else
@@ -953,18 +957,22 @@ case proce.orden
 
 
     end
-
+    if Activity.where(actividad:vulcol,phase_id:activ.id).count>0 then
+      @aconsen= Activity.where(actividad:vulcol,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+    else
+      @aconsen=""
+    end
 
 
 
   sheet.add_row  [@conta,@apac[0],@afecing[0],@aobac[0], activ.proceso, activ.descripcion.upcase,
-    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ,@aconsen[0]],
+    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ,@aconsen],
    style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad]
      sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30,14
     nn=1
          while @aobac.length>nn
          sheet.add_row [ @conta ,@apac[nn],@afecing[nn],@aobac[nn],activ.proceso,nil,@afuente[nn],@acerti[nn], @vajud2[nn],
-         nil ,nil,nil,nil,nil,@aconsen[nn]],
+         nil ,nil,nil,nil,nil,nil],
           style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad]
 
          nn=nn+1
@@ -983,6 +991,7 @@ case proce.orden
            sheet.merge_cells "L#{vlineai1}:L#{vlineaf1}"
            sheet.merge_cells "M#{vlineai1}:M#{vlineaf1}"
            sheet.merge_cells "N#{vlineai1}:N#{vlineaf1}"
+           sheet.merge_cells "O#{vlineai1}:O#{vlineaf1}"
          end
 
 end
