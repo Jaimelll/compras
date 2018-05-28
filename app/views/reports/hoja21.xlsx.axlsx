@@ -979,7 +979,7 @@ case proce.orden
     nn=1
          while @aobac.length>nn
          sheet.add_row [ @conta ,@apac[nn],@afecing[nn],@aobac[nn],activ.proceso,nil,@afuente[nn],@acerti[nn], @vajud2[nn],
-         nil ,nil,nil,nil,nil,nil],
+         nil ,nil,nil,nil,nil,nil,nil],
           style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad, desc]
 
          nn=nn+1
