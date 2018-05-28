@@ -749,8 +749,8 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
 
 
      when 3,5
-        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION CONSENTIMIENTO),
-        style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu, titu], height: 40
+        sheet.add_row %w(N PAC PUBLICACION IAA PROCE  DESCRIPCION FUENTE CERTIFICADO ADJUDIC PRESUPUESTADO(soles) ADJUDICADO(soles) CONVOCATORIA BUENA_PRO SITUACION CONSENTIMIENTO POSTOR_GANADOR),
+        style: [titu, titu,  titu, titu, titu, titu, titu, titu, titu,  titu,  titu,  titu, titu, titu, titu, titu], height: 40
 
 
       end
@@ -872,8 +872,15 @@ wb.add_worksheet(name: proce.descripcion+nuitem1) do |sheet|
      end  # fin de if obac
 
 
+       veadj=""
+     if  Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').count>0 then
+            Piece.where(phase_id:activ.id.to_s).where('estado=2 or estado=4 or estado=9 or estado=11').order('codigo').each do |ganador|
+             veadj=veadj+ganador.codigo+":"+ganador.postor+","
 
-
+            end
+            else
+            veadj=""
+    end
 
 
 
@@ -966,14 +973,14 @@ case proce.orden
 
 
   sheet.add_row  [@conta,@apac[0],@afecing[0],@aobac[0], activ.proceso, activ.descripcion.upcase,
-    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ,@aconsen],
-   style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad]
-     sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30,14
+    @afuente[0], @acerti[0], @vajud2[0],@presu.to_i, viadj.to_i, @fec21,@fec22,@vobsr ,@aconsen,veadj],
+   style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad , desc]
+     sheet.column_widths 5, 10,10,10,10,40, 10,10,10,10,10,10,10,30,14,20
     nn=1
          while @aobac.length>nn
          sheet.add_row [ @conta ,@apac[nn],@afecing[nn],@aobac[nn],activ.proceso,nil,@afuente[nn],@acerti[nn], @vajud2[nn],
          nil ,nil,nil,nil,nil,nil],
-          style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad]
+          style: [centra, centra, fechad, centra,  desc, desc,centra, soles, soles, soles, soles,centra,centra, desc, fechad, desc]
 
          nn=nn+1
          end
@@ -992,6 +999,7 @@ case proce.orden
            sheet.merge_cells "M#{vlineai1}:M#{vlineaf1}"
            sheet.merge_cells "N#{vlineai1}:N#{vlineaf1}"
            sheet.merge_cells "O#{vlineai1}:O#{vlineaf1}"
+           sheet.merge_cells "P#{vlineai1}:P#{vlineaf1}"
          end
 
 end
