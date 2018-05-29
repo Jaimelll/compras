@@ -157,11 +157,10 @@
         <% if @vactcanti.include?("4") then%>
 
         <%deta2= Phase.where.not(expediente:0).find_by(expediente:variable.expediente).activities
-                  .where(actividad: 102)
-                  .order('activities.pfecha ')%>
+                  .where("actividad= 102 or actividad=301")   %>
 
             <% if deta2.count >0 then %>
-                <td ><%= deta2.select('pfecha as dd').first.dd.strftime("%d/%m") %></td>
+                <td ><%= deta2.maximum('pfecha').strftime("%d/%m") %></td>
             <% else %>
                 <td >s/d </td>
             <% end %>
