@@ -214,7 +214,7 @@ end # de case
 #################
 panel  "I.- ESTADO DE PROCESOS" + " - 'PROCESOS/(SOLES)'" do
 @tabconta=0
-aa=Formula.where(product_id:11).where('orden=? or orden=? or acti=2', $vaf, $vaf-1).order('orden')
+aa=Formula.where(product_id:11).where('orden=? or orden=? or orden=20', $vaf, $vaf-1).order('orden')
     table_for aa do
 
 
@@ -924,7 +924,7 @@ end##################################estatus
 #################   ani 1
    panel  "II.- SEGUIMIENTO DE PROCESOS"+ " - 'PROCESOS/(SOLES)'"  do
 
- aa=Formula.where(product_id:11).where('orden=? or orden=?', $vaf, $vaf-1).order('orden')
+ aa=Formula.where(product_id:11).where('orden=? or orden=? or orden=20', $vaf, $vaf-1).order('orden')
      table_for aa do
 
 
@@ -1000,151 +1000,290 @@ def execute2(var)
 
      column("Procesos") do |formula|
               execute2(formula.orden)
+        unless formula.orden==20
              "DEL-AF"+formula.nombre
+        else
+            div :class =>"grueso" do
+            "TOTAL"
+            end
+        end
      end
      column("N/D/C", :class => 'text-right') do |formula|
-
+     unless formula.orden==20
        @dpc=  formula.orden
        @vpaso=0
        @vpas=1
        @titproc1="PROCESOS EN ESTADO NULO, DESIERTO O CANCELADO"
-       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).count
-       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).sum(:sele2)
-       @vpro11=Phase.where(convo:formula.orden ,periodo:$vaf,sele:1).
-                   select('id').map {|e| e.attributes.values}.flatten
+       phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:1)
+       le= phase.count
+       sle= phase.sum(:sele2)
+       @vpro11=phase.select('id').map {|e| e.attributes.values}.flatten
        link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro11,:param2=> @vpaso)
+    else
+      @dpc=  formula.orden
+      @vpaso=0
+      @vpas=1
+      @titproc1="PROCESOS EN ESTADO NULO, DESIERTO O CANCELADO"
+      phase=Phase.where(periodo:$vaf,sele:1)
+      le= phase.count
+      sle= phase.sum(:sele2)
+      @vpro11=phase.select('id').map {|e| e.attributes.values}.flatten
+
+        div :class =>"grueso" do
+         link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+         reports_comment5_path(format: :pdf,
+         :param3=> @vpas,
+         :param4=> @titproc1,:param5=> @vpro11,:param2=> @vpaso)
+       end
+    end
+
+
+
+
 
       end
 
 
      column("GEX", :class => 'text-right') do |formula|
-
+       unless formula.orden==20
        @dpc=  formula.orden
        @vpaso=0
        @vpas=2
        @titproc1="PROCESOS EN GEX"
-       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).count
-       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).sum(:sele2)
-       @vpro12=Phase.where(convo:formula.orden ,periodo:$vaf,sele:2).
-                   select('id').map {|e| e.attributes.values}.flatten
+         phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:2)
+       le= phase.count
+       sle= phase.sum(:sele2)
+       @vpro12=phase.select('id').map {|e| e.attributes.values}.flatten
        link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro12,:param2=> @vpaso)
+      else
+        @dpc=  formula.orden
+        @vpaso=0
+        @vpas=2
+        @titproc1="PROCESOS EN GEX"
+          phase=Phase.where(periodo:$vaf,sele:2)
+        le= phase.count
+        sle= phase.sum(:sele2)
+        @vpro12=phase.select('id').map {|e| e.attributes.values}.flatten
 
+          div :class =>"grueso" do
+            link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+            reports_comment5_path(format: :pdf,
+            :param3=> @vpas,
+            :param4=> @titproc1,:param5=> @vpro12,:param2=> @vpaso)
+
+         end
+       end
       end
 
 
      column("DC", :class => 'text-right') do |formula|
-
+       unless formula.orden==20
        @dpc=  formula.orden
        @vpaso=0
        @vpas=3
        @titproc1="PROCESOS EN DC"
-       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).count
-       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).sum(:sele2)
-       @vpro13=Phase.where(convo:formula.orden ,periodo:$vaf,sele:3).
-                   select('id').map {|e| e.attributes.values}.flatten
+          phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:3)
+       le=phase.count
+       sle= phase.sum(:sele2)
+       @vpro13=phase.select('id').map {|e| e.attributes.values}.flatten
        link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro13,:param2=> @vpaso)
+       else
+         @dpc=  formula.orden
+         @vpaso=0
+         @vpas=3
+         @titproc1="PROCESOS EN DC"
+            phase=Phase.where(periodo:$vaf,sele:3)
+         le=phase.count
+         sle= phase.sum(:sele2)
+         @vpro13=phase.select('id').map {|e| e.attributes.values}.flatten
+           div :class =>"grueso" do
+              link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+             reports_comment5_path(format: :pdf,
+             :param3=> @vpas,
+            :param4=> @titproc1,:param5=> @vpro13,:param2=> @vpaso)
+          end
+       end
 
       end
 
 
      column("DEM", :class => 'text-right') do |formula|
-
+      unless formula.orden==20
        @dpc=  formula.orden
        @vpaso=0
        @vpas=4
        @titproc1="PROCESOS EN DEM"
-       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).count
-       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).sum(:sele2)
-       @vpro14=Phase.where(convo:formula.orden ,periodo:$vaf,sele:4).
-                   select('id').map {|e| e.attributes.values}.flatten
+       phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:4)
+       le= phase.count
+       sle= phase.sum(:sele2)
+       @vpro14=phase.select('id').map {|e| e.attributes.values}.flatten
         link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro14,:param2=> @vpaso)
+      else
+        @dpc=  formula.orden
+        @vpaso=0
+        @vpas=4
+        @titproc1="PROCESOS EN DEM"
+        phase=Phase.where(periodo:$vaf,sele:4)
+        le= phase.count
+        sle= phase.sum(:sele2)
+        @vpro14=phase.select('id').map {|e| e.attributes.values}.flatten
 
+        div :class =>"grueso" do
+         link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+        reports_comment5_path(format: :pdf,
+        :param3=> @vpas,
+        :param4=> @titproc1,:param5=> @vpro14,:param2=> @vpaso)
+        end
       end
 
-
+    end
 
      column("DPC", :class => 'text-right') do |formula|
-
+       unless formula.orden==20
        @dpc=  formula.orden
        @vpaso=0
        @vpas=5
        @titproc1="PROCESOS EN DPC"
-       le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).count
-       sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).sum(:sele2)
-       @vpro15=Phase.where(convo:formula.orden ,periodo:$vaf,sele:5).
-                   select('id').map {|e| e.attributes.values}.flatten
+       phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:5)
+       le= phase.count
+       sle= phase.sum(:sele2)
+       @vpro15=phase.select('id').map {|e| e.attributes.values}.flatten
          link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
        reports_comment5_path(format: :pdf,
        :param3=> @vpas,
        :param4=> @titproc1,:param5=> @vpro15,:param2=> @vpaso)
-
+       else
+         @dpc=  formula.orden
+         @vpaso=0
+         @vpas=5
+         @titproc1="PROCESOS EN DPC"
+         phase=Phase.where(periodo:$vaf,sele:5)
+         le= phase.count
+         sle= phase.sum(:sele2)
+         @vpro15=phase.select('id').map {|e| e.attributes.values}.flatten
+         div :class =>"grueso" do
+           link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+         reports_comment5_path(format: :pdf,
+         :param3=> @vpas,
+         :param4=> @titproc1,:param5=> @vpro15,:param2=> @vpaso)
+         end
+     end
       end
 
       column("FC", :class => 'text-right') do |formula|
-
+       unless formula.orden==20
         @dpc=  formula.orden
           @vpaso=0
         @vpas=6
         @titproc1="PROCESOS PREVIOS A FIRMA DE CONTRATO"
-        le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).count
-        sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).sum(:sele2)
-        @vpro16=Phase.where(convo:formula.orden ,periodo:$vaf,sele:6).
-                    select('id').map {|e| e.attributes.values}.flatten
+        phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:6)
+        le= phase.count
+        sle= phase.sum(:sele2)
+        @vpro16=phase.select('id').map {|e| e.attributes.values}.flatten
          link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
         :param4=> @titproc1,:param5=> @vpro16,:param2=> @vpaso)
+        else
+          @dpc=  formula.orden
+            @vpaso=0
+          @vpas=6
+          @titproc1="PROCESOS PREVIOS A FIRMA DE CONTRATO"
+          phase=Phase.where(periodo:$vaf,sele:6)
+          le= phase.count
+          sle= phase.sum(:sele2)
+          @vpro16=phase.select('id').map {|e| e.attributes.values}.flatten
+
+          div :class =>"grueso" do
+           link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+          reports_comment5_path(format: :pdf,
+          :param3=> @vpas,
+          :param4=> @titproc1,:param5=> @vpro16,:param2=> @vpaso)
+
+        end
+      end
       end
 
         column("EC", :class => 'text-right') do |formula|
-
+        unless formula.orden==20
           @dpc=  formula.orden
             @vpaso=0
           @vpas=7
           @titproc1="PROCESOS EN EJECUCION CONTRACTUAL"
-          le= Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).count
-          sle= Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).sum(:sele2)
-          @vpro17=Phase.where(convo:formula.orden ,periodo:$vaf,sele:7).
-                      select('id').map {|e| e.attributes.values}.flatten
+          phase=Phase.where(convo:formula.orden ,periodo:$vaf,sele:7)
+          le= phase.count
+          sle= phase.sum(:sele2)
+          @vpro17=phase.select('id').map {|e| e.attributes.values}.flatten
            link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
           reports_comment5_path(format: :pdf,
           :param3=> @vpas,
           :param4=> @titproc1,:param5=> @vpro17,:param2=> @vpaso)
+          else
+            @dpc=  formula.orden
+              @vpaso=0
+            @vpas=7
+            @titproc1="PROCESOS EN EJECUCION CONTRACTUAL"
+            phase=Phase.where(periodo:$vaf,sele:7)
+            le= phase.count
+            sle= phase.sum(:sele2)
+            @vpro17=phase.select('id').map {|e| e.attributes.values}.flatten
 
+            div :class =>"grueso" do
+             link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+            reports_comment5_path(format: :pdf,
+            :param3=> @vpas,
+            :param4=> @titproc1,:param5=> @vpro17,:param2=> @vpaso)
 
+          end
+       end
 
       end
       column("TOTAL", :class => 'text-right') do |formula|
-
+       unless formula.orden==20
         @dpc=  formula.orden
           @vpaso=1
         @vpas=[1,2,3,4,5,6,7]
         @titproc1="RELACION DE PROCESOS"
-        le= Phase.where(convo:formula.orden ,periodo:$vaf).count
-        sle= Phase.where(convo:formula.orden ,periodo:$vaf).sum(:sele2)
-        @vpro1t=Phase.where(convo:formula.orden ,periodo:$vaf).
-                    select('id').map {|e| e.attributes.values}.flatten
+        phase=Phase.where(convo:formula.orden ,periodo:$vaf)
+        le= phase.count
+        sle= phase.sum(:sele2)
+        @vpro1t=phase.select('id').map {|e| e.attributes.values}.flatten
        link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
         reports_comment5_path(format: :pdf,
         :param3=> @vpas,
         :param4=> @titproc1,:param5=> @vpro1t,:param2=> @vpaso)
+        else
+          @dpc=  formula.orden
+            @vpaso=1
+          @vpas=[1,2,3,4,5,6,7]
+          @titproc1="RELACION DE PROCESOS"
+          phase=Phase.where(periodo:$vaf)
+          le= phase.count
+          sle= phase.sum(:sele2)
+          @vpro1t=phase.select('id').map {|e| e.attributes.values}.flatten
+          div :class =>"grueso" do
+         link_to   "#{le}"+" / ("+"#{number_with_delimiter(sle.to_i, delimiter: ",")}"+")",
+          reports_comment5_path(format: :pdf,
+          :param3=> @vpas,
+          :param4=> @titproc1,:param5=> @vpro1t,:param2=> @vpaso)
+
+        end
 
 
 
-
-
+      end
 
 
       end
