@@ -214,7 +214,7 @@ end # de case
 #################
 panel  "I.- ESTADO DE PROCESOS" + " - 'PROCESOS/(SOLES)'" do
 @tabconta=0
-aa=Formula.where(product_id:11).where('orden=? or orden=?', $vaf, $vaf-1).order('orden')
+aa=Formula.where(product_id:11).where('orden=? or orden=? or acti=2', $vaf, $vaf-1).order('orden')
     table_for aa do
 
 
@@ -579,7 +579,7 @@ end
 
 
 column("Procesos") do |formula|
-
+  unless formula.orden==20
   conv1=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:1).where('sele>4').
              select('id').map {|e| e.attributes.values}.flatten
   conv2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).
@@ -610,13 +610,47 @@ column("Procesos") do |formula|
        :param17=> conv5,:param13=> pac1, :param14=> pac2,
        :param15=> pac3,:param16=> pac4,
        :param18=> pac5,:param7=> @vuobac)
+   else
 
+     conv1=Phase.where(periodo:$vaf,sele3:1).where('sele>4').
+                select('id').map {|e| e.attributes.values}.flatten
+     conv2=Phase.where(periodo:$vaf,sele3:2).
+                 select('id').map {|e| e.attributes.values}.flatten
+     conv3=Phase.where(periodo:$vaf,sele3:3).
+                 select('id').map {|e| e.attributes.values}.flatten
+     conv4=Phase.where(periodo:$vaf,sele3:4).where('sele>4').
+                 select('id').map {|e| e.attributes.values}.flatten
+     conv5=Phase.where(periodo:$vaf,sele3:5).
+                 select('id').map {|e| e.attributes.values}.flatten
+     convt=Phase.where(periodo:$vaf,sele3:1).
+                 select('id').map {|e| e.attributes.values}.flatten
+      pac1=Item.where(ejecucion:4,cuadrante:1).where('exped2=? or exped2=?',$vaf,$vaf-1).where("modalidad<3").
+                  select('id').map {|e| e.attributes.values}.flatten
+      pac2=Item.where(ejecucion:4,cuadrante:2).where('exped2=? or exped2=?',$vaf,$vaf-1).where("modalidad<3").
+                  select('id').map {|e| e.attributes.values}.flatten
+      pac3=Item.where(ejecucion:4,cuadrante:3).where('exped2=? or exped2=?',$vaf,$vaf-1).where("modalidad<3").
+                 select('id').map {|e| e.attributes.values}.flatten
+      pac4=Item.where(ejecucion:4,cuadrante:4).where('exped2=? or exped2=?',$vaf,$vaf-1).where("modalidad<3").
+                  select('id').map {|e| e.attributes.values}.flatten
+      pac5=Item.where(ejecucion:5,cuadrante:1).where('exped2=? or exped2=?',$vaf,$vaf-1).where("modalidad<3").
+                  select('id').map {|e| e.attributes.values}.flatten
+
+div :class =>"grueso" do
+        link_to "#{formula.nombre}", reports_vhoja21_path(format:  "xlsx",
+          :param3=> conv1, :param4=>conv4,
+          :param5=> conv3,:param6=> convt,:param8=>conv2,
+          :param17=> conv5,:param13=> pac1, :param14=> pac2,
+          :param15=> pac3,:param16=> pac4,
+          :param18=> pac5,:param7=> @vuobac)
+end
+
+   end
 
 end
 
 
 column("EN GEX O DC", :class => 'text-right') do |formula|
-
+    unless formula.orden==20
   @dpc=  formula.orden
   @titproc1="EN GEX O DC"
   @vopc=4
@@ -630,10 +664,29 @@ column("EN GEX O DC", :class => 'text-right') do |formula|
  link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
    :param4=>  @titproc1)
-
+    else
+      @dpc=  formula.orden
+      @titproc1="TOTAL EN GEX O DC"
+      @vopc=4
+      vphase=Phase.where(periodo:$vaf).
+                 where('sele3=1 or sele3=4').where.not(sele:1).where("sele=2 or sele=3")
+      conv14=vphase.select('id').
+                 map {|e| e.attributes.values}.flatten
+      expr314=vphase.count
+      cotavus14=vphase.sum(:sele2)
+    div :class =>"grueso" do
+     link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+      reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
+       :param4=>  @titproc1)
+    end
+    end
  end
 
+###############
+
+
 column("EN DEM", :class => 'text-right') do |formula|
+unless formula.orden==20
 
   @dpc=  formula.orden
   @titproc1="EN DEM"
@@ -648,11 +701,29 @@ column("EN DEM", :class => 'text-right') do |formula|
  link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
    :param4=>  @titproc1)
+else
+  @dpc=  formula.orden
+  @titproc1="TOTAL EN DEM"
+  @vopc=4
+  vphase=Phase.where(periodo:$vaf).
+             where('sele3=1 or sele3=4').where.not(sele:1).where(sele:4)
+  conv14=vphase.select('id').
+             map {|e| e.attributes.values}.flatten
+  expr314=vphase.count
+  cotavus14=vphase.sum(:sele2)
+  div :class =>"grueso" do
+      link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+      reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
+      :param4=>  @titproc1)
+  end
+ end
 
  end
 
- column("NO CONVOCADOS", :class => 'text-right') do |formula|
 
+###########
+ column("NO CONVOCADOS", :class => 'text-right') do |formula|
+  unless formula.orden==20
    @dpc=  formula.orden
    @titproc1="NO CONVOCADOS DEC"
    @vopc=4
@@ -667,6 +738,23 @@ column("EN DEM", :class => 'text-right') do |formula|
    reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
     :param4=>  @titproc1)
 
+  else
+    @dpc=  formula.orden
+    @titproc1="NO CONVOCADOS DEC"
+    @vopc=4
+    vphase=Phase.where(periodo:$vaf).
+               where('sele3=1 or sele3=4').where.not(sele:1).where(sele:5)
+    conv14=vphase.select('id').
+               map {|e| e.attributes.values}.flatten
+    expr314=vphase.count
+    cotavus14=vphase.sum(:sele2)
+   div :class =>"grueso" do
+       link_to   "#{expr314}"+" / ("+"#{number_with_delimiter(cotavus14.to_i, delimiter: ",")}"+")",
+       reports_comment4_path(format: :pdf,  :param1=>  @vopc,   :param2=>  conv14,
+       :param4=>  @titproc1)
+    end
+  end
+
   end
 
 
@@ -674,56 +762,106 @@ column("EN DEM", :class => 'text-right') do |formula|
 
  column("convocados", :class => 'text-right') do |formula|
 execute(formula.orden)
+
+  unless formula.orden==20
    @dpc=  formula.orden
    @titproc1="Procesos Convocados"
    @vopc=1
-   conv2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).
-              select('id').map {|e| e.attributes.values}.flatten
-   expr2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).count
+   vphase=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2)
+   conv2=vphase.select('id').map {|e| e.attributes.values}.flatten
+   expr2=vphase.count
 
-   cotavus2=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:2).sum(:sele2)
+   cotavus2=vphase.sum(:sele2)
 
 
-link_to "#{expr2}"+" / ("+"#{number_with_delimiter(cotavus2.to_i, delimiter: ",")}"+")",
-reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
-:param4=>  @titproc1)
+     link_to "#{expr2}"+" / ("+"#{number_with_delimiter(cotavus2.to_i, delimiter: ",")}"+")",
+      reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
+     :param4=>  @titproc1)
 
+   else
+     @dpc=  formula.orden
+     @titproc1="Procesos Convocados"
+     @vopc=1
+     vphase=Phase.where(periodo:$vaf,sele3:2)
+     conv2=vphase.select('id').map {|e| e.attributes.values}.flatten
+     expr2=vphase.count
+
+     cotavus2=vphase.sum(:sele2)
+
+    div :class =>"grueso" do
+      link_to "#{expr2}"+" / ("+"#{number_with_delimiter(cotavus2.to_i, delimiter: ",")}"+")",
+       reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv2,
+      :param4=>  @titproc1)
+    end
+   end
   end
 
 
+#######1
 
   column("Adjudicados", :class => 'text-right') do |formula|
-
+    unless formula.orden==20
       @dpc=  formula.orden
       @titproc1="Procesos No Consentidos"
       @vopc=3
-      conv5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).
-                 select('id').map {|e| e.attributes.values}.flatten
-      expr5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).count
+      vphase=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5)
+      conv5=vphase.select('id').map {|e| e.attributes.values}.flatten
+      expr5=vphase.count
 
-      cotavus5=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:5).sum(:sele2)
+      cotavus5=vphase.sum(:sele2)
 
     link_to "#{expr5}"+" / ("+"#{number_with_delimiter(cotavus5.to_i, delimiter: ",")}"+")",
     reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv5,
     :param4=>  @titproc1)
+     else
+       @dpc=  formula.orden
+       @titproc1="Procesos No Consentidos"
+       @vopc=3
+       vphase=Phase.where(periodo:$vaf,sele3:5)
+       conv5=vphase.select('id').map {|e| e.attributes.values}.flatten
+       expr5=vphase.count
 
+       cotavus5=vphase.sum(:sele2)
+         div :class =>"grueso" do
+            link_to "#{expr5}"+" / ("+"#{number_with_delimiter(cotavus5.to_i, delimiter: ",")}"+")",
+            reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv5,
+           :param4=>  @titproc1)
+        end
+     end
   end
 
-
-  column("Consentidos", :class => 'text-right') do |formula|
-
+#######2
+column("Consentidos", :class => 'text-right') do |formula|
+    unless formula.orden==20
     @dpc=  formula.orden
     @titproc1="Procesos Adjudicados"
     @vopc=2
-    conv3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).
-               select('id').map {|e| e.attributes.values}.flatten
-    expr3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).count
+    vphase=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3)
+    conv3=vphase.select('id').map {|e| e.attributes.values}.flatten
+    expr3=vphase.count
 
-    cotavus3=Phase.where(convo:formula.orden ,periodo:$vaf,sele3:3).sum(:sele2)
+    cotavus3=vphase.sum(:sele2)
 
   link_to "#{expr3}"+" / ("+"#{number_with_delimiter(cotavus3.to_i, delimiter: ",")}"+")",
   reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv3,
   :param4=>  @titproc1)
+  else
+
+    @dpc=  formula.orden
+    @titproc1="Procesos Adjudicados"
+    @vopc=2
+    vphase=Phase.where(periodo:$vaf,sele3:3)
+    conv3=vphase.select('id').map {|e| e.attributes.values}.flatten
+    expr3=vphase.count
+
+    cotavus3=vphase.sum(:sele2)
+       div :class =>"grueso" do
+        link_to "#{expr3}"+" / ("+"#{number_with_delimiter(cotavus3.to_i, delimiter: ",")}"+")",
+        reports_comment4_path(format: :pdf,  :param1=>  @vopc, :param2=>  conv3,
+        :param4=>  @titproc1)
+       end
+
+  end
 
 end
 
@@ -732,11 +870,10 @@ end
 
 
  column("Total", :class => 'text-right') do |formula|
-
-expr0=Phase.where(convo:formula.orden ,periodo:$vaf).
-          where.not(sele:1).count
-cotavus0=Phase.where(convo:formula.orden ,periodo:$vaf).
-          where.not(sele:1).sum(:sele2)
+unless formula.orden==20
+vphase=Phase.where(convo:formula.orden ,periodo:$vaf)
+expr0=vphase.where.not(sele:1).count
+cotavus0=vphase.where.not(sele:1).sum(:sele2)
 
 
 
@@ -748,7 +885,23 @@ cotavus0=Phase.where(convo:formula.orden ,periodo:$vaf).
      else
        "#{expr0}"+" / ("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")"
      end
+   else
+     vphase=Phase.where(periodo:$vaf)
+     expr0=vphase.where.not(sele:1).count
+     cotavus0=vphase.where.not(sele:1).sum(:sele2)
 
+
+         div :class =>"grueso" do
+          if expr0>0 then
+            link_to "#{expr0}"+" / ("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")",
+             reports_vhoja20_path(format:  "xlsx",
+                    :param7=> @vuobac)
+
+          else
+            "#{expr0}"+" / ("+"#{number_with_delimiter(cotavus0.to_i, delimiter: ",")}"+")"
+          end
+
+        end
     end
 
 
@@ -756,7 +909,12 @@ cotavus0=Phase.where(convo:formula.orden ,periodo:$vaf).
 end #de table
 
 
+####################
 
+
+
+
+end
 
 
 end##################################estatus
