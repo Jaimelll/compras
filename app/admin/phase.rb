@@ -209,7 +209,7 @@ form :title => 'Edicion Procesos' do |f|
  f.input :expediente, :input_html => { :style =>  'width:60%'}, :as => :select, :collection =>
    Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
  f.input :periodo, :as => :select, :collection =>
-    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+    Formula.where(product_id:11,acti:1).order('orden').map{|u| [u.nombre, u.orden]}
     f.input :sele4,:label => 'Especialista encargado', :as => :select, :collection =>
        Formula.where(product_id:34).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :admin_user_id, :input_html => { :value => current_admin_user.categoria }, :as => :hidden
@@ -220,7 +220,7 @@ f.input :mgp,:label => 'Monto Adjudicado MGP', :as => :string, :input_html => { 
 f.input :fap,:label => 'Monto Adjudicado FAP', :as => :string, :input_html => { :style =>  'width:30%'}
 f.input :ccffaa,:label => 'Monto Adjudicado CCFFAA', :as => :string, :input_html => { :style =>  'width:30%'}
 f.input :convo,:label => 'Año de Convocatoria' , :as => :select, :collection =>
-   Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+   Formula.where(product_id:11,acti:1).order('orden').map{|u| [u.nombre, u.orden]}
 f.input :sele5,:label => 'Proceso de origen', :as => :select, :collection =>
    Phase.where(periodo:$vaf).order('proceso').map{|u| [u.proceso, u.id]}
 

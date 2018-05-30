@@ -153,7 +153,7 @@ form :title => 'Edicion Contrato' do |f|
  f.input :presupuestado, :as => :string, :input_html => { :style =>  'width:30%'}
 
  f.input :periodo, :as => :select, :collection =>
-    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+    Formula.where(product_id:11,acti:1).order('orden').map{|u| [u.nombre, u.orden]}
 
 
  f.input :plazo,:label => 'Plazo de entrega(dias)', :input_html => { :style =>  'width:30%'}

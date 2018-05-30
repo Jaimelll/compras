@@ -284,7 +284,7 @@ form :title => 'Edicion PACs' do |f|
          Formula.where(product_id:16).order('nombre').map{|u| [u.nombre+"-"+u.descripcion, u.orden]}
 
        f.input :periodo, :as => :select, :collection =>
-               Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+               Formula.where(product_id:11,acti:1).order('orden').map{|u| [u.nombre, u.orden]}
 
        f.input :obac, :as => :select, :collection =>
        case current_admin_user.categoria # a_variable is the variable we want to compare
@@ -359,7 +359,7 @@ form :title => 'Edicion PACs' do |f|
         f.input :rubro,:label => 'objeto', :as => :select, :collection =>
             Formula.where(product_id:9).map{|u| [u.nombre, u.orden]}
         f.input :exped2, :label => 'Año Fiscal', :as => :select, :collection =>
-                    Formula.where(product_id:11).order('orden').map{|u| [u.nombre, u.orden]}
+                    Formula.where(product_id:11,acti:1).order('orden').map{|u| [u.nombre, u.orden]}
          f.input :admin_user_id, :input_html => { :value => current_admin_user.id }, :as => :hidden
           f.input :observacion
           case current_admin_user.categoria # a_variable is the variable we want to compare

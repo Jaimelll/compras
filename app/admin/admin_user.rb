@@ -6,7 +6,7 @@ ActiveAdmin.register AdminUser do
      @vaf=current_admin_user.periodo
      @cid=current_admin_user.id
 
-     @num=Formula.where(product_id: 11, orden:@vaf).
+     @num=Formula.where(product_id: 11, orden:@vaf,acti:1).
             select('numero as dd').first.dd
 
      AdminUser.where(id: @cid).update_all( periodo: @num )
