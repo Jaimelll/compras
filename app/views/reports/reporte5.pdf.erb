@@ -19,9 +19,10 @@
 
        <th>N°</th>
 
-       <th  colspan="2">Proceso</th>
-       <th  > </th>
+       <th  colspan="3">Proceso</th>
+       
        <th  colspan="3">Descripcion</th>
+       <th  > </th>
 
        <th   >Presupuestado</th>
 
@@ -117,13 +118,13 @@
          <% @vobac2=@vobac2+ @spac+" - "+@sobac+" //"%>
         <% end %>
         <% end %>
-        <td  >  </td>
+        
 
 
 
 
 
-        <td colspan="3"><%= variable.descripcion+
+        <td colspan="5"><%= variable.descripcion+
                        "------- ( "+@vobac2+" ) "+" - " +@pmdo1.upcase %>  </td>
 
         <% @presu=Piece.where(phase_id:variable.id.to_s).sum(:presupuestado).to_i%>
@@ -296,4 +297,17 @@
  <br>
  <br>
 <% end %>
+
+<style>
+
+  th{
+    padding-right: 10px;
+  }
+
+  td{
+    padding: 12px;  
+  }
+
+</style>
+
 </html>
