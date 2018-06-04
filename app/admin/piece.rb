@@ -42,8 +42,11 @@ column("codigo") do |piece|
            select('expediente as dd').first.dd
   nni=Item.where(exped:nne).select('id').map {|e| e.attributes.values}.flatten
   if Article.where(item_id:nni,piece:piece.id).count>0 then
+   nnia=[]
+   nnia.push(piece.id)
 
-  link_to piece.codigo, reports_vhoja4_path(format:  "xlsx", :param1=> piece.id)
+  link_to piece.codigo, reports_vhoja4_path(format:  "xlsx", :param1=> nnia,
+  :param2=> nni)
    else
      piece.codigo
    end
@@ -365,22 +368,25 @@ form :title => 'Edicion Item'  do |f|
                 li "EXPEDIENTE :  "+n31
                 if n32>0 then
                   li "OBAC-PAC Articulos:"
-
+                 nni2=[]
                  Item.where(exped:n32).order('obac').each do |nobac|
                   @sobac=Formula.where(product_id:1,orden:nobac.obac)
                   .select('nombre as dd').first.dd
 
                     if Article.where(item_id:nobac.id).count>0 then
                     ul link_to @sobac+"-"+"#{nobac.pac} ", admin_item_articles_path(nobac.id)
+                        nni2.push(nobac.id)
                     else
                       ul  @sobac+"-"+nobac.pac
                     end
                    end
                    end
-
+               nni3=[0]
                 li "DESCRIPCION : "+n2
                 li "MONEDA :  "+n3
                 li "VALOR ESTIMADO :"+  number_with_delimiter(n4, delimiter: ",").to_s
+                li link_to "ARTICULOS", reports_vhoja4_path(format:  "xlsx", :param2=>nni2, :param1=> nni3)
+
 
               end# de ul
 

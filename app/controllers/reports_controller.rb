@@ -733,7 +733,7 @@ end
 
 def vhoja4
   @vitpiece=params[:param1]
-
+  @nni=params[:param2]#pacs
 
 
   respond_to do |format|

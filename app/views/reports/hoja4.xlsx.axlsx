@@ -52,11 +52,14 @@ wb.add_worksheet(name: "Articulos") do |sheet|
 
   sheet.add_row []
 
-if Article.where(piece:@vitpiece.to_i).count>0 then
+vitpiece=@vitpiece.map(&:to_i)
+vitpiece.delete(0)
+
+if Article.where(piece:vitpiece).count>0 then
 
 
-vcod=Piece.where(id:@vitpiece.to_i).select('phase_id as dd').first.dd
-vden=Piece.where(id:@vitpiece.to_i).select('descripcion as dd').first.dd
+vcod=Piece.where(id:vitpiece).select('phase_id as dd').first.dd
+
 vcoddd=Phase.where(id:vcod).select('proceso as dd').first.dd
 
 vproceso=Phase.where(id:vcod).select('proceso as dd').first.dd
@@ -71,6 +74,9 @@ vnproceso=Phase.where(id:vcod).select('descripcion as dd').first.dd
                     style: [titu,titu, titu], height: 40
                     merge_last_row sheet, columns:["A","B"]
                     merge_last_row sheet, columns:["C","F"]
+
+    sheet.add_row []
+  vden=Piece.where(id:vitpiece).select('descripcion as dd').first.dd
   sheet.add_row ["item:"," ",vden],
                       style: [titu,titu, titu], height: 40
                       merge_last_row sheet, columns:["A","B"]
@@ -112,9 +118,96 @@ end
 
 sheet.add_row [vvpac,vvoobac,artic.paquete,@vrevision,artic.descripcion,vuni ,artic.cantidad,vmon,artic.art4],
                   style: [centra, centra, centra, centra,  izq,centra,centra,centra,soles]
-                 sheet.column_widths  8,8,8,15,30,10,10
+                 sheet.column_widths  8,8,8,15,50,10,10
 
 end# de do
+
+
+
+
+
+else
+
+
+
+vcod=Item.where(id:@nni).select('exped as dd').first.dd
+
+vcoddd=Phase.where(expediente:vcod).select('proceso as dd').first.dd
+
+vproceso=Phase.where(expediente:vcod).select('proceso as dd').first.dd
+vnproceso=Phase.where(expediente:vcod).select('descripcion as dd').first.dd
+
+
+  sheet.add_row ["PROCESO:"," ",vproceso], style: [titu,titu, titu], height: 40
+                  merge_last_row sheet, columns:["A","B"]
+                  merge_last_row sheet, columns:["C","F"]
+
+  sheet.add_row ["DESCRIPCION:"," ",vnproceso],
+                    style: [titu,titu, titu], height: 40
+                    merge_last_row sheet, columns:["A","B"]
+                    merge_last_row sheet, columns:["C","F"]
+
+vvcat=999999999
+Article.where(item_id:@nni).order('piece') .each do |artic|
+  unless vvcat== artic.piece then
+
+
+    sheet.add_row []
+    if Piece.where(id:artic.piece).count>0 then
+         vden=Piece.where(id:artic.piece).select('descripcion as dd').first.dd
+    else
+         vden=""
+    end
+  sheet.add_row ["item:"," ",vden],
+                      style: [titu,titu, titu], height: 40
+                      merge_last_row sheet, columns:["A","B"]
+                      merge_last_row sheet, columns:["C","F"]
+
+  sheet.add_row []
+
+  sheet.add_row %w(PAC OBAC  PAQUETE FICHA DESCRIPCION UNIDAD CANTIDAD MONEDA ESTIMADO ),
+        style: [titu, titu, titu, titu, titu, titu, titu, titu, titu, titu], height: 40
+
+end
+vvcat=artic.piece
+
+
+vvpac=Item.where(id:artic.item_id).select('pac as dd').first.dd
+vvoobac=Formula.where(product_id:1, orden:Item.where(id:artic.item_id).select('obac as dd').first.dd).
+                  select('nombre as dd').first.dd
+
+if artic.ficha and artic.ficha>0 then
+ @vrevision=Sheet.where(id:artic.ficha).select('codigo_revision as dd').first.dd
+
+else
+@vrevision='s/d'
+end
+
+if artic.art1 and artic.art1>0 then
+  vmon=Formula.where(product_id:7, orden:artic.art1).
+   select('nombre as dd').first.dd
+else
+  vmon="s/d"
+end
+
+if artic.unidad and artic.unidad>0  then
+  vuni=Formula.where(product_id:35, orden:artic.unidad).
+   select('nombre as dd').first.dd
+else
+  vuni="s/d"
+end
+
+
+sheet.add_row [vvpac,vvoobac,artic.paquete,@vrevision,artic.descripcion,vuni ,artic.cantidad,vmon,artic.art4],
+                  style: [centra, centra, centra, centra,  izq,centra,centra,centra,soles]
+                 sheet.column_widths  8,8,8,15,50,10,10
+
+end# de do
+
+
+
+
+
 end# de if
 
 
