@@ -37,7 +37,7 @@
        <th >Adjudicado</th>
        <th >Ahorro</th>
        <% else %>
-         <th >Referencial</th>
+         <th >Estimado</th>
           <th ></th>
        <%  end%>
 
@@ -131,6 +131,10 @@
   <%  else %>
 
               <% @presu=Piece.where(phase_id:activity.id.to_s).sum(:presupuestado).to_i%>
+              <% if @presu==0 then%>
+                    <% @presu=Item.where(exped:activity.expediente).
+                          where("modalidad<3").sum(:ccp).to_i%>
+              <%end%>
             <td ><h5  ALIGN=center><%= number_with_delimiter( @presu.to_i, delimiter: ",") %></h5></td>
 
   <%  end %>
@@ -156,9 +160,7 @@
              <% end %>
             <% else %>
 
-            <% @reff=Piece.where(phase_id:activity.id.to_s).sum(:referencial)*
-              Formula.where(product_id:7,orden:activity.moneda,numero:activity.periodo)
-                   .select('cantidad as dd').first.dd/100%>
+            <% @reff=activity.sele2%>
 
 
 
@@ -414,13 +416,13 @@
  <br>
 <% end %>
 <style>
-    
+
   th{
-    padding-left: 22px; 
+    padding-left: 22px;
   }
 
   td{
-    padding-left: 24px; 
+    padding-left: 24px;
   }
 
 </style>
