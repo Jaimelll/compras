@@ -29,8 +29,7 @@ class Ability
           #  can :read, ActiveAdmin::Page, :name =>"grafico1"
           #  can :read, ActiveAdmin::Page, :name =>"Indices"
             can :read, ActiveAdmin::Page, :name =>"Catalogacion"
-            can [:read], [Item, Detail, Purchase,Article]
-            can [:read], [Phase,Activity,Piece,Contract,Element,Package]
+            can [:read], [Item, Detail, Purchase,Article,Sheet,Movement,Package]
 
       when 26 #secretario
                 can [:read,:update],  [AdminUser]
