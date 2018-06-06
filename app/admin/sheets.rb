@@ -84,6 +84,10 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
        ejec=Movement.where(estado:5).select('DISTINCT sheet_id ')
        ficha.where(id:ejec)
      end
+     scope :LBSC, :default => true do |ficha|
+       ficha.where(vigencia:4)
+     end
+
      scope :Todos, :default => true do |ficha|
           ficha.all
      end
@@ -112,8 +116,16 @@ permit_params :codigo_ficha, :codigo_revision, :creada,
          link_to "#{ficha.codigo_ficha} ", admin_sheet_movements_path(ficha.id)
        end
        column("codigo_revision") do |ficha|
+         if ficha.vigencia==4  then
+           if ficha.cna then
+             link_to ficha.codigo_revision, ficha.cna
+           else
+             ficha.codigo_revision
+           end
+         else
          localiz='http://www.acffaa.gob.pe/documents/32651/443704/'+ficha.codigo_revision+'.pdf'
          link_to ficha.codigo_revision, localiz
+         end
        end
 
 
