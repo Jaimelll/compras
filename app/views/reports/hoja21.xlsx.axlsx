@@ -928,8 +928,8 @@ case proce.orden
      else
        @fec21=""
      end
-     if Activity.where(actividad:18,phase_id:activ.id).count>0 then
-       @fec22= Activity.where(actividad:18,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
+     if Activity.where(actividad:110,phase_id:activ.id).count>0 then
+       @fec22= Activity.where(actividad:110,phase_id:activ.id).select('pfecha as dd').first.dd.strftime("%d/%m/%y")
      else
        @fec22=""
      end

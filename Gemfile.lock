@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/activeadmin/activeadmin
-  revision: fdef5571fafb88465bc0f72c74179e4370477ffb
+  revision: f79e470a04d3ef25230803d83a6b1d26ad5c171a
   specs:
     activeadmin (2.0.0.alpha)
       arbre (>= 1.1.1)
@@ -62,14 +62,14 @@ GEM
       htmlentities (~> 4.3.1)
       nokogiri (>= 1.4.1)
       rubyzip (~> 1.0.0)
-    axlsx_rails (0.5.1)
+    axlsx_rails (0.5.2)
       actionpack (>= 3.1)
       axlsx (>= 2.0.1)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bcrypt (3.1.11)
+    bcrypt (3.1.12)
     bindex (0.5.0)
     builder (3.2.3)
     byebug (10.0.2)
@@ -96,7 +96,7 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.7.0)
-    ffi (1.9.23)
+    ffi (1.9.25)
     formtastic (3.1.5)
       actionpack (>= 3.2.13)
     formtastic_i18n (0.6.0)
@@ -152,7 +152,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
-    nio4r (2.3.0)
+    nio4r (2.3.1)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
@@ -244,7 +244,7 @@ GEM
     turbolinks-source (5.1.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
-    uglifier (4.1.10)
+    uglifier (4.1.11)
       execjs (>= 0.3.0, < 3)
     warden (1.2.7)
       rack (>= 1.0)
@@ -296,4 +296,4 @@ DEPENDENCIES
   wkhtmltopdf-heroku
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
