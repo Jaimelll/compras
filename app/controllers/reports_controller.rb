@@ -305,13 +305,13 @@ def diasp(var)
 
 
                    end #de unless
-
+                   if @vprord==36 then
+                        @vproceso[0]= ( detail.pfecha.to_time-
+                        @vinicio.to_time).to_i/86400
+                    end
 
                    if @nconta1==@nconta then
-                     if @vprord==36 then
-                          @vproceso[0]= ( detail.pfecha.to_time-
-                          @vinicio.to_time).to_i/86400
-                      end
+
 
                     @vproceso[@vproc]=@vproceso[@vproc]+
                     ( detail.pfecha.to_time-@vinicio.to_time).to_i/86400-@vproceso[0]
