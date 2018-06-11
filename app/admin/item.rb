@@ -192,15 +192,15 @@ end
 #link_to item.descripcion,localiz, :target=>"_blank"
 #  item.descripcion
 #link_to item.descripcion, root_path << localiz, :target=>"_blank"
-
+localiz='http://seguimiento.acffaa.gob.pe:81/proyectos/01%20ADQ.%20VEHICULOS%20DE%20SEGURIDAD%202017.mpp'
 
 #  localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 #localiz='W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
 #localiz='file:///W:/SG%20ACFFAA/Oenlace/Proyectos/H5.mpp'
-
 #link_to item.descripcion, localiz, download: 'Bibliotecas\Documentos\H5 '
+link_to item.descripcion, localiz
 
- item.descripcion.upcase
+ #item.descripcion.upcase
 end
 
   column("Modalidad", sortable: :modalidad)do |item|
