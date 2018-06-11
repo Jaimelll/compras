@@ -122,7 +122,7 @@ actions
                    f.input :paquete, :input_html => { :style =>  'width:30%'}
 
                    f.input :ficha, :as => :select, :collection =>
-                            Sheet.where(vigencia:2).order('descripcion').map{|u| [u.descripcion+"("+u.codigo_ficha+")", u.id]}
+                            Sheet.where('vigencia=2 or vigencia=4  ').order('descripcion').map{|u| [u.descripcion+"("+u.codigo_ficha+")", u.id]}
                    f.input :descripcion
                    f.input :unidad, :as => :select, :collection =>
                            Formula.where(product_id:35).map{|u| [u.nombre, u.orden]}
