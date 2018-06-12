@@ -48,6 +48,17 @@ end
 column("Adjudicado Soles", :class => 'text-right', sortable: :montoadjudicadosoles ) do |adjudi|
     number_with_delimiter(adjudi.montoadjudicadosoles, delimiter: ",")
 end
+column("PU", :class => 'text-right' ) do |adjudi|
+    
+    if adjudi.cantidadadjudicado then
+      vpu=adjudi.montoadjudicadosoles*100/adjudi.cantidadadjudicado
+    else
+        vpu=adjudi*100.montoadjudicadosoles
+    end 
+       vpu2='%.02f' % vpu.fdiv(100)  
+       number_with_delimiter(vpu2, delimiter: ",", separator: ".")
+   
+end
 
  actions
 
