@@ -5,7 +5,8 @@ gem "rails", "~> 7.2.2"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 # Gema ActiveAdmin
 gem 'activeadmin', '~> 3.0'
-
+# Gema Devise para autenticación
+gem 'devise'
 gem "sprockets-rails"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
@@ -30,6 +31,7 @@ gem "jbuilder"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
+gem 'sassc-rails', '~> 2.1'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
