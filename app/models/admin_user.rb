@@ -1,5 +1,6 @@
 class AdminUser < ApplicationRecord
-  devise :database_authenticatable, :recoverable, :rememberable, :validatable
+   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable
+
 
   # Atributos permitidos para búsqueda con Ransack (agregamos los campos de Devise)
   def self.ransackable_attributes(auth_object = nil)
