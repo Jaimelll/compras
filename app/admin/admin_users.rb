@@ -1,7 +1,6 @@
-#admin/admin_users.rb
 ActiveAdmin.register AdminUser do
-  permit_params :email, :categoria, :password, :password_confirmation
-  
+  # Elimina los campos que no deben ser actualizados manualmente
+  permit_params :email, :categoria, :password, :password_confirmation, :created_at
 
   index do
     selectable_column
@@ -32,6 +31,7 @@ ActiveAdmin.register AdminUser do
   # Controlar la lógica de actualización
   controller do
     def update
+      # Eliminar los campos de password si están en blanco
       if params[:admin_user][:password].blank? && params[:admin_user][:password_confirmation].blank?
         params[:admin_user].delete(:password)
         params[:admin_user].delete(:password_confirmation)
