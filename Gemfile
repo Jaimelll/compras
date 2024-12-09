@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 8.0.0"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 # Gema ActiveAdmin
 gem 'activeadmin', '~> 3.0'
@@ -23,7 +23,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
-gem 'rails-i18n', '~> 7.0'
+gem 'rails-i18n', '~> 8.0'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
