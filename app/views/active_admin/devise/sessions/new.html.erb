@@ -1,0 +1,27 @@
+<h2><%= t("active_admin.devise.login.heading", default: "Iniciar sesión") %></h2>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div>
+    <%= f.label :email, "Correo electrónico" %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <br />
+
+  <div>
+    <%= f.label :password, "Contraseña" %><br />
+    <%= f.password_field :password %>
+  </div>
+
+  <br />
+
+  <div>
+    <%= f.check_box :remember_me %> <%= f.label :remember_me, "Recordarme" %>
+  </div>
+
+  <br />
+
+  <div>
+    <%= f.submit "Iniciar sesión" %>
+  </div>
+<% end %>

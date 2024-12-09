@@ -1,0 +1,14 @@
+es:
+  devise:
+    sessions:
+      signed_in: "Has iniciado sesión correctamente"
+      admin_user:
+        signed_in: "Has iniciado sesión como administrador"
+    failure:
+      unauthenticated: "Debes iniciar sesión para continuar"
+      admin_user:
+        unauthenticated: "Debes iniciar sesión como administrador para continuar"
+    passwords:
+      send_instructions: "Se han enviado instrucciones para cambiar su contraseña a su correo electrónico."
+      admin_user:
+        send_instructions: "Se han enviado instrucciones para cambiar su contraseña a su correo electrónico (administrador)."
