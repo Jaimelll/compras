@@ -1,7 +1,6 @@
 ActiveAdmin.register Product do
   # Cambiar el nombre en el panel de administración a "Productos"
-  menu label: "Productos"  # Esto hace que se vea como "Productos" en el menú lateral
-
+  menu  priority: 2,label: "Productos"
   # Permitir los parámetros para creación
   permit_params :nombre, :descripcion, :orden, :created_by_id
 
